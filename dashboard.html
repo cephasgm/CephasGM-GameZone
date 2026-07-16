@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0a0a12">
+    <meta name="description" content="CephasGM GameZone Dashboard - Your betting control center">
+    <title>Dashboard | CephasGM GameZone</title>
+    
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a12;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a12; }
+        ::-webkit-scrollbar-thumb { 
+            background: linear-gradient(180deg, #0055ff, #542bff);
+            border-radius: 10px;
+        }
+        
+        /* Glassmorphism */
+        .glass {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        
+        .glass-hover:hover {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            min-height: 100vh;
+            background: rgba(10, 10, 18, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 24px 16px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            overflow-y: auto;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+        
+        .sidebar::-webkit-scrollbar { width: 3px; }
+        .sidebar::-webkit-scrollbar-thumb { background: #0055ff; border-radius: 10px; }
+        
+        .sidebar-logo {
+            font-size: 20px;
+            font-weight: 700;
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            margin-bottom: 24px;
+        }
+        
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .sidebar-link:hover {
+            background: rgba(255,255,255,0.05);
+            color: #ffffff;
+        }
+        
+        .sidebar-link.active {
+            background: rgba(0, 85, 255, 0.15);
+            color: #0055ff;
+            border: 1px solid rgba(0, 85, 255, 0.15);
+        }
+        
+        .sidebar-link .icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+        
+        .sidebar-divider {
+            height: 1px;
+            background: rgba(255,255,255,0.04);
+            margin: 16px 0;
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            padding: 24px 32px;
+            min-height: 100vh;
+            background-image: url('https://images.unsplash.com/photo-1508098682722-e99c643edc58?w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .main-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 10, 18, 0.85);
+            z-index: 0;
+        }
+        
+        .content-inner {
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Header */
+        .dashboard-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        
+        .header-left h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .header-left p {
+            font-size: 14px;
+            color: rgba(255,255,255,0.4);
+            margin-top: 2px;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .header-right .wallet-badge {
+            background: rgba(0, 255, 100, 0.1);
+            border: 1px solid rgba(0, 255, 100, 0.15);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 15px;
+            color: #00ff64;
+        }
+        
+        .header-right .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        
+        .header-right .notification-btn {
+            position: relative;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .header-right .notification-btn:hover {
+            background: rgba(255,255,255,0.08);
+        }
+        
+        .header-right .notification-btn .badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 18px;
+            height: 18px;
+            background: #ff0044;
+            border-radius: 50%;
+            font-size: 10px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #0a0a12;
+        }
+        
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+        
+        .stat-card {
+            padding: 20px;
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255,255,255,0.1);
+        }
+        
+        .stat-card .label {
+            font-size: 13px;
+            color: rgba(255,255,255,0.4);
+            font-weight: 500;
+        }
+        
+        .stat-card .value {
+            font-size: 26px;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+        
+        .stat-card .change {
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 6px;
+        }
+        
+        .stat-card .change.positive { color: #00ff64; }
+        .stat-card .change.negative { color: #ff0044; }
+        
+        /* Two-column layout */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+            margin-bottom: 28px;
+        }
+        
+        /* Cards */
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 20px;
+        }
+        
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .card-title a {
+            font-size: 13px;
+            font-weight: 500;
+            color: #0055ff;
+            text-decoration: none;
+        }
+        
+        .card-title a:hover { color: #4d8aff; }
+        
+        /* Live Match Item */
+        .match-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        
+        .match-item:last-child { border-bottom: none; }
+        
+        .match-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .match-info .teams {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .match-info .teams span { color: rgba(255,255,255,0.4); }
+        .match-info .score { font-weight: 600; font-size: 14px; }
+        .match-info .league { font-size: 11px; color: rgba(255,255,255,0.3); }
+        
+        .match-odds {
+            display: flex;
+            gap: 6px;
+        }
+        
+        .odds-btn-small {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 6px;
+            padding: 4px 10px;
+            font-size: 13px;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .odds-btn-small:hover {
+            background: #0055ff;
+            border-color: #0055ff;
+            transform: scale(1.05);
+        }
+        
+        /* Bet Slip */
+        .bet-slip-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        
+        .bet-slip-item:last-child { border-bottom: none; }
+        
+        .bet-slip-item .selection {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .bet-slip-item .odds {
+            font-size: 13px;
+            font-weight: 600;
+            color: #0055ff;
+        }
+        
+        .bet-slip-item .remove {
+            color: rgba(255,255,255,0.3);
+            cursor: pointer;
+            font-size: 16px;
+            transition: color 0.2s;
+        }
+        
+        .bet-slip-item .remove:hover { color: #ff0044; }
+        
+        .bet-slip-total {
+            padding-top: 12px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        .btn-place-bet {
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            color: white;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 15px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            margin-top: 12px;
+        }
+        
+        .btn-place-bet:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 85, 255, 0.3);
+        }
+        
+        /* Recent Transactions */
+        .transaction-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        
+        .transaction-item:last-child { border-bottom: none; }
+        
+        .transaction-item .desc {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .transaction-item .amount {
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .transaction-item .amount.credit { color: #00ff64; }
+        .transaction-item .amount.debit { color: #ff0044; }
+        .transaction-item .date { font-size: 11px; color: rgba(255,255,255,0.3); }
+        
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 12px;
+        }
+        
+        .quick-action-btn {
+            padding: 16px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: white;
+        }
+        
+        .quick-action-btn:hover {
+            background: rgba(255,255,255,0.06);
+            border-color: rgba(255,255,255,0.12);
+            transform: translateY(-2px);
+        }
+        
+        .quick-action-btn .icon { font-size: 24px; margin-bottom: 4px; }
+        .quick-action-btn .label { font-size: 13px; font-weight: 500; }
+        
+        /* Mobile sidebar toggle */
+        .sidebar-toggle {
+            display: none;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 10px;
+            padding: 8px 12px;
+            color: white;
+            cursor: pointer;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 280px;
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 16px;
+            }
+            .sidebar-toggle {
+                display: block;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .header-left h1 { font-size: 20px; }
+            .quick-actions { grid-template-columns: 1fr 1fr; }
+        }
+        
+        @media (max-width: 480px) {
+            .stats-grid { grid-template-columns: 1fr; }
+            .header-right .wallet-badge { font-size: 13px; padding: 6px 12px; }
+            .header-right .avatar { width: 34px; height: 34px; font-size: 15px; }
+            .header-right .notification-btn { width: 34px; height: 34px; }
+        }
+        
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9999;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 16px 24px;
+            min-width: 280px;
+            animation: slideUp 0.4s ease;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        
+        .toast-success { border-left: 4px solid #00ff64; }
+        .toast-error { border-left: 4px solid #ff0044; }
+        .toast-warning { border-left: 4px solid #ffd700; }
+        
+        @keyframes slideUp {
+            from { transform: translateY(40px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        /* Skeleton loading */
+        .skeleton {
+            background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.06) 50%, rgba(255,255,255,0.03) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s ease-in-out infinite;
+            border-radius: 8px;
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ==========================================
+     SIDEBAR
+     ========================================== -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+        <span class="text-gradient">CephasGM</span>
+        <span class="text-white font-light">|</span>
+        <span class="text-white font-semibold">GameZone</span>
+    </div>
+    
+    <nav class="space-y-1">
+        <a href="/dashboard.html" class="sidebar-link active">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+            Dashboard
+        </a>
+        <a href="/sports.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            Sports
+        </a>
+        <a href="/live-betting.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+            Live
+        </a>
+        <a href="/casino.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Casino
+        </a>
+        <a href="/virtual-football.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"/></svg>
+            Virtual
+        </a>
+        <a href="/aviator.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+            Aviator
+        </a>
+        <a href="/wallet.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+            Wallet
+        </a>
+        <a href="/transactions.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
+            Transactions
+        </a>
+        <a href="/bet-history.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+            Bet History
+        </a>
+        <a href="/promotions.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/></svg>
+            Promotions
+        </a>
+        <a href="/vip.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+            VIP Club
+        </a>
+        <div class="sidebar-divider"></div>
+        <a href="/settings.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            Settings
+        </a>
+        <a href="/signin.html" class="sidebar-link" id="logoutBtn">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+            Logout
+        </a>
+    </nav>
+</aside>
+
+<!-- ==========================================
+     MAIN CONTENT
+     ========================================== -->
+<div class="main-content">
+    <div class="content-inner">
+        
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <div class="flex items-center gap-3">
+                    <button class="sidebar-toggle" id="sidebarToggle">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                    <div>
+                        <h1>Dashboard</h1>
+                        <p>Welcome back, John! 👋</p>
+                    </div>
+                </div>
+            </div>
+            <div class="header-right">
+                <span class="wallet-badge">
+                    $1,245.80
+                </span>
+                <button class="notification-btn" id="notifBtn">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                    </svg>
+                    <span class="badge">3</span>
+                </button>
+                <div class="avatar" id="avatarBtn">JD</div>
+            </div>
+        </header>
+        
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card glass">
+                <div class="label">Total Balance</div>
+                <div class="value">$1,245.80</div>
+                <div class="change positive">▲ +12.5% this week</div>
+            </div>
+            <div class="stat-card glass">
+                <div class="label">Active Bets</div>
+                <div class="value">4</div>
+                <div class="change positive">▲ 2 pending</div>
+            </div>
+            <div class="stat-card glass">
+                <div class="label">Total Won</div>
+                <div class="value">$3,420.00</div>
+                <div class="change positive">▲ +$280 today</div>
+            </div>
+            <div class="stat-card glass">
+                <div class="label">Total Bets</div>
+                <div class="value">128</div>
+                <div class="change positive">▲ 67% win rate</div>
+            </div>
+        </div>
+        
+        <!-- Main Grid -->
+        <div class="dashboard-grid">
+            
+            <!-- Left Column: Live Matches & Recent Activity -->
+            <div class="space-y-6">
+                
+                <!-- Live Matches -->
+                <div class="card">
+                    <div class="card-title">
+                        <span>🔥 Live Matches</span>
+                        <a href="/live-betting.html">View All →</a>
+                    </div>
+                    <div class="space-y-1">
+                        <!-- Match 1 -->
+                        <div class="match-item">
+                            <div class="match-info">
+                                <div>
+                                    <div class="teams">
+                                        Arsenal <span>vs</span> Chelsea
+                                    </div>
+                                    <div class="league">Premier League • 67:23</div>
+                                </div>
+                            </div>
+                            <div class="match-odds">
+                                <button class="odds-btn-small" data-match="1" data-odds="1.95">1.95</button>
+                                <button class="odds-btn-small" data-match="1" data-odds="3.20">3.20</button>
+                                <button class="odds-btn-small" data-match="1" data-odds="2.15">2.15</button>
+                            </div>
+                        </div>
+                        <!-- Match 2 -->
+                        <div class="match-item">
+                            <div class="match-info">
+                                <div>
+                                    <div class="teams">
+                                        Barcelona <span>vs</span> Real Madrid
+                                    </div>
+                                    <div class="league">La Liga • 12:18</div>
+                                </div>
+                            </div>
+                            <div class="match-odds">
+                                <button class="odds-btn-small" data-match="2" data-odds="2.50">2.50</button>
+                                <button class="odds-btn-small" data-match="2" data-odds="3.40">3.40</button>
+                                <button class="odds-btn-small" data-match="2" data-odds="2.80">2.80</button>
+                            </div>
+                        </div>
+                        <!-- Match 3 -->
+                        <div class="match-item">
+                            <div class="match-info">
+                                <div>
+                                    <div class="teams">
+                                        Lakers <span>vs</span> Celtics
+                                    </div>
+                                    <div class="league">NBA • Q4 2:34</div>
+                                </div>
+                            </div>
+                            <div class="match-odds">
+                                <button class="odds-btn-small" data-match="3" data-odds="1.75">1.75</button>
+                                <button class="odds-btn-small" data-match="3" data-odds="1.95">1.95</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recent Transactions -->
+                <div class="card">
+                    <div class="card-title">
+                        <span>📊 Recent Transactions</span>
+                        <a href="/transactions.html">View All →</a>
+                    </div>
+                    <div class="space-y-1">
+                        <div class="transaction-item">
+                            <div>
+                                <div class="desc">Deposit</div>
+                                <div class="date">Today, 14:30</div>
+                            </div>
+                            <div class="amount credit">+$200.00</div>
+                        </div>
+                        <div class="transaction-item">
+                            <div>
+                                <div class="desc">Bet on Arsenal vs Chelsea</div>
+                                <div class="date">Today, 13:15</div>
+                            </div>
+                            <div class="amount debit">-$25.00</div>
+                        </div>
+                        <div class="transaction-item">
+                            <div>
+                                <div class="desc">Won - Barcelona vs Real Madrid</div>
+                                <div class="date">Today, 11:45</div>
+                            </div>
+                            <div class="amount credit">+$87.50</div>
+                        </div>
+                        <div class="transaction-item">
+                            <div>
+                                <div class="desc">Withdrawal</div>
+                                <div class="date">Yesterday, 20:10</div>
+                            </div>
+                            <div class="amount debit">-$150.00</div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <!-- Right Column: Bet Slip & Quick Actions -->
+            <div class="space-y-6">
+                
+                <!-- Bet Slip -->
+                <div class="card">
+                    <div class="card-title">
+                        <span>🎯 Bet Slip</span>
+                        <span class="text-xs text-white/30">3 selections</span>
+                    </div>
+                    <div id="betSlip">
+                        <div class="bet-slip-item">
+                            <div>
+                                <div class="selection">Arsenal to win</div>
+                                <div class="text-xs text-white/30">vs Chelsea</div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="odds">1.95</span>
+                                <span class="remove" data-id="1">✕</span>
+                            </div>
+                        </div>
+                        <div class="bet-slip-item">
+                            <div>
+                                <div class="selection">Barcelona vs Real Madrid - Draw</div>
+                                <div class="text-xs text-white/30">La Liga</div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="odds">3.40</span>
+                                <span class="remove" data-id="2">✕</span>
+                            </div>
+                        </div>
+                        <div class="bet-slip-item">
+                            <div>
+                                <div class="selection">Lakers -5.5</div>
+                                <div class="text-xs text-white/30">NBA</div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="odds">1.75</span>
+                                <span class="remove" data-id="3">✕</span>
+                            </div>
+                        </div>
+                        <div class="bet-slip-total">
+                            <span>Total Odds</span>
+                            <span>11.63</span>
+                        </div>
+                        <div class="mt-3">
+                            <div class="flex items-center gap-3">
+                                <input type="number" placeholder="Stake ($)" class="input-field text-sm py-2 px-3 flex-1" id="stakeInput" value="10.00">
+                                <span class="text-sm text-white/40">Potential: <strong class="text-green-400">$116.30</strong></span>
+                            </div>
+                        </div>
+                        <button class="btn-place-bet" id="placeBetBtn">Place Bet</button>
+                    </div>
+                    <div id="emptySlip" class="hidden text-center py-8 text-white/30">
+                        <div class="text-4xl mb-2">📋</div>
+                        <p>No selections yet</p>
+                        <p class="text-xs">Click odds to add to slip</p>
+                    </div>
+                </div>
+                
+                <!-- Quick Actions -->
+                <div class="card">
+                    <div class="card-title">
+                        <span>⚡ Quick Actions</span>
+                    </div>
+                    <div class="quick-actions">
+                        <a href="/deposit.html" class="quick-action-btn">
+                            <div class="icon">💰</div>
+                            <div class="label">Deposit</div>
+                        </a>
+                        <a href="/withdraw.html" class="quick-action-btn">
+                            <div class="icon">💳</div>
+                            <div class="label">Withdraw</div>
+                        </a>
+                        <a href="/sports.html" class="quick-action-btn">
+                            <div class="icon">⚽</div>
+                            <div class="label">Sports</div>
+                        </a>
+                        <a href="/promotions.html" class="quick-action-btn">
+                            <div class="icon">🎁</div>
+                            <div class="label">Promotions</div>
+                        </a>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+        <!-- Footer note -->
+        <div class="text-center text-xs text-white/20 mt-8 border-t border-white/5 pt-6">
+            Copyright © 2025 Cephas GM | Innovating for Tomorrow
+        </div>
+        
+    </div>
+</div>
+
+<!-- ==========================================
+     JAVASCRIPT
+     ========================================== -->
+<script>
+(function() {
+    'use strict';
+    
+    // ============================================
+    // DOM REFS
+    // ============================================
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const notifBtn = document.getElementById('notifBtn');
+    const avatarBtn = document.getElementById('avatarBtn');
+    const placeBetBtn = document.getElementById('placeBetBtn');
+    const stakeInput = document.getElementById('stakeInput');
+    const betSlip = document.getElementById('betSlip');
+    const emptySlip = document.getElementById('emptySlip');
+    const removeBtns = document.querySelectorAll('.remove');
+    
+    // ============================================
+    // TOAST
+    // ============================================
+    function showToast(message, type = 'success') {
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        toast.innerHTML = `
+            <div class="flex items-center space-x-3">
+                <span>${type === 'success' ? '✅' : type === 'error' ? '❌' : '⚠️'}</span>
+                <span class="text-sm">${message}</span>
+                <button onclick="this.parentElement.parentElement.remove()" class="text-white/30 hover:text-white/70 transition-colors ml-2">
+                    ✕
+                </button>
+            </div>
+        `;
+        document.body.appendChild(toast);
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateY(20px)';
+            setTimeout(() => toast.remove(), 300);
+        }, 4000);
+    }
+    
+    // ============================================
+    // SIDEBAR TOGGLE (mobile)
+    // ============================================
+    sidebarToggle.addEventListener('click', function() {
+        sidebar.classList.toggle('open');
+    });
+    
+    // Close sidebar on outside click (mobile)
+    document.addEventListener('click', function(e) {
+        if (window.innerWidth <= 768) {
+            if (!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
+                sidebar.classList.remove('open');
+            }
+        }
+    });
+    
+    // ============================================
+    // LOGOUT
+    // ============================================
+    logoutBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        showToast('Logging out...', 'warning');
+        setTimeout(() => {
+            window.location.href = '/signin.html';
+        }, 1000);
+    });
+    
+    // ============================================
+    // NOTIFICATIONS
+    // ============================================
+    notifBtn.addEventListener('click', function() {
+        showToast('You have 3 new notifications', 'success');
+    });
+    
+    // ============================================
+    // AVATAR CLICK
+    // ============================================
+    avatarBtn.addEventListener('click', function() {
+        window.location.href = '/profile.html';
+    });
+    
+    // ============================================
+    // ODDS BUTTON - Add to Bet Slip
+    // ============================================
+    document.querySelectorAll('.odds-btn-small').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const odds = this.dataset.odds;
+            const matchId = this.dataset.match;
+            // Get match info from parent
+            const matchItem = this.closest('.match-item');
+            const teams = matchItem.querySelector('.teams')?.textContent || 'Match';
+            const league = matchItem.querySelector('.league')?.textContent || '';
+            
+            // Simple toast
+            showToast(`Added ${teams} @ ${odds} to bet slip`, 'success');
+            
+            // In a real app, we would add to the slip dynamically.
+            // For demo, we just show toast.
+        });
+    });
+    
+    // ============================================
+    // REMOVE FROM BET SLIP
+    // ============================================
+    removeBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const item = this.closest('.bet-slip-item');
+            if (item) {
+                item.style.transition = 'all 0.3s ease';
+                item.style.opacity = '0';
+                item.style.transform = 'translateX(20px)';
+                setTimeout(() => {
+                    item.remove();
+                    // Check if slip is empty
+                    const remaining = betSlip.querySelectorAll('.bet-slip-item');
+                    if (remaining.length === 0) {
+                        betSlip.classList.add('hidden');
+                        emptySlip.classList.remove('hidden');
+                    } else {
+                        // Update total odds (simple recalculation - just demo)
+                    }
+                    showToast('Removed from bet slip', 'warning');
+                }, 300);
+            }
+        });
+    });
+    
+    // ============================================
+    // PLACE BET
+    // ============================================
+    placeBetBtn.addEventListener('click', function() {
+        const stake = parseFloat(stakeInput.value);
+        if (!stake || stake <= 0) {
+            showToast('Please enter a valid stake amount', 'error');
+            return;
+        }
+        // Check if there are selections
+        const selections = betSlip.querySelectorAll('.bet-slip-item');
+        if (selections.length === 0) {
+            showToast('Add selections to your bet slip first', 'error');
+            return;
+        }
+        
+        // Simulate placing bet
+        this.disabled = true;
+        this.textContent = 'Placing...';
+        setTimeout(() => {
+            showToast('Bet placed successfully! 🎉', 'success');
+            this.disabled = false;
+            this.textContent = 'Place Bet';
+            // Clear slip (optional)
+            selections.forEach(item => item.remove());
+            betSlip.classList.add('hidden');
+            emptySlip.classList.remove('hidden');
+        }, 1500);
+    });
+    
+    // ============================================
+    // STAKE INPUT - Update potential winnings
+    // ============================================
+    stakeInput.addEventListener('input', function() {
+        const stake = parseFloat(this.value) || 0;
+        // Get total odds (demo: sum of odds from slip)
+        const oddsElements = betSlip.querySelectorAll('.odds');
+        let totalOdds = 1;
+        oddsElements.forEach(el => {
+            totalOdds *= parseFloat(el.textContent) || 1;
+        });
+        const potential = stake * totalOdds;
+        const strongEl = this.closest('.mt-3')?.querySelector('strong');
+        if (strongEl) {
+            strongEl.textContent = `$${potential.toFixed(2)}`;
+        }
+    });
+    
+    // ============================================
+    // PWA SERVICE WORKER
+    // ============================================
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js')
+                .then(reg => console.log('SW registered'))
+                .catch(err => console.log('SW registration failed'));
+        });
+    }
+    
+    // ============================================
+    // OFFLINE/ONLINE
+    // ============================================
+    window.addEventListener('online', () => {
+        showToast('Back online', 'success');
+    });
+    window.addEventListener('offline', () => {
+        showToast('You are offline. Some features may be limited.', 'warning');
+    });
+    
+    // ============================================
+    // SIDEBAR ACTIVE LINK
+    // ============================================
+    document.querySelectorAll('.sidebar-link').forEach(link => {
+        if (link.href === window.location.href) {
+            link.classList.add('active');
+        }
+    });
+    
+    console.log('📊 Dashboard loaded');
+    
+})();
+</script>
+
+</body>
+</html>
