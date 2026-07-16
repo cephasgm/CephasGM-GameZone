@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0a0a12">
+    <meta name="description" content="Sports betting at CephasGM GameZone - Football, Basketball, Tennis and more">
+    <title>Sports | CephasGM GameZone</title>
+    
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a12;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+        }
+        
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a12; }
+        ::-webkit-scrollbar-thumb { 
+            background: linear-gradient(180deg, #0055ff, #542bff);
+            border-radius: 10px;
+        }
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        
+        .glass-hover:hover {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar {
+            width: 260px;
+            min-height: 100vh;
+            background: rgba(10, 10, 18, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 24px 16px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            overflow-y: auto;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+        .sidebar::-webkit-scrollbar { width: 3px; }
+        .sidebar::-webkit-scrollbar-thumb { background: #0055ff; border-radius: 10px; }
+        
+        .sidebar-logo {
+            font-size: 20px;
+            font-weight: 700;
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            margin-bottom: 24px;
+        }
+        
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .sidebar-link:hover {
+            background: rgba(255,255,255,0.05);
+            color: #ffffff;
+        }
+        .sidebar-link.active {
+            background: rgba(0, 85, 255, 0.15);
+            color: #0055ff;
+            border: 1px solid rgba(0, 85, 255, 0.15);
+        }
+        .sidebar-link .icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+        .sidebar-divider {
+            height: 1px;
+            background: rgba(255,255,255,0.04);
+            margin: 16px 0;
+        }
+        
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            padding: 24px 32px;
+            min-height: 100vh;
+            background-image: url('https://images.unsplash.com/photo-1508098682722-e99c643edc58?w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        .main-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 10, 18, 0.85);
+            z-index: 0;
+        }
+        .content-inner {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .dashboard-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .header-left h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        .header-left p {
+            font-size: 14px;
+            color: rgba(255,255,255,0.4);
+            margin-top: 2px;
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .header-right .wallet-badge {
+            background: rgba(0, 255, 100, 0.1);
+            border: 1px solid rgba(0, 255, 100, 0.15);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 15px;
+            color: #00ff64;
+        }
+        .header-right .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        .sidebar-toggle {
+            display: none;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 10px;
+            padding: 8px 12px;
+            color: white;
+            cursor: pointer;
+        }
+        
+        .input-field {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 10px 16px;
+            color: white;
+            width: 100%;
+            transition: all 0.3s ease;
+            outline: none;
+            font-size: 14px;
+        }
+        .input-field:focus {
+            border-color: #0055ff;
+            box-shadow: 0 0 30px rgba(0, 85, 255, 0.08);
+        }
+        .input-field::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Sport Category Card */
+        .sport-category {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,0.05);
+            background: rgba(255,255,255,0.02);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .sport-category:hover {
+            background: rgba(255,255,255,0.06);
+            border-color: rgba(255,255,255,0.1);
+            transform: translateX(4px);
+        }
+        .sport-category.active {
+            border-color: #0055ff;
+            background: rgba(0, 85, 255, 0.08);
+        }
+        .sport-category .icon { font-size: 24px; }
+        .sport-category .name { font-weight: 500; font-size: 14px; }
+        .sport-category .count { 
+            margin-left: auto; 
+            font-size: 12px; 
+            color: rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.04);
+            padding: 2px 10px;
+            border-radius: 20px;
+        }
+        
+        /* League Header */
+        .league-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            cursor: pointer;
+        }
+        .league-header:hover { opacity: 0.8; }
+        .league-header .name { font-weight: 600; font-size: 15px; }
+        .league-header .count { font-size: 12px; color: rgba(255,255,255,0.3); }
+        
+        /* Match Row */
+        .match-row {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1.5fr;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            align-items: center;
+            transition: all 0.2s ease;
+            border-bottom: 1px solid rgba(255,255,255,0.02);
+        }
+        .match-row:hover {
+            background: rgba(255,255,255,0.04);
+        }
+        .match-row .team {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .match-row .team .name { display: block; }
+        .match-row .team .sub { font-size: 11px; color: rgba(255,255,255,0.3); }
+        .match-row .score {
+            text-align: center;
+            font-weight: 700;
+            font-size: 16px;
+        }
+        .match-row .odds-group {
+            display: flex;
+            gap: 6px;
+            justify-content: flex-end;
+        }
+        
+        .odds-btn {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 8px;
+            padding: 6px 14px;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-width: 52px;
+            text-align: center;
+        }
+        .odds-btn:hover {
+            background: #0055ff;
+            border-color: #0055ff;
+            transform: scale(1.05);
+        }
+        .odds-btn.selected {
+            background: #0055ff;
+            border-color: #0055ff;
+        }
+        
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ff0044;
+            display: inline-block;
+            animation: pulse-dot 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.8); }
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9999;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 16px 24px;
+            min-width: 280px;
+            animation: slideUp 0.4s ease;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        .toast-success { border-left: 4px solid #00ff64; }
+        .toast-error { border-left: 4px solid #ff0044; }
+        .toast-warning { border-left: 4px solid #ffd700; }
+        @keyframes slideUp {
+            from { transform: translateY(40px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            color: white;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 85, 255, 0.25);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 85, 255, 0.4);
+        }
+        
+        .pagination-btn {
+            padding: 8px 14px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.06);
+            background: rgba(255,255,255,0.02);
+            color: rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 13px;
+        }
+        .pagination-btn:hover {
+            background: rgba(255,255,255,0.06);
+            color: white;
+        }
+        .pagination-btn.active {
+            background: rgba(0, 85, 255, 0.15);
+            color: #0055ff;
+            border-color: rgba(0, 85, 255, 0.15);
+        }
+        .pagination-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .match-row {
+                grid-template-columns: 1fr 0.8fr 1fr;
+                font-size: 13px;
+            }
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 280px;
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 16px;
+            }
+            .sidebar-toggle {
+                display: block;
+            }
+            .header-left h1 { font-size: 20px; }
+            .match-row {
+                grid-template-columns: 1fr 0.6fr 1fr;
+                font-size: 12px;
+                gap: 8px;
+                padding: 8px 10px;
+            }
+            .match-row .team .sub { font-size: 10px; }
+            .odds-btn { font-size: 12px; padding: 4px 10px; min-width: 40px; }
+            .sport-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 480px) {
+            .header-right .wallet-badge { font-size: 13px; padding: 6px 12px; }
+            .header-right .avatar { width: 34px; height: 34px; font-size: 15px; }
+            .match-row {
+                grid-template-columns: 1fr 0.5fr 1fr;
+                font-size: 11px;
+                gap: 4px;
+            }
+            .match-row .score { font-size: 13px; }
+            .odds-btn { font-size: 11px; padding: 3px 8px; min-width: 34px; }
+            .sport-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ==========================================
+     SIDEBAR
+     ========================================== -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+        <span class="text-gradient">CephasGM</span>
+        <span class="text-white font-light">|</span>
+        <span class="text-white font-semibold">GameZone</span>
+    </div>
+    <nav class="space-y-1">
+        <a href="/dashboard.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+            Dashboard
+        </a>
+        <a href="/wallet.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+            Wallet
+        </a>
+        <a href="/deposit.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            Deposit
+        </a>
+        <a href="/withdraw.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            Withdraw
+        </a>
+        <a href="/transactions.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
+            Transactions
+        </a>
+        <a href="/bet-history.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+            Bet History
+        </a>
+        <div class="sidebar-divider"></div>
+        <a href="/sports.html" class="sidebar-link active">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            Sports
+        </a>
+        <a href="/live-betting.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+            Live
+        </a>
+        <a href="/casino.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Casino
+        </a>
+        <a href="/settings.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            Settings
+        </a>
+        <a href="/signin.html" class="sidebar-link" id="logoutBtn">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+            Logout
+        </a>
+    </nav>
+</aside>
+
+<!-- ==========================================
+     MAIN CONTENT
+     ========================================== -->
+<div class="main-content">
+    <div class="content-inner">
+        
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <div class="flex items-center gap-3">
+                    <button class="sidebar-toggle" id="sidebarToggle">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                    <div>
+                        <h1>Sports</h1>
+                        <p>Bet on your favorite sports and leagues</p>
+                    </div>
+                </div>
+            </div>
+            <div class="header-right">
+                <span class="wallet-badge">$1,245.80</span>
+                <div class="avatar" id="avatarBtn">JD</div>
+            </div>
+        </header>
+        
+        <!-- Search & Filter -->
+        <div class="flex flex-wrap items-center gap-3 mb-6">
+            <div class="flex-1 min-w-[200px]">
+                <input type="text" class="input-field" placeholder="🔍 Search sports, leagues, teams..." id="searchInput">
+            </div>
+            <select class="input-field w-auto min-w-[130px]" id="leagueFilter">
+                <option value="all">All Leagues</option>
+                <option value="premier">Premier League</option>
+                <option value="laliga">La Liga</option>
+                <option value="bundesliga">Bundesliga</option>
+                <option value="seriea">Serie A</option>
+                <option value="ligue1">Ligue 1</option>
+                <option value="nba">NBA</option>
+                <option value="nfl">NFL</option>
+                <option value="tennis">Tennis</option>
+            </select>
+            <button class="btn-primary text-sm py-2 px-6" id="viewLiveBtn">
+                <span class="live-dot mr-2"></span>
+                Live Now
+            </button>
+        </div>
+        
+        <!-- Two-column layout: Sports Categories + Matches -->
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            
+            <!-- Left: Sports Categories (1/4) -->
+            <div class="lg:col-span-1">
+                <div class="card glass p-4">
+                    <div class="text-sm font-semibold text-white/40 uppercase tracking-wider mb-3">Sports</div>
+                    <div class="space-y-1.5" id="sportCategories">
+                        <div class="sport-category active" data-sport="all">
+                            <span class="icon">🏆</span>
+                            <span class="name">All Sports</span>
+                            <span class="count">48</span>
+                        </div>
+                        <div class="sport-category" data-sport="football">
+                            <span class="icon">⚽</span>
+                            <span class="name">Football</span>
+                            <span class="count">24</span>
+                        </div>
+                        <div class="sport-category" data-sport="basketball">
+                            <span class="icon">🏀</span>
+                            <span class="name">Basketball</span>
+                            <span class="count">8</span>
+                        </div>
+                        <div class="sport-category" data-sport="tennis">
+                            <span class="icon">🎾</span>
+                            <span class="name">Tennis</span>
+                            <span class="count">6</span>
+                        </div>
+                        <div class="sport-category" data-sport="cricket">
+                            <span class="icon">🏏</span>
+                            <span class="name">Cricket</span>
+                            <span class="count">4</span>
+                        </div>
+                        <div class="sport-category" data-sport="rugby">
+                            <span class="icon">🏉</span>
+                            <span class="name">Rugby</span>
+                            <span class="count">3</span>
+                        </div>
+                        <div class="sport-category" data-sport="racing">
+                            <span class="icon">🏇</span>
+                            <span class="name">Horse Racing</span>
+                            <span class="count">2</span>
+                        </div>
+                        <div class="sport-category" data-sport="esports">
+                            <span class="icon">🎮</span>
+                            <span class="name">Esports</span>
+                            <span class="count">1</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right: Matches (3/4) -->
+            <div class="lg:col-span-3">
+                <div class="card glass p-4">
+                    
+                    <!-- League: Premier League -->
+                    <div class="league-group" data-league="premier">
+                        <div class="league-header" data-toggle="league">
+                            <span class="name">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League</span>
+                            <span class="count">6 matches</span>
+                        </div>
+                        <div class="league-matches">
+                            <!-- Match 1 - Live -->
+                            <div class="match-row" data-sport="football">
+                                <div class="team">
+                                    <span class="name">Arsenal</span>
+                                    <span class="sub"><span class="live-dot mr-1"></span>Live • 67:23</span>
+                                </div>
+                                <div class="score">2 - 1</div>
+                                <div class="odds-group">
+                                    <button class="odds-btn" data-odds="1.95">1.95</button>
+                                    <button class="odds-btn" data-odds="3.20">3.20</button>
+                                    <button class="odds-btn" data-odds="2.15">2.15</button>
+                                </div>
+                            </div>
+                            <!-- Match 2 -->
+                            <div class="match-row" data-sport="football">
+                                <div class="team">
+                                    <span class="name">Manchester City</span>
+                                    <span class="sub">Today, 16:00</span>
+                                </div>
+                                <div class="score">vs</div>
+                                <div class="odds-group">
+                                    <button class="odds-btn" data-odds="1.45">1.45</button>
+                                    <button class="odds-btn" data-odds="4.50">4.50</button>
+                                    <button class="odds-btn" data-odds="6.00">6.00</button>
+                                </div>
+                            </div>
+                            <!-- Match 3 -->
+                            <div class="match-row" data-sport="football">
+                                <div class="team">
+                                    <span class="name">Liverpool</span>
+                                    <span class="sub">Today, 18:30</span>
+                                </div>
+                                <div class="score">vs</div>
+                                <div class="odds-group">
+                                    <button class="odds-btn" data-odds="2.10">2.10</button>
+                                    <button class="odds-btn" data-odds="3.30">3.30</button>
+                                    <button class="odds-btn" data-odds="3.80">3.80</button>
+                                </div>
+                            </div>
+                            <!-- Match 4 -->
+                            <div class="match-row" data-sport="football">
+                                <div class="team">
+                                    <span class="name">Chelsea</span>
+                                    <span class="sub">Today, 20:00</span>
+                                </div>
+                                <div class="score">vs</div>
+                                <div class="odds-group">
+                                    <button class="odds-btn" data-odds="2.50">2.50</button>
+                                    <button class="odds-btn" data-odds="3.20">3.20</button>
+                                    <button class="odds-btn" data-odds="2.80">2.80</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- League: La Liga -->
+                    <div class="league-group mt-4" data-league="laliga">
+                        <div class="league-header" data-toggle="league">
+                            <span class="name">🇪🇸 La Liga</span>
+                            <span class="count">5 matches</span>
+                        </div>
+                        <div class="league-matches">
+                            <div class="match-row" data-sport="football">
+                                <div class="team">
+                                    <span class="name">Barcelona</span>
+                                    <span class="sub"><span class="live-dot mr-1"></span>Live • 12:18</span>
+                                </div>
+                                <div class="score">0 - 0</div>
+                                <div class="odds-group">
+                                    <button class="odds-btn" data-odds="2.50">2.50</button>
+                                    <button class="odds-btn" data-odds="3.40">3.40</button>
+                                    <button class="odds-btn" data-odds="2.80">2.80</button>
+                                </div>
+                            </div>
+                            <div class="match-row" data-sport="football">
+                                <div class="team">
+                                    <span class="name">Real Madrid</span>
+                                    <span class="sub">Today, 21:00</span>
+                                </div>
+                                <div class="score">vs</div>
+                                <div class="odds-group">
+                                    <button class="odds-btn" data-odds="1.80">1.80</button>
+                                    <button class="odds-btn" data-odds="3.60">3.60</button>
+                                    <button class="odds-btn" data-odds="4.20">4.20</button>
+                                </div>
+                            </div>
+                            <div class="match-row" data-sport="football">
+                                <div class="team">
+                                    <span class="name">Atletico Madrid</span>
+                                    <span class="sub">Today, 19:00</span>
+                                </div>
+                                <div class="score">vs</div>
+                                <div class="odds-group">
+                                    <button class="odds-btn" data-odds="2.20">2.20</button>
+                                    <button class="odds-btn" data-odds="3.00">3.00</button>
+                                    <button class="odds-btn" data-odds="3.50">3.50</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- League: NBA -->
+                    <div class="league-group mt-4" data-league="nba">
+                        <div class="league-header" data-toggle="league">
+                            <span class="name">🏀 NBA</span>
+                            <span class="count">4 matches</span>
+                        </div>
+                        <div class="league-matches">
+                            <div class="match-row" data-sport="basketball">
+                                <div class="team">
+                                    <span class="name">Lakers</span>
+                                    <span class="sub"><span class="live-dot mr-1"></span>Live • Q4 2:34</span>
+                                </div>
+                                <div class="score">89 - 85</div>
+                                <div class="odds-group">
+                                    <button class="odds-btn" data-odds="1.75">1.75</button>
+                                    <button class="odds-btn" data-odds="1.95">1.95</button>
+                                </div>
+                            </div>
+                            <div class="match-row" data-sport="basketball">
+                                <div class="team">
+                                    <span class="name">Celtics</span>
+                                    <span class="sub">Today, 20:30</span>
+                                </div>
+                                <div class="score">vs</div>
+                                <div class="odds-group">
+                                    <button class="odds-btn" data-odds="1.65">1.65</button>
+                                    <button class="odds-btn" data-odds="2.10">2.10</button>
+                                </div>
+                            </div>
+                            <div class="match-row" data-sport="basketball">
+                                <div class="team">
+                                    <span class="name">Warriors</span>
+                                    <span class="sub">Today, 22:00</span>
+                                </div>
+                                <div class="score">vs</div>
+                                <div class="odds-group">
+                                    <button class="odds-btn" data-odds="1.55">1.55</button>
+                                    <button class="odds-btn" data-odds="2.30">2.30</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- League: Tennis -->
+                    <div class="league-group mt-4" data-league="tennis">
+                        <div class="league-header" data-toggle="league">
+                            <span class="name">🎾 Wimbledon</span>
+                            <span class="count">3 matches</span>
+                        </div>
+                        <div class="league-matches">
+                            <div class="match-row" data-sport="tennis">
+                                <div class="team">
+                                    <span class="name">Djokovic</span>
+                                    <span class="sub">Today, 15:30</span>
+                                </div>
+                                <div class="score">vs</div>
+                                <div class="odds-group">
+                                    <button class="odds-btn" data-odds="1.45">1.45</button>
+                                    <button class="odds-btn" data-odds="2.60">2.60</button>
+                                </div>
+                            </div>
+                            <div class="match-row" data-sport="tennis">
+                                <div class="team">
+                                    <span class="name">Nadal</span>
+                                    <span class="sub">Today, 17:00</span>
+                                </div>
+                                <div class="score">vs</div>
+                                <div class="odds-group">
+                                    <button class="odds-btn" data-odds="1.80">1.80</button>
+                                    <button class="odds-btn" data-odds="1.95">1.95</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- League: Cricket -->
+                    <div class="league-group mt-4" data-league="cricket">
+                        <div class="league-header" data-toggle="league">
+                            <span class="name">🏏 IPL</span>
+                            <span class="count">2 matches</span>
+                        </div>
+                        <div class="league-matches">
+                            <div class="match-row" data-sport="cricket">
+                                <div class="team">
+                                    <span class="name">Mumbai Indians</span>
+                                    <span class="sub">Today, 14:00</span>
+                                </div>
+                                <div class="score">vs</div>
+                                <div class="odds-group">
+                                    <button class="odds-btn" data-odds="1.90">1.90</button>
+                                    <button class="odds-btn" data-odds="1.85">1.85</button>
+                                </div>
+                            </div>
+                            <div class="match-row" data-sport="cricket">
+                                <div class="team">
+                                    <span class="name">Chennai Super Kings</span>
+                                    <span class="sub">Today, 18:30</span>
+                                </div>
+                                <div class="score">vs</div>
+                                <div class="odds-group">
+                                    <button class="odds-btn" data-odds="2.10">2.10</button>
+                                    <button class="odds-btn" data-odds="1.70">1.70</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Empty State -->
+                    <div id="emptyState" class="hidden text-center py-12 text-white/30">
+                        <div class="text-5xl mb-4">🏟️</div>
+                        <p class="text-lg font-medium">No matches found</p>
+                        <p class="text-sm">Try adjusting your filters</p>
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <div class="flex items-center justify-between mt-6 pt-4 border-t border-white/5">
+                        <span class="text-sm text-white/30">Showing 1-8 of 48 matches</span>
+                        <div class="flex gap-1">
+                            <button class="pagination-btn" disabled>←</button>
+                            <button class="pagination-btn active">1</button>
+                            <button class="pagination-btn">2</button>
+                            <button class="pagination-btn">3</button>
+                            <button class="pagination-btn">…</button>
+                            <button class="pagination-btn">6</button>
+                            <button class="pagination-btn">→</button>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="text-center text-xs text-white/20 mt-8 border-t border-white/5 pt-6">
+            Copyright © 2025 Cephas GM | Innovating for Tomorrow
+        </div>
+        
+    </div>
+</div>
+
+<!-- ==========================================
+     JAVASCRIPT
+     ========================================== -->
+<script>
+(function() {
+    'use strict';
+    
+    // ============================================
+    // DOM REFS
+    // ============================================
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const avatarBtn = document.getElementById('avatarBtn');
+    const searchInput = document.getElementById('searchInput');
+    const leagueFilter = document.getElementById('leagueFilter');
+    const viewLiveBtn = document.getElementById('viewLiveBtn');
+    const sportCategories = document.querySelectorAll('.sport-category');
+    const matchRows = document.querySelectorAll('.match-row');
+    const leagueGroups = document.querySelectorAll('.league-group');
+    const leagueHeaders = document.querySelectorAll('.league-header');
+    const emptyState = document.getElementById('emptyState');
+    const paginationBtns = document.querySelectorAll('.pagination-btn');
+    const oddsBtns = document.querySelectorAll('.odds-btn');
+    
+    let currentSport = 'all';
+    let currentSearch = '';
+    let currentLeague = 'all';
+    
+    // ============================================
+    // TOAST
+    // ============================================
+    function showToast(message, type = 'success') {
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        toast.innerHTML = `
+            <div class="flex items-center space-x-3">
+                <span>${type === 'success' ? '✅' : type === 'error' ? '❌' : '⚠️'}</span>
+                <span class="text-sm">${message}</span>
+                <button onclick="this.parentElement.parentElement.remove()" class="text-white/30 hover:text-white/70 transition-colors ml-2">
+                    ✕
+                </button>
+            </div>
+        `;
+        document.body.appendChild(toast);
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateY(20px)';
+            setTimeout(() => toast.remove(), 300);
+        }, 4000);
+    }
+    
+    // ============================================
+    // SIDEBAR TOGGLE
+    // ============================================
+    sidebarToggle.addEventListener('click', function() {
+        sidebar.classList.toggle('open');
+    });
+    document.addEventListener('click', function(e) {
+        if (window.innerWidth <= 768) {
+            if (!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
+                sidebar.classList.remove('open');
+            }
+        }
+    });
+    
+    // ============================================
+    // LOGOUT & AVATAR
+    // ============================================
+    logoutBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        showToast('Logging out...', 'warning');
+        setTimeout(() => window.location.href = '/signin.html', 1000);
+    });
+    avatarBtn.addEventListener('click', function() {
+        window.location.href = '/profile.html';
+    });
+    
+    // ============================================
+    // SPORT CATEGORY FILTER
+    // ============================================
+    sportCategories.forEach(cat => {
+        cat.addEventListener('click', function() {
+            sportCategories.forEach(c => c.classList.remove('active'));
+            this.classList.add('active');
+            currentSport = this.dataset.sport;
+            filterMatches();
+        });
+    });
+    
+    // ============================================
+    // LEAGUE TOGGLE (expand/collapse)
+    // ============================================
+    leagueHeaders.forEach(header => {
+        header.addEventListener('click', function() {
+            const group = this.closest('.league-group');
+            const matches = group.querySelector('.league-matches');
+            if (matches.style.display === 'none') {
+                matches.style.display = 'block';
+                this.querySelector('.count').textContent = this.querySelector('.count').textContent.replace('▼', '');
+            } else {
+                matches.style.display = 'none';
+                this.querySelector('.count').textContent = this.querySelector('.count').textContent + ' ▼';
+            }
+        });
+    });
+    
+    // ============================================
+    // LEAGUE FILTER
+    // ============================================
+    leagueFilter.addEventListener('change', function() {
+        currentLeague = this.value;
+        filterMatches();
+    });
+    
+    // ============================================
+    // SEARCH
+    // ============================================
+    searchInput.addEventListener('input', function() {
+        currentSearch = this.value;
+        filterMatches();
+    });
+    
+    // ============================================
+    // FILTER MATCHES
+    // ============================================
+    function filterMatches() {
+        let visible = 0;
+        let visibleLeagues = new Set();
+        
+        leagueGroups.forEach(group => {
+            const league = group.dataset.league;
+            const matches = group.querySelectorAll('.match-row');
+            let groupVisible = false;
+            
+            matches.forEach(row => {
+                const sport = row.dataset.sport;
+                const text = row.textContent.toLowerCase();
+                const search = currentSearch.toLowerCase();
+                const leagueMatch = currentLeague === 'all' || league === currentLeague;
+                const sportMatch = currentSport === 'all' || sport === currentSport;
+                const searchMatch = !search || text.includes(search);
+                
+                if (sportMatch && leagueMatch && searchMatch) {
+                    row.style.display = 'grid';
+                    visible++;
+                    groupVisible = true;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+            
+            // Show/hide league group
+            if (groupVisible) {
+                group.style.display = 'block';
+                visibleLeagues.add(league);
+            } else {
+                group.style.display = 'none';
+            }
+        });
+        
+        // Show/hide empty state
+        if (visible === 0) {
+            emptyState.classList.remove('hidden');
+        } else {
+            emptyState.classList.add('hidden');
+        }
+        
+        // Update count
+        const paginationText = document.querySelector('.text-white/30');
+        if (paginationText) {
+            paginationText.textContent = `Showing ${visible} matches`;
+        }
+    }
+    
+    // ============================================
+    // LIVE NOW BUTTON
+    // ============================================
+    viewLiveBtn.addEventListener('click', function() {
+        // Show only live matches
+        matchRows.forEach(row => {
+            const sub = row.querySelector('.team .sub');
+            if (sub && sub.textContent.includes('Live')) {
+                row.style.display = 'grid';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+        showToast('Showing live matches only', 'success');
+    });
+    
+    // ============================================
+    // ODDS BUTTON - Add to bet slip
+    // ============================================
+    oddsBtns.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            // Toggle selection
+            this.classList.toggle('selected');
+            const odds = this.dataset.odds;
+            const matchRow = this.closest('.match-row');
+            const teamName = matchRow.querySelector('.team .name')?.textContent || 'Match';
+            
+            if (this.classList.contains('selected')) {
+                showToast(`Added ${teamName} @ ${odds} to bet slip`, 'success');
+            } else {
+                showToast(`Removed from bet slip`, 'warning');
+            }
+        });
+    });
+    
+    // ============================================
+    // MATCH ROW CLICK - View details
+    // ============================================
+    matchRows.forEach(row => {
+        row.style.cursor = 'pointer';
+        row.addEventListener('click', function(e) {
+            // Ignore if clicking on odds button
+            if (e.target.closest('.odds-btn')) return;
+            const teams = this.querySelector('.team .name')?.textContent || 'Match';
+            showToast(`Viewing ${teams} details`, 'warning');
+        });
+    });
+    
+    // ============================================
+    // PAGINATION
+    // ============================================
+    paginationBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            if (this.disabled) return;
+            if (this.textContent === '←' || this.textContent === '→') {
+                const active = document.querySelector('.pagination-btn.active');
+                if (active) {
+                    const siblings = [...active.parentElement.children];
+                    const idx = siblings.indexOf(active);
+                    if (this.textContent === '←' && idx > 0) {
+                        siblings[idx - 1]?.click();
+                    } else if (this.textContent === '→' && idx < siblings.length - 1) {
+                        siblings[idx + 1]?.click();
+                    }
+                }
+                return;
+            }
+            if (this.textContent === '…') return;
+            paginationBtns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            showToast(`Page ${this.textContent} loaded`, 'success');
+        });
+    });
+    
+    // ============================================
+    // PWA SERVICE WORKER
+    // ============================================
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js')
+                .then(reg => console.log('SW registered'))
+                .catch(err => console.log('SW registration failed'));
+        });
+    }
+    
+    // ============================================
+    // OFFLINE/ONLINE
+    // ============================================
+    window.addEventListener('online', () => showToast('Back online', 'success'));
+    window.addEventListener('offline', () => showToast('You are offline. Some features may be limited.', 'warning'));
+    
+    // ============================================
+    // SIDEBAR ACTIVE LINK
+    // ============================================
+    document.querySelectorAll('.sidebar-link').forEach(link => {
+        if (link.href === window.location.href) {
+            link.classList.add('active');
+        }
+    });
+    
+    console.log('⚽ Sports page loaded');
+    
+})();
+</script>
+
+</body>
+</html>
