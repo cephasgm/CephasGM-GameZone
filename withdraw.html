@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0a0a12">
+    <meta name="description" content="Withdraw funds from your CephasGM GameZone wallet">
+    <title>Withdraw | CephasGM GameZone</title>
+    
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a12;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+        }
+        
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a12; }
+        ::-webkit-scrollbar-thumb { 
+            background: linear-gradient(180deg, #0055ff, #542bff);
+            border-radius: 10px;
+        }
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        
+        .glass-hover:hover {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar {
+            width: 260px;
+            min-height: 100vh;
+            background: rgba(10, 10, 18, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 24px 16px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            overflow-y: auto;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+        .sidebar::-webkit-scrollbar { width: 3px; }
+        .sidebar::-webkit-scrollbar-thumb { background: #0055ff; border-radius: 10px; }
+        
+        .sidebar-logo {
+            font-size: 20px;
+            font-weight: 700;
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            margin-bottom: 24px;
+        }
+        
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .sidebar-link:hover {
+            background: rgba(255,255,255,0.05);
+            color: #ffffff;
+        }
+        .sidebar-link.active {
+            background: rgba(0, 85, 255, 0.15);
+            color: #0055ff;
+            border: 1px solid rgba(0, 85, 255, 0.15);
+        }
+        .sidebar-link .icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+        .sidebar-divider {
+            height: 1px;
+            background: rgba(255,255,255,0.04);
+            margin: 16px 0;
+        }
+        
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            padding: 24px 32px;
+            min-height: 100vh;
+            background-image: url('https://images.unsplash.com/photo-1508098682722-e99c643edc58?w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        .main-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 10, 18, 0.85);
+            z-index: 0;
+        }
+        .content-inner {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .dashboard-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .header-left h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        .header-left p {
+            font-size: 14px;
+            color: rgba(255,255,255,0.4);
+            margin-top: 2px;
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .header-right .wallet-badge {
+            background: rgba(0, 255, 100, 0.1);
+            border: 1px solid rgba(0, 255, 100, 0.15);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 15px;
+            color: #00ff64;
+        }
+        .header-right .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        .sidebar-toggle {
+            display: none;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 10px;
+            padding: 8px 12px;
+            color: white;
+            cursor: pointer;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 24px;
+        }
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        
+        .payment-option {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 18px;
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,0.06);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.02);
+        }
+        .payment-option:hover {
+            background: rgba(255,255,255,0.06);
+        }
+        .payment-option.selected {
+            border-color: #0055ff;
+            background: rgba(0, 85, 255, 0.08);
+            box-shadow: 0 0 30px rgba(0, 85, 255, 0.05);
+        }
+        .payment-option .icon {
+            font-size: 28px;
+        }
+        .payment-option .info .name {
+            font-weight: 500;
+            font-size: 15px;
+        }
+        .payment-option .info .desc {
+            font-size: 13px;
+            color: rgba(255,255,255,0.3);
+        }
+        .payment-option .radio {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: auto;
+            transition: all 0.3s ease;
+        }
+        .payment-option.selected .radio {
+            border-color: #0055ff;
+            background: #0055ff;
+        }
+        .payment-option.selected .radio::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+        }
+        
+        .input-field {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 14px;
+            padding: 14px 18px;
+            color: white;
+            width: 100%;
+            transition: all 0.3s ease;
+            outline: none;
+            font-size: 15px;
+        }
+        .input-field:focus {
+            border-color: #0055ff;
+            box-shadow: 0 0 30px rgba(0, 85, 255, 0.08);
+            background: rgba(255, 255, 255, 0.06);
+        }
+        .input-field::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+        .input-field.error {
+            border-color: #ff0044;
+        }
+        
+        .quick-amount {
+            padding: 8px 16px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.06);
+            background: rgba(255,255,255,0.02);
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            font-size: 14px;
+            text-align: center;
+        }
+        .quick-amount:hover {
+            background: rgba(255,255,255,0.06);
+        }
+        .quick-amount.active {
+            border-color: #0055ff;
+            background: rgba(0, 85, 255, 0.1);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            color: white;
+            padding: 14px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            box-shadow: 0 4px 20px rgba(0, 85, 255, 0.25);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 85, 255, 0.4);
+        }
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #ff0044, #cc0033);
+            color: white;
+            padding: 14px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            box-shadow: 0 4px 20px rgba(255, 0, 68, 0.25);
+        }
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255, 0, 68, 0.4);
+        }
+        .btn-danger:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9999;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 16px 24px;
+            min-width: 280px;
+            animation: slideUp 0.4s ease;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        .toast-success { border-left: 4px solid #00ff64; }
+        .toast-error { border-left: 4px solid #ff0044; }
+        .toast-warning { border-left: 4px solid #ffd700; }
+        @keyframes slideUp {
+            from { transform: translateY(40px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255,255,255,0.1);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        @media (max-width: 1024px) {
+            .withdraw-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 280px;
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 16px;
+            }
+            .sidebar-toggle {
+                display: block;
+            }
+            .header-left h1 { font-size: 20px; }
+            .payment-option { padding: 12px 14px; }
+        }
+        @media (max-width: 480px) {
+            .header-right .wallet-badge { font-size: 13px; padding: 6px 12px; }
+            .header-right .avatar { width: 34px; height: 34px; font-size: 15px; }
+            .quick-amount { font-size: 13px; padding: 6px 12px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ==========================================
+     SIDEBAR
+     ========================================== -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+        <span class="text-gradient">CephasGM</span>
+        <span class="text-white font-light">|</span>
+        <span class="text-white font-semibold">GameZone</span>
+    </div>
+    <nav class="space-y-1">
+        <a href="/dashboard.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+            Dashboard
+        </a>
+        <a href="/wallet.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+            Wallet
+        </a>
+        <a href="/deposit.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            Deposit
+        </a>
+        <a href="/withdraw.html" class="sidebar-link active">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            Withdraw
+        </a>
+        <a href="/transactions.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
+            Transactions
+        </a>
+        <div class="sidebar-divider"></div>
+        <a href="/sports.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            Sports
+        </a>
+        <a href="/casino.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Casino
+        </a>
+        <a href="/settings.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            Settings
+        </a>
+        <a href="/signin.html" class="sidebar-link" id="logoutBtn">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+            Logout
+        </a>
+    </nav>
+</aside>
+
+<!-- ==========================================
+     MAIN CONTENT
+     ========================================== -->
+<div class="main-content">
+    <div class="content-inner">
+        
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <div class="flex items-center gap-3">
+                    <button class="sidebar-toggle" id="sidebarToggle">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                    <div>
+                        <h1>Withdraw</h1>
+                        <p>Withdraw funds from your wallet</p>
+                    </div>
+                </div>
+            </div>
+            <div class="header-right">
+                <span class="wallet-badge">$1,245.80</span>
+                <div class="avatar" id="avatarBtn">JD</div>
+            </div>
+        </header>
+        
+        <!-- Two-column layout -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <!-- Left: Withdraw Form (2/3) -->
+            <div class="lg:col-span-2 space-y-6">
+                
+                <!-- Select Withdrawal Method -->
+                <div class="card">
+                    <div class="card-title">💳 Select Withdrawal Method</div>
+                    <div class="space-y-3" id="paymentMethods">
+                        <div class="payment-option selected" data-method="card">
+                            <div class="icon">💳</div>
+                            <div class="info">
+                                <div class="name">Credit / Debit Card</div>
+                                <div class="desc">Visa, Mastercard, American Express</div>
+                            </div>
+                            <div class="radio"></div>
+                        </div>
+                        <div class="payment-option" data-method="bank">
+                            <div class="icon">🏦</div>
+                            <div class="info">
+                                <div class="name">Bank Transfer</div>
+                                <div class="desc">Direct bank transfer</div>
+                            </div>
+                            <div class="radio"></div>
+                        </div>
+                        <div class="payment-option" data-method="mobile">
+                            <div class="icon">📱</div>
+                            <div class="info">
+                                <div class="name">Mobile Money</div>
+                                <div class="desc">M-Pesa, Airtel Money, MTN</div>
+                            </div>
+                            <div class="radio"></div>
+                        </div>
+                        <div class="payment-option" data-method="crypto">
+                            <div class="icon">₿</div>
+                            <div class="info">
+                                <div class="name">Cryptocurrency</div>
+                                <div class="desc">Bitcoin, Ethereum, USDT</div>
+                            </div>
+                            <div class="radio"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Withdrawal Amount -->
+                <div class="card">
+                    <div class="card-title">💰 Enter Amount</div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="text-2xl font-light text-white/30">$</span>
+                        <input type="number" id="amountInput" class="input-field text-2xl font-bold" placeholder="0.00" min="10" step="0.01" value="100.00">
+                    </div>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <button class="quick-amount" data-amount="25">$25</button>
+                        <button class="quick-amount" data-amount="50">$50</button>
+                        <button class="quick-amount active" data-amount="100">$100</button>
+                        <button class="quick-amount" data-amount="250">$250</button>
+                        <button class="quick-amount" data-amount="500">$500</button>
+                        <button class="quick-amount" data-amount="1000">$1,000</button>
+                    </div>
+                    <div class="flex items-center gap-3 text-sm text-white/40">
+                        <span>Min: $10.00</span>
+                        <span>|</span>
+                        <span>Max: $5,000.00</span>
+                        <span>|</span>
+                        <span>Fee: <span class="text-yellow-400">1%</span></span>
+                    </div>
+                    <div class="mt-3 text-sm text-white/40">
+                        Available Balance: <strong class="text-white">$1,245.80</strong>
+                    </div>
+                </div>
+                
+                <!-- Account Details (dynamic) -->
+                <div class="card" id="accountInfo">
+                    <div class="card-title">ℹ️ Account Details</div>
+                    <div id="accountDetails">
+                        <!-- Card details -->
+                        <div class="space-y-3" id="cardDetails">
+                            <div>
+                                <label class="text-sm text-white/60 block mb-1">Card Number</label>
+                                <input type="text" class="input-field" value="•••• •••• •••• 4829" disabled>
+                            </div>
+                            <div>
+                                <label class="text-sm text-white/60 block mb-1">Name on Card</label>
+                                <input type="text" class="input-field" value="John Doe" disabled>
+                            </div>
+                        </div>
+                        <!-- Bank details (hidden) -->
+                        <div class="space-y-3 hidden" id="bankDetails">
+                            <div>
+                                <label class="text-sm text-white/60 block mb-1">Bank Account</label>
+                                <input type="text" class="input-field" value="Chase •••• 8901" disabled>
+                            </div>
+                            <div>
+                                <label class="text-sm text-white/60 block mb-1">Account Name</label>
+                                <input type="text" class="input-field" value="John Doe" disabled>
+                            </div>
+                        </div>
+                        <!-- Mobile money details (hidden) -->
+                        <div class="space-y-3 hidden" id="mobileDetails">
+                            <div>
+                                <label class="text-sm text-white/60 block mb-1">Phone Number</label>
+                                <input type="tel" class="input-field" value="+1 234 567 890" disabled>
+                            </div>
+                            <div>
+                                <label class="text-sm text-white/60 block mb-1">Provider</label>
+                                <input type="text" class="input-field" value="M-Pesa" disabled>
+                            </div>
+                        </div>
+                        <!-- Crypto details (hidden) -->
+                        <div class="space-y-3 hidden" id="cryptoDetails">
+                            <div>
+                                <label class="text-sm text-white/60 block mb-1">Wallet Address</label>
+                                <input type="text" class="input-field" value="1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa" disabled>
+                            </div>
+                            <div>
+                                <label class="text-sm text-white/60 block mb-1">Network</label>
+                                <input type="text" class="input-field" value="Bitcoin (BTC)" disabled>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Submit -->
+                <button class="btn-danger" id="withdrawBtn">
+                    Withdraw Funds
+                </button>
+            </div>
+            
+            <!-- Right: Summary & Info (1/3) -->
+            <div class="space-y-6">
+                <!-- Withdrawal Summary -->
+                <div class="card">
+                    <div class="card-title">📋 Withdrawal Summary</div>
+                    <div class="space-y-3 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-white/40">Amount</span>
+                            <span class="font-semibold" id="summaryAmount">$100.00</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-white/40">Method</span>
+                            <span class="font-semibold" id="summaryMethod">Credit / Debit Card</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-white/40">Fee (1%)</span>
+                            <span class="text-yellow-400" id="summaryFee">$1.00</span>
+                        </div>
+                        <div class="border-t border-white/5 pt-3 flex justify-between font-bold">
+                            <span>Net Amount</span>
+                            <span id="summaryTotal">$99.00</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Processing Info -->
+                <div class="card">
+                    <div class="card-title">⏱️ Processing Time</div>
+                    <ul class="space-y-2 text-sm text-white/40">
+                        <li class="flex items-center gap-2">🟢 Credit Card: 1-3 business days</li>
+                        <li class="flex items-center gap-2">🟢 Bank Transfer: 1-5 business days</li>
+                        <li class="flex items-center gap-2">🟢 Mobile Money: 1-24 hours</li>
+                        <li class="flex items-center gap-2">🟢 Crypto: 10-60 minutes</li>
+                    </ul>
+                </div>
+                
+                <!-- Withdrawal Limits -->
+                <div class="card">
+                    <div class="card-title">📊 Withdrawal Limits</div>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-white/40">Min</span>
+                            <span>$10.00</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-white/40">Max (per day)</span>
+                            <span>$5,000.00</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-white/40">Max (per week)</span>
+                            <span>$25,000.00</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Security Note -->
+                <div class="card">
+                    <div class="card-title">🔒 Secure Withdrawal</div>
+                    <ul class="space-y-2 text-sm text-white/40">
+                        <li class="flex items-center gap-2">✅ 256-bit SSL encryption</li>
+                        <li class="flex items-center gap-2">✅ 2FA required for withdrawals</li>
+                        <li class="flex items-center gap-2">✅ Withdrawal to verified accounts only</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="text-center text-xs text-white/20 mt-8 border-t border-white/5 pt-6">
+            Copyright © 2025 Cephas GM | Innovating for Tomorrow
+        </div>
+        
+    </div>
+</div>
+
+<!-- ==========================================
+     JAVASCRIPT
+     ========================================== -->
+<script>
+(function() {
+    'use strict';
+    
+    // ============================================
+    // DOM REFS
+    // ============================================
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const avatarBtn = document.getElementById('avatarBtn');
+    const withdrawBtn = document.getElementById('withdrawBtn');
+    const amountInput = document.getElementById('amountInput');
+    const summaryAmount = document.getElementById('summaryAmount');
+    const summaryFee = document.getElementById('summaryFee');
+    const summaryTotal = document.getElementById('summaryTotal');
+    const summaryMethod = document.getElementById('summaryMethod');
+    const paymentOptions = document.querySelectorAll('.payment-option');
+    const quickAmounts = document.querySelectorAll('.quick-amount');
+    
+    const cardDetails = document.getElementById('cardDetails');
+    const bankDetails = document.getElementById('bankDetails');
+    const mobileDetails = document.getElementById('mobileDetails');
+    const cryptoDetails = document.getElementById('cryptoDetails');
+    
+    const WITHDRAWAL_FEE = 0.01; // 1%
+    
+    // ============================================
+    // TOAST
+    // ============================================
+    function showToast(message, type = 'success') {
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        toast.innerHTML = `
+            <div class="flex items-center space-x-3">
+                <span>${type === 'success' ? '✅' : type === 'error' ? '❌' : '⚠️'}</span>
+                <span class="text-sm">${message}</span>
+                <button onclick="this.parentElement.parentElement.remove()" class="text-white/30 hover:text-white/70 transition-colors ml-2">
+                    ✕
+                </button>
+            </div>
+        `;
+        document.body.appendChild(toast);
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateY(20px)';
+            setTimeout(() => toast.remove(), 300);
+        }, 4000);
+    }
+    
+    // ============================================
+    // SIDEBAR TOGGLE
+    // ============================================
+    sidebarToggle.addEventListener('click', function() {
+        sidebar.classList.toggle('open');
+    });
+    document.addEventListener('click', function(e) {
+        if (window.innerWidth <= 768) {
+            if (!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
+                sidebar.classList.remove('open');
+            }
+        }
+    });
+    
+    // ============================================
+    // LOGOUT & AVATAR
+    // ============================================
+    logoutBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        showToast('Logging out...', 'warning');
+        setTimeout(() => window.location.href = '/signin.html', 1000);
+    });
+    avatarBtn.addEventListener('click', function() {
+        window.location.href = '/profile.html';
+    });
+    
+    // ============================================
+    // PAYMENT METHOD SELECTION
+    // ============================================
+    const methodNames = {
+        card: 'Credit / Debit Card',
+        bank: 'Bank Transfer',
+        mobile: 'Mobile Money',
+        crypto: 'Cryptocurrency'
+    };
+    
+    paymentOptions.forEach(opt => {
+        opt.addEventListener('click', function() {
+            paymentOptions.forEach(o => o.classList.remove('selected'));
+            this.classList.add('selected');
+            const method = this.dataset.method;
+            summaryMethod.textContent = methodNames[method] || method;
+            
+            cardDetails.classList.add('hidden');
+            bankDetails.classList.add('hidden');
+            mobileDetails.classList.add('hidden');
+            cryptoDetails.classList.add('hidden');
+            
+            if (method === 'card') cardDetails.classList.remove('hidden');
+            else if (method === 'bank') bankDetails.classList.remove('hidden');
+            else if (method === 'mobile') mobileDetails.classList.remove('hidden');
+            else if (method === 'crypto') cryptoDetails.classList.remove('hidden');
+            
+            updateSummary();
+        });
+    });
+    
+    // ============================================
+    // QUICK AMOUNT SELECTION
+    // ============================================
+    quickAmounts.forEach(btn => {
+        btn.addEventListener('click', function() {
+            quickAmounts.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            const amount = parseFloat(this.dataset.amount);
+            amountInput.value = amount.toFixed(2);
+            updateSummary();
+        });
+    });
+    
+    // ============================================
+    // AMOUNT INPUT
+    // ============================================
+    amountInput.addEventListener('input', function() {
+        quickAmounts.forEach(b => b.classList.remove('active'));
+        updateSummary();
+    });
+    
+    function updateSummary() {
+        const val = parseFloat(amountInput.value) || 0;
+        const fee = val * WITHDRAWAL_FEE;
+        const net = val - fee;
+        
+        summaryAmount.textContent = '$' + val.toFixed(2);
+        summaryFee.textContent = '$' + fee.toFixed(2);
+        summaryTotal.textContent = '$' + net.toFixed(2);
+    }
+    updateSummary();
+    
+    // ============================================
+    // WITHDRAW SUBMISSION
+    // ============================================
+    withdrawBtn.addEventListener('click', function() {
+        const amount = parseFloat(amountInput.value);
+        const balance = 1245.80; // Demo balance
+        
+        if (!amount || amount <= 0) {
+            showToast('Please enter a valid withdrawal amount', 'error');
+            return;
+        }
+        if (amount < 10) {
+            showToast('Minimum withdrawal is $10.00', 'error');
+            return;
+        }
+        if (amount > 5000) {
+            showToast('Maximum withdrawal is $5,000.00 per day', 'error');
+            return;
+        }
+        if (amount > balance) {
+            showToast('Insufficient balance. Available: $' + balance.toFixed(2), 'error');
+            return;
+        }
+        
+        const selected = document.querySelector('.payment-option.selected');
+        const method = selected ? selected.dataset.method : 'card';
+        const methodName = methodNames[method] || method;
+        const fee = amount * WITHDRAWAL_FEE;
+        const net = amount - fee;
+        
+        this.disabled = true;
+        this.textContent = 'Processing...';
+        
+        setTimeout(() => {
+            showToast(
+                `Withdrawal of $${net.toFixed(2)} (${methodName}) initiated successfully! 📤`, 
+                'success'
+            );
+            this.disabled = false;
+            this.textContent = 'Withdraw Funds';
+            
+            // Update balance (demo)
+            const badge = document.querySelector('.wallet-badge');
+            const newBalance = balance - amount;
+            badge.textContent = '$' + newBalance.toFixed(2);
+            
+            amountInput.value = '';
+            updateSummary();
+        }, 2000);
+    });
+    
+    // ============================================
+    // PWA SERVICE WORKER
+    // ============================================
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js')
+                .then(reg => console.log('SW registered'))
+                .catch(err => console.log('SW registration failed'));
+        });
+    }
+    
+    // ============================================
+    // OFFLINE/ONLINE
+    // ============================================
+    window.addEventListener('online', () => showToast('Back online', 'success'));
+    window.addEventListener('offline', () => showToast('You are offline. Some features may be limited.', 'warning'));
+    
+    // ============================================
+    // SIDEBAR ACTIVE LINK
+    // ============================================
+    document.querySelectorAll('.sidebar-link').forEach(link => {
+        if (link.href === window.location.href) {
+            link.classList.add('active');
+        }
+    });
+    
+    console.log('💸 Withdraw page loaded');
+    
+})();
+</script>
+
+</body>
+</html>
