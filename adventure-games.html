@@ -1,1 +1,1100 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0a0a12">
+    <meta name="description" content="Adventure games at CephasGM GameZone - Explore and win big">
+    <title>Adventure Games | CephasGM GameZone</title>
+    
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a12;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+        }
+        
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a12; }
+        ::-webkit-scrollbar-thumb { 
+            background: linear-gradient(180deg, #0055ff, #542bff);
+            border-radius: 10px;
+        }
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        
+        .glass-hover:hover {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar {
+            width: 260px;
+            min-height: 100vh;
+            background: rgba(10, 10, 18, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 24px 16px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            overflow-y: auto;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+        .sidebar::-webkit-scrollbar { width: 3px; }
+        .sidebar::-webkit-scrollbar-thumb { background: #0055ff; border-radius: 10px; }
+        
+        .sidebar-logo {
+            font-size: 20px;
+            font-weight: 700;
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            margin-bottom: 24px;
+        }
+        
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .sidebar-link:hover {
+            background: rgba(255,255,255,0.05);
+            color: #ffffff;
+        }
+        .sidebar-link.active {
+            background: rgba(0, 85, 255, 0.15);
+            color: #0055ff;
+            border: 1px solid rgba(0, 85, 255, 0.15);
+        }
+        .sidebar-link .icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+        .sidebar-divider {
+            height: 1px;
+            background: rgba(255,255,255,0.04);
+            margin: 16px 0;
+        }
+        
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            padding: 24px 32px;
+            min-height: 100vh;
+            background-image: url('https://images.unsplash.com/photo-1508098682722-e99c643edc58?w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        .main-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 10, 18, 0.85);
+            z-index: 0;
+        }
+        .content-inner {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .dashboard-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .header-left h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        .header-left p {
+            font-size: 14px;
+            color: rgba(255,255,255,0.4);
+            margin-top: 2px;
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .header-right .wallet-badge {
+            background: rgba(0, 255, 100, 0.1);
+            border: 1px solid rgba(0, 255, 100, 0.15);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 15px;
+            color: #00ff64;
+        }
+        .header-right .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        .sidebar-toggle {
+            display: none;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 10px;
+            padding: 8px 12px;
+            color: white;
+            cursor: pointer;
+        }
+        
+        .input-field {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 10px 16px;
+            color: white;
+            width: 100%;
+            transition: all 0.3s ease;
+            outline: none;
+            font-size: 14px;
+        }
+        .input-field:focus {
+            border-color: #0055ff;
+            box-shadow: 0 0 30px rgba(0, 85, 255, 0.08);
+        }
+        .input-field::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Game Card */
+        .adventure-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        .adventure-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+        .adventure-card .game-image {
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .adventure-card .game-image .overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0,0,0,0.1), rgba(0,0,0,0.7));
+        }
+        .adventure-card .game-image .badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 4px 14px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            z-index: 2;
+        }
+        .adventure-card .game-image .badge.hot { background: rgba(255, 0, 68, 0.2); color: #ff0044; border: 1px solid rgba(255, 0, 68, 0.2); }
+        .adventure-card .game-image .badge.new { background: rgba(0, 85, 255, 0.2); color: #0055ff; border: 1px solid rgba(0, 85, 255, 0.2); }
+        .adventure-card .game-image .badge.popular { background: rgba(255, 215, 0, 0.2); color: #ffd700; border: 1px solid rgba(255, 215, 0, 0.2); }
+        .adventure-card .game-image .badge.exclusive { background: rgba(84, 43, 255, 0.2); color: #542bff; border: 1px solid rgba(84, 43, 255, 0.2); }
+        
+        .adventure-card .game-image .play-overlay {
+            position: absolute;
+            bottom: 12px;
+            left: 12px;
+            right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 2;
+        }
+        .adventure-card .game-image .play-overlay .players {
+            font-size: 12px;
+            color: rgba(255,255,255,0.6);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .adventure-card .game-image .play-overlay .players .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .adventure-card .game-image .play-overlay .players .dot.green { background: #00ff64; }
+        .adventure-card .game-image .play-overlay .players .dot.yellow { background: #ffd700; }
+        
+        .adventure-card .game-info {
+            padding: 14px 16px 16px;
+        }
+        .adventure-card .game-info .name {
+            font-weight: 700;
+            font-size: 16px;
+        }
+        .adventure-card .game-info .description {
+            font-size: 13px;
+            color: rgba(255,255,255,0.4);
+            margin-top: 2px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .adventure-card .game-info .meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-top: 8px;
+            font-size: 12px;
+            color: rgba(255,255,255,0.3);
+        }
+        .adventure-card .game-info .meta .jackpot {
+            color: #ffd700;
+            font-weight: 600;
+        }
+        
+        .btn-play {
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 13px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 85, 255, 0.25);
+        }
+        .btn-play:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 30px rgba(0, 85, 255, 0.4);
+        }
+        
+        .category-filter {
+            padding: 6px 16px;
+            border-radius: 50px;
+            border: 1px solid rgba(255,255,255,0.06);
+            background: rgba(255,255,255,0.02);
+            color: rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        .category-filter:hover {
+            background: rgba(255,255,255,0.06);
+            color: white;
+        }
+        .category-filter.active {
+            background: rgba(0, 85, 255, 0.15);
+            color: #0055ff;
+            border-color: rgba(0, 85, 255, 0.15);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 85, 255, 0.25);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 85, 255, 0.4);
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9999;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 16px 24px;
+            min-width: 280px;
+            animation: slideUp 0.4s ease;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        .toast-success { border-left: 4px solid #00ff64; }
+        .toast-error { border-left: 4px solid #ff0044; }
+        .toast-warning { border-left: 4px solid #ffd700; }
+        @keyframes slideUp {
+            from { transform: translateY(40px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        /* Featured Banner */
+        .featured-banner {
+            background: linear-gradient(135deg, rgba(0, 85, 255, 0.15), rgba(84, 43, 255, 0.15));
+            border: 1px solid rgba(0, 85, 255, 0.15);
+            border-radius: 20px;
+            padding: 24px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+        .featured-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(0, 85, 255, 0.08), transparent);
+            border-radius: 50%;
+        }
+        .featured-banner .content {
+            position: relative;
+            z-index: 1;
+        }
+        .featured-banner .content .title {
+            font-size: 22px;
+            font-weight: 700;
+        }
+        .featured-banner .content .sub {
+            font-size: 14px;
+            color: rgba(255,255,255,0.4);
+        }
+        .featured-banner .btn-featured {
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            color: white;
+            padding: 10px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 4px 20px rgba(0, 85, 255, 0.25);
+        }
+        .featured-banner .btn-featured:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 85, 255, 0.4);
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 280px;
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 16px;
+            }
+            .sidebar-toggle {
+                display: block;
+            }
+            .header-left h1 { font-size: 20px; }
+            .adventure-card .game-image { height: 140px; }
+            .adventure-card .game-info .name { font-size: 14px; }
+            .featured-banner { padding: 16px 20px; flex-direction: column; text-align: center; }
+            .featured-banner::before { display: none; }
+        }
+        @media (max-width: 480px) {
+            .header-right .wallet-badge { font-size: 13px; padding: 6px 12px; }
+            .header-right .avatar { width: 34px; height: 34px; font-size: 15px; }
+            .adventure-card .game-image { height: 120px; }
+            .category-filter { font-size: 11px; padding: 4px 10px; }
+        }
+    </style>
+</head>
+<body>
 
+<!-- ==========================================
+     SIDEBAR
+     ========================================== -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+        <span class="text-gradient">CephasGM</span>
+        <span class="text-white font-light">|</span>
+        <span class="text-white font-semibold">GameZone</span>
+    </div>
+    <nav class="space-y-1">
+        <a href="/dashboard.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+            Dashboard
+        </a>
+        <a href="/wallet.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+            Wallet
+        </a>
+        <a href="/deposit.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            Deposit
+        </a>
+        <a href="/withdraw.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            Withdraw
+        </a>
+        <a href="/transactions.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
+            Transactions
+        </a>
+        <a href="/bet-history.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+            Bet History
+        </a>
+        <div class="sidebar-divider"></div>
+        <a href="/sports.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            Sports
+        </a>
+        <a href="/live-betting.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+            Live
+        </a>
+        <a href="/casino.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Casino
+        </a>
+        <a href="/aviator.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+            Aviator
+        </a>
+        <a href="/virtual-football.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            Virtual
+        </a>
+        <a href="/virtual-horse-racing.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            Horse Racing
+        </a>
+        <a href="/virtual-car-racing.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            Car Racing
+        </a>
+        <a href="/virtual-netball.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            Netball
+        </a>
+        <a href="/adventure-games.html" class="sidebar-link active">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            Adventure
+        </a>
+        <a href="/settings.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            Settings
+        </a>
+        <a href="/signin.html" class="sidebar-link" id="logoutBtn">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+            Logout
+        </a>
+    </nav>
+</aside>
+
+<!-- ==========================================
+     MAIN CONTENT
+     ========================================== -->
+<div class="main-content">
+    <div class="content-inner">
+        
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <div class="flex items-center gap-3">
+                    <button class="sidebar-toggle" id="sidebarToggle">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                    <div>
+                        <h1>🎮 Adventure Games</h1>
+                        <p>Embark on epic adventures and win big rewards</p>
+                    </div>
+                </div>
+            </div>
+            <div class="header-right">
+                <span class="wallet-badge">$1,245.80</span>
+                <div class="avatar" id="avatarBtn">JD</div>
+            </div>
+        </header>
+        
+        <!-- Featured Banner -->
+        <div class="featured-banner">
+            <div class="content">
+                <div class="title">🏆 Adventure Quest Challenge</div>
+                <div class="sub">Complete quests, earn XP, and unlock exclusive rewards</div>
+            </div>
+            <div style="display: flex; gap: 12px;">
+                <span class="text-sm text-white/40">🔥 1,234 active players</span>
+                <button class="btn-featured" id="questBtn">Start Quest</button>
+            </div>
+        </div>
+        
+        <!-- Categories -->
+        <div class="flex flex-wrap items-center gap-2 mb-6">
+            <button class="category-filter active" data-category="all">🎯 All Games</button>
+            <button class="category-filter" data-category="quest">⚔️ Quests</button>
+            <button class="category-filter" data-category="puzzle">🧩 Puzzles</button>
+            <button class="category-filter" data-category="strategy">♟️ Strategy</button>
+            <button class="category-filter" data-category="arcade">🕹️ Arcade</button>
+            <button class="category-filter" data-category="battle">⚡ Battle</button>
+            <div class="ml-auto flex items-center gap-2">
+                <input type="text" class="input-field w-40 text-sm py-1.5" placeholder="Search games..." id="searchInput">
+                <span class="text-xs text-white/30" id="gameCount">12 games</span>
+            </div>
+        </div>
+        
+        <!-- Game Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="gameGrid">
+            
+            <!-- Game 1 - Lost Temple -->
+            <div class="adventure-card" data-category="quest" data-name="Lost Temple">
+                <div class="game-image" style="background-image: url('https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=400&q=80');">
+                    <div class="overlay"></div>
+                    <span class="badge hot">🔥 HOT</span>
+                    <div class="play-overlay">
+                        <span class="players"><span class="dot green"></span> 2,345 playing</span>
+                        <button class="btn-play">Play Now</button>
+                    </div>
+                </div>
+                <div class="game-info">
+                    <div class="name">🏛️ Lost Temple</div>
+                    <div class="description">Explore ancient ruins and uncover hidden treasures</div>
+                    <div class="meta">
+                        <span>🎯 Quest</span>
+                        <span>|</span>
+                        <span class="jackpot">💰 $12,450 Jackpot</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Game 2 - Dragon's Lair -->
+            <div class="adventure-card" data-category="battle" data-name="Dragon's Lair">
+                <div class="game-image" style="background-image: url('https://images.unsplash.com/photo-1518780664697-55e3ad937233?w=400&q=80');">
+                    <div class="overlay"></div>
+                    <span class="badge popular">⭐ POPULAR</span>
+                    <div class="play-overlay">
+                        <span class="players"><span class="dot green"></span> 1,876 playing</span>
+                        <button class="btn-play">Play Now</button>
+                    </div>
+                </div>
+                <div class="game-info">
+                    <div class="name">🐉 Dragon's Lair</div>
+                    <div class="description">Battle fierce dragons and claim their legendary loot</div>
+                    <div class="meta">
+                        <span>⚡ Battle</span>
+                        <span>|</span>
+                        <span class="jackpot">💰 $8,750 Jackpot</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Game 3 - Crystal Maze -->
+            <div class="adventure-card" data-category="puzzle" data-name="Crystal Maze">
+                <div class="game-image" style="background-image: url('https://images.unsplash.com/photo-1510906594845-bc0824c488a1?w=400&q=80');">
+                    <div class="overlay"></div>
+                    <span class="badge new">✨ NEW</span>
+                    <div class="play-overlay">
+                        <span class="players"><span class="dot yellow"></span> 567 playing</span>
+                        <button class="btn-play">Play Now</button>
+                    </div>
+                </div>
+                <div class="game-info">
+                    <div class="name">💎 Crystal Maze</div>
+                    <div class="description">Navigate through magical crystal corridors</div>
+                    <div class="meta">
+                        <span>🧩 Puzzle</span>
+                        <span>|</span>
+                        <span class="jackpot">💰 $5,200 Jackpot</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Game 4 - Kingdom Wars -->
+            <div class="adventure-card" data-category="strategy" data-name="Kingdom Wars">
+                <div class="game-image" style="background-image: url('https://images.unsplash.com/photo-1558618666-fcd25c85f83e?w=400&q=80');">
+                    <div class="overlay"></div>
+                    <span class="badge exclusive">👑 EXCLUSIVE</span>
+                    <div class="play-overlay">
+                        <span class="players"><span class="dot green"></span> 3,456 playing</span>
+                        <button class="btn-play">Play Now</button>
+                    </div>
+                </div>
+                <div class="game-info">
+                    <div class="name">⚔️ Kingdom Wars</div>
+                    <div class="description">Lead your army to victory in epic medieval battles</div>
+                    <div class="meta">
+                        <span>♟️ Strategy</span>
+                        <span>|</span>
+                        <span class="jackpot">💰 $25,000 Jackpot</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Game 5 - Space Odyssey -->
+            <div class="adventure-card" data-category="arcade" data-name="Space Odyssey">
+                <div class="game-image" style="background-image: url('https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=400&q=80');">
+                    <div class="overlay"></div>
+                    <span class="badge hot">🔥 HOT</span>
+                    <div class="play-overlay">
+                        <span class="players"><span class="dot green"></span> 4,567 playing</span>
+                        <button class="btn-play">Play Now</button>
+                    </div>
+                </div>
+                <div class="game-info">
+                    <div class="name">🚀 Space Odyssey</div>
+                    <div class="description">Travel through galaxies and discover alien civilizations</div>
+                    <div class="meta">
+                        <span>🕹️ Arcade</span>
+                        <span>|</span>
+                        <span class="jackpot">💰 $15,800 Jackpot</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Game 6 - Pirate's Cove -->
+            <div class="adventure-card" data-category="quest" data-name="Pirate's Cove">
+                <div class="game-image" style="background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&q=80');">
+                    <div class="overlay"></div>
+                    <span class="badge popular">⭐ POPULAR</span>
+                    <div class="play-overlay">
+                        <span class="players"><span class="dot green"></span> 2,189 playing</span>
+                        <button class="btn-play">Play Now</button>
+                    </div>
+                </div>
+                <div class="game-info">
+                    <div class="name">🏴‍☠️ Pirate's Cove</div>
+                    <div class="description">Sail the seven seas in search of buried treasure</div>
+                    <div class="meta">
+                        <span>🎯 Quest</span>
+                        <span>|</span>
+                        <span class="jackpot">💰 $9,300 Jackpot</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Game 7 - Magic Arena -->
+            <div class="adventure-card" data-category="battle" data-name="Magic Arena">
+                <div class="game-image" style="background-image: url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=400&q=80');">
+                    <div class="overlay"></div>
+                    <span class="badge new">✨ NEW</span>
+                    <div class="play-overlay">
+                        <span class="players"><span class="dot yellow"></span> 876 playing</span>
+                        <button class="btn-play">Play Now</button>
+                    </div>
+                </div>
+                <div class="game-info">
+                    <div class="name">🔮 Magic Arena</div>
+                    <div class="description">Master the arcane arts and duel legendary wizards</div>
+                    <div class="meta">
+                        <span>⚡ Battle</span>
+                        <span>|</span>
+                        <span class="jackpot">💰 $6,500 Jackpot</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Game 8 - Jungle Adventure -->
+            <div class="adventure-card" data-category="puzzle" data-name="Jungle Adventure">
+                <div class="game-image" style="background-image: url('https://images.unsplash.com/photo-1546182990-dffeafbe841d?w=400&q=80');">
+                    <div class="overlay"></div>
+                    <span class="badge hot">🔥 HOT</span>
+                    <div class="play-overlay">
+                        <span class="players"><span class="dot green"></span> 1,234 playing</span>
+                        <button class="btn-play">Play Now</button>
+                    </div>
+                </div>
+                <div class="game-info">
+                    <div class="name">🌴 Jungle Adventure</div>
+                    <div class="description">Survive the wild jungle and uncover ancient secrets</div>
+                    <div class="meta">
+                        <span>🧩 Puzzle</span>
+                        <span>|</span>
+                        <span class="jackpot">💰 $4,800 Jackpot</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Game 9 - Galactic Empire -->
+            <div class="adventure-card" data-category="strategy" data-name="Galactic Empire">
+                <div class="game-image" style="background-image: url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=400&q=80');">
+                    <div class="overlay"></div>
+                    <span class="badge exclusive">👑 EXCLUSIVE</span>
+                    <div class="play-overlay">
+                        <span class="players"><span class="dot green"></span> 2,345 playing</span>
+                        <button class="btn-play">Play Now</button>
+                    </div>
+                </div>
+                <div class="game-info">
+                    <div class="name">🌌 Galactic Empire</div>
+                    <div class="description">Build your space empire and conquer new worlds</div>
+                    <div class="meta">
+                        <span>♟️ Strategy</span>
+                        <span>|</span>
+                        <span class="jackpot">💰 $32,000 Jackpot</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Game 10 - Cyberpunk City -->
+            <div class="adventure-card" data-category="arcade" data-name="Cyberpunk City">
+                <div class="game-image" style="background-image: url('https://images.unsplash.com/photo-1519681393784-d120267933ba?w=400&q=80');">
+                    <div class="overlay"></div>
+                    <span class="badge popular">⭐ POPULAR</span>
+                    <div class="play-overlay">
+                        <span class="players"><span class="dot green"></span> 3,789 playing</span>
+                        <button class="btn-play">Play Now</button>
+                    </div>
+                </div>
+                <div class="game-info">
+                    <div class="name">🏙️ Cyberpunk City</div>
+                    <div class="description">Navigate a neon-drenched future metropolis</div>
+                    <div class="meta">
+                        <span>🕹️ Arcade</span>
+                        <span>|</span>
+                        <span class="jackpot">💰 $18,500 Jackpot</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Game 11 - Dark Dungeon -->
+            <div class="adventure-card" data-category="quest" data-name="Dark Dungeon">
+                <div class="game-image" style="background-image: url('https://images.unsplash.com/photo-1500673922987-e212871fec22?w=400&q=80');">
+                    <div class="overlay"></div>
+                    <span class="badge hot">🔥 HOT</span>
+                    <div class="play-overlay">
+                        <span class="players"><span class="dot green"></span> 1,567 playing</span>
+                        <button class="btn-play">Play Now</button>
+                    </div>
+                </div>
+                <div class="game-info">
+                    <div class="name">🕯️ Dark Dungeon</div>
+                    <div class="description">Descend into the depths and face unspeakable horrors</div>
+                    <div class="meta">
+                        <span>🎯 Quest</span>
+                        <span>|</span>
+                        <span class="jackpot">💰 $7,200 Jackpot</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Game 12 - Sky Kingdom -->
+            <div class="adventure-card" data-category="battle" data-name="Sky Kingdom">
+                <div class="game-image" style="background-image: url('https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?w=400&q=80');">
+                    <div class="overlay"></div>
+                    <span class="badge new">✨ NEW</span>
+                    <div class="play-overlay">
+                        <span class="players"><span class="dot yellow"></span> 678 playing</span>
+                        <button class="btn-play">Play Now</button>
+                    </div>
+                </div>
+                <div class="game-info">
+                    <div class="name">☁️ Sky Kingdom</div>
+                    <div class="description">Rule the skies and defend your floating kingdom</div>
+                    <div class="meta">
+                        <span>⚡ Battle</span>
+                        <span>|</span>
+                        <span class="jackpot">💰 $10,000 Jackpot</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Empty State -->
+        <div id="emptyState" class="hidden text-center py-16 text-white/30">
+            <div class="text-6xl mb-4">🎮</div>
+            <p class="text-lg font-medium">No games found</p>
+            <p class="text-sm">Try adjusting your filters or search terms</p>
+        </div>
+        
+        <!-- Load More -->
+        <div class="text-center mt-8">
+            <button class="btn-primary" id="loadMoreBtn">Load More Games</button>
+        </div>
+        
+        <!-- Footer -->
+        <div class="text-center text-xs text-white/20 mt-8 border-t border-white/5 pt-6">
+            Copyright © 2025 Cephas GM | Innovating for Tomorrow
+        </div>
+        
+    </div>
+</div>
+
+<!-- ==========================================
+     JAVASCRIPT
+     ========================================== -->
+<script>
+(function() {
+    'use strict';
+    
+    // ============================================
+    // DOM REFS
+    // ============================================
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const avatarBtn = document.getElementById('avatarBtn');
+    const searchInput = document.getElementById('searchInput');
+    const gameCount = document.getElementById('gameCount');
+    const loadMoreBtn = document.getElementById('loadMoreBtn');
+    const categoryFilters = document.querySelectorAll('.category-filter');
+    const gameCards = document.querySelectorAll('.adventure-card');
+    const emptyState = document.getElementById('emptyState');
+    const playBtns = document.querySelectorAll('.btn-play');
+    const questBtn = document.getElementById('questBtn');
+    
+    let currentCategory = 'all';
+    let currentSearch = '';
+    let visibleCount = 12;
+    const totalGames = 12;
+    
+    // ============================================
+    // TOAST
+    // ============================================
+    function showToast(message, type = 'success') {
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        toast.innerHTML = `
+            <div class="flex items-center space-x-3">
+                <span>${type === 'success' ? '✅' : type === 'error' ? '❌' : '⚠️'}</span>
+                <span class="text-sm">${message}</span>
+                <button onclick="this.parentElement.parentElement.remove()" class="text-white/30 hover:text-white/70 transition-colors ml-2">
+                    ✕
+                </button>
+            </div>
+        `;
+        document.body.appendChild(toast);
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateY(20px)';
+            setTimeout(() => toast.remove(), 300);
+        }, 4000);
+    }
+    
+    // ============================================
+    // SIDEBAR TOGGLE
+    // ============================================
+    sidebarToggle.addEventListener('click', function() {
+        sidebar.classList.toggle('open');
+    });
+    document.addEventListener('click', function(e) {
+        if (window.innerWidth <= 768) {
+            if (!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
+                sidebar.classList.remove('open');
+            }
+        }
+    });
+    
+    // ============================================
+    // LOGOUT & AVATAR
+    // ============================================
+    logoutBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        showToast('Logging out...', 'warning');
+        setTimeout(() => window.location.href = '/signin.html', 1000);
+    });
+    avatarBtn.addEventListener('click', function() {
+        window.location.href = '/profile.html';
+    });
+    
+    // ============================================
+    // CATEGORY FILTER
+    // ============================================
+    categoryFilters.forEach(filter => {
+        filter.addEventListener('click', function() {
+            categoryFilters.forEach(f => f.classList.remove('active'));
+            this.classList.add('active');
+            currentCategory = this.dataset.category;
+            visibleCount = 12;
+            loadMoreBtn.style.display = totalGames > 12 ? 'inline-block' : 'none';
+            filterGames();
+        });
+    });
+    
+    // ============================================
+    // SEARCH
+    // ============================================
+    searchInput.addEventListener('input', function() {
+        currentSearch = this.value;
+        visibleCount = 12;
+        loadMoreBtn.style.display = totalGames > 12 ? 'inline-block' : 'none';
+        filterGames();
+    });
+    
+    // ============================================
+    // FILTER GAMES
+    // ============================================
+    function filterGames() {
+        let visible = 0;
+        let count = 0;
+        
+        gameCards.forEach((card, index) => {
+            const category = card.dataset.category;
+            const name = card.dataset.name.toLowerCase();
+            const search = currentSearch.toLowerCase();
+            const categoryMatch = currentCategory === 'all' || category === currentCategory;
+            const searchMatch = !search || name.includes(search);
+            
+            if (categoryMatch && searchMatch) {
+                count++;
+                if (count <= visibleCount) {
+                    card.style.display = 'block';
+                    visible++;
+                } else {
+                    card.style.display = 'none';
+                }
+            } else {
+                card.style.display = 'none';
+            }
+        });
+        
+        gameCount.textContent = `${visible} of ${gameCards.length} games`;
+        
+        if (visible === 0) {
+            emptyState.classList.remove('hidden');
+        } else {
+            emptyState.classList.add('hidden');
+        }
+        
+        if (count <= visibleCount) {
+            loadMoreBtn.style.display = 'none';
+        } else {
+            loadMoreBtn.style.display = 'inline-block';
+        }
+    }
+    
+    // ============================================
+    // LOAD MORE
+    // ============================================
+    loadMoreBtn.addEventListener('click', function() {
+        visibleCount += 8;
+        filterGames();
+        showToast('Loading more games...', 'success');
+    });
+    
+    // ============================================
+    // PLAY BUTTON
+    // ============================================
+    playBtns.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const card = this.closest('.adventure-card');
+            const name = card?.querySelector('.name')?.textContent || 'Game';
+            showToast(`🎮 Launching ${name}...`, 'success');
+            setTimeout(() => {
+                showToast(`🎯 ${name} is loading...`, 'warning');
+            }, 500);
+        });
+    });
+    
+    // ============================================
+    // GAME CARD CLICK
+    // ============================================
+    gameCards.forEach(card => {
+        card.addEventListener('click', function(e) {
+            if (e.target.closest('.btn-play')) return;
+            const name = this.querySelector('.name')?.textContent || 'Game';
+            showToast(`🎮 Loading ${name}...`, 'success');
+        });
+    });
+    
+    // ============================================
+    // QUEST BUTTON
+    // ============================================
+    questBtn.addEventListener('click', function() {
+        showToast('🏆 Starting Adventure Quest! Good luck!', 'success');
+    });
+    
+    // ============================================
+    // PWA SERVICE WORKER
+    // ============================================
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js')
+                .then(reg => console.log('SW registered'))
+                .catch(err => console.log('SW registration failed'));
+        });
+    }
+    
+    // ============================================
+    // OFFLINE/ONLINE
+    // ============================================
+    window.addEventListener('online', () => showToast('Back online', 'success'));
+    window.addEventListener('offline', () => showToast('You are offline. Some games may be unavailable.', 'warning'));
+    
+    // ============================================
+    // SIDEBAR ACTIVE LINK
+    // ============================================
+    document.querySelectorAll('.sidebar-link').forEach(link => {
+        if (link.href === window.location.href) {
+            link.classList.add('active');
+        }
+    });
+    
+    console.log('🎮 Adventure Games page loaded');
+    console.log(`🎯 ${gameCards.length} adventure games available`);
+    
+})();
+</script>
+
+</body>
+</html>
