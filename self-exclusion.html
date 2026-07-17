@@ -1,1 +1,920 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0a0a12">
+    <meta name="description" content="CephasGM GameZone Self-Exclusion - Take control of your gambling">
+    <title>Self-Exclusion | CephasGM GameZone</title>
+    
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a12;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+        }
+        
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a12; }
+        ::-webkit-scrollbar-thumb { 
+            background: linear-gradient(180deg, #0055ff, #542bff);
+            border-radius: 10px;
+        }
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        
+        .glass-hover:hover {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar {
+            width: 260px;
+            min-height: 100vh;
+            background: rgba(10, 10, 18, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 24px 16px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            overflow-y: auto;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+        .sidebar::-webkit-scrollbar { width: 3px; }
+        .sidebar::-webkit-scrollbar-thumb { background: #0055ff; border-radius: 10px; }
+        
+        .sidebar-logo {
+            font-size: 20px;
+            font-weight: 700;
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            margin-bottom: 24px;
+        }
+        
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .sidebar-link:hover {
+            background: rgba(255,255,255,0.05);
+            color: #ffffff;
+        }
+        .sidebar-link.active {
+            background: rgba(0, 85, 255, 0.15);
+            color: #0055ff;
+            border: 1px solid rgba(0, 85, 255, 0.15);
+        }
+        .sidebar-link .icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+        .sidebar-divider {
+            height: 1px;
+            background: rgba(255,255,255,0.04);
+            margin: 16px 0;
+        }
+        
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            padding: 24px 32px;
+            min-height: 100vh;
+            background-image: url('https://images.unsplash.com/photo-1508098682722-e99c643edc58?w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        .main-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 10, 18, 0.85);
+            z-index: 0;
+        }
+        .content-inner {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .dashboard-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .header-left h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        .header-left p {
+            font-size: 14px;
+            color: rgba(255,255,255,0.4);
+            margin-top: 2px;
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .header-right .wallet-badge {
+            background: rgba(0, 255, 100, 0.1);
+            border: 1px solid rgba(0, 255, 100, 0.15);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 15px;
+            color: #00ff64;
+        }
+        .header-right .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        .sidebar-toggle {
+            display: none;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 10px;
+            padding: 8px 12px;
+            color: white;
+            cursor: pointer;
+        }
+        
+        .input-field {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 10px 16px;
+            color: white;
+            width: 100%;
+            transition: all 0.3s ease;
+            outline: none;
+            font-size: 14px;
+        }
+        .input-field:focus {
+            border-color: #0055ff;
+            box-shadow: 0 0 30px rgba(0, 85, 255, 0.08);
+        }
+        .input-field::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 85, 255, 0.25);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 85, 255, 0.4);
+        }
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-secondary {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #ff0044, #cc0033);
+            color: white;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 15px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(255, 0, 68, 0.25);
+        }
+        .btn-danger:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255, 0, 68, 0.4);
+        }
+        .btn-danger:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        /* Exclusion Option Cards */
+        .exclusion-option {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        .exclusion-option:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        .exclusion-option.selected {
+            border-color: #0055ff;
+            background: rgba(0, 85, 255, 0.08);
+            box-shadow: 0 0 40px rgba(0, 85, 255, 0.05);
+        }
+        .exclusion-option .icon { font-size: 40px; margin-bottom: 8px; }
+        .exclusion-option .name { font-weight: 700; font-size: 18px; }
+        .exclusion-option .desc { font-size: 13px; color: rgba(255,255,255,0.4); margin-top: 2px; }
+        .exclusion-option .radio {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.2);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 12px;
+            transition: all 0.3s ease;
+        }
+        .exclusion-option.selected .radio {
+            border-color: #0055ff;
+            background: #0055ff;
+        }
+        .exclusion-option.selected .radio::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+        }
+        
+        /* Confirmation Step */
+        .confirmation-check {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.04);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .confirmation-check:hover {
+            background: rgba(255,255,255,0.02);
+        }
+        .confirmation-check .checkbox-custom {
+            width: 22px;
+            height: 22px;
+            border-radius: 6px;
+            border: 2px solid rgba(255,255,255,0.15);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            margin-top: 2px;
+        }
+        .confirmation-check .checkbox-custom.checked {
+            background: #0055ff;
+            border-color: #0055ff;
+        }
+        .confirmation-check .checkbox-custom.checked::after {
+            content: '✓';
+            color: white;
+            font-size: 14px;
+            font-weight: 700;
+        }
+        .confirmation-check .text .title {
+            font-weight: 500;
+            font-size: 14px;
+        }
+        .confirmation-check .text .sub {
+            font-size: 13px;
+            color: rgba(255,255,255,0.3);
+        }
+        
+        /* Info Banner */
+        .info-banner {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.05), rgba(255, 0, 68, 0.05));
+            border: 1px solid rgba(255, 215, 0, 0.1);
+            border-radius: 16px;
+            padding: 20px 24px;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+        }
+        .info-banner .icon { font-size: 28px; flex-shrink: 0; }
+        .info-banner .content .title { font-weight: 600; font-size: 15px; color: #ffd700; }
+        .info-banner .content .desc { font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.5; }
+        
+        .info-banner.warning {
+            background: linear-gradient(135deg, rgba(255, 0, 68, 0.05), rgba(255, 0, 68, 0.08));
+            border-color: rgba(255, 0, 68, 0.15);
+        }
+        .info-banner.warning .title { color: #ff0044; }
+        
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9999;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 16px 24px;
+            min-width: 280px;
+            animation: slideUp 0.4s ease;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        .toast-success { border-left: 4px solid #00ff64; }
+        .toast-error { border-left: 4px solid #ff0044; }
+        .toast-warning { border-left: 4px solid #ffd700; }
+        @keyframes slideUp {
+            from { transform: translateY(40px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 280px;
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 16px;
+            }
+            .sidebar-toggle {
+                display: block;
+            }
+            .header-left h1 { font-size: 20px; }
+            .exclusion-option { padding: 16px; }
+            .exclusion-option .icon { font-size: 32px; }
+            .info-banner { padding: 16px; flex-direction: column; }
+            .info-banner .icon { font-size: 24px; }
+        }
+        @media (max-width: 480px) {
+            .header-right .wallet-badge { font-size: 13px; padding: 6px 12px; }
+            .header-right .avatar { width: 34px; height: 34px; font-size: 15px; }
+            .exclusion-option .name { font-size: 15px; }
+            .exclusion-option .desc { font-size: 12px; }
+            .confirmation-check .text .title { font-size: 13px; }
+            .confirmation-check .text .sub { font-size: 12px; }
+        }
+    </style>
+</head>
+<body>
 
+<!-- ==========================================
+     SIDEBAR
+     ========================================== -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+        <span class="text-gradient">CephasGM</span>
+        <span class="text-white font-light">|</span>
+        <span class="text-white font-semibold">GameZone</span>
+    </div>
+    <nav class="space-y-1">
+        <a href="/dashboard.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+            Dashboard
+        </a>
+        <a href="/wallet.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+            Wallet
+        </a>
+        <a href="/deposit.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            Deposit
+        </a>
+        <a href="/withdraw.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            Withdraw
+        </a>
+        <a href="/transactions.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
+            Transactions
+        </a>
+        <a href="/bet-history.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+            Bet History
+        </a>
+        <div class="sidebar-divider"></div>
+        <a href="/sports.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            Sports
+        </a>
+        <a href="/live-betting.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+            Live
+        </a>
+        <a href="/casino.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Casino
+        </a>
+        <a href="/aviator.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+            Aviator
+        </a>
+        <a href="/virtual-football.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            Virtual
+        </a>
+        <a href="/promotions.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/></svg>
+            Promotions
+        </a>
+        <a href="/leaderboard.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+            Leaderboard
+        </a>
+        <a href="/referrals.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+            Referrals
+        </a>
+        <a href="/bonuses.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/></svg>
+            Bonuses
+        </a>
+        <a href="/vip.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+            VIP Club
+        </a>
+        <a href="/notifications.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+            Notifications
+        </a>
+        <a href="/messages.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+            Messages
+        </a>
+        <a href="/support.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636a9 9 0 010 12.728m0 0a9 9 0 01-12.728 0m12.728 0L21 21M4 4l-1 1m2 2l-1 1m2 2l-1 1m14 2l1 1m-2 2l1 1m-2 2l1 1"/></svg>
+            Support
+        </a>
+        <a href="/profile.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+            Profile
+        </a>
+        <a href="/settings.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            Settings
+        </a>
+        <a href="/kyc.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            KYC
+        </a>
+        <a href="/self-exclusion.html" class="sidebar-link active">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636a9 9 0 010 12.728m0 0a9 9 0 01-12.728 0m12.728 0L21 21M4 4l-1 1m2 2l-1 1m2 2l-1 1m14 2l1 1m-2 2l1 1m-2 2l1 1"/></svg>
+            Self-Exclusion
+        </a>
+        <a href="/signin.html" class="sidebar-link" id="logoutBtn">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+            Logout
+        </a>
+    </nav>
+</aside>
+
+<!-- ==========================================
+     MAIN CONTENT
+     ========================================== -->
+<div class="main-content">
+    <div class="content-inner">
+        
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <div class="flex items-center gap-3">
+                    <button class="sidebar-toggle" id="sidebarToggle">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                    <div>
+                        <h1>🛡️ Self-Exclusion</h1>
+                        <p>Take control of your gambling habits</p>
+                    </div>
+                </div>
+            </div>
+            <div class="header-right">
+                <span class="wallet-badge">$1,245.80</span>
+                <div class="avatar" id="avatarBtn">JD</div>
+            </div>
+        </header>
+        
+        <!-- Info Banner -->
+        <div class="info-banner mb-6">
+            <div class="icon">ℹ️</div>
+            <div class="content">
+                <div class="title">Responsible Gambling</div>
+                <div class="desc">Self-exclusion is a serious step to help you control your gambling. You can exclude yourself for a specific period or permanently. During this time, you will not be able to deposit, bet, or access your account.</div>
+            </div>
+        </div>
+        
+        <!-- Warning Banner -->
+        <div class="info-banner warning mb-6">
+            <div class="icon">⚠️</div>
+            <div class="content">
+                <div class="title">Important: Read Before Proceeding</div>
+                <div class="desc">Once self-exclusion is activated, it cannot be reversed until the exclusion period ends. For permanent exclusion, reactivation is not possible. Please consider this decision carefully.</div>
+            </div>
+        </div>
+        
+        <!-- Step 1: Choose Exclusion Type -->
+        <h3 class="font-semibold text-lg mb-4">📋 Step 1: Choose Exclusion Type</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            
+            <!-- Temporary -->
+            <div class="exclusion-option selected" data-type="temporary" onclick="selectExclusion(this)">
+                <div class="icon">⏳</div>
+                <div class="name">Temporary Exclusion</div>
+                <div class="desc">Exclude for a specific period (1-6 months)</div>
+                <div class="radio"></div>
+            </div>
+            
+            <!-- Extended -->
+            <div class="exclusion-option" data-type="extended" onclick="selectExclusion(this)">
+                <div class="icon">📅</div>
+                <div class="name">Extended Exclusion</div>
+                <div class="desc">Exclude for 6-12 months</div>
+                <div class="radio"></div>
+            </div>
+            
+            <!-- Permanent -->
+            <div class="exclusion-option" data-type="permanent" onclick="selectExclusion(this)">
+                <div class="icon">🔒</div>
+                <div class="name">Permanent Exclusion</div>
+                <div class="desc">Permanent account closure (irreversible)</div>
+                <div class="radio"></div>
+            </div>
+        </div>
+        
+        <!-- Step 2: Select Duration (for temporary) -->
+        <div id="durationSection" class="mb-6">
+            <h3 class="font-semibold text-lg mb-4">📋 Step 2: Select Duration</h3>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                <button class="duration-btn glass glass-hover p-3 rounded-xl text-center cursor-pointer" data-days="7" onclick="selectDuration(this)">
+                    <div class="font-bold text-lg">7</div>
+                    <div class="text-sm text-white/40">Days</div>
+                </button>
+                <button class="duration-btn glass glass-hover p-3 rounded-xl text-center cursor-pointer selected" data-days="30" onclick="selectDuration(this)">
+                    <div class="font-bold text-lg">30</div>
+                    <div class="text-sm text-white/40">Days</div>
+                </button>
+                <button class="duration-btn glass glass-hover p-3 rounded-xl text-center cursor-pointer" data-days="60" onclick="selectDuration(this)">
+                    <div class="font-bold text-lg">60</div>
+                    <div class="text-sm text-white/40">Days</div>
+                </button>
+                <button class="duration-btn glass glass-hover p-3 rounded-xl text-center cursor-pointer" data-days="90" onclick="selectDuration(this)">
+                    <div class="font-bold text-lg">90</div>
+                    <div class="text-sm text-white/40">Days</div>
+                </button>
+                <button class="duration-btn glass glass-hover p-3 rounded-xl text-center cursor-pointer" data-days="180" onclick="selectDuration(this)">
+                    <div class="font-bold text-lg">180</div>
+                    <div class="text-sm text-white/40">Days</div>
+                </button>
+                <button class="duration-btn glass glass-hover p-3 rounded-xl text-center cursor-pointer" data-days="365" onclick="selectDuration(this)">
+                    <div class="font-bold text-lg">365</div>
+                    <div class="text-sm text-white/40">Days</div>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Step 3: Reason -->
+        <h3 class="font-semibold text-lg mb-4">📋 Step 3: Reason (Optional)</h3>
+        <div class="mb-6">
+            <select class="input-field" id="reasonSelect">
+                <option value="">Select a reason (optional)</option>
+                <option value="financial">Financial concerns</option>
+                <option value="health">Mental or physical health</option>
+                <option value="relationships">Personal relationships</option>
+                <option value="time">Time management</option>
+                <option value="other">Other</option>
+            </select>
+        </div>
+        
+        <!-- Step 4: Confirmation -->
+        <h3 class="font-semibold text-lg mb-4">📋 Step 4: Confirm</h3>
+        <div class="space-y-3 mb-6">
+            <div class="confirmation-check" onclick="toggleCheck(this)">
+                <div class="checkbox-custom checked"></div>
+                <div class="text">
+                    <div class="title">I understand that this action is irreversible during the exclusion period</div>
+                    <div class="sub">You will not be able to access your account until the period ends</div>
+                </div>
+            </div>
+            <div class="confirmation-check" onclick="toggleCheck(this)">
+                <div class="checkbox-custom checked"></div>
+                <div class="text">
+                    <div class="title">I confirm that I am not acting under duress</div>
+                    <div class="sub">You are making this decision freely and voluntarily</div>
+                </div>
+            </div>
+            <div class="confirmation-check" onclick="toggleCheck(this)">
+                <div class="checkbox-custom"></div>
+                <div class="text">
+                    <div class="title">I have read and understand the terms of self-exclusion</div>
+                    <div class="sub">Please review the <a href="/terms.html" class="text-blue-400 hover:text-blue-300">Terms & Conditions</a></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="flex flex-wrap gap-4">
+            <button class="btn-danger" id="activateBtn">🔒 Activate Self-Exclusion</button>
+            <button class="btn-secondary" onclick="showToast('💾 Draft saved', 'success')">💾 Save Draft</button>
+            <button class="btn-secondary" onclick="window.location.href='/settings.html'">← Back to Settings</button>
+        </div>
+        
+        <!-- Support Resources -->
+        <div class="mt-8 p-6 rounded-2xl glass">
+            <h4 class="font-semibold text-md mb-3">🤝 Need Support?</h4>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                <div>
+                    <div class="text-white/60 font-medium">📞 Helpline</div>
+                    <div class="text-white/40">+1 (800) 555-0199</div>
+                    <div class="text-xs text-white/20">Available 24/7</div>
+                </div>
+                <div>
+                    <div class="text-white/60 font-medium">💬 Live Chat</div>
+                    <div class="text-white/40">Available in support center</div>
+                    <a href="/support.html" class="text-xs text-blue-400 hover:text-blue-300">Go to Support →</a>
+                </div>
+                <div>
+                    <div class="text-white/60 font-medium">📧 Email</div>
+                    <div class="text-white/40">support@cephasgm.com</div>
+                    <div class="text-xs text-white/20">Response within 24 hours</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="text-center text-xs text-white/20 mt-8 border-t border-white/5 pt-6">
+            Copyright © 2025 Cephas GM | Innovating for Tomorrow
+        </div>
+        
+    </div>
+</div>
+
+<!-- ==========================================
+     JAVASCRIPT
+     ========================================== -->
+<script>
+(function() {
+    'use strict';
+    
+    // ============================================
+    // DOM REFS
+    // ============================================
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const avatarBtn = document.getElementById('avatarBtn');
+    const activateBtn = document.getElementById('activateBtn');
+    const reasonSelect = document.getElementById('reasonSelect');
+    const durationSection = document.getElementById('durationSection');
+    
+    let selectedType = 'temporary';
+    let selectedDays = 30;
+    let checks = [true, true, false];
+    
+    // ============================================
+    // TOAST
+    // ============================================
+    function showToast(message, type = 'success') {
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        toast.innerHTML = `
+            <div class="flex items-center space-x-3">
+                <span>${type === 'success' ? '✅' : type === 'error' ? '❌' : '⚠️'}</span>
+                <span class="text-sm">${message}</span>
+                <button onclick="this.parentElement.parentElement.remove()" class="text-white/30 hover:text-white/70 transition-colors ml-2">
+                    ✕
+                </button>
+            </div>
+        `;
+        document.body.appendChild(toast);
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateY(20px)';
+            setTimeout(() => toast.remove(), 300);
+        }, 4000);
+    }
+    
+    // ============================================
+    // SIDEBAR TOGGLE
+    // ============================================
+    sidebarToggle.addEventListener('click', function() {
+        sidebar.classList.toggle('open');
+    });
+    document.addEventListener('click', function(e) {
+        if (window.innerWidth <= 768) {
+            if (!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
+                sidebar.classList.remove('open');
+            }
+        }
+    });
+    
+    // ============================================
+    // LOGOUT & AVATAR
+    // ============================================
+    logoutBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        showToast('Logging out...', 'warning');
+        setTimeout(() => window.location.href = '/signin.html', 1000);
+    });
+    avatarBtn.addEventListener('click', function() {
+        window.location.href = '/profile.html';
+    });
+    
+    // ============================================
+    // SELECT EXCLUSION TYPE
+    // ============================================
+    window.selectExclusion = function(element) {
+        document.querySelectorAll('.exclusion-option').forEach(el => el.classList.remove('selected'));
+        element.classList.add('selected');
+        selectedType = element.dataset.type;
+        
+        // Show/hide duration section
+        if (selectedType === 'permanent') {
+            durationSection.style.display = 'none';
+        } else {
+            durationSection.style.display = 'block';
+        }
+    };
+    
+    // ============================================
+    // SELECT DURATION
+    // ============================================
+    window.selectDuration = function(element) {
+        document.querySelectorAll('.duration-btn').forEach(el => el.classList.remove('selected'));
+        element.classList.add('selected');
+        selectedDays = parseInt(element.dataset.days);
+    };
+    
+    // ============================================
+    // TOGGLE CHECK
+    // ============================================
+    window.toggleCheck = function(element) {
+        const checkbox = element.querySelector('.checkbox-custom');
+        const index = Array.from(document.querySelectorAll('.confirmation-check')).indexOf(element);
+        checkbox.classList.toggle('checked');
+        checks[index] = !checks[index];
+    };
+    
+    // ============================================
+    // ACTIVATE EXCLUSION
+    // ============================================
+    activateBtn.addEventListener('click', function() {
+        // Check if all confirmations are checked
+        if (!checks[0] || !checks[1] || !checks[2]) {
+            showToast('⚠️ Please check all confirmation boxes', 'error');
+            return;
+        }
+        
+        const typeNames = {
+            temporary: 'Temporary',
+            extended: 'Extended',
+            permanent: 'Permanent'
+        };
+        const typeName = typeNames[selectedType] || selectedType;
+        const durationText = selectedType === 'permanent' ? 'Permanent' : `${selectedDays} days`;
+        
+        const reason = reasonSelect.value || 'Not specified';
+        
+        // Confirmation dialog
+        if (!confirm(`⚠️ Are you sure you want to activate ${typeName} Self-Exclusion for ${durationText}?\n\nReason: ${reason}\n\nThis action cannot be undone during the exclusion period.`)) {
+            return;
+        }
+        
+        // Second confirmation for permanent
+        if (selectedType === 'permanent') {
+            if (!confirm('🔒 PERMANENT EXCLUSION: This action is irreversible. Your account will be permanently closed. Are you absolutely sure?')) {
+                return;
+            }
+        }
+        
+        // Simulate activation
+        this.textContent = '⏳ Activating...';
+        this.disabled = true;
+        
+        setTimeout(() => {
+            const isPermanent = selectedType === 'permanent';
+            showToast(
+                `✅ Self-exclusion activated successfully!${isPermanent ? ' Your account is permanently closed.' : ` You will be excluded for ${durationText}.`}`,
+                'success'
+            );
+            
+            // Update UI
+            this.textContent = '✅ Activated';
+            this.style.background = 'linear-gradient(135deg, #00b894, #00a86b)';
+            
+            // Show additional info
+            setTimeout(() => {
+                if (isPermanent) {
+                    showToast('🔒 Your account has been permanently closed. Thank you for being a responsible player.', 'warning');
+                } else {
+                    showToast(`⏳ You will be able to return after ${durationText}. Stay safe!`, 'warning');
+                }
+            }, 2000);
+            
+        }, 2000);
+    });
+    
+    // ============================================
+    // PWA SERVICE WORKER
+    // ============================================
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js')
+                .then(reg => console.log('SW registered'))
+                .catch(err => console.log('SW registration failed'));
+        });
+    }
+    
+    // ============================================
+    // OFFLINE/ONLINE
+    // ============================================
+    window.addEventListener('online', () => showToast('Back online', 'success'));
+    window.addEventListener('offline', () => showToast('You are offline. Self-exclusion may be limited.', 'warning'));
+    
+    // ============================================
+    // SIDEBAR ACTIVE LINK
+    // ============================================
+    document.querySelectorAll('.sidebar-link').forEach(link => {
+        if (link.href === window.location.href) {
+            link.classList.add('active');
+        }
+    });
+    
+    console.log('🛡️ Self-Exclusion page loaded');
+    
+})();
+</script>
+
+</body>
+</html>
