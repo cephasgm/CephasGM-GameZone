@@ -1,1 +1,983 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0a0a12">
+    <meta name="description" content="CephasGM GameZone Support Center - Help and assistance">
+    <title>Support Center | CephasGM GameZone</title>
+    
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a12;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+        }
+        
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a12; }
+        ::-webkit-scrollbar-thumb { 
+            background: linear-gradient(180deg, #0055ff, #542bff);
+            border-radius: 10px;
+        }
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        
+        .glass-hover:hover {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar {
+            width: 260px;
+            min-height: 100vh;
+            background: rgba(10, 10, 18, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 24px 16px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            overflow-y: auto;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+        .sidebar::-webkit-scrollbar { width: 3px; }
+        .sidebar::-webkit-scrollbar-thumb { background: #0055ff; border-radius: 10px; }
+        
+        .sidebar-logo {
+            font-size: 20px;
+            font-weight: 700;
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            margin-bottom: 24px;
+        }
+        
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .sidebar-link:hover {
+            background: rgba(255,255,255,0.05);
+            color: #ffffff;
+        }
+        .sidebar-link.active {
+            background: rgba(0, 85, 255, 0.15);
+            color: #0055ff;
+            border: 1px solid rgba(0, 85, 255, 0.15);
+        }
+        .sidebar-link .icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+        .sidebar-divider {
+            height: 1px;
+            background: rgba(255,255,255,0.04);
+            margin: 16px 0;
+        }
+        
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            padding: 24px 32px;
+            min-height: 100vh;
+            background-image: url('https://images.unsplash.com/photo-1508098682722-e99c643edc58?w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        .main-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 10, 18, 0.85);
+            z-index: 0;
+        }
+        .content-inner {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .dashboard-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .header-left h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        .header-left p {
+            font-size: 14px;
+            color: rgba(255,255,255,0.4);
+            margin-top: 2px;
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .header-right .wallet-badge {
+            background: rgba(0, 255, 100, 0.1);
+            border: 1px solid rgba(0, 255, 100, 0.15);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 15px;
+            color: #00ff64;
+        }
+        .header-right .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        .sidebar-toggle {
+            display: none;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 10px;
+            padding: 8px 12px;
+            color: white;
+            cursor: pointer;
+        }
+        
+        .input-field {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 10px 16px;
+            color: white;
+            width: 100%;
+            transition: all 0.3s ease;
+            outline: none;
+            font-size: 14px;
+        }
+        .input-field:focus {
+            border-color: #0055ff;
+            box-shadow: 0 0 30px rgba(0, 85, 255, 0.08);
+        }
+        .input-field::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 85, 255, 0.25);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 85, 255, 0.4);
+        }
+        
+        .btn-secondary {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .category-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .category-card:hover {
+            background: rgba(255,255,255,0.06);
+            border-color: rgba(255,255,255,0.1);
+            transform: translateY(-4px);
+        }
+        .category-card .icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+        .category-card .name {
+            font-weight: 600;
+            font-size: 15px;
+        }
+        .category-card .desc {
+            font-size: 13px;
+            color: rgba(255,255,255,0.4);
+            margin-top: 2px;
+        }
+        
+        .faq-item {
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            padding: 14px 0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+        .faq-item:hover {
+            padding-left: 8px;
+        }
+        .faq-item .question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 500;
+            font-size: 15px;
+        }
+        .faq-item .question .arrow {
+            transition: transform 0.3s ease;
+            color: rgba(255,255,255,0.3);
+        }
+        .faq-item .question .arrow.open {
+            transform: rotate(180deg);
+        }
+        .faq-item .answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            color: rgba(255,255,255,0.5);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .faq-item .answer.open {
+            max-height: 300px;
+            padding-top: 10px;
+        }
+        
+        .support-ticket {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255,255,255,0.04);
+            border-radius: 12px;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s ease;
+        }
+        .support-ticket:hover {
+            background: rgba(255,255,255,0.04);
+        }
+        .support-ticket .status {
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .support-ticket .status.open { background: rgba(255, 215, 0, 0.15); color: #ffd700; }
+        .support-ticket .status.resolved { background: rgba(0, 255, 100, 0.1); color: #00ff64; }
+        .support-ticket .status.pending { background: rgba(0, 85, 255, 0.1); color: #0055ff; }
+        
+        .live-chat-btn {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            z-index: 50;
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: 0 8px 30px rgba(0, 85, 255, 0.4);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .live-chat-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 40px rgba(0, 85, 255, 0.5);
+        }
+        .live-chat-btn .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #00ff64;
+            animation: pulse-dot 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.8); }
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9999;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 16px 24px;
+            min-width: 280px;
+            animation: slideUp 0.4s ease;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        .toast-success { border-left: 4px solid #00ff64; }
+        .toast-error { border-left: 4px solid #ff0044; }
+        .toast-warning { border-left: 4px solid #ffd700; }
+        @keyframes slideUp {
+            from { transform: translateY(40px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 280px;
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 16px;
+            }
+            .sidebar-toggle {
+                display: block;
+            }
+            .header-left h1 { font-size: 20px; }
+            .category-card { padding: 14px; }
+            .category-card .icon { font-size: 28px; }
+            .live-chat-btn { padding: 12px 16px; font-size: 13px; bottom: 16px; right: 16px; }
+        }
+        @media (max-width: 480px) {
+            .header-right .wallet-badge { font-size: 13px; padding: 6px 12px; }
+            .header-right .avatar { width: 34px; height: 34px; font-size: 15px; }
+            .category-card .name { font-size: 13px; }
+            .support-ticket { flex-wrap: wrap; gap: 8px; }
+        }
+    </style>
+</head>
+<body>
 
+<!-- ==========================================
+     SIDEBAR
+     ========================================== -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+        <span class="text-gradient">CephasGM</span>
+        <span class="text-white font-light">|</span>
+        <span class="text-white font-semibold">GameZone</span>
+    </div>
+    <nav class="space-y-1">
+        <a href="/dashboard.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+            Dashboard
+        </a>
+        <a href="/wallet.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+            Wallet
+        </a>
+        <a href="/deposit.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            Deposit
+        </a>
+        <a href="/withdraw.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            Withdraw
+        </a>
+        <a href="/transactions.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
+            Transactions
+        </a>
+        <a href="/bet-history.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+            Bet History
+        </a>
+        <div class="sidebar-divider"></div>
+        <a href="/sports.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            Sports
+        </a>
+        <a href="/live-betting.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+            Live
+        </a>
+        <a href="/casino.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Casino
+        </a>
+        <a href="/aviator.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+            Aviator
+        </a>
+        <a href="/virtual-football.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            Virtual
+        </a>
+        <a href="/promotions.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/></svg>
+            Promotions
+        </a>
+        <a href="/leaderboard.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+            Leaderboard
+        </a>
+        <a href="/referrals.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+            Referrals
+        </a>
+        <a href="/bonuses.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/></svg>
+            Bonuses
+        </a>
+        <a href="/vip.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+            VIP Club
+        </a>
+        <a href="/notifications.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+            Notifications
+        </a>
+        <a href="/messages.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+            Messages
+        </a>
+        <a href="/support.html" class="sidebar-link active">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636a9 9 0 010 12.728m0 0a9 9 0 01-12.728 0m12.728 0L21 21M4 4l-1 1m2 2l-1 1m2 2l-1 1m14 2l1 1m-2 2l1 1m-2 2l1 1"/></svg>
+            Support
+        </a>
+        <a href="/settings.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            Settings
+        </a>
+        <a href="/signin.html" class="sidebar-link" id="logoutBtn">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+            Logout
+        </a>
+    </nav>
+</aside>
+
+<!-- ==========================================
+     MAIN CONTENT
+     ========================================== -->
+<div class="main-content">
+    <div class="content-inner">
+        
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <div class="flex items-center gap-3">
+                    <button class="sidebar-toggle" id="sidebarToggle">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                    <div>
+                        <h1>🛟 Support Center</h1>
+                        <p>Get help and assistance from our team</p>
+                    </div>
+                </div>
+            </div>
+            <div class="header-right">
+                <span class="wallet-badge">$1,245.80</span>
+                <div class="avatar" id="avatarBtn">JD</div>
+            </div>
+        </header>
+        
+        <!-- Support Stats -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            <div class="glass p-3 rounded-xl text-center">
+                <div class="text-2xl font-bold text-green-400">24/7</div>
+                <div class="text-xs text-white/40">Support Available</div>
+            </div>
+            <div class="glass p-3 rounded-xl text-center">
+                <div class="text-2xl font-bold text-blue-400">&lt; 2h</div>
+                <div class="text-xs text-white/40">Avg Response Time</div>
+            </div>
+            <div class="glass p-3 rounded-xl text-center">
+                <div class="text-2xl font-bold text-yellow-400">98%</div>
+                <div class="text-xs text-white/40">Satisfaction Rate</div>
+            </div>
+            <div class="glass p-3 rounded-xl text-center">
+                <div class="text-2xl font-bold text-purple-400">1,234</div>
+                <div class="text-xs text-white/40">Tickets Resolved</div>
+            </div>
+        </div>
+        
+        <!-- Search -->
+        <div class="glass rounded-2xl p-4 mb-6">
+            <div class="flex items-center gap-3">
+                <svg class="w-5 h-5 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+                <input type="text" class="input-field border-0 bg-transparent text-sm py-2" placeholder="Search for help articles..." id="faqSearch">
+            </div>
+        </div>
+        
+        <!-- Help Categories -->
+        <h3 class="font-semibold text-lg mb-4">📚 Help Categories</h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <div class="category-card" data-category="account">
+                <div class="icon">👤</div>
+                <div class="name">Account</div>
+                <div class="desc">Login, verification, security</div>
+            </div>
+            <div class="category-card" data-category="payments">
+                <div class="icon">💰</div>
+                <div class="name">Payments</div>
+                <div class="desc">Deposits, withdrawals, limits</div>
+            </div>
+            <div class="category-card" data-category="betting">
+                <div class="icon">⚽</div>
+                <div class="name">Betting</div>
+                <div class="desc">Rules, odds, cash out</div>
+            </div>
+            <div class="category-card" data-category="technical">
+                <div class="icon">⚙️</div>
+                <div class="name">Technical</div>
+                <div class="desc">App, website, connectivity</div>
+            </div>
+        </div>
+        
+        <!-- FAQ Section -->
+        <div class="glass rounded-2xl p-6 mb-8">
+            <h3 class="font-semibold text-lg mb-4">❓ Frequently Asked Questions</h3>
+            <div id="faqContainer">
+                <!-- FAQ items -->
+                <div class="faq-item" data-category="account">
+                    <div class="question" onclick="toggleFaq(this)">
+                        <span>How do I create an account?</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="answer">
+                        Creating an account is simple. Click the "Sign Up" button in the top right corner, fill in your details (email, password, and personal information), verify your email, and you're ready to start betting!
+                    </div>
+                </div>
+                
+                <div class="faq-item" data-category="payments">
+                    <div class="question" onclick="toggleFaq(this)">
+                        <span>What payment methods are accepted?</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="answer">
+                        We accept a variety of payment methods including credit/debit cards (Visa, Mastercard), bank transfers, mobile money (M-Pesa, Airtel Money, MTN), and cryptocurrencies (Bitcoin, Ethereum, USDT). All transactions are secure and encrypted.
+                    </div>
+                </div>
+                
+                <div class="faq-item" data-category="betting">
+                    <div class="question" onclick="toggleFaq(this)">
+                        <span>How do I place a bet?</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="answer">
+                        To place a bet, navigate to the sports or event you're interested in, select the odds you want to bet on, enter your stake amount in the bet slip, and confirm your bet. Your bet will be placed instantly if you have sufficient funds.
+                    </div>
+                </div>
+                
+                <div class="faq-item" data-category="payments">
+                    <div class="question" onclick="toggleFaq(this)">
+                        <span>How long do withdrawals take?</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="answer">
+                        Withdrawals are typically processed within 24-48 hours. Cryptocurrency withdrawals are usually faster (10-60 minutes). Bank transfers and card withdrawals may take 1-5 business days depending on your bank.
+                    </div>
+                </div>
+                
+                <div class="faq-item" data-category="account">
+                    <div class="question" onclick="toggleFaq(this)">
+                        <span>How do I verify my account?</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="answer">
+                        You can verify your account by going to the KYC section in your profile. You'll need to provide a government-issued ID (passport, driver's license) and proof of address (utility bill, bank statement). Verification usually takes 24-48 hours.
+                    </div>
+                </div>
+                
+                <div class="faq-item" data-category="technical">
+                    <div class="question" onclick="toggleFaq(this)">
+                        <span>Why is the app not working?</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="answer">
+                        If the app is not working, try clearing your cache and cookies, updating the app to the latest version, or restarting your device. If the issue persists, check your internet connection or contact our support team for assistance.
+                    </div>
+                </div>
+                
+                <div class="faq-item" data-category="betting">
+                    <div class="question" onclick="toggleFaq(this)">
+                        <span>What is cash out?</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="answer">
+                        Cash out allows you to settle your bet before the event ends. You can secure a portion of your potential winnings or minimize losses. The cash out amount is calculated based on current odds and is available on selected markets.
+                    </div>
+                </div>
+                
+                <div class="faq-item" data-category="account">
+                    <div class="question" onclick="toggleFaq(this)">
+                        <span>Is my personal information safe?</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="answer">
+                        Yes, we take security very seriously. All data is encrypted with 256-bit SSL encryption. We never share your personal information with third parties without your explicit consent. We comply with all relevant data protection regulations.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Support Ticket Form -->
+        <div class="glass rounded-2xl p-6 mb-8">
+            <h3 class="font-semibold text-lg mb-4">📧 Submit a Support Ticket</h3>
+            <form id="supportForm" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-sm text-white/60 block mb-1">Subject</label>
+                        <input type="text" class="input-field" placeholder="Brief description of your issue" required id="ticketSubject">
+                    </div>
+                    <div>
+                        <label class="text-sm text-white/60 block mb-1">Category</label>
+                        <select class="input-field" id="ticketCategory" required>
+                            <option value="">Select category...</option>
+                            <option value="account">Account Issues</option>
+                            <option value="payments">Payments & Withdrawals</option>
+                            <option value="betting">Betting & Odds</option>
+                            <option value="technical">Technical Problems</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="text-sm text-white/60 block mb-1">Message</label>
+                    <textarea class="input-field" rows="4" placeholder="Describe your issue in detail..." required id="ticketMessage"></textarea>
+                </div>
+                <div>
+                    <label class="text-sm text-white/60 block mb-1">Attach File (optional)</label>
+                    <input type="file" class="input-field text-sm" id="ticketFile" accept="image/*,.pdf,.doc,.docx">
+                </div>
+                <button type="submit" class="btn-primary">Submit Ticket</button>
+            </form>
+        </div>
+        
+        <!-- My Tickets -->
+        <div class="glass rounded-2xl p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="font-semibold text-lg">📋 My Support Tickets</h3>
+                <span class="text-sm text-white/30">3 open tickets</span>
+            </div>
+            <div class="space-y-3">
+                <div class="support-ticket">
+                    <div>
+                        <div class="font-medium text-sm">Withdrawal delay</div>
+                        <div class="text-xs text-white/30">#TKT-2025-001 • Submitted 2 hours ago</div>
+                    </div>
+                    <span class="status pending">Pending</span>
+                </div>
+                <div class="support-ticket">
+                    <div>
+                        <div class="font-medium text-sm">Account verification</div>
+                        <div class="text-xs text-white/30">#TKT-2025-002 • Submitted 1 day ago</div>
+                    </div>
+                    <span class="status open">Open</span>
+                </div>
+                <div class="support-ticket">
+                    <div>
+                        <div class="font-medium text-sm">Bonus not credited</div>
+                        <div class="text-xs text-white/30">#TKT-2025-003 • Submitted 3 days ago</div>
+                    </div>
+                    <span class="status resolved">Resolved</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="text-center text-xs text-white/20 mt-8 border-t border-white/5 pt-6">
+            Copyright © 2025 Cephas GM | Innovating for Tomorrow
+        </div>
+        
+    </div>
+</div>
+
+<!-- ==========================================
+     LIVE CHAT BUTTON
+     ========================================== -->
+<button class="live-chat-btn" id="liveChatBtn">
+    <span class="dot"></span>
+    Live Chat
+</button>
+
+<!-- ==========================================
+     JAVASCRIPT
+     ========================================== -->
+<script>
+(function() {
+    'use strict';
+    
+    // ============================================
+    // DOM REFS
+    // ============================================
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const avatarBtn = document.getElementById('avatarBtn');
+    const faqSearch = document.getElementById('faqSearch');
+    const faqItems = document.querySelectorAll('.faq-item');
+    const categoryCards = document.querySelectorAll('.category-card');
+    const supportForm = document.getElementById('supportForm');
+    const liveChatBtn = document.getElementById('liveChatBtn');
+    const ticketSubject = document.getElementById('ticketSubject');
+    const ticketCategory = document.getElementById('ticketCategory');
+    const ticketMessage = document.getElementById('ticketMessage');
+    
+    // ============================================
+    // TOAST
+    // ============================================
+    function showToast(message, type = 'success') {
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        toast.innerHTML = `
+            <div class="flex items-center space-x-3">
+                <span>${type === 'success' ? '✅' : type === 'error' ? '❌' : '⚠️'}</span>
+                <span class="text-sm">${message}</span>
+                <button onclick="this.parentElement.parentElement.remove()" class="text-white/30 hover:text-white/70 transition-colors ml-2">
+                    ✕
+                </button>
+            </div>
+        `;
+        document.body.appendChild(toast);
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateY(20px)';
+            setTimeout(() => toast.remove(), 300);
+        }, 4000);
+    }
+    
+    // ============================================
+    // SIDEBAR TOGGLE
+    // ============================================
+    sidebarToggle.addEventListener('click', function() {
+        sidebar.classList.toggle('open');
+    });
+    document.addEventListener('click', function(e) {
+        if (window.innerWidth <= 768) {
+            if (!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
+                sidebar.classList.remove('open');
+            }
+        }
+    });
+    
+    // ============================================
+    // LOGOUT & AVATAR
+    // ============================================
+    logoutBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        showToast('Logging out...', 'warning');
+        setTimeout(() => window.location.href = '/signin.html', 1000);
+    });
+    avatarBtn.addEventListener('click', function() {
+        window.location.href = '/profile.html';
+    });
+    
+    // ============================================
+    // FAQ TOGGLE
+    // ============================================
+    window.toggleFaq = function(element) {
+        const item = element.closest('.faq-item');
+        const answer = item.querySelector('.answer');
+        const arrow = element.querySelector('.arrow');
+        
+        // Close other open FAQs
+        document.querySelectorAll('.faq-item .answer.open').forEach(a => {
+            if (a !== answer) {
+                a.classList.remove('open');
+                a.closest('.faq-item').querySelector('.arrow').classList.remove('open');
+            }
+        });
+        
+        answer.classList.toggle('open');
+        arrow.classList.toggle('open');
+    };
+    
+    // ============================================
+    // FAQ SEARCH & CATEGORY FILTER
+    // ============================================
+    function filterFaqs() {
+        const search = faqSearch.value.toLowerCase();
+        const activeCategory = document.querySelector('.category-card.active');
+        const category = activeCategory ? activeCategory.dataset.category : 'all';
+        
+        faqItems.forEach(item => {
+            const question = item.querySelector('.question span')?.textContent.toLowerCase() || '';
+            const answer = item.querySelector('.answer')?.textContent.toLowerCase() || '';
+            const itemCategory = item.dataset.category;
+            const matchesSearch = !search || question.includes(search) || answer.includes(search);
+            const matchesCategory = category === 'all' || itemCategory === category;
+            
+            if (matchesSearch && matchesCategory) {
+                item.style.display = 'block';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    }
+    
+    faqSearch.addEventListener('input', filterFaqs);
+    
+    // ============================================
+    // CATEGORY CARDS
+    // ============================================
+    categoryCards.forEach(card => {
+        card.addEventListener('click', function() {
+            categoryCards.forEach(c => c.classList.remove('active'));
+            this.classList.add('active');
+            // Highlight active category
+            this.style.borderColor = '#0055ff';
+            this.style.background = 'rgba(0, 85, 255, 0.05)';
+            // Reset other styles
+            categoryCards.forEach(c => {
+                if (c !== this) {
+                    c.style.borderColor = 'rgba(255,255,255,0.05)';
+                    c.style.background = 'rgba(255,255,255,0.03)';
+                }
+            });
+            filterFaqs();
+        });
+    });
+    
+    // ============================================
+    // SUPPORT FORM
+    // ============================================
+    supportForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const subject = ticketSubject.value.trim();
+        const category = ticketCategory.value;
+        const message = ticketMessage.value.trim();
+        
+        if (!subject || !category || !message) {
+            showToast('Please fill in all required fields', 'error');
+            return;
+        }
+        
+        // Simulate ticket submission
+        const btn = this.querySelector('button[type="submit"]');
+        btn.textContent = 'Submitting...';
+        btn.disabled = true;
+        
+        setTimeout(() => {
+            showToast('✅ Support ticket submitted! We\'ll get back to you within 24 hours.', 'success');
+            this.reset();
+            btn.textContent = 'Submit Ticket';
+            btn.disabled = false;
+        }, 1500);
+    });
+    
+    // ============================================
+    // LIVE CHAT
+    // ============================================
+    liveChatBtn.addEventListener('click', function() {
+        showToast('💬 Live chat connecting... A support agent will be with you shortly.', 'warning');
+        setTimeout(() => {
+            showToast('📩 Chat connected! You can now start messaging.', 'success');
+        }, 1500);
+    });
+    
+    // ============================================
+    // SUPPORT TICKET CLICK - View details
+    // ============================================
+    document.querySelectorAll('.support-ticket').forEach(ticket => {
+        ticket.addEventListener('click', function() {
+            const title = this.querySelector('.font-medium')?.textContent || 'Ticket';
+            showToast(`📋 Viewing ticket: ${title}`, 'warning');
+        });
+    });
+    
+    // ============================================
+    // PWA SERVICE WORKER
+    // ============================================
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js')
+                .then(reg => console.log('SW registered'))
+                .catch(err => console.log('SW registration failed'));
+        });
+    }
+    
+    // ============================================
+    // OFFLINE/ONLINE
+    // ============================================
+    window.addEventListener('online', () => showToast('Back online', 'success'));
+    window.addEventListener('offline', () => showToast('You are offline. Support features may be limited.', 'warning'));
+    
+    // ============================================
+    // SIDEBAR ACTIVE LINK
+    // ============================================
+    document.querySelectorAll('.sidebar-link').forEach(link => {
+        if (link.href === window.location.href) {
+            link.classList.add('active');
+        }
+    });
+    
+    console.log('🛟 Support Center page loaded');
+    console.log(`📚 ${faqItems.length} FAQs available`);
+    
+})();
+</script>
+
+</body>
+</html>
