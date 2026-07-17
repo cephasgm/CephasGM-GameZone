@@ -1,1 +1,1112 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0a0a12">
+    <meta name="description" content="Cookies Policy - CephasGM GameZone">
+    <title>Cookies Policy | CephasGM GameZone</title>
+    
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a12;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+        }
+        
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a12; }
+        ::-webkit-scrollbar-thumb { 
+            background: linear-gradient(180deg, #0055ff, #542bff);
+            border-radius: 10px;
+        }
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        
+        .glass-hover:hover {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar {
+            width: 260px;
+            min-height: 100vh;
+            background: rgba(10, 10, 18, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 24px 16px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            overflow-y: auto;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+        .sidebar::-webkit-scrollbar { width: 3px; }
+        .sidebar::-webkit-scrollbar-thumb { background: #0055ff; border-radius: 10px; }
+        
+        .sidebar-logo {
+            font-size: 20px;
+            font-weight: 700;
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            margin-bottom: 24px;
+        }
+        
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .sidebar-link:hover {
+            background: rgba(255,255,255,0.05);
+            color: #ffffff;
+        }
+        .sidebar-link.active {
+            background: rgba(0, 85, 255, 0.15);
+            color: #0055ff;
+            border: 1px solid rgba(0, 85, 255, 0.15);
+        }
+        .sidebar-link .icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+        .sidebar-divider {
+            height: 1px;
+            background: rgba(255,255,255,0.04);
+            margin: 16px 0;
+        }
+        
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            padding: 24px 32px;
+            min-height: 100vh;
+            background-image: url('https://images.unsplash.com/photo-1508098682722-e99c643edc58?w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        .main-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 10, 18, 0.85);
+            z-index: 0;
+        }
+        .content-inner {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .dashboard-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .header-left h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        .header-left p {
+            font-size: 14px;
+            color: rgba(255,255,255,0.4);
+            margin-top: 2px;
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .header-right .wallet-badge {
+            background: rgba(0, 255, 100, 0.1);
+            border: 1px solid rgba(0, 255, 100, 0.15);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 15px;
+            color: #00ff64;
+        }
+        .header-right .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        .sidebar-toggle {
+            display: none;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 10px;
+            padding: 8px 12px;
+            color: white;
+            cursor: pointer;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 85, 255, 0.25);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 85, 255, 0.4);
+        }
+        
+        .btn-secondary {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        /* Cookies Hero */
+        .cookies-hero {
+            background: linear-gradient(135deg, rgba(0, 85, 255, 0.08), rgba(84, 43, 255, 0.05));
+            border: 1px solid rgba(0, 85, 255, 0.08);
+            border-radius: 20px;
+            padding: 32px 40px;
+            margin-bottom: 28px;
+            position: relative;
+            overflow: hidden;
+        }
+        .cookies-hero::before {
+            content: '🍪';
+            position: absolute;
+            top: -30px;
+            right: 20px;
+            font-size: 120px;
+            opacity: 0.05;
+        }
+        .cookies-hero .title {
+            font-size: 28px;
+            font-weight: 800;
+        }
+        .cookies-hero .title .highlight {
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .cookies-hero .sub {
+            font-size: 15px;
+            color: rgba(255,255,255,0.4);
+            margin-top: 4px;
+        }
+        .cookies-hero .effective {
+            display: inline-block;
+            margin-top: 8px;
+            font-size: 13px;
+            color: rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.04);
+            padding: 4px 16px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        /* Cookies Content */
+        .cookies-section {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        .cookies-section:last-child {
+            border-bottom: none;
+        }
+        .cookies-section .section-title {
+            font-weight: 700;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .cookies-section .section-title .icon {
+            font-size: 20px;
+        }
+        .cookies-section .section-content {
+            font-size: 14px;
+            color: rgba(255,255,255,0.6);
+            line-height: 1.8;
+            margin-top: 6px;
+            padding-left: 34px;
+        }
+        .cookies-section .section-content ul {
+            list-style: none;
+            padding: 0;
+        }
+        .cookies-section .section-content ul li {
+            padding: 4px 0 4px 20px;
+            position: relative;
+        }
+        .cookies-section .section-content ul li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: #0055ff;
+            font-weight: 700;
+        }
+        .cookies-section .section-content strong {
+            color: #ffffff;
+        }
+        
+        /* Cookie Table */
+        .cookie-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+        .cookie-table th {
+            text-align: left;
+            padding: 8px 12px;
+            color: rgba(255,255,255,0.3);
+            font-weight: 600;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .cookie-table td {
+            padding: 8px 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            color: rgba(255,255,255,0.5);
+        }
+        .cookie-table tr:last-child td {
+            border-bottom: none;
+        }
+        .cookie-table .cookie-name {
+            color: #ffffff;
+            font-weight: 500;
+        }
+        
+        /* Cookie Preference Toggles */
+        .preference-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        .preference-item:last-child {
+            border-bottom: none;
+        }
+        .preference-item .info .name {
+            font-weight: 500;
+            font-size: 14px;
+        }
+        .preference-item .info .desc {
+            font-size: 13px;
+            color: rgba(255,255,255,0.4);
+        }
+        
+        .toggle-switch {
+            position: relative;
+            width: 48px;
+            height: 26px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 13px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            flex-shrink: 0;
+        }
+        .toggle-switch.active {
+            background: #0055ff;
+        }
+        .toggle-switch .toggle-knob {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        .toggle-switch.active .toggle-knob {
+            transform: translateX(22px);
+        }
+        .toggle-switch.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        /* Quick Navigation */
+        .quick-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 16px;
+            border-radius: 16px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.04);
+            margin-bottom: 24px;
+        }
+        .quick-nav a {
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.4);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        .quick-nav a:hover {
+            color: #ffffff;
+            background: rgba(255,255,255,0.04);
+            border-color: rgba(255,255,255,0.06);
+        }
+        
+        /* Cookie Banner */
+        .cookie-banner {
+            background: linear-gradient(135deg, rgba(0, 85, 255, 0.08), rgba(84, 43, 255, 0.05));
+            border: 1px solid rgba(0, 85, 255, 0.08);
+            border-radius: 16px;
+            padding: 20px 24px;
+            margin-top: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .cookie-banner .text {
+            font-size: 14px;
+            color: rgba(255,255,255,0.5);
+        }
+        .cookie-banner .text strong {
+            color: #ffffff;
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9999;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 16px 24px;
+            min-width: 280px;
+            animation: slideUp 0.4s ease;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        .toast-success { border-left: 4px solid #00ff64; }
+        .toast-error { border-left: 4px solid #ff0044; }
+        .toast-warning { border-left: 4px solid #ffd700; }
+        @keyframes slideUp {
+            from { transform: translateY(40px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 280px;
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 16px;
+            }
+            .sidebar-toggle {
+                display: block;
+            }
+            .header-left h1 { font-size: 20px; }
+            .cookies-hero { padding: 20px; }
+            .cookies-hero .title { font-size: 22px; }
+            .cookies-hero::before { font-size: 80px; }
+            .cookies-section .section-title { font-size: 16px; }
+            .cookies-section .section-content { padding-left: 0; font-size: 13px; }
+            .quick-nav a { font-size: 11px; padding: 3px 10px; }
+            .cookie-banner { flex-direction: column; text-align: center; }
+            .cookie-table { font-size: 11px; }
+            .cookie-table th, .cookie-table td { padding: 4px 8px; }
+        }
+        @media (max-width: 480px) {
+            .header-right .wallet-badge { font-size: 13px; padding: 6px 12px; }
+            .header-right .avatar { width: 34px; height: 34px; font-size: 15px; }
+            .cookies-hero .title { font-size: 18px; }
+            .cookies-hero .effective { font-size: 11px; }
+            .cookie-table { font-size: 10px; }
+            .cookie-table th, .cookie-table td { padding: 3px 6px; }
+            .preference-item .info .name { font-size: 13px; }
+            .preference-item .info .desc { font-size: 12px; }
+        }
+    </style>
+</head>
+<body>
 
+<!-- ==========================================
+     SIDEBAR
+     ========================================== -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+        <span class="text-gradient">CephasGM</span>
+        <span class="text-white font-light">|</span>
+        <span class="text-white font-semibold">GameZone</span>
+    </div>
+    <nav class="space-y-1">
+        <a href="/dashboard.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+            Dashboard
+        </a>
+        <a href="/wallet.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+            Wallet
+        </a>
+        <a href="/deposit.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            Deposit
+        </a>
+        <a href="/withdraw.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            Withdraw
+        </a>
+        <a href="/transactions.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
+            Transactions
+        </a>
+        <a href="/bet-history.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+            Bet History
+        </a>
+        <div class="sidebar-divider"></div>
+        <a href="/sports.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            Sports
+        </a>
+        <a href="/live-betting.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+            Live
+        </a>
+        <a href="/casino.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Casino
+        </a>
+        <a href="/aviator.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+            Aviator
+        </a>
+        <a href="/virtual-football.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            Virtual
+        </a>
+        <a href="/promotions.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/></svg>
+            Promotions
+        </a>
+        <a href="/leaderboard.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+            Leaderboard
+        </a>
+        <a href="/referrals.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+            Referrals
+        </a>
+        <a href="/bonuses.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/></svg>
+            Bonuses
+        </a>
+        <a href="/vip.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+            VIP Club
+        </a>
+        <a href="/notifications.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+            Notifications
+        </a>
+        <a href="/messages.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+            Messages
+        </a>
+        <a href="/support.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636a9 9 0 010 12.728m0 0a9 9 0 01-12.728 0m12.728 0L21 21M4 4l-1 1m2 2l-1 1m2 2l-1 1m14 2l1 1m-2 2l1 1m-2 2l1 1"/></svg>
+            Support
+        </a>
+        <a href="/profile.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+            Profile
+        </a>
+        <a href="/settings.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            Settings
+        </a>
+        <a href="/kyc.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            KYC
+        </a>
+        <a href="/self-exclusion.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636a9 9 0 010 12.728m0 0a9 9 0 01-12.728 0m12.728 0L21 21M4 4l-1 1m2 2l-1 1m2 2l-1 1m14 2l1 1m-2 2l1 1m-2 2l1 1"/></svg>
+            Self-Exclusion
+        </a>
+        <a href="/about.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            About
+        </a>
+        <a href="/contact.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            Contact
+        </a>
+        <a href="/faq.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            FAQ
+        </a>
+        <a href="/privacy.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+            Privacy
+        </a>
+        <a href="/terms.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            Terms
+        </a>
+        <a href="/cookies.html" class="sidebar-link active">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+            Cookies
+        </a>
+        <a href="/signin.html" class="sidebar-link" id="logoutBtn">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+            Logout
+        </a>
+    </nav>
+</aside>
+
+<!-- ==========================================
+     MAIN CONTENT
+     ========================================== -->
+<div class="main-content">
+    <div class="content-inner">
+        
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <div class="flex items-center gap-3">
+                    <button class="sidebar-toggle" id="sidebarToggle">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                    <div>
+                        <h1>🍪 Cookies Policy</h1>
+                        <p>How we use cookies to enhance your experience</p>
+                    </div>
+                </div>
+            </div>
+            <div class="header-right">
+                <span class="wallet-badge">$1,245.80</span>
+                <div class="avatar" id="avatarBtn">JD</div>
+            </div>
+        </header>
+        
+        <!-- Cookies Hero -->
+        <div class="cookies-hero">
+            <div class="title">
+                We Value Your<br>
+                <span class="highlight">Privacy</span>
+            </div>
+            <div class="sub">
+                This policy explains how CephasGM GameZone uses cookies and similar tracking technologies to provide you with a personalized, secure, and efficient betting experience.
+            </div>
+            <div class="effective">📅 Effective Date: January 1, 2025</div>
+        </div>
+        
+        <!-- Quick Navigation -->
+        <div class="quick-nav">
+            <a href="#section1">1. What Are Cookies</a>
+            <a href="#section2">2. Types of Cookies</a>
+            <a href="#section3">3. How We Use Cookies</a>
+            <a href="#section4">4. Your Preferences</a>
+            <a href="#section5">5. Third-Party Cookies</a>
+            <a href="#section6">6. Manage Cookies</a>
+            <a href="#section7">7. Contact Us</a>
+        </div>
+        
+        <!-- Cookies Content -->
+        <div class="glass rounded-2xl p-6">
+            
+            <!-- Section 1 -->
+            <div class="cookies-section" id="section1">
+                <div class="section-title">
+                    <span class="icon">🍪</span>
+                    1. What Are Cookies?
+                </div>
+                <div class="section-content">
+                    <p>Cookies are small text files that are stored on your device when you visit a website. They help us remember your preferences, understand how you interact with our platform, and improve your overall experience. Cookies are not harmful to your device and do not contain viruses or malware.</p>
+                    <p style="margin-top: 8px;">We use both session cookies (which expire when you close your browser) and persistent cookies (which remain on your device for a set period).</p>
+                </div>
+            </div>
+            
+            <!-- Section 2 -->
+            <div class="cookies-section" id="section2">
+                <div class="section-title">
+                    <span class="icon">📋</span>
+                    2. Types of Cookies We Use
+                </div>
+                <div class="section-content">
+                    <p>We use the following types of cookies on our platform:</p>
+                    <ul>
+                        <li><strong>Essential Cookies:</strong> Necessary for the basic functionality of the platform, including authentication, security, and account management.</li>
+                        <li><strong>Functional Cookies:</strong> Remember your preferences, such as language selection, region, and login details.</li>
+                        <li><strong>Analytics Cookies:</strong> Help us understand how users interact with our platform, allowing us to improve performance and user experience.</li>
+                        <li><strong>Marketing Cookies:</strong> Used to deliver relevant advertisements and promotions based on your interests.</li>
+                        <li><strong>Performance Cookies:</strong> Monitor and optimize the technical performance of our platform.</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Cookie Table -->
+            <div class="cookies-section" id="section3">
+                <div class="section-title">
+                    <span class="icon">📊</span>
+                    3. How We Use Cookies
+                </div>
+                <div class="section-content">
+                    <p>We use cookies for the following purposes:</p>
+                    <ul>
+                        <li><strong>Authentication:</strong> To keep you logged in securely during your session.</li>
+                        <li><strong>Preferences:</strong> To remember your language, currency, and display preferences.</li>
+                        <li><strong>Analytics:</strong> To analyze user behavior and improve our services.</li>
+                        <li><strong>Security:</strong> To detect and prevent fraudulent activity.</li>
+                        <li><strong>Personalization:</strong> To provide personalized content, promotions, and recommendations.</li>
+                        <li><strong>Performance:</strong> To ensure the platform loads quickly and runs smoothly.</li>
+                    </ul>
+                    
+                    <p style="margin-top: 12px; font-weight: 500; color: rgba(255,255,255,0.5);">Cookie Details</p>
+                    <table class="cookie-table">
+                        <thead>
+                            <tr>
+                                <th>Cookie Name</th>
+                                <th>Purpose</th>
+                                <th>Duration</th>
+                                <th>Type</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="cookie-name">session_id</td>
+                                <td>Manages your authenticated session</td>
+                                <td>Session</td>
+                                <td>Essential</td>
+                            </tr>
+                            <tr>
+                                <td class="cookie-name">preferences</td>
+                                <td>Stores your language and currency preferences</td>
+                                <td>30 days</td>
+                                <td>Functional</td>
+                            </tr>
+                            <tr>
+                                <td class="cookie-name">analytics_id</td>
+                                <td>Used for Google Analytics tracking</td>
+                                <td>2 years</td>
+                                <td>Analytics</td>
+                            </tr>
+                            <tr>
+                                <td class="cookie-name">marketing_id</td>
+                                <td>Used for targeted advertising</td>
+                                <td>90 days</td>
+                                <td>Marketing</td>
+                            </tr>
+                            <tr>
+                                <td class="cookie-name">performance</td>
+                                <td>Monitors site speed and performance</td>
+                                <td>Session</td>
+                                <td>Performance</td>
+                            </tr>
+                            <tr>
+                                <td class="cookie-name">csrf_token</td>
+                                <td>Cross-site request forgery protection</td>
+                                <td>Session</td>
+                                <td>Essential</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Section 4 - Cookie Preferences -->
+            <div class="cookies-section" id="section4">
+                <div class="section-title">
+                    <span class="icon">⚙️</span>
+                    4. Your Cookie Preferences
+                </div>
+                <div class="section-content">
+                    <p>You can manage your cookie preferences at any time using the toggles below. Essential cookies are always enabled to ensure the platform functions correctly.</p>
+                    
+                    <div style="margin-top: 12px;">
+                        <div class="preference-item">
+                            <div class="info">
+                                <div class="name">🔒 Essential Cookies</div>
+                                <div class="desc">Required for platform functionality. Cannot be disabled.</div>
+                            </div>
+                            <div class="toggle-switch active disabled">
+                                <div class="toggle-knob"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="preference-item">
+                            <div class="info">
+                                <div class="name">⚙️ Functional Cookies</div>
+                                <div class="desc">Remember your preferences and settings.</div>
+                            </div>
+                            <div class="toggle-switch active" onclick="togglePreference(this)">
+                                <div class="toggle-knob"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="preference-item">
+                            <div class="info">
+                                <div class="name">📊 Analytics Cookies</div>
+                                <div class="desc">Help us improve the platform with usage data.</div>
+                            </div>
+                            <div class="toggle-switch active" onclick="togglePreference(this)">
+                                <div class="toggle-knob"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="preference-item">
+                            <div class="info">
+                                <div class="name">🎯 Marketing Cookies</div>
+                                <div class="desc">Deliver relevant promotions and advertisements.</div>
+                            </div>
+                            <div class="toggle-switch" onclick="togglePreference(this)">
+                                <div class="toggle-knob"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="preference-item">
+                            <div class="info">
+                                <div class="name">⚡ Performance Cookies</div>
+                                <div class="desc">Monitor and optimize platform performance.</div>
+                            </div>
+                            <div class="toggle-switch active" onclick="togglePreference(this)">
+                                <div class="toggle-knob"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 12px;">
+                        <button class="btn-primary" id="savePreferencesBtn">💾 Save Preferences</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Section 5 -->
+            <div class="cookies-section" id="section5">
+                <div class="section-title">
+                    <span class="icon">🤝</span>
+                    5. Third-Party Cookies
+                </div>
+                <div class="section-content">
+                    <p>We also use third-party cookies from trusted partners to enhance your experience:</p>
+                    <ul>
+                        <li><strong>Google Analytics:</strong> For tracking and analyzing website traffic.</li>
+                        <li><strong>Payment Processors:</strong> For secure transaction processing.</li>
+                        <li><strong>Social Media:</strong> For social sharing and authentication features.</li>
+                        <li><strong>Ad Networks:</strong> For delivering relevant advertisements.</li>
+                    </ul>
+                    <p style="margin-top: 8px;">These third parties have their own privacy policies and cookie practices, which are separate from our own. We recommend reviewing their policies for more information.</p>
+                </div>
+            </div>
+            
+            <!-- Section 6 -->
+            <div class="cookies-section" id="section6">
+                <div class="section-title">
+                    <span class="icon">🛠️</span>
+                    6. Managing and Disabling Cookies
+                </div>
+                <div class="section-content">
+                    <p>You can manage or disable cookies in your browser settings. Most browsers allow you to:</p>
+                    <ul>
+                        <li><strong>View Cookies:</strong> See which cookies are stored on your device.</li>
+                        <li><strong>Delete Cookies:</strong> Remove existing cookies from your device.</li>
+                        <li><strong>Block Cookies:</strong> Prevent websites from storing cookies on your device.</li>
+                        <li><strong>Configure Exceptions:</strong> Allow cookies from specific websites while blocking others.</li>
+                    </ul>
+                    <p style="margin-top: 8px;">Please note that disabling essential cookies may affect the functionality of our platform. You may not be able to log in, place bets, or access certain features.</p>
+                    <p style="margin-top: 8px;">To manage cookies in your browser, refer to the help section of your browser:</p>
+                    <ul>
+                        <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors" onclick="showToast('📖 Browser settings opened', 'warning')">Chrome</a></li>
+                        <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors" onclick="showToast('📖 Browser settings opened', 'warning')">Firefox</a></li>
+                        <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors" onclick="showToast('📖 Browser settings opened', 'warning')">Safari</a></li>
+                        <li><a href="#" class="text-blue-400 hover:text-blue-300 transition-colors" onclick="showToast('📖 Browser settings opened', 'warning')">Edge</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Section 7 -->
+            <div class="cookies-section" id="section7">
+                <div class="section-title">
+                    <span class="icon">📬</span>
+                    7. Contact Us
+                </div>
+                <div class="section-content">
+                    <p>If you have any questions, concerns, or requests regarding this Cookies Policy or your personal data, please contact us:</p>
+                    <ul>
+                        <li><strong>Email:</strong> <a href="mailto:privacy@cephasgm.com" class="text-blue-400 hover:text-blue-300 transition-colors">privacy@cephasgm.com</a></li>
+                        <li><strong>Support:</strong> <a href="/support.html" class="text-blue-400 hover:text-blue-300 transition-colors">Visit our Support Center</a></li>
+                        <li><strong>Address:</strong> 123 Gaming Boulevard, New York, NY 10001, United States</li>
+                    </ul>
+                    <p style="margin-top: 8px;">We will respond to your request within 30 days.</p>
+                </div>
+            </div>
+            
+        </div>
+        
+        <!-- Cookie Consent Banner -->
+        <div class="cookie-banner">
+            <div class="text">
+                <strong>🍪 We use cookies to improve your experience.</strong>
+                <span style="display: block; margin-top: 2px;">By continuing to use our site, you accept our use of cookies. You can manage your preferences at any time.</span>
+            </div>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <button class="btn-primary" id="acceptAllBtn">✓ Accept All</button>
+                <button class="btn-secondary" id="essentialOnlyBtn">Essential Only</button>
+                <button class="btn-secondary" onclick="window.location.href='#section4'">⚙️ Manage</button>
+            </div>
+        </div>
+        
+        <!-- Last Updated -->
+        <div class="text-center text-xs text-white/20 mt-4">
+            Last Updated: January 1, 2025 | Version 1.0
+        </div>
+        
+        <!-- Footer -->
+        <div class="text-center text-xs text-white/20 mt-8 border-t border-white/5 pt-6">
+            Copyright © 2025 Cephas GM | Innovating for Tomorrow
+        </div>
+        
+    </div>
+</div>
+
+<!-- ==========================================
+     JAVASCRIPT
+     ========================================== -->
+<script>
+(function() {
+    'use strict';
+    
+    // ============================================
+    // DOM REFS
+    // ============================================
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const avatarBtn = document.getElementById('avatarBtn');
+    const acceptAllBtn = document.getElementById('acceptAllBtn');
+    const essentialOnlyBtn = document.getElementById('essentialOnlyBtn');
+    const savePreferencesBtn = document.getElementById('savePreferencesBtn');
+    const quickNavLinks = document.querySelectorAll('.quick-nav a');
+    const preferenceToggles = document.querySelectorAll('.preference-item .toggle-switch:not(.disabled)');
+    
+    // ============================================
+    // TOAST
+    // ============================================
+    function showToast(message, type = 'success') {
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        toast.innerHTML = `
+            <div class="flex items-center space-x-3">
+                <span>${type === 'success' ? '✅' : type === 'error' ? '❌' : '⚠️'}</span>
+                <span class="text-sm">${message}</span>
+                <button onclick="this.parentElement.parentElement.remove()" class="text-white/30 hover:text-white/70 transition-colors ml-2">
+                    ✕
+                </button>
+            </div>
+        `;
+        document.body.appendChild(toast);
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateY(20px)';
+            setTimeout(() => toast.remove(), 300);
+        }, 4000);
+    }
+    
+    // ============================================
+    // SIDEBAR TOGGLE
+    // ============================================
+    sidebarToggle.addEventListener('click', function() {
+        sidebar.classList.toggle('open');
+    });
+    document.addEventListener('click', function(e) {
+        if (window.innerWidth <= 768) {
+            if (!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
+                sidebar.classList.remove('open');
+            }
+        }
+    });
+    
+    // ============================================
+    // LOGOUT & AVATAR
+    // ============================================
+    logoutBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        showToast('Logging out...', 'warning');
+        setTimeout(() => window.location.href = '/signin.html', 1000);
+    });
+    avatarBtn.addEventListener('click', function() {
+        window.location.href = '/profile.html';
+    });
+    
+    // ============================================
+    // TOGGLE PREFERENCE
+    // ============================================
+    window.togglePreference = function(element) {
+        if (element.classList.contains('disabled')) return;
+        element.classList.toggle('active');
+        const isActive = element.classList.contains('active');
+        const name = element.closest('.preference-item')?.querySelector('.name')?.textContent || 'Cookie';
+        showToast(`⚙️ ${name} ${isActive ? 'enabled' : 'disabled'}`, 'warning');
+    };
+    
+    // ============================================
+    // ACCEPT ALL
+    // ============================================
+    acceptAllBtn.addEventListener('click', function() {
+        // Enable all toggles
+        document.querySelectorAll('.preference-item .toggle-switch:not(.disabled)').forEach(toggle => {
+            toggle.classList.add('active');
+        });
+        showToast('✅ All cookies accepted. Thank you!', 'success');
+        this.textContent = '✓ Accepted';
+        this.style.background = 'linear-gradient(135deg, #00b894, #00a86b)';
+        this.disabled = true;
+        setTimeout(() => {
+            window.location.href = '/dashboard.html';
+        }, 1500);
+    });
+    
+    // ============================================
+    // ESSENTIAL ONLY
+    // ============================================
+    essentialOnlyBtn.addEventListener('click', function() {
+        // Disable all non-essential toggles
+        document.querySelectorAll('.preference-item .toggle-switch:not(.disabled)').forEach(toggle => {
+            toggle.classList.remove('active');
+        });
+        // Keep essential enabled (already disabled)
+        showToast('⚙️ Essential cookies only. Other cookies disabled.', 'warning');
+    });
+    
+    // ============================================
+    // SAVE PREFERENCES
+    // ============================================
+    savePreferencesBtn.addEventListener('click', function() {
+        showToast('💾 Cookie preferences saved successfully!', 'success');
+        this.textContent = '✓ Saved';
+        this.style.background = 'linear-gradient(135deg, #00b894, #00a86b)';
+        setTimeout(() => {
+            this.textContent = '💾 Save Preferences';
+            this.style.background = '';
+        }, 2000);
+    });
+    
+    // ============================================
+    // QUICK NAV SMOOTH SCROLL
+    // ============================================
+    quickNavLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            const target = document.querySelector(targetId);
+            if (target) {
+                const offset = 80;
+                const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+                window.scrollTo({ top, behavior: 'smooth' });
+            }
+        });
+    });
+    
+    // ============================================
+    // PWA SERVICE WORKER
+    // ============================================
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js')
+                .then(reg => console.log('SW registered'))
+                .catch(err => console.log('SW registration failed'));
+        });
+    }
+    
+    // ============================================
+    // OFFLINE/ONLINE
+    // ============================================
+    window.addEventListener('online', () => showToast('Back online', 'success'));
+    window.addEventListener('offline', () => showToast('You are offline. This page may not be fully available.', 'warning'));
+    
+    // ============================================
+    // SIDEBAR ACTIVE LINK
+    // ============================================
+    document.querySelectorAll('.sidebar-link').forEach(link => {
+        if (link.href === window.location.href) {
+            link.classList.add('active');
+        }
+    });
+    
+    console.log('🍪 Cookies Policy page loaded');
+    
+})();
+</script>
+
+</body>
+</html>
