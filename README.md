@@ -1,9 +1,11 @@
-📖 Project Overview
+**📖 Project Overview**
+
 CephasGM GameZone is a premium online betting platform built with modern, scalable architecture. This backend service powers the entire platform including sports betting, live casino, virtual games, user management, payments, and real-time odds.
 
 Production-ready with comprehensive security, monitoring, and deployment tooling.
 
-🚀 Features
+**🚀 Features**
+
 User Management: Registration, login (email + social OAuth), 2FA, KYC verification, profiles
 
 Wallet & Payments: Multi-currency wallets, deposits/withdrawals via M-Pesa, Airtel, PayPal, crypto, mobile banking, and more
@@ -22,7 +24,10 @@ Real-time: WebSocket (Socket.IO) for live betting, match updates, odds changes, 
 
 Security: JWT with refresh tokens, Argon2 password hashing, 2FA, rate limiting, Helmet, CORS, SQL injection protection, XSS prevention
 
-🛠️ Tech Stack
+
+**🛠️ Tech Stack**
+
+
 Component	Technology
 Runtime	Node.js 18+
 Framework	Express.js
@@ -37,7 +42,8 @@ Testing	Jest, Supertest
 Container	Docker & Docker Compose
 CI/CD	GitHub Actions
 Monitoring	Winston logging, health checks
-📋 Prerequisites
+
+**📋 Prerequisites**
 Node.js 18+
 
 PostgreSQL 15+
@@ -48,7 +54,9 @@ Docker & Docker Compose (optional but recommended)
 
 API keys for payment/notification providers (if using real integrations)
 
-🏁 Installation & Setup
+
+**🏁 Installation & Setup**
+
 1. Clone the repository
 bash
 git clone https://github.com/cephasgm/cephasgm-gamezone-backend.git
@@ -85,7 +93,7 @@ npm run dev
 npm start
 The API will be available at http://localhost:3000/api/v1.
 
-🐳 Docker Setup (Recommended for Production)
+**🐳 Docker Setup (Recommended for Production)**
 Build and run all services (PostgreSQL, Redis, and the backend) with one command:
 
 bash
@@ -104,7 +112,10 @@ To stop:
 
 bash
 docker-compose down
-🧪 Testing
+
+
+**🧪 Testing**
+
 Run the test suite:
 
 bash
@@ -119,7 +130,10 @@ npm run test:integration
 
 # Watch mode
 npm run test:watch
-📡 API Documentation
+
+
+**📡 API Documentation**
+
 The API follows RESTful conventions with GraphQL support (optional).
 Key endpoints:
 
@@ -135,7 +149,8 @@ GET	/api/v1/bonuses/active	Get active bonuses
 GET	/api/v1/admin/dashboard	Admin dashboard (admin only)
 Full API documentation is available via Postman/OpenAPI (see /docs folder).
 
-🚢 Deployment
+**🚢 Deployment**
+
 Production deployment with Docker
 Set production environment variables (use .env.production or system env).
 
@@ -160,7 +175,8 @@ Notification service keys
 
 NODE_ENV=production
 
-🛡️ Security
+**🛡️ Security**
+
 All passwords hashed with Argon2
 
 JWT tokens with refresh rotation
@@ -179,7 +195,8 @@ SQL injection protection (via Sequelize)
 
 Audit logging for critical actions
 
-🤝 Contributing
+**🤝 Contributing**
+
 Fork the repository.
 
 Create a feature branch: git checkout -b feature/your-feature
@@ -192,17 +209,21 @@ Open a Pull Request.
 
 Please run tests and ensure all checks pass before submitting.
 
-📄 License
+**📄 License**
+
 Copyright © 2025 Cephas GM – All rights reserved.
 This project is proprietary and confidential.
 
-📬 Contact
+
+**📬 Contact**
+
 Project Owner: CephasGM
 
 Email: admin@cephasgm.com
 
 Website: https://gamezone.cephasgm.com
 
-🎯 Acknowledgements
+**🎯 Acknowledgements**
+
 Built with ❤️ by CephasGM
 Innovating for Tomorrow.
