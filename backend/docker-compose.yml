@@ -1,0 +1,133 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: cephasgm_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USER:-cephasgm_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-secure_password_123}
+      POSTGRES_DB: ${DB_NAME:-cephasgm_gamezone}
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=en_US.UTF-8"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/migrations:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-cephasgm_user} -d ${DB_NAME:-cephasgm_gamezone}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - cephasgm_network
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: cephasgm_redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-}
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - cephasgm_network
+
+  # Backend Application
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cephasgm_backend
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
+      - PORT=3000
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=${DB_USER:-cephasgm_user}
+      - DB_PASSWORD=${DB_PASSWORD:-secure_password_123}
+      - DB_NAME=${DB_NAME:-cephasgm_gamezone}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-}
+      - JWT_SECRET=${JWT_SECRET:-change_me}
+      - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET:-change_me}
+      - APP_URL=${APP_URL:-http://localhost:3000}
+      - API_URL=${API_URL:-http://localhost:3000}
+      - CORS_ORIGINS=${CORS_ORIGINS:-http://localhost:3000,http://localhost:8080}
+      # Payment Integrations
+      - MPESA_CONSUMER_KEY=${MPESA_CONSUMER_KEY:-}
+      - MPESA_CONSUMER_SECRET=${MPESA_CONSUMER_SECRET:-}
+      - MPESA_SHORT_CODE=${MPESA_SHORT_CODE:-}
+      - MPESA_PASSKEY=${MPESA_PASSKEY:-}
+      - AIRTEL_API_KEY=${AIRTEL_API_KEY:-}
+      - AIRTEL_API_SECRET=${AIRTEL_API_SECRET:-}
+      - MIXBY_YAS_API_KEY=${MIXBY_YAS_API_KEY:-}
+      - MIXBY_YAS_API_SECRET=${MIXBY_YAS_API_SECRET:-}
+      - HALOPESA_API_KEY=${HALOPESA_API_KEY:-}
+      - HALOPESA_API_SECRET=${HALOPESA_API_SECRET:-}
+      - PAYPAL_CLIENT_ID=${PAYPAL_CLIENT_ID:-}
+      - PAYPAL_CLIENT_SECRET=${PAYPAL_CLIENT_SECRET:-}
+      - CRYPTO_API_KEY=${CRYPTO_API_KEY:-}
+      # Notifications
+      - SENDGRID_API_KEY=${SENDGRID_API_KEY:-}
+      - FCM_SERVER_KEY=${FCM_SERVER_KEY:-}
+      - TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID:-}
+      - TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN:-}
+      - TWILIO_FROM_NUMBER=${TWILIO_FROM_NUMBER:-}
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./logs:/app/logs
+      - ./uploads:/app/uploads
+    networks:
+      - cephasgm_network
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Adminer - Database Management UI (optional)
+  adminer:
+    image: adminer:latest
+    container_name: cephasgm_adminer
+    restart: unless-stopped
+    ports:
+      - "8081:8080"
+    environment:
+      ADMINER_DEFAULT_SERVER: postgres
+    depends_on:
+      - postgres
+    networks:
+      - cephasgm_network
+    profiles:
+      - dev
+      - admin
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  cephasgm_network:
+    driver: bridge
