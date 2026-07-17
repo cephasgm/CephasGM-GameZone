@@ -1,1 +1,893 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0a0a12">
+    <meta name="description" content="Refer friends to CephasGM GameZone and earn rewards">
+    <title>Referrals | CephasGM GameZone</title>
+    
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a12;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+        }
+        
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a12; }
+        ::-webkit-scrollbar-thumb { 
+            background: linear-gradient(180deg, #0055ff, #542bff);
+            border-radius: 10px;
+        }
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        
+        .glass-hover:hover {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar {
+            width: 260px;
+            min-height: 100vh;
+            background: rgba(10, 10, 18, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 24px 16px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            overflow-y: auto;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+        .sidebar::-webkit-scrollbar { width: 3px; }
+        .sidebar::-webkit-scrollbar-thumb { background: #0055ff; border-radius: 10px; }
+        
+        .sidebar-logo {
+            font-size: 20px;
+            font-weight: 700;
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            margin-bottom: 24px;
+        }
+        
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .sidebar-link:hover {
+            background: rgba(255,255,255,0.05);
+            color: #ffffff;
+        }
+        .sidebar-link.active {
+            background: rgba(0, 85, 255, 0.15);
+            color: #0055ff;
+            border: 1px solid rgba(0, 85, 255, 0.15);
+        }
+        .sidebar-link .icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+        .sidebar-divider {
+            height: 1px;
+            background: rgba(255,255,255,0.04);
+            margin: 16px 0;
+        }
+        
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            padding: 24px 32px;
+            min-height: 100vh;
+            background-image: url('https://images.unsplash.com/photo-1508098682722-e99c643edc58?w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        .main-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 10, 18, 0.85);
+            z-index: 0;
+        }
+        .content-inner {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .dashboard-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .header-left h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        .header-left p {
+            font-size: 14px;
+            color: rgba(255,255,255,0.4);
+            margin-top: 2px;
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .header-right .wallet-badge {
+            background: rgba(0, 255, 100, 0.1);
+            border: 1px solid rgba(0, 255, 100, 0.15);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 15px;
+            color: #00ff64;
+        }
+        .header-right .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        .sidebar-toggle {
+            display: none;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 10px;
+            padding: 8px 12px;
+            color: white;
+            cursor: pointer;
+        }
+        
+        .input-field {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 10px 16px;
+            color: white;
+            width: 100%;
+            transition: all 0.3s ease;
+            outline: none;
+            font-size: 14px;
+        }
+        .input-field:focus {
+            border-color: #0055ff;
+            box-shadow: 0 0 30px rgba(0, 85, 255, 0.08);
+        }
+        .input-field::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Stats Cards */
+        .stat-card {
+            text-align: center;
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .stat-card .value {
+            font-size: 28px;
+            font-weight: 700;
+        }
+        .stat-card .label {
+            font-size: 13px;
+            color: rgba(255,255,255,0.4);
+            margin-top: 2px;
+        }
+        .stat-card .value.gold { color: #ffd700; }
+        .stat-card .value.green { color: #00ff64; }
+        .stat-card .value.blue { color: #0055ff; }
+        
+        /* Referral Card */
+        .referral-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        .referral-card:hover {
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .referral-card .user-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background-size: cover;
+            background-position: center;
+            border: 2px solid rgba(255,255,255,0.1);
+            flex-shrink: 0;
+        }
+        
+        .referral-card .status-badge {
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+        }
+        .referral-card .status-badge.active { background: rgba(0, 255, 100, 0.1); color: #00ff64; }
+        .referral-card .status-badge.pending { background: rgba(255, 215, 0, 0.1); color: #ffd700; }
+        .referral-card .status-badge.inactive { background: rgba(255, 255, 255, 0.04); color: rgba(255,255,255,0.3); }
+        
+        .referral-card .referral-row {
+            display: grid;
+            grid-template-columns: 60px 1fr 1fr 1fr 1fr;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            align-items: center;
+        }
+        .referral-card .referral-row:last-child {
+            border-bottom: none;
+        }
+        .referral-card .referral-row .user-info .name {
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .referral-card .referral-row .user-info .email {
+            font-size: 12px;
+            color: rgba(255,255,255,0.3);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 85, 255, 0.25);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 85, 255, 0.4);
+        }
+        
+        .btn-secondary {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #00b894, #00a86b);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 184, 148, 0.25);
+        }
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 184, 148, 0.4);
+        }
+        
+        .pagination-btn {
+            padding: 8px 14px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.06);
+            background: rgba(255,255,255,0.02);
+            color: rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 13px;
+        }
+        .pagination-btn:hover {
+            background: rgba(255,255,255,0.06);
+            color: white;
+        }
+        .pagination-btn.active {
+            background: rgba(0, 85, 255, 0.15);
+            color: #0055ff;
+            border-color: rgba(0, 85, 255, 0.15);
+        }
+        .pagination-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9999;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 16px 24px;
+            min-width: 280px;
+            animation: slideUp 0.4s ease;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        .toast-success { border-left: 4px solid #00ff64; }
+        .toast-error { border-left: 4px solid #ff0044; }
+        .toast-warning { border-left: 4px solid #ffd700; }
+        @keyframes slideUp {
+            from { transform: translateY(40px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        /* Copy animation */
+        .copied-animation {
+            animation: pulse-green 0.6s ease;
+        }
+        @keyframes pulse-green {
+            0%, 100% { background: transparent; }
+            50% { background: rgba(0, 255, 100, 0.1); border-color: rgba(0, 255, 100, 0.2); }
+        }
+        
+        @media (max-width: 1024px) {
+            .referral-card .referral-row {
+                grid-template-columns: 50px 1fr 0.8fr 0.8fr;
+                font-size: 13px;
+            }
+            .referral-card .referral-row .hide-mobile { display: none; }
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 280px;
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 16px;
+            }
+            .sidebar-toggle {
+                display: block;
+            }
+            .header-left h1 { font-size: 20px; }
+            .stat-card .value { font-size: 22px; }
+            .referral-card .referral-row {
+                grid-template-columns: 40px 1fr 0.6fr;
+                font-size: 12px;
+                gap: 8px;
+                padding: 8px 0;
+            }
+            .referral-card .referral-row .hide-small { display: none; }
+            .referral-card .user-avatar { width: 36px; height: 36px; }
+        }
+        @media (max-width: 480px) {
+            .header-right .wallet-badge { font-size: 13px; padding: 6px 12px; }
+            .header-right .avatar { width: 34px; height: 34px; font-size: 15px; }
+            .stat-card { padding: 12px; }
+            .stat-card .value { font-size: 18px; }
+            .referral-card .referral-row {
+                grid-template-columns: 30px 1fr 0.5fr;
+                font-size: 11px;
+                gap: 4px;
+                padding: 6px 0;
+            }
+            .referral-card .user-avatar { width: 28px; height: 28px; }
+        }
+    </style>
+</head>
+<body>
 
+<!-- ==========================================
+     SIDEBAR
+     ========================================== -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+        <span class="text-gradient">CephasGM</span>
+        <span class="text-white font-light">|</span>
+        <span class="text-white font-semibold">GameZone</span>
+    </div>
+    <nav class="space-y-1">
+        <a href="/dashboard.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+            Dashboard
+        </a>
+        <a href="/wallet.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+            Wallet
+        </a>
+        <a href="/deposit.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            Deposit
+        </a>
+        <a href="/withdraw.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            Withdraw
+        </a>
+        <a href="/transactions.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
+            Transactions
+        </a>
+        <a href="/bet-history.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+            Bet History
+        </a>
+        <div class="sidebar-divider"></div>
+        <a href="/sports.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            Sports
+        </a>
+        <a href="/live-betting.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+            Live
+        </a>
+        <a href="/casino.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Casino
+        </a>
+        <a href="/aviator.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+            Aviator
+        </a>
+        <a href="/virtual-football.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            Virtual
+        </a>
+        <a href="/promotions.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/></svg>
+            Promotions
+        </a>
+        <a href="/leaderboard.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+            Leaderboard
+        </a>
+        <a href="/referrals.html" class="sidebar-link active">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+            Referrals
+        </a>
+        <a href="/settings.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            Settings
+        </a>
+        <a href="/signin.html" class="sidebar-link" id="logoutBtn">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+            Logout
+        </a>
+    </nav>
+</aside>
+
+<!-- ==========================================
+     MAIN CONTENT
+     ========================================== -->
+<div class="main-content">
+    <div class="content-inner">
+        
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <div class="flex items-center gap-3">
+                    <button class="sidebar-toggle" id="sidebarToggle">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                    <div>
+                        <h1>👥 Referrals</h1>
+                        <p>Invite friends and earn rewards together</p>
+                    </div>
+                </div>
+            </div>
+            <div class="header-right">
+                <span class="wallet-badge">$1,245.80</span>
+                <div class="avatar" id="avatarBtn">JD</div>
+            </div>
+        </header>
+        
+        <!-- Stats -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            <div class="stat-card glass">
+                <div class="value gold">12</div>
+                <div class="label">Total Referrals</div>
+            </div>
+            <div class="stat-card glass">
+                <div class="value green">8</div>
+                <div class="label">Active</div>
+            </div>
+            <div class="stat-card glass">
+                <div class="value blue">$340</div>
+                <div class="label">Total Earned</div>
+            </div>
+            <div class="stat-card glass">
+                <div class="value gold">$50</div>
+                <div class="label">Per Referral</div>
+            </div>
+        </div>
+        
+        <!-- Referral Link Section -->
+        <div class="glass rounded-2xl p-6 mb-6 border border-blue-500/20">
+            <div class="flex flex-wrap items-center gap-4">
+                <div class="flex-1 min-w-[200px]">
+                    <div class="text-sm text-white/40 mb-1">Your Referral Link</div>
+                    <div class="flex items-center gap-2">
+                        <input type="text" class="input-field flex-1" id="referralLink" value="https://gamezone.cephasgm.com/ref/CEPHAS123" readonly>
+                        <button class="btn-secondary" id="copyLinkBtn">
+                            <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/>
+                            </svg>
+                            Copy
+                        </button>
+                    </div>
+                </div>
+                <div class="flex gap-2">
+                    <button class="btn-secondary" id="shareWhatsApp">
+                        <span class="text-green-400">📱</span> WhatsApp
+                    </button>
+                    <button class="btn-secondary" id="shareTwitter">
+                        <span class="text-blue-400">🐦</span> Twitter
+                    </button>
+                    <button class="btn-secondary" id="shareFacebook">
+                        <span class="text-blue-600">📘</span> Facebook
+                    </button>
+                    <button class="btn-primary" id="inviteBtn">
+                        ✉️ Invite Friends
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Referral History -->
+        <div class="referral-card">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="font-semibold text-lg">📋 Referral History</h3>
+                <span class="text-sm text-white/30">12 total referrals</span>
+            </div>
+            
+            <!-- Header -->
+            <div class="referral-row text-white/30 text-xs font-semibold uppercase tracking-wider border-b border-white/10">
+                <span>User</span>
+                <span class="hide-mobile">Name</span>
+                <span class="hide-mobile">Email</span>
+                <span class="hide-small">Date</span>
+                <span>Status</span>
+            </div>
+            
+            <!-- Referral 1 - Active -->
+            <div class="referral-row">
+                <div class="user-avatar" style="background-image: url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80');"></div>
+                <div class="user-info">
+                    <div class="name">James Wilson</div>
+                    <div class="email hide-mobile">james.w@email.com</div>
+                </div>
+                <span class="hide-mobile">James W.</span>
+                <span class="hide-small text-white/30 text-sm">Dec 15, 2025</span>
+                <span class="status-badge active">Active</span>
+            </div>
+            
+            <!-- Referral 2 - Active -->
+            <div class="referral-row">
+                <div class="user-avatar" style="background-image: url('https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80');"></div>
+                <div class="user-info">
+                    <div class="name">Emily Davis</div>
+                    <div class="email hide-mobile">emily.d@email.com</div>
+                </div>
+                <span class="hide-mobile">Emily D.</span>
+                <span class="hide-small text-white/30 text-sm">Dec 14, 2025</span>
+                <span class="status-badge active">Active</span>
+            </div>
+            
+            <!-- Referral 3 - Pending -->
+            <div class="referral-row">
+                <div class="user-avatar" style="background-image: url('https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&q=80');"></div>
+                <div class="user-info">
+                    <div class="name">Michael Chen</div>
+                    <div class="email hide-mobile">michael.c@email.com</div>
+                </div>
+                <span class="hide-mobile">Michael C.</span>
+                <span class="hide-small text-white/30 text-sm">Dec 13, 2025</span>
+                <span class="status-badge pending">Pending</span>
+            </div>
+            
+            <!-- Referral 4 - Active -->
+            <div class="referral-row">
+                <div class="user-avatar" style="background-image: url('https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80');"></div>
+                <div class="user-info">
+                    <div class="name">Jessica Park</div>
+                    <div class="email hide-mobile">jessica.p@email.com</div>
+                </div>
+                <span class="hide-mobile">Jessica P.</span>
+                <span class="hide-small text-white/30 text-sm">Dec 12, 2025</span>
+                <span class="status-badge active">Active</span>
+            </div>
+            
+            <!-- Referral 5 - Inactive -->
+            <div class="referral-row">
+                <div class="user-avatar" style="background-image: url('https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80');"></div>
+                <div class="user-info">
+                    <div class="name">David Kim</div>
+                    <div class="email hide-mobile">david.k@email.com</div>
+                </div>
+                <span class="hide-mobile">David K.</span>
+                <span class="hide-small text-white/30 text-sm">Dec 10, 2025</span>
+                <span class="status-badge inactive">Inactive</span>
+            </div>
+            
+            <!-- Referral 6 - Active -->
+            <div class="referral-row">
+                <div class="user-avatar" style="background-image: url('https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&q=80');"></div>
+                <div class="user-info">
+                    <div class="name">Lisa Anderson</div>
+                    <div class="email hide-mobile">lisa.a@email.com</div>
+                </div>
+                <span class="hide-mobile">Lisa A.</span>
+                <span class="hide-small text-white/30 text-sm">Dec 8, 2025</span>
+                <span class="status-badge active">Active</span>
+            </div>
+            
+            <!-- Empty State -->
+            <div id="emptyState" class="hidden text-center py-12 text-white/30">
+                <div class="text-5xl mb-4">👥</div>
+                <p class="text-lg font-medium">No referrals yet</p>
+                <p class="text-sm">Share your referral link to start earning</p>
+            </div>
+            
+            <!-- Pagination -->
+            <div class="flex items-center justify-between mt-4 pt-4 border-t border-white/5">
+                <span class="text-sm text-white/30">Showing 1-6 of 12 referrals</span>
+                <div class="flex gap-1">
+                    <button class="pagination-btn" disabled>←</button>
+                    <button class="pagination-btn active">1</button>
+                    <button class="pagination-btn">2</button>
+                    <button class="pagination-btn">→</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="text-center text-xs text-white/20 mt-8 border-t border-white/5 pt-6">
+            Copyright © 2025 Cephas GM | Innovating for Tomorrow
+        </div>
+        
+    </div>
+</div>
+
+<!-- ==========================================
+     JAVASCRIPT
+     ========================================== -->
+<script>
+(function() {
+    'use strict';
+    
+    // ============================================
+    // DOM REFS
+    // ============================================
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const avatarBtn = document.getElementById('avatarBtn');
+    const referralLink = document.getElementById('referralLink');
+    const copyLinkBtn = document.getElementById('copyLinkBtn');
+    const inviteBtn = document.getElementById('inviteBtn');
+    const shareWhatsApp = document.getElementById('shareWhatsApp');
+    const shareTwitter = document.getElementById('shareTwitter');
+    const shareFacebook = document.getElementById('shareFacebook');
+    const paginationBtns = document.querySelectorAll('.pagination-btn');
+    const referralRows = document.querySelectorAll('.referral-row');
+    const emptyState = document.getElementById('emptyState');
+    
+    // ============================================
+    // TOAST
+    // ============================================
+    function showToast(message, type = 'success') {
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        toast.innerHTML = `
+            <div class="flex items-center space-x-3">
+                <span>${type === 'success' ? '✅' : type === 'error' ? '❌' : '⚠️'}</span>
+                <span class="text-sm">${message}</span>
+                <button onclick="this.parentElement.parentElement.remove()" class="text-white/30 hover:text-white/70 transition-colors ml-2">
+                    ✕
+                </button>
+            </div>
+        `;
+        document.body.appendChild(toast);
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateY(20px)';
+            setTimeout(() => toast.remove(), 300);
+        }, 4000);
+    }
+    
+    // ============================================
+    // SIDEBAR TOGGLE
+    // ============================================
+    sidebarToggle.addEventListener('click', function() {
+        sidebar.classList.toggle('open');
+    });
+    document.addEventListener('click', function(e) {
+        if (window.innerWidth <= 768) {
+            if (!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
+                sidebar.classList.remove('open');
+            }
+        }
+    });
+    
+    // ============================================
+    // LOGOUT & AVATAR
+    // ============================================
+    logoutBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        showToast('Logging out...', 'warning');
+        setTimeout(() => window.location.href = '/signin.html', 1000);
+    });
+    avatarBtn.addEventListener('click', function() {
+        window.location.href = '/profile.html';
+    });
+    
+    // ============================================
+    // COPY REFERRAL LINK
+    // ============================================
+    copyLinkBtn.addEventListener('click', function() {
+        const link = referralLink.value;
+        navigator.clipboard.writeText(link).then(() => {
+            showToast('Referral link copied! Share with friends.', 'success');
+            this.classList.add('copied-animation');
+            setTimeout(() => this.classList.remove('copied-animation'), 600);
+        }).catch(() => {
+            // Fallback
+            referralLink.select();
+            document.execCommand('copy');
+            showToast('Referral link copied!', 'success');
+        });
+    });
+    
+    // ============================================
+    // INVITE FRIENDS
+    // ============================================
+    inviteBtn.addEventListener('click', function() {
+        showToast('📧 Invitation sent to your friends!', 'success');
+    });
+    
+    // ============================================
+    // SHARE FUNCTIONS
+    // ============================================
+    const shareText = "Join me on CephasGM GameZone and get amazing bonuses! Use my referral link: ";
+    const shareUrl = referralLink.value;
+    
+    shareWhatsApp.addEventListener('click', function() {
+        window.open(`https://wa.me/?text=${encodeURIComponent(shareText + shareUrl)}`, '_blank');
+    });
+    
+    shareTwitter.addEventListener('click', function() {
+        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`, '_blank');
+    });
+    
+    shareFacebook.addEventListener('click', function() {
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(shareText)}`, '_blank');
+    });
+    
+    // ============================================
+    // PAGINATION
+    // ============================================
+    paginationBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            if (this.disabled) return;
+            const text = this.textContent;
+            if (text === '←' || text === '→') {
+                // Simple navigation
+                const active = document.querySelector('.pagination-btn.active');
+                if (active) {
+                    const siblings = [...active.parentElement.children];
+                    const idx = siblings.indexOf(active);
+                    if (text === '←' && idx > 0) {
+                        siblings[idx - 1]?.click();
+                    } else if (text === '→' && idx < siblings.length - 1) {
+                        siblings[idx + 1]?.click();
+                    }
+                }
+                return;
+            }
+            if (text === '…') return;
+            paginationBtns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            showToast(`Page ${text} loaded`, 'success');
+        });
+    });
+    
+    // ============================================
+    // REFERRAL ROW CLICK - View details
+    // ============================================
+    referralRows.forEach(row => {
+        row.style.cursor = 'pointer';
+        row.addEventListener('click', function() {
+            const name = this.querySelector('.name')?.textContent || 'User';
+            showToast(`👤 Viewing ${name}'s referral details`, 'warning');
+        });
+    });
+    
+    // ============================================
+    // PWA SERVICE WORKER
+    // ============================================
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js')
+                .then(reg => console.log('SW registered'))
+                .catch(err => console.log('SW registration failed'));
+        });
+    }
+    
+    // ============================================
+    // OFFLINE/ONLINE
+    // ============================================
+    window.addEventListener('online', () => showToast('Back online', 'success'));
+    window.addEventListener('offline', () => showToast('You are offline. Referral features may be limited.', 'warning'));
+    
+    // ============================================
+    // SIDEBAR ACTIVE LINK
+    // ============================================
+    document.querySelectorAll('.sidebar-link').forEach(link => {
+        if (link.href === window.location.href) {
+            link.classList.add('active');
+        }
+    });
+    
+    console.log('👥 Referrals page loaded');
+    
+})();
+</script>
+
+</body>
+</html>
