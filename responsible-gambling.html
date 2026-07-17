@@ -1,1 +1,1087 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0a0a12">
+    <meta name="description" content="Responsible Gambling - CephasGM GameZone">
+    <title>Responsible Gambling | CephasGM GameZone</title>
+    
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a12;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+        }
+        
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a12; }
+        ::-webkit-scrollbar-thumb { 
+            background: linear-gradient(180deg, #0055ff, #542bff);
+            border-radius: 10px;
+        }
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        
+        .glass-hover:hover {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar {
+            width: 260px;
+            min-height: 100vh;
+            background: rgba(10, 10, 18, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 24px 16px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            overflow-y: auto;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+        .sidebar::-webkit-scrollbar { width: 3px; }
+        .sidebar::-webkit-scrollbar-thumb { background: #0055ff; border-radius: 10px; }
+        
+        .sidebar-logo {
+            font-size: 20px;
+            font-weight: 700;
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            margin-bottom: 24px;
+        }
+        
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .sidebar-link:hover {
+            background: rgba(255,255,255,0.05);
+            color: #ffffff;
+        }
+        .sidebar-link.active {
+            background: rgba(0, 85, 255, 0.15);
+            color: #0055ff;
+            border: 1px solid rgba(0, 85, 255, 0.15);
+        }
+        .sidebar-link .icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+        .sidebar-divider {
+            height: 1px;
+            background: rgba(255,255,255,0.04);
+            margin: 16px 0;
+        }
+        
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            padding: 24px 32px;
+            min-height: 100vh;
+            background-image: url('https://images.unsplash.com/photo-1508098682722-e99c643edc58?w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        .main-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 10, 18, 0.85);
+            z-index: 0;
+        }
+        .content-inner {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .dashboard-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .header-left h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        .header-left p {
+            font-size: 14px;
+            color: rgba(255,255,255,0.4);
+            margin-top: 2px;
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .header-right .wallet-badge {
+            background: rgba(0, 255, 100, 0.1);
+            border: 1px solid rgba(0, 255, 100, 0.15);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 15px;
+            color: #00ff64;
+        }
+        .header-right .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        .sidebar-toggle {
+            display: none;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 10px;
+            padding: 8px 12px;
+            color: white;
+            cursor: pointer;
+        }
+        
+        .input-field {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 10px 16px;
+            color: white;
+            width: 100%;
+            transition: all 0.3s ease;
+            outline: none;
+            font-size: 14px;
+        }
+        .input-field:focus {
+            border-color: #0055ff;
+            box-shadow: 0 0 30px rgba(0, 85, 255, 0.08);
+        }
+        .input-field::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 85, 255, 0.25);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 85, 255, 0.4);
+        }
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-secondary {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #00b894, #00a86b);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 184, 148, 0.25);
+        }
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 184, 148, 0.4);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #ff0044, #cc0033);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 13px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255, 0, 68, 0.3);
+        }
+        
+        /* RG Hero */
+        .rg-hero {
+            background: linear-gradient(135deg, rgba(0, 85, 255, 0.08), rgba(84, 43, 255, 0.05));
+            border: 1px solid rgba(0, 85, 255, 0.08);
+            border-radius: 20px;
+            padding: 32px 40px;
+            margin-bottom: 28px;
+            position: relative;
+            overflow: hidden;
+        }
+        .rg-hero::before {
+            content: '🛡️';
+            position: absolute;
+            top: -30px;
+            right: 20px;
+            font-size: 120px;
+            opacity: 0.05;
+        }
+        .rg-hero .title {
+            font-size: 28px;
+            font-weight: 800;
+        }
+        .rg-hero .title .highlight {
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .rg-hero .sub {
+            font-size: 15px;
+            color: rgba(255,255,255,0.4);
+            margin-top: 4px;
+        }
+        
+        /* Principle Cards */
+        .principle-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255,255,255,0.04);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .principle-card:hover {
+            background: rgba(255,255,255,0.04);
+            transform: translateY(-4px);
+        }
+        .principle-card .icon { font-size: 36px; margin-bottom: 8px; }
+        .principle-card .name { font-weight: 700; font-size: 16px; }
+        .principle-card .desc { font-size: 13px; color: rgba(255,255,255,0.4); margin-top: 4px; }
+        
+        /* Tool Cards */
+        .tool-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255,255,255,0.04);
+            border-radius: 16px;
+            padding: 20px 24px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .tool-card:hover {
+            background: rgba(255,255,255,0.04);
+            border-color: rgba(255,255,255,0.08);
+        }
+        .tool-card .icon { font-size: 32px; flex-shrink: 0; }
+        .tool-card .info .name { font-weight: 600; font-size: 15px; }
+        .tool-card .info .desc { font-size: 13px; color: rgba(255,255,255,0.4); }
+        
+        /* Self-Assessment */
+        .assessment-question {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        .assessment-question:last-child {
+            border-bottom: none;
+        }
+        .assessment-question .q {
+            font-weight: 500;
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+        .assessment-question .options {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .assessment-question .options .option {
+            padding: 4px 16px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.06);
+            background: rgba(255,255,255,0.02);
+            color: rgba(255,255,255,0.5);
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s ease;
+        }
+        .assessment-question .options .option:hover {
+            background: rgba(255,255,255,0.06);
+        }
+        .assessment-question .options .option.selected {
+            background: rgba(0, 85, 255, 0.15);
+            border-color: #0055ff;
+            color: #0055ff;
+        }
+        .assessment-result {
+            margin-top: 16px;
+            padding: 16px;
+            border-radius: 12px;
+            display: none;
+        }
+        .assessment-result.show {
+            display: block;
+        }
+        .assessment-result.low {
+            background: rgba(0, 255, 100, 0.05);
+            border: 1px solid rgba(0, 255, 100, 0.1);
+        }
+        .assessment-result.medium {
+            background: rgba(255, 215, 0, 0.05);
+            border: 1px solid rgba(255, 215, 0, 0.1);
+        }
+        .assessment-result.high {
+            background: rgba(255, 0, 68, 0.05);
+            border: 1px solid rgba(255, 0, 68, 0.1);
+        }
+        
+        /* Support Org */
+        .support-org {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 14px 18px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.04);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .support-org:hover {
+            background: rgba(255,255,255,0.04);
+            border-color: rgba(255,255,255,0.08);
+        }
+        .support-org .logo {
+            font-size: 32px;
+            flex-shrink: 0;
+        }
+        .support-org .info .name {
+            font-weight: 600;
+            font-size: 15px;
+        }
+        .support-org .info .desc {
+            font-size: 13px;
+            color: rgba(255,255,255,0.4);
+        }
+        .support-org .info .phone {
+            font-size: 13px;
+            color: #0055ff;
+            font-weight: 600;
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9999;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 16px 24px;
+            min-width: 280px;
+            animation: slideUp 0.4s ease;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        .toast-success { border-left: 4px solid #00ff64; }
+        .toast-error { border-left: 4px solid #ff0044; }
+        .toast-warning { border-left: 4px solid #ffd700; }
+        @keyframes slideUp {
+            from { transform: translateY(40px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 280px;
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 16px;
+            }
+            .sidebar-toggle {
+                display: block;
+            }
+            .header-left h1 { font-size: 20px; }
+            .rg-hero { padding: 20px; }
+            .rg-hero .title { font-size: 22px; }
+            .rg-hero::before { font-size: 80px; }
+            .tool-card { flex-direction: column; text-align: center; padding: 16px; }
+            .tool-card .icon { font-size: 28px; }
+            .support-org { flex-direction: column; text-align: center; }
+            .assessment-question .options { justify-content: center; }
+        }
+        @media (max-width: 480px) {
+            .header-right .wallet-badge { font-size: 13px; padding: 6px 12px; }
+            .header-right .avatar { width: 34px; height: 34px; font-size: 15px; }
+            .rg-hero .title { font-size: 18px; }
+            .principle-card .icon { font-size: 28px; }
+            .assessment-question .options .option { font-size: 12px; padding: 3px 12px; }
+        }
+    </style>
+</head>
+<body>
 
+<!-- ==========================================
+     SIDEBAR
+     ========================================== -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+        <span class="text-gradient">CephasGM</span>
+        <span class="text-white font-light">|</span>
+        <span class="text-white font-semibold">GameZone</span>
+    </div>
+    <nav class="space-y-1">
+        <a href="/dashboard.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+            Dashboard
+        </a>
+        <a href="/wallet.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+            Wallet
+        </a>
+        <a href="/deposit.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            Deposit
+        </a>
+        <a href="/withdraw.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            Withdraw
+        </a>
+        <a href="/transactions.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
+            Transactions
+        </a>
+        <a href="/bet-history.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+            Bet History
+        </a>
+        <div class="sidebar-divider"></div>
+        <a href="/sports.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            Sports
+        </a>
+        <a href="/live-betting.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+            Live
+        </a>
+        <a href="/casino.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Casino
+        </a>
+        <a href="/aviator.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+            Aviator
+        </a>
+        <a href="/virtual-football.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            Virtual
+        </a>
+        <a href="/promotions.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/></svg>
+            Promotions
+        </a>
+        <a href="/leaderboard.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+            Leaderboard
+        </a>
+        <a href="/referrals.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+            Referrals
+        </a>
+        <a href="/bonuses.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/></svg>
+            Bonuses
+        </a>
+        <a href="/vip.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+            VIP Club
+        </a>
+        <a href="/notifications.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+            Notifications
+        </a>
+        <a href="/messages.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+            Messages
+        </a>
+        <a href="/support.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636a9 9 0 010 12.728m0 0a9 9 0 01-12.728 0m12.728 0L21 21M4 4l-1 1m2 2l-1 1m2 2l-1 1m14 2l1 1m-2 2l1 1m-2 2l1 1"/></svg>
+            Support
+        </a>
+        <a href="/profile.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+            Profile
+        </a>
+        <a href="/settings.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            Settings
+        </a>
+        <a href="/kyc.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            KYC
+        </a>
+        <a href="/self-exclusion.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636a9 9 0 010 12.728m0 0a9 9 0 01-12.728 0m12.728 0L21 21M4 4l-1 1m2 2l-1 1m2 2l-1 1m14 2l1 1m-2 2l1 1m-2 2l1 1"/></svg>
+            Self-Exclusion
+        </a>
+        <a href="/about.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            About
+        </a>
+        <a href="/contact.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            Contact
+        </a>
+        <a href="/faq.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            FAQ
+        </a>
+        <a href="/privacy.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+            Privacy
+        </a>
+        <a href="/terms.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            Terms
+        </a>
+        <a href="/cookies.html" class="sidebar-link">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+            Cookies
+        </a>
+        <a href="/responsible-gambling.html" class="sidebar-link active">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636a9 9 0 010 12.728m0 0a9 9 0 01-12.728 0m12.728 0L21 21M4 4l-1 1m2 2l-1 1m2 2l-1 1m14 2l1 1m-2 2l1 1m-2 2l1 1"/></svg>
+            Responsible Gambling
+        </a>
+        <a href="/signin.html" class="sidebar-link" id="logoutBtn">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+            Logout
+        </a>
+    </nav>
+</aside>
+
+<!-- ==========================================
+     MAIN CONTENT
+     ========================================== -->
+<div class="main-content">
+    <div class="content-inner">
+        
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <div class="flex items-center gap-3">
+                    <button class="sidebar-toggle" id="sidebarToggle">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                    <div>
+                        <h1>🛡️ Responsible Gambling</h1>
+                        <p>Stay in control and gamble responsibly</p>
+                    </div>
+                </div>
+            </div>
+            <div class="header-right">
+                <span class="wallet-badge">$1,245.80</span>
+                <div class="avatar" id="avatarBtn">JD</div>
+            </div>
+        </header>
+        
+        <!-- RG Hero -->
+        <div class="rg-hero">
+            <div class="title">
+                Play Smart. Stay<br>
+                <span class="highlight">In Control</span>
+            </div>
+            <div class="sub">
+                At CephasGM GameZone, we're committed to providing a safe and responsible gambling environment. 
+                Use our tools and resources to stay in control of your betting activity.
+            </div>
+        </div>
+        
+        <!-- Key Principles -->
+        <h3 class="font-semibold text-lg mb-4">💡 Key Principles</h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <div class="principle-card">
+                <div class="icon">🎯</div>
+                <div class="name">Set Limits</div>
+                <div class="desc">Decide your budget before you start</div>
+            </div>
+            <div class="principle-card">
+                <div class="icon">⏰</div>
+                <div class="name">Time Management</div>
+                <div class="desc">Take regular breaks from betting</div>
+            </div>
+            <div class="principle-card">
+                <div class="icon">📊</div>
+                <div class="name">Track Activity</div>
+                <div class="desc">Monitor your betting history</div>
+            </div>
+            <div class="principle-card">
+                <div class="icon">🤝</div>
+                <div class="name">Seek Help</div>
+                <div class="desc">Reach out if you need support</div>
+            </div>
+        </div>
+        
+        <!-- Tools & Features -->
+        <h3 class="font-semibold text-lg mb-4">🛠️ Responsible Gambling Tools</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            
+            <div class="tool-card" onclick="window.location.href='/settings.html'">
+                <div class="icon">💰</div>
+                <div class="info">
+                    <div class="name">Deposit Limits</div>
+                    <div class="desc">Set daily, weekly, or monthly deposit limits</div>
+                </div>
+            </div>
+            
+            <div class="tool-card" onclick="window.location.href='/settings.html'">
+                <div class="icon">⏱️</div>
+                <div class="info">
+                    <div class="name">Time Limits</div>
+                    <div class="desc">Set session time limits and reality checks</div>
+                </div>
+            </div>
+            
+            <div class="tool-card" onclick="window.location.href='/self-exclusion.html'">
+                <div class="icon">🔒</div>
+                <div class="info">
+                    <div class="name">Self-Exclusion</div>
+                    <div class="desc">Temporarily or permanently exclude yourself</div>
+                </div>
+            </div>
+            
+            <div class="tool-card" onclick="window.location.href='/bet-history.html'">
+                <div class="icon">📋</div>
+                <div class="info">
+                    <div class="name">Betting History</div>
+                    <div class="desc">Review your complete betting activity</div>
+                </div>
+            </div>
+            
+        </div>
+        
+        <!-- Self-Assessment -->
+        <h3 class="font-semibold text-lg mb-4">📝 Self-Assessment Test</h3>
+        <div class="glass rounded-2xl p-6 mb-8">
+            <p class="text-sm text-white/40 mb-4">
+                Answer the following questions honestly to assess your gambling habits. This is a confidential self-assessment tool.
+            </p>
+            
+            <div class="assessment-question" data-question="1">
+                <div class="q">1. How often do you gamble?</div>
+                <div class="options">
+                    <span class="option" data-value="0">Never</span>
+                    <span class="option" data-value="1">Rarely</span>
+                    <span class="option" data-value="2">Sometimes</span>
+                    <span class="option" data-value="3">Often</span>
+                    <span class="option" data-value="4">Very Often</span>
+                </div>
+            </div>
+            
+            <div class="assessment-question" data-question="2">
+                <div class="q">2. Do you gamble to escape stress or problems?</div>
+                <div class="options">
+                    <span class="option" data-value="0">Never</span>
+                    <span class="option" data-value="1">Rarely</span>
+                    <span class="option" data-value="2">Sometimes</span>
+                    <span class="option" data-value="3">Often</span>
+                    <span class="option" data-value="4">Very Often</span>
+                </div>
+            </div>
+            
+            <div class="assessment-question" data-question="3">
+                <div class="q">3. Have you ever chased losses by betting more?</div>
+                <div class="options">
+                    <span class="option" data-value="0">Never</span>
+                    <span class="option" data-value="1">Rarely</span>
+                    <span class="option" data-value="2">Sometimes</span>
+                    <span class="option" data-value="3">Often</span>
+                    <span class="option" data-value="4">Very Often</span>
+                </div>
+            </div>
+            
+            <div class="assessment-question" data-question="4">
+                <div class="q">4. Do you spend more than you can afford to lose?</div>
+                <div class="options">
+                    <span class="option" data-value="0">Never</span>
+                    <span class="option" data-value="1">Rarely</span>
+                    <span class="option" data-value="2">Sometimes</span>
+                    <span class="option" data-value="3">Often</span>
+                    <span class="option" data-value="4">Very Often</span>
+                </div>
+            </div>
+            
+            <div class="assessment-question" data-question="5">
+                <div class="q">5. Have you ever lied about your gambling?</div>
+                <div class="options">
+                    <span class="option" data-value="0">Never</span>
+                    <span class="option" data-value="1">Rarely</span>
+                    <span class="option" data-value="2">Sometimes</span>
+                    <span class="option" data-value="3">Often</span>
+                    <span class="option" data-value="4">Very Often</span>
+                </div>
+            </div>
+            
+            <div class="mt-4">
+                <button class="btn-primary" id="assessmentBtn">📊 Get Results</button>
+            </div>
+            
+            <div class="assessment-result" id="assessmentResult">
+                <div id="assessmentResultContent"></div>
+            </div>
+        </div>
+        
+        <!-- Warning Signs -->
+        <h3 class="font-semibold text-lg mb-4">⚠️ Warning Signs</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+            <div class="glass p-4 rounded-xl border-l-4 border-yellow-500">
+                <div class="font-semibold text-sm">💳 Spending More Than Planned</div>
+                <div class="text-xs text-white/40 mt-1">Exceeding your budget regularly</div>
+            </div>
+            <div class="glass p-4 rounded-xl border-l-4 border-yellow-500">
+                <div class="font-semibold text-sm">⏰ Losing Track of Time</div>
+                <div class="text-xs text-white/40 mt-1">Gambling for hours without breaks</div>
+            </div>
+            <div class="glass p-4 rounded-xl border-l-4 border-yellow-500">
+                <div class="font-semibold text-sm">😤 Chasing Losses</div>
+                <div class="text-xs text-white/40 mt-1">Betting more to recover losses</div>
+            </div>
+            <div class="glass p-4 rounded-xl border-l-4 border-yellow-500">
+                <div class="font-semibold text-sm">🤥 Hiding Gambling Activity</div>
+                <div class="text-xs text-white/40 mt-1">Being secretive about your betting</div>
+            </div>
+            <div class="glass p-4 rounded-xl border-l-4 border-yellow-500">
+                <div class="font-semibold text-sm">💢 Mood Changes</div>
+                <div class="text-xs text-white/40 mt-1">Irritability or anxiety about gambling</div>
+            </div>
+            <div class="glass p-4 rounded-xl border-l-4 border-yellow-500">
+                <div class="font-semibold text-sm">💰 Borrowing for Gambling</div>
+                <div class="text-xs text-white/40 mt-1">Taking loans to fund gambling</div>
+            </div>
+        </div>
+        
+        <!-- Support Organizations -->
+        <h3 class="font-semibold text-lg mb-4">🤝 Support Organizations</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            
+            <div class="support-org" onclick="showToast('📞 Connecting to Gamblers Anonymous', 'warning')">
+                <div class="logo">🤝</div>
+                <div class="info">
+                    <div class="name">Gamblers Anonymous</div>
+                    <div class="desc">Support groups and recovery programs</div>
+                    <div class="phone">📞 +1 (855) 222-5542</div>
+                </div>
+            </div>
+            
+            <div class="support-org" onclick="showToast('📞 Connecting to National Gambling Helpline', 'warning')">
+                <div class="logo">📞</div>
+                <div class="info">
+                    <div class="name">National Gambling Helpline</div>
+                    <div class="desc">24/7 confidential support</div>
+                    <div class="phone">📞 +1 (800) 522-4700</div>
+                </div>
+            </div>
+            
+            <div class="support-org" onclick="showToast('📞 Connecting to GamCare', 'warning')">
+                <div class="logo">💬</div>
+                <div class="info">
+                    <div class="name">GamCare</div>
+                    <div class="desc">Online support and resources</div>
+                    <div class="phone">📞 +44 (808) 8020-133</div>
+                </div>
+            </div>
+            
+            <div class="support-org" onclick="showToast('📞 Connecting to BeGambleAware', 'warning')">
+                <div class="logo">🛡️</div>
+                <div class="info">
+                    <div class="name">BeGambleAware</div>
+                    <div class="desc">Information and advice on responsible gambling</div>
+                    <div class="phone">📞 +44 (808) 8020-133</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quick Actions -->
+        <div class="glass rounded-2xl p-6 text-center">
+            <h3 class="font-semibold text-lg">Need Immediate Help?</h3>
+            <p class="text-sm text-white/40 mt-2 max-w-lg mx-auto">
+                If you're concerned about your gambling or someone else's, reach out to our support team or contact one of the organizations above.
+            </p>
+            <div class="flex flex-wrap justify-center gap-3 mt-4">
+                <button class="btn-success" onclick="window.location.href='/support.html'">💬 Contact Support</button>
+                <button class="btn-secondary" onclick="window.location.href='/self-exclusion.html'">🔒 Self-Exclusion</button>
+                <button class="btn-secondary" onclick="window.location.href='/settings.html'">⚙️ Set Limits</button>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="text-center text-xs text-white/20 mt-8 border-t border-white/5 pt-6">
+            Copyright © 2025 Cephas GM | Innovating for Tomorrow
+        </div>
+        
+    </div>
+</div>
+
+<!-- ==========================================
+     JAVASCRIPT
+     ========================================== -->
+<script>
+(function() {
+    'use strict';
+    
+    // ============================================
+    // DOM REFS
+    // ============================================
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const avatarBtn = document.getElementById('avatarBtn');
+    const assessmentBtn = document.getElementById('assessmentBtn');
+    const assessmentResult = document.getElementById('assessmentResult');
+    const assessmentResultContent = document.getElementById('assessmentResultContent');
+    const optionEls = document.querySelectorAll('.assessment-question .option');
+    
+    // ============================================
+    // TOAST
+    // ============================================
+    function showToast(message, type = 'success') {
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        toast.innerHTML = `
+            <div class="flex items-center space-x-3">
+                <span>${type === 'success' ? '✅' : type === 'error' ? '❌' : '⚠️'}</span>
+                <span class="text-sm">${message}</span>
+                <button onclick="this.parentElement.parentElement.remove()" class="text-white/30 hover:text-white/70 transition-colors ml-2">
+                    ✕
+                </button>
+            </div>
+        `;
+        document.body.appendChild(toast);
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateY(20px)';
+            setTimeout(() => toast.remove(), 300);
+        }, 4000);
+    }
+    
+    // ============================================
+    // SIDEBAR TOGGLE
+    // ============================================
+    sidebarToggle.addEventListener('click', function() {
+        sidebar.classList.toggle('open');
+    });
+    document.addEventListener('click', function(e) {
+        if (window.innerWidth <= 768) {
+            if (!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
+                sidebar.classList.remove('open');
+            }
+        }
+    });
+    
+    // ============================================
+    // LOGOUT & AVATAR
+    // ============================================
+    logoutBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        showToast('Logging out...', 'warning');
+        setTimeout(() => window.location.href = '/signin.html', 1000);
+    });
+    avatarBtn.addEventListener('click', function() {
+        window.location.href = '/profile.html';
+    });
+    
+    // ============================================
+    // SELF-ASSESSMENT
+    // ============================================
+    // Select option
+    optionEls.forEach(option => {
+        option.addEventListener('click', function() {
+            const parent = this.closest('.options');
+            parent.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+            this.classList.add('selected');
+        });
+    });
+    
+    // Calculate results
+    assessmentBtn.addEventListener('click', function() {
+        let total = 0;
+        let answered = 0;
+        
+        document.querySelectorAll('.assessment-question').forEach(q => {
+            const selected = q.querySelector('.option.selected');
+            if (selected) {
+                total += parseInt(selected.dataset.value);
+                answered++;
+            }
+        });
+        
+        if (answered < 5) {
+            showToast('⚠️ Please answer all questions before submitting.', 'error');
+            return;
+        }
+        
+        assessmentResult.classList.add('show');
+        
+        let level, message, color, emoji;
+        
+        if (total <= 5) {
+            level = 'Low Risk';
+            message = 'Your gambling habits appear to be healthy. Continue to monitor your activity and stay in control.';
+            color = 'low';
+            emoji = '✅';
+        } else if (total <= 10) {
+            level = 'Moderate Risk';
+            message = 'You may be at risk of developing gambling problems. Consider setting limits and monitoring your activity more closely.';
+            color = 'medium';
+            emoji = '⚠️';
+        } else {
+            level = 'High Risk';
+            message = 'Your responses indicate a high risk of problem gambling. We strongly encourage you to seek support from one of the organizations listed below.';
+            color = 'high';
+            emoji = '🚨';
+        }
+        
+        assessmentResult.className = 'assessment-result show ' + color;
+        assessmentResultContent.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                <span style="font-size: 32px;">${emoji}</span>
+                <div>
+                    <div style="font-weight: 700; font-size: 18px;">${level}</div>
+                    <div style="font-size: 14px; color: rgba(255,255,255,0.5);">Score: ${total} / 20</div>
+                </div>
+            </div>
+            <p style="font-size: 14px; color: rgba(255,255,255,0.6); line-height: 1.6;">${message}</p>
+            ${total > 10 ? `
+                <div style="margin-top: 12px;">
+                    <button class="btn-secondary" onclick="window.location.href='/support.html'" style="font-size: 12px; padding: 6px 16px;">💬 Contact Support</button>
+                    <button class="btn-secondary" onclick="window.location.href='/self-exclusion.html'" style="font-size: 12px; padding: 6px 16px; margin-left: 8px;">🔒 Self-Exclusion</button>
+                </div>
+            ` : ''}
+        `;
+    });
+    
+    // ============================================
+    // SUPPORT ORG CLICK
+    // ============================================
+    document.querySelectorAll('.support-org').forEach(org => {
+        org.addEventListener('click', function(e) {
+            // If it has an onclick attribute, let it handle
+            if (this.hasAttribute('onclick')) return;
+            const name = this.querySelector('.name')?.textContent || 'Organization';
+            showToast(`📞 Connecting to ${name}...`, 'warning');
+        });
+    });
+    
+    // ============================================
+    // TOOL CARD CLICK
+    // ============================================
+    document.querySelectorAll('.tool-card').forEach(card => {
+        card.style.cursor = 'pointer';
+    });
+    
+    // ============================================
+    // PWA SERVICE WORKER
+    // ============================================
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js')
+                .then(reg => console.log('SW registered'))
+                .catch(err => console.log('SW registration failed'));
+        });
+    }
+    
+    // ============================================
+    // OFFLINE/ONLINE
+    // ============================================
+    window.addEventListener('online', () => showToast('Back online', 'success'));
+    window.addEventListener('offline', () => showToast('You are offline. Resources may be limited.', 'warning'));
+    
+    // ============================================
+    // SIDEBAR ACTIVE LINK
+    // ============================================
+    document.querySelectorAll('.sidebar-link').forEach(link => {
+        if (link.href === window.location.href) {
+            link.classList.add('active');
+        }
+    });
+    
+    console.log('🛡️ Responsible Gambling page loaded');
+    
+})();
+</script>
+
+</body>
+</html>
