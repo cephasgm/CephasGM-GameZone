@@ -4,8 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#0a0a12">
-    <meta name="description" content="CephasGM GameZone - Premium Online Betting Platform">
+    <meta name="description" content="CephasGM GameZone - Premium Online Betting Platform. Sports betting, live casino, virtual games, and more.">
     <title>CephasGM | GameZone</title>
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="CephasGM GameZone">
+    <meta property="og:description" content="Premium Online Betting Platform">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://gamezone.cephasgm.com">
+    
+    <!-- Canonical -->
+    <link rel="canonical" href="https://gamezone.cephasgm.com">
     
     <!-- PWA -->
     <link rel="manifest" href="/manifest.json">
@@ -13,6 +22,9 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <script src="https://cdn.tailwindcss.com"></script>
@@ -27,6 +39,7 @@
             overflow-x: hidden;
         }
         
+        /* Premium Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #0a0a12; }
         ::-webkit-scrollbar-thumb { 
@@ -34,6 +47,7 @@
             border-radius: 10px;
         }
         
+        /* Glassmorphism */
         .glass {
             background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(20px);
@@ -48,6 +62,7 @@
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
         
+        /* Buttons */
         .btn-primary {
             background: linear-gradient(135deg, #0055ff, #542bff);
             color: white;
@@ -81,6 +96,12 @@
             transform: translateY(-2px);
         }
         
+        .btn-sm {
+            padding: 8px 20px;
+            font-size: 12px;
+        }
+        
+        /* Hero Section */
         .hero-section {
             min-height: 100vh;
             background-image: url('https://images.unsplash.com/photo-1508098682722-e99c643edc58?w=1920&q=80');
@@ -97,9 +118,14 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(135deg, rgba(10,10,18,0.85) 0%, rgba(10,10,18,0.6) 50%, rgba(10,10,18,0.85) 100%);
+            background: linear-gradient(135deg, 
+                rgba(10, 10, 18, 0.85) 0%, 
+                rgba(10, 10, 18, 0.6) 50%,
+                rgba(10, 10, 18, 0.85) 100%
+            );
         }
         
+        /* Navbar */
         .navbar {
             position: fixed;
             top: 0;
@@ -108,6 +134,7 @@
             z-index: 1000;
             padding: 16px 0;
             transition: all 0.3s ease;
+            background: rgba(10, 10, 18, 0.0);
         }
         .navbar.scrolled {
             background: rgba(10, 10, 18, 0.92);
@@ -116,6 +143,7 @@
             padding: 10px 0;
         }
         
+        /* Feature Cards */
         .feature-card {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.05);
@@ -123,6 +151,9 @@
             padding: 24px;
             transition: all 0.3s ease;
             cursor: pointer;
+            text-decoration: none;
+            color: white;
+            display: block;
         }
         .feature-card:hover {
             transform: translateY(-6px);
@@ -130,6 +161,7 @@
             border-color: rgba(255, 255, 255, 0.1);
         }
         
+        /* Live Dot */
         .live-dot {
             width: 8px;
             height: 8px;
@@ -143,12 +175,16 @@
             50% { opacity: 0.4; transform: scale(0.8); }
         }
         
+        /* Animations */
         @keyframes float {
             0%, 100% { transform: translateY(0px); }
             50% { transform: translateY(-10px); }
         }
-        .float-animation { animation: float 4s ease-in-out infinite; }
+        .float-animation {
+            animation: float 4s ease-in-out infinite;
+        }
         
+        /* Gradient Text */
         .text-gradient {
             background: linear-gradient(135deg, #0055ff, #542bff);
             -webkit-background-clip: text;
@@ -156,6 +192,7 @@
             background-clip: text;
         }
         
+        /* Mobile Menu */
         .mobile-menu {
             position: fixed;
             top: 0;
@@ -167,13 +204,88 @@
             z-index: 999;
             display: none;
             padding: 80px 24px 24px;
+            overflow-y: auto;
         }
-        .mobile-menu.active { display: block; animation: fadeIn 0.3s ease; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .mobile-menu.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .mobile-menu a {
+            display: block;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: color 0.2s ease;
+            font-size: 15px;
+        }
+        .mobile-menu a:hover { color: #ffffff; }
+        .mobile-menu .section-title {
+            color: rgba(255,255,255,0.3);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 12px 0 4px;
+            border-bottom: none;
+        }
+        
+        /* Footer Links */
+        .footer-link {
+            color: rgba(255, 255, 255, 0.4);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .footer-link:hover { color: #ffffff; }
+        
+        /* Page Grid Card */
+        .page-grid-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 12px;
+            padding: 12px 16px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: rgba(255,255,255,0.6);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+        }
+        .page-grid-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+            border-color: rgba(255,255,255,0.08);
+            transform: translateX(4px);
+        }
+        .page-grid-card .icon { font-size: 18px; }
+        .page-grid-card .status {
+            margin-left: auto;
+            font-size: 10px;
+            color: #00ff64;
+            font-weight: 600;
+        }
+        
+        /* Match Card */
+        .match-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 16px;
+            transition: all 0.3s ease;
+        }
+        .match-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
         
         .odds-btn {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
             border-radius: 8px;
             padding: 6px 14px;
             color: white;
@@ -184,40 +296,98 @@
             min-width: 52px;
             text-align: center;
         }
-        .odds-btn:hover { background: #0055ff; border-color: #0055ff; transform: scale(1.05); }
-        
-        .match-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 16px;
-            padding: 16px;
-            transition: all 0.3s ease;
+        .odds-btn:hover {
+            background: #0055ff;
+            border-color: #0055ff;
+            transform: scale(1.05);
         }
-        .match-card:hover { background: rgba(255, 255, 255, 0.06); border-color: rgba(255, 255, 255, 0.1); }
         
-        .footer-link {
-            color: rgba(255, 255, 255, 0.4);
+        /* Sport Category Image Card */
+        .sport-category {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            aspect-ratio: 1;
+            cursor: pointer;
             transition: all 0.3s ease;
             text-decoration: none;
-            font-size: 14px;
+            display: block;
         }
-        .footer-link:hover { color: #ffffff; }
+        .sport-category:hover { transform: scale(1.05); }
+        .sport-category img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .sport-category:hover img { transform: scale(1.1); }
+        .sport-category .overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0,0,0,0.2), rgba(0,0,0,0.7));
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 12px;
+        }
+        .sport-category .overlay span {
+            font-weight: 600;
+            font-size: 14px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+        
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9999;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 16px 24px;
+            min-width: 280px;
+            animation: slideUp 0.4s ease;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        .toast-success { border-left: 4px solid #00ff64; }
+        .toast-error { border-left: 4px solid #ff0044; }
+        .toast-warning { border-left: 4px solid #ffd700; }
+        @keyframes slideUp {
+            from { transform: translateY(40px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .text-gold { color: #ffd700; }
+        .text-gradient-gold { background: linear-gradient(135deg, #ffd700, #f0a500); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
         
         @media (max-width: 768px) {
-            .hero-section { min-height: 90vh; }
+            .hero-section { min-height: 80vh; }
+            .navbar { padding: 12px 0; }
             .feature-card { padding: 16px; }
+            .mobile-menu { padding: 70px 16px 16px; }
+            .page-grid-card { font-size: 12px; padding: 10px 14px; }
+            .sport-category { aspect-ratio: 1.2; }
+        }
+        @media (max-width: 480px) {
+            .hero-section { min-height: 70vh; }
+            .btn-primary, .btn-secondary { padding: 10px 20px; font-size: 13px; }
+            .page-grid-card { font-size: 11px; padding: 8px 12px; }
+            .page-grid-card .icon { font-size: 15px; }
         }
     </style>
 </head>
 <body>
 
 <!-- ==========================================
-     NAVBAR - CephasGM | GameZone
+     NAVBAR
      ========================================== -->
 <nav class="navbar" id="navbar">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between">
             
+            <!-- Logo -->
             <a href="/" class="flex items-center space-x-2">
                 <span class="text-xl font-bold">
                     <span class="text-gradient">CephasGM</span>
@@ -230,39 +400,27 @@
             <div class="hidden lg:flex items-center space-x-1">
                 <a href="/sports.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Sports</a>
                 <a href="/live-betting.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 flex items-center space-x-1">
-                    <span class="live-dot"></span><span>Live</span>
+                    <span class="live-dot"></span>
+                    <span>Live</span>
                 </a>
                 <a href="/casino.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Casino</a>
                 <a href="/virtual-football.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Virtual</a>
                 <a href="/aviator.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Aviator</a>
                 <a href="/promotions.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Promotions</a>
-                <a href="/bonuses.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Bonuses</a>
-                <a href="/vip.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">VIP</a>
             </div>
             
             <!-- Right -->
             <div class="flex items-center space-x-3">
-                <button class="hidden sm:flex items-center space-x-2 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-sm">
-                    <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
-                    </svg>
-                    <span class="text-white font-semibold text-sm">$0.00</span>
-                </button>
-                
-                <button class="relative p-2 text-white/40 hover:text-white transition-colors rounded-lg hover:bg-white/5">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
-                    </svg>
-                    <span class="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-red-500 rounded-full"></span>
-                </button>
-                
                 <button onclick="window.location.href='/signin.html'" class="btn-primary text-sm px-4 py-2 hidden sm:block">
                     Sign In
+                </button>
+                <button onclick="window.location.href='/signup.html'" class="btn-secondary text-sm px-4 py-2 hidden sm:block">
+                    Join Free
                 </button>
                 
                 <button id="mobileToggle" class="lg:hidden p-2 text-white/40 hover:text-white transition-colors">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                     </svg>
                 </button>
             </div>
@@ -271,27 +429,53 @@
 </nav>
 
 <!-- ==========================================
-     MOBILE MENU - Full Links
+     MOBILE MENU
      ========================================== -->
 <div id="mobileMenu" class="mobile-menu">
-    <nav class="flex flex-col space-y-4">
-        <a href="/sports.html" class="text-lg text-white/70 hover:text-white transition-colors">⚽ Sports</a>
-        <a href="/live-betting.html" class="text-lg text-white/70 hover:text-white transition-colors flex items-center space-x-2">
-            <span class="live-dot"></span><span>📺 Live Betting</span>
-        </a>
-        <a href="/casino.html" class="text-lg text-white/70 hover:text-white transition-colors">🎰 Casino</a>
-        <a href="/virtual-football.html" class="text-lg text-white/70 hover:text-white transition-colors">🎮 Virtual Games</a>
-        <a href="/aviator.html" class="text-lg text-white/70 hover:text-white transition-colors">✈️ Aviator</a>
-        <a href="/promotions.html" class="text-lg text-white/70 hover:text-white transition-colors">🎁 Promotions</a>
-        <a href="/bonuses.html" class="text-lg text-white/70 hover:text-white transition-colors">💎 Bonuses</a>
-        <a href="/vip.html" class="text-lg text-white/70 hover:text-white transition-colors">👑 VIP Club</a>
-        <a href="/leaderboard.html" class="text-lg text-white/70 hover:text-white transition-colors">🏆 Leaderboard</a>
-        <a href="/referrals.html" class="text-lg text-white/70 hover:text-white transition-colors">👥 Referrals</a>
-        <div class="pt-4 border-t border-white/10 flex flex-col space-y-3">
-            <a href="/signin.html" class="btn-primary text-center">Sign In</a>
-            <a href="/signup.html" class="btn-secondary text-center">Create Account</a>
-        </div>
-    </nav>
+    <!-- Auth -->
+    <div class="flex gap-3 mb-4">
+        <button onclick="window.location.href='/signin.html'" class="btn-primary text-sm px-6 py-2 flex-1 text-center">Sign In</button>
+        <button onclick="window.location.href='/signup.html'" class="btn-secondary text-sm px-6 py-2 flex-1 text-center">Join Free</button>
+    </div>
+    
+    <div class="section-title">Main Navigation</div>
+    <a href="/dashboard.html">📊 Dashboard</a>
+    <a href="/sports.html">⚽ Sports</a>
+    <a href="/live-betting.html">📺 Live Betting</a>
+    <a href="/casino.html">🎰 Casino</a>
+    <a href="/aviator.html">✈️ Aviator</a>
+    <a href="/virtual-football.html">🎮 Virtual Games</a>
+    <a href="/promotions.html">🎁 Promotions</a>
+    
+    <div class="section-title">Account</div>
+    <a href="/wallet.html">💰 Wallet</a>
+    <a href="/deposit.html">📥 Deposit</a>
+    <a href="/withdraw.html">📤 Withdraw</a>
+    <a href="/transactions.html">📊 Transactions</a>
+    <a href="/bet-history.html">📋 Bet History</a>
+    <a href="/profile.html">👤 Profile</a>
+    <a href="/settings.html">⚙️ Settings</a>
+    
+    <div class="section-title">More</div>
+    <a href="/leaderboard.html">🏆 Leaderboard</a>
+    <a href="/referrals.html">👥 Referrals</a>
+    <a href="/bonuses.html">🎁 Bonuses</a>
+    <a href="/vip.html">👑 VIP Club</a>
+    <a href="/notifications.html">🔔 Notifications</a>
+    <a href="/messages.html">💬 Messages</a>
+    
+    <div class="section-title">Support</div>
+    <a href="/support.html">🛟 Support Center</a>
+    <a href="/contact.html">📬 Contact</a>
+    <a href="/faq.html">❓ FAQ</a>
+    <a href="/responsible-gambling.html">🛡️ Responsible Gambling</a>
+    <a href="/self-exclusion.html">🔒 Self-Exclusion</a>
+    
+    <div class="section-title">Legal</div>
+    <a href="/about.html">ℹ️ About</a>
+    <a href="/privacy.html">🔒 Privacy</a>
+    <a href="/terms.html">⚖️ Terms</a>
+    <a href="/cookies.html">🍪 Cookies</a>
 </div>
 
 <!-- ==========================================
@@ -306,12 +490,13 @@
             </div>
             
             <h1 class="text-5xl md:text-7xl font-bold leading-tight mb-6">
-                <span class="text-gradient">Bet Smarter</span><br>
+                <span class="text-gradient">Bet Smarter</span>
+                <br>
                 <span class="text-white">Win Bigger</span>
             </h1>
             
             <p class="text-lg text-white/50 max-w-lg mb-8 leading-relaxed">
-                Premium sports betting, live casino, and virtual games. 
+                Premium sports betting, live casino, virtual games, and more.
                 Real-time odds, instant payouts, and a world-class experience.
             </p>
             
@@ -319,7 +504,7 @@
                 <button onclick="window.location.href='/signup.html'" class="btn-primary">
                     Get Started
                     <svg class="inline-block w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
                     </svg>
                 </button>
                 <button onclick="window.location.href='/sports.html'" class="btn-secondary">
@@ -346,9 +531,50 @@
 </section>
 
 <!-- ==========================================
-     FEATURED MATCHES
+     QUICK ACCESS CARDS
      ========================================== -->
 <section class="py-12 bg-[#0a0a12]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-xl font-bold mb-6">⚡ Quick Access</h2>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+            <a href="/sports.html" class="feature-card text-center p-4">
+                <div class="text-3xl mb-2">⚽</div>
+                <div class="font-semibold text-sm">Sports</div>
+                <div class="text-xs text-white/30">48 live</div>
+            </a>
+            <a href="/live-betting.html" class="feature-card text-center p-4">
+                <div class="text-3xl mb-2">📺</div>
+                <div class="font-semibold text-sm">Live</div>
+                <div class="text-xs text-white/30"><span class="live-dot mr-1"></span>24 matches</div>
+            </a>
+            <a href="/casino.html" class="feature-card text-center p-4">
+                <div class="text-3xl mb-2">🎰</div>
+                <div class="font-semibold text-sm">Casino</div>
+                <div class="text-xs text-white/30">16 games</div>
+            </a>
+            <a href="/aviator.html" class="feature-card text-center p-4">
+                <div class="text-3xl mb-2 float-animation">✈️</div>
+                <div class="font-semibold text-sm">Aviator</div>
+                <div class="text-xs text-white/30">1,234 playing</div>
+            </a>
+            <a href="/virtual-football.html" class="feature-card text-center p-4">
+                <div class="text-3xl mb-2">🎮</div>
+                <div class="font-semibold text-sm">Virtual</div>
+                <div class="text-xs text-white/30">8 matches</div>
+            </a>
+            <a href="/promotions.html" class="feature-card text-center p-4">
+                <div class="text-3xl mb-2">🎁</div>
+                <div class="font-semibold text-sm">Promotions</div>
+                <div class="text-xs text-white/30">6 offers</div>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================
+     LIVE MATCHES
+     ========================================== -->
+<section class="py-12 bg-[#0a0a12] border-t border-white/5">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between mb-6">
             <div>
@@ -359,20 +585,28 @@
         </div>
         
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <!-- Match 1 -->
             <div class="match-card">
                 <div class="flex items-center justify-between mb-2">
                     <span class="text-xs text-white/30">Premier League</span>
-                    <span class="flex items-center space-x-1 text-xs text-red-400"><span class="live-dot"></span>Live</span>
+                    <span class="flex items-center space-x-1 text-xs text-red-400">
+                        <span class="live-dot"></span>
+                        <span>Live</span>
+                    </span>
                 </div>
                 <div class="flex items-center justify-between">
                     <div class="flex items-center space-x-2">
                         <span class="text-xl">⚽</span>
-                        <div><div class="text-sm font-semibold">Arsenal</div><div class="text-xs text-white/30">2</div></div>
+                        <div>
+                            <div class="text-sm font-semibold">Arsenal</div>
+                            <div class="text-xs text-white/30">2</div>
+                        </div>
                     </div>
                     <span class="text-xs text-white/20">vs</span>
                     <div class="flex items-center space-x-2">
-                        <div class="text-right"><div class="text-sm font-semibold">Chelsea</div><div class="text-xs text-white/30">1</div></div>
+                        <div class="text-right">
+                            <div class="text-sm font-semibold">Chelsea</div>
+                            <div class="text-xs text-white/30">1</div>
+                        </div>
                         <span class="text-xl">⚽</span>
                     </div>
                 </div>
@@ -386,20 +620,28 @@
                 </div>
             </div>
             
-            <!-- Match 2 -->
             <div class="match-card">
                 <div class="flex items-center justify-between mb-2">
                     <span class="text-xs text-white/30">La Liga</span>
-                    <span class="flex items-center space-x-1 text-xs text-red-400"><span class="live-dot"></span>Live</span>
+                    <span class="flex items-center space-x-1 text-xs text-red-400">
+                        <span class="live-dot"></span>
+                        <span>Live</span>
+                    </span>
                 </div>
                 <div class="flex items-center justify-between">
                     <div class="flex items-center space-x-2">
                         <span class="text-xl">⚽</span>
-                        <div><div class="text-sm font-semibold">Barcelona</div><div class="text-xs text-white/30">0</div></div>
+                        <div>
+                            <div class="text-sm font-semibold">Barcelona</div>
+                            <div class="text-xs text-white/30">0</div>
+                        </div>
                     </div>
                     <span class="text-xs text-white/20">vs</span>
                     <div class="flex items-center space-x-2">
-                        <div class="text-right"><div class="text-sm font-semibold">Real Madrid</div><div class="text-xs text-white/30">0</div></div>
+                        <div class="text-right">
+                            <div class="text-sm font-semibold">Real Madrid</div>
+                            <div class="text-xs text-white/30">0</div>
+                        </div>
                         <span class="text-xl">⚽</span>
                     </div>
                 </div>
@@ -413,20 +655,28 @@
                 </div>
             </div>
             
-            <!-- Match 3 -->
             <div class="match-card">
                 <div class="flex items-center justify-between mb-2">
                     <span class="text-xs text-white/30">NBA</span>
-                    <span class="flex items-center space-x-1 text-xs text-red-400"><span class="live-dot"></span>Live</span>
+                    <span class="flex items-center space-x-1 text-xs text-red-400">
+                        <span class="live-dot"></span>
+                        <span>Live</span>
+                    </span>
                 </div>
                 <div class="flex items-center justify-between">
                     <div class="flex items-center space-x-2">
                         <span class="text-xl">🏀</span>
-                        <div><div class="text-sm font-semibold">Lakers</div><div class="text-xs text-white/30">89</div></div>
+                        <div>
+                            <div class="text-sm font-semibold">Lakers</div>
+                            <div class="text-xs text-white/30">89</div>
+                        </div>
                     </div>
                     <span class="text-xs text-white/20">vs</span>
                     <div class="flex items-center space-x-2">
-                        <div class="text-right"><div class="text-sm font-semibold">Celtics</div><div class="text-xs text-white/30">85</div></div>
+                        <div class="text-right">
+                            <div class="text-sm font-semibold">Celtics</div>
+                            <div class="text-xs text-white/30">85</div>
+                        </div>
                         <span class="text-xl">🏀</span>
                     </div>
                 </div>
@@ -443,7 +693,7 @@
 </section>
 
 <!-- ==========================================
-     SPORTS CATEGORIES - With Real Images
+     SPORTS CATEGORIES
      ========================================== -->
 <section class="py-12 bg-[#0a0a12] border-t border-white/5">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -453,48 +703,36 @@
         </div>
         
         <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
-            <a href="/sports.html" class="group relative rounded-xl overflow-hidden aspect-square">
-                <img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=400&q=80" alt="Football" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex items-end justify-center p-3">
-                    <span class="text-sm font-semibold">⚽ Football</span>
-                </div>
+            <a href="/sports.html" class="sport-category">
+                <img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=200&q=80" alt="Football">
+                <div class="overlay"><span>⚽ Football</span></div>
             </a>
-            <a href="/sports.html" class="group relative rounded-xl overflow-hidden aspect-square">
-                <img src="https://images.unsplash.com/photo-1546519638-68e109acd27d?w=400&q=80" alt="Basketball" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex items-end justify-center p-3">
-                    <span class="text-sm font-semibold">🏀 Basketball</span>
-                </div>
+            <a href="/sports.html" class="sport-category">
+                <img src="https://images.unsplash.com/photo-1546519638-68e109acd27d?w=200&q=80" alt="Basketball">
+                <div class="overlay"><span>🏀 Basketball</span></div>
             </a>
-            <a href="/sports.html" class="group relative rounded-xl overflow-hidden aspect-square">
-                <img src="https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0?w=400&q=80" alt="Tennis" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex items-end justify-center p-3">
-                    <span class="text-sm font-semibold">🎾 Tennis</span>
-                </div>
+            <a href="/sports.html" class="sport-category">
+                <img src="https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0?w=200&q=80" alt="Tennis">
+                <div class="overlay"><span>🎾 Tennis</span></div>
             </a>
-            <a href="/sports.html" class="group relative rounded-xl overflow-hidden aspect-square">
-                <img src="https://images.unsplash.com/photo-1531415074968-036ba1b575da?w=400&q=80" alt="Cricket" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex items-end justify-center p-3">
-                    <span class="text-sm font-semibold">🏏 Cricket</span>
-                </div>
+            <a href="/sports.html" class="sport-category">
+                <img src="https://images.unsplash.com/photo-1531415074968-036ba1b575da?w=200&q=80" alt="Cricket">
+                <div class="overlay"><span>🏏 Cricket</span></div>
             </a>
-            <a href="/sports.html" class="group relative rounded-xl overflow-hidden aspect-square">
-                <img src="https://images.unsplash.com/photo-1554480118-2a1e4fd6d6b2?w=400&q=80" alt="Horse Racing" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex items-end justify-center p-3">
-                    <span class="text-sm font-semibold">🏇 Racing</span>
-                </div>
+            <a href="/sports.html" class="sport-category">
+                <img src="https://images.unsplash.com/photo-1554480118-2a1e4fd6d6b2?w=200&q=80" alt="Horse Racing">
+                <div class="overlay"><span>🏇 Racing</span></div>
             </a>
-            <a href="/sports.html" class="group relative rounded-xl overflow-hidden aspect-square">
-                <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&q=80" alt="Esports" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex items-end justify-center p-3">
-                    <span class="text-sm font-semibold">🎮 Esports</span>
-                </div>
+            <a href="/sports.html" class="sport-category">
+                <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=200&q=80" alt="Esports">
+                <div class="overlay"><span>🎮 Esports</span></div>
             </a>
         </div>
     </div>
 </section>
 
 <!-- ==========================================
-     FEATURED GAMES - All Games Linked
+     FEATURED GAMES
      ========================================== -->
 <section class="py-12 bg-[#0a0a12] border-t border-white/5">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -503,78 +741,43 @@
             <a href="/casino.html" class="text-sm text-blue-400 hover:text-blue-300 transition-colors">Play All →</a>
         </div>
         
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-            <!-- Aviator -->
-            <div onclick="window.location.href='/aviator.html'" class="feature-card text-center cursor-pointer">
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+            <a href="/aviator.html" class="feature-card text-center p-4">
                 <div class="text-4xl mb-2 float-animation">✈️</div>
                 <div class="font-semibold text-sm">Aviator</div>
                 <div class="text-xs text-white/30">Crash Game</div>
                 <div class="mt-1 text-xs text-green-400">▲ 2.45x</div>
-            </div>
-            
-            <!-- Slots -->
-            <div onclick="window.location.href='/casino.html'" class="feature-card text-center cursor-pointer">
+            </a>
+            <a href="/casino.html" class="feature-card text-center p-4">
                 <div class="text-4xl mb-2">🎰</div>
                 <div class="font-semibold text-sm">Slots</div>
                 <div class="text-xs text-white/30">Jackpot</div>
-                <div class="mt-1 text-xs text-yellow-400">$12,450</div>
-            </div>
-            
-            <!-- Roulette -->
-            <div onclick="window.location.href='/casino.html'" class="feature-card text-center cursor-pointer">
+                <div class="mt-1 text-xs text-gold">$12,450</div>
+            </a>
+            <a href="/casino.html" class="feature-card text-center p-4">
                 <div class="text-4xl mb-2">🎡</div>
                 <div class="font-semibold text-sm">Roulette</div>
                 <div class="text-xs text-white/30">Live Casino</div>
                 <div class="mt-1 text-xs text-green-400">● Live</div>
-            </div>
-            
-            <!-- Blackjack -->
-            <div onclick="window.location.href='/casino.html'" class="feature-card text-center cursor-pointer">
+            </a>
+            <a href="/casino.html" class="feature-card text-center p-4">
                 <div class="text-4xl mb-2">🃏</div>
                 <div class="font-semibold text-sm">Blackjack</div>
                 <div class="text-xs text-white/30">Card Game</div>
                 <div class="mt-1 text-xs text-green-400">● Live</div>
-            </div>
-            
-            <!-- Virtual Football -->
-            <div onclick="window.location.href='/virtual-football.html'" class="feature-card text-center cursor-pointer">
+            </a>
+            <a href="/virtual-football.html" class="feature-card text-center p-4">
                 <div class="text-4xl mb-2">⚽</div>
                 <div class="font-semibold text-sm">Virtual Football</div>
                 <div class="text-xs text-white/30">3D Simulation</div>
                 <div class="mt-1 text-xs text-blue-400">Next: 2:30</div>
-            </div>
-            
-            <!-- Virtual Horse Racing -->
-            <div onclick="window.location.href='/virtual-horse-racing.html'" class="feature-card text-center cursor-pointer">
+            </a>
+            <a href="/virtual-horse-racing.html" class="feature-card text-center p-4">
                 <div class="text-4xl mb-2">🏇</div>
                 <div class="font-semibold text-sm">Horse Racing</div>
                 <div class="text-xs text-white/30">3D Simulation</div>
                 <div class="mt-1 text-xs text-blue-400">Next: 3:15</div>
-            </div>
-            
-            <!-- Virtual Car Racing -->
-            <div onclick="window.location.href='/virtual-car-racing.html'" class="feature-card text-center cursor-pointer">
-                <div class="text-4xl mb-2">🏎️</div>
-                <div class="font-semibold text-sm">Car Racing</div>
-                <div class="text-xs text-white/30">3D Simulation</div>
-                <div class="mt-1 text-xs text-blue-400">Next: 4:00</div>
-            </div>
-            
-            <!-- Virtual Netball -->
-            <div onclick="window.location.href='/virtual-netball.html'" class="feature-card text-center cursor-pointer">
-                <div class="text-4xl mb-2">🏐</div>
-                <div class="font-semibold text-sm">Netball</div>
-                <div class="text-xs text-white/30">3D Simulation</div>
-                <div class="mt-1 text-xs text-blue-400">Next: 5:15</div>
-            </div>
-            
-            <!-- Adventure Games -->
-            <div onclick="window.location.href='/adventure-games.html'" class="feature-card text-center cursor-pointer">
-                <div class="text-4xl mb-2">🎮</div>
-                <div class="font-semibold text-sm">Adventure</div>
-                <div class="text-xs text-white/30">Epic Quests</div>
-                <div class="mt-1 text-xs text-purple-400">🔥 New</div>
-            </div>
+            </a>
         </div>
     </div>
 </section>
@@ -596,7 +799,9 @@
                 <p class="text-sm text-white/40">100% match up to $500</p>
                 <div class="mt-4 flex items-center justify-between">
                     <span class="text-xs text-white/30">Min deposit $10</span>
-                    <button onclick="window.location.href='/promotions.html'" class="px-4 py-2 bg-blue-500 rounded-xl text-sm font-semibold hover:bg-blue-600 transition-colors">Claim</button>
+                    <button onclick="window.location.href='/signup.html'" class="px-4 py-2 bg-blue-500 rounded-xl text-sm font-semibold hover:bg-blue-600 transition-colors">
+                        Claim
+                    </button>
                 </div>
             </div>
             
@@ -606,7 +811,9 @@
                 <p class="text-sm text-white/40">10% weekly cashback</p>
                 <div class="mt-4 flex items-center justify-between">
                     <span class="text-xs text-white/30">Up to $100</span>
-                    <button onclick="window.location.href='/promotions.html'" class="px-4 py-2 bg-green-500 rounded-xl text-sm font-semibold hover:bg-green-600 transition-colors">Opt In</button>
+                    <button onclick="window.location.href='/promotions.html'" class="px-4 py-2 bg-green-500 rounded-xl text-sm font-semibold hover:bg-green-600 transition-colors">
+                        Opt In
+                    </button>
                 </div>
             </div>
             
@@ -616,7 +823,7 @@
                 <p class="text-sm text-white/40">Exclusive bonuses & perks</p>
                 <div class="mt-4 flex items-center justify-between">
                     <span class="text-xs text-white/30">Invite only</span>
-                    <span class="px-3 py-1 bg-yellow-500/20 text-yellow-400 rounded-xl text-xs font-semibold">VIP</span>
+                    <span onclick="window.location.href='/vip.html'" class="px-3 py-1 bg-yellow-500/20 text-yellow-400 rounded-xl text-xs font-semibold cursor-pointer hover:bg-yellow-500/30">VIP</span>
                 </div>
             </div>
         </div>
@@ -624,24 +831,116 @@
 </section>
 
 <!-- ==========================================
-     QUICK LINKS - Additional Pages
+     FULL SITE MAP - All Pages
      ========================================== -->
-<section class="py-8 bg-[#0a0a12] border-t border-white/5">
+<section class="py-12 bg-[#0a0a12] border-t border-white/5">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-wrap justify-center gap-3">
-            <a href="/leaderboard.html" class="px-4 py-2 glass-light rounded-xl text-sm text-white/60 hover:text-white transition-colors">🏆 Leaderboard</a>
-            <a href="/referrals.html" class="px-4 py-2 glass-light rounded-xl text-sm text-white/60 hover:text-white transition-colors">👥 Referrals</a>
-            <a href="/bonuses.html" class="px-4 py-2 glass-light rounded-xl text-sm text-white/60 hover:text-white transition-colors">💎 Bonuses</a>
-            <a href="/vip.html" class="px-4 py-2 glass-light rounded-xl text-sm text-white/60 hover:text-white transition-colors">👑 VIP Club</a>
-            <a href="/adventure-games.html" class="px-4 py-2 glass-light rounded-xl text-sm text-white/60 hover:text-white transition-colors">🎮 Adventure</a>
-            <a href="/virtual-car-racing.html" class="px-4 py-2 glass-light rounded-xl text-sm text-white/60 hover:text-white transition-colors">🏎️ Car Racing</a>
-            <a href="/virtual-netball.html" class="px-4 py-2 glass-light rounded-xl text-sm text-white/60 hover:text-white transition-colors">🏐 Netball</a>
+        <div class="text-center mb-8">
+            <h2 class="text-2xl font-bold">🗺️ Complete Site Map</h2>
+            <p class="text-sm text-white/30 mt-1">All 41 pages of CephasGM GameZone</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2">
+            <!-- Core Pages -->
+            <div class="glass-light rounded-xl p-4 border border-white/5">
+                <div class="text-xs text-white/30 uppercase tracking-wider mb-2 font-semibold">🏠 Core</div>
+                <a href="/" class="page-grid-card"><span class="icon">🏠</span> Home <span class="status">●</span></a>
+                <a href="/about.html" class="page-grid-card"><span class="icon">ℹ️</span> About <span class="status">●</span></a>
+                <a href="/contact.html" class="page-grid-card"><span class="icon">📬</span> Contact <span class="status">●</span></a>
+                <a href="/faq.html" class="page-grid-card"><span class="icon">❓</span> FAQ <span class="status">●</span></a>
+            </div>
+            
+            <!-- Auth Pages -->
+            <div class="glass-light rounded-xl p-4 border border-white/5">
+                <div class="text-xs text-white/30 uppercase tracking-wider mb-2 font-semibold">🔐 Auth</div>
+                <a href="/signin.html" class="page-grid-card"><span class="icon">🔑</span> Sign In <span class="status">●</span></a>
+                <a href="/signup.html" class="page-grid-card"><span class="icon">📝</span> Sign Up <span class="status">●</span></a>
+                <a href="/forgot-password.html" class="page-grid-card"><span class="icon">🔄</span> Forgot Password <span class="status">●</span></a>
+                <a href="/verify-email.html" class="page-grid-card"><span class="icon">📧</span> Verify Email <span class="status">●</span></a>
+            </div>
+            
+            <!-- User Dashboard -->
+            <div class="glass-light rounded-xl p-4 border border-white/5">
+                <div class="text-xs text-white/30 uppercase tracking-wider mb-2 font-semibold">📊 Dashboard</div>
+                <a href="/dashboard.html" class="page-grid-card"><span class="icon">📊</span> Dashboard <span class="status">●</span></a>
+                <a href="/profile.html" class="page-grid-card"><span class="icon">👤</span> Profile <span class="status">●</span></a>
+                <a href="/settings.html" class="page-grid-card"><span class="icon">⚙️</span> Settings <span class="status">●</span></a>
+                <a href="/notifications.html" class="page-grid-card"><span class="icon">🔔</span> Notifications <span class="status">●</span></a>
+                <a href="/messages.html" class="page-grid-card"><span class="icon">💬</span> Messages <span class="status">●</span></a>
+            </div>
+            
+            <!-- Wallet & Payments -->
+            <div class="glass-light rounded-xl p-4 border border-white/5">
+                <div class="text-xs text-white/30 uppercase tracking-wider mb-2 font-semibold">💰 Wallet</div>
+                <a href="/wallet.html" class="page-grid-card"><span class="icon">💰</span> Wallet <span class="status">●</span></a>
+                <a href="/deposit.html" class="page-grid-card"><span class="icon">📥</span> Deposit <span class="status">●</span></a>
+                <a href="/withdraw.html" class="page-grid-card"><span class="icon">📤</span> Withdraw <span class="status">●</span></a>
+                <a href="/transactions.html" class="page-grid-card"><span class="icon">📊</span> Transactions <span class="status">●</span></a>
+                <a href="/bet-history.html" class="page-grid-card"><span class="icon">📋</span> Bet History <span class="status">●</span></a>
+            </div>
+            
+            <!-- Sports & Betting -->
+            <div class="glass-light rounded-xl p-4 border border-white/5">
+                <div class="text-xs text-white/30 uppercase tracking-wider mb-2 font-semibold">⚽ Sports</div>
+                <a href="/sports.html" class="page-grid-card"><span class="icon">⚽</span> Sports <span class="status">●</span></a>
+                <a href="/live-betting.html" class="page-grid-card"><span class="icon">📺</span> Live Betting <span class="status">●</span></a>
+                <a href="/casino.html" class="page-grid-card"><span class="icon">🎰</span> Casino <span class="status">●</span></a>
+                <a href="/aviator.html" class="page-grid-card"><span class="icon">✈️</span> Aviator <span class="status">●</span></a>
+            </div>
+            
+            <!-- Virtual Games -->
+            <div class="glass-light rounded-xl p-4 border border-white/5">
+                <div class="text-xs text-white/30 uppercase tracking-wider mb-2 font-semibold">🎮 Virtual</div>
+                <a href="/virtual-football.html" class="page-grid-card"><span class="icon">⚽</span> Virtual Football <span class="status">●</span></a>
+                <a href="/virtual-horse-racing.html" class="page-grid-card"><span class="icon">🏇</span> Horse Racing <span class="status">●</span></a>
+                <a href="/virtual-car-racing.html" class="page-grid-card"><span class="icon">🏎️</span> Car Racing <span class="status">●</span></a>
+                <a href="/virtual-netball.html" class="page-grid-card"><span class="icon">🏐</span> Virtual Netball <span class="status">●</span></a>
+                <a href="/adventure-games.html" class="page-grid-card"><span class="icon">🎮</span> Adventure Games <span class="status">●</span></a>
+            </div>
+            
+            <!-- Promotions & Rewards -->
+            <div class="glass-light rounded-xl p-4 border border-white/5">
+                <div class="text-xs text-white/30 uppercase tracking-wider mb-2 font-semibold">🎁 Rewards</div>
+                <a href="/promotions.html" class="page-grid-card"><span class="icon">🎁</span> Promotions <span class="status">●</span></a>
+                <a href="/leaderboard.html" class="page-grid-card"><span class="icon">🏆</span> Leaderboard <span class="status">●</span></a>
+                <a href="/referrals.html" class="page-grid-card"><span class="icon">👥</span> Referrals <span class="status">●</span></a>
+                <a href="/bonuses.html" class="page-grid-card"><span class="icon">🎁</span> Bonuses <span class="status">●</span></a>
+                <a href="/vip.html" class="page-grid-card"><span class="icon">👑</span> VIP Club <span class="status">●</span></a>
+            </div>
+            
+            <!-- Support -->
+            <div class="glass-light rounded-xl p-4 border border-white/5">
+                <div class="text-xs text-white/30 uppercase tracking-wider mb-2 font-semibold">🛟 Support</div>
+                <a href="/support.html" class="page-grid-card"><span class="icon">🛟</span> Support Center <span class="status">●</span></a>
+                <a href="/kyc.html" class="page-grid-card"><span class="icon">🛡️</span> KYC Verification <span class="status">●</span></a>
+                <a href="/self-exclusion.html" class="page-grid-card"><span class="icon">🔒</span> Self-Exclusion <span class="status">●</span></a>
+                <a href="/responsible-gambling.html" class="page-grid-card"><span class="icon">🛡️</span> Responsible Gambling <span class="status">●</span></a>
+            </div>
+            
+            <!-- Legal -->
+            <div class="glass-light rounded-xl p-4 border border-white/5">
+                <div class="text-xs text-white/30 uppercase tracking-wider mb-2 font-semibold">⚖️ Legal</div>
+                <a href="/privacy.html" class="page-grid-card"><span class="icon">🔒</span> Privacy Policy <span class="status">●</span></a>
+                <a href="/terms.html" class="page-grid-card"><span class="icon">⚖️</span> Terms & Conditions <span class="status">●</span></a>
+                <a href="/cookies.html" class="page-grid-card"><span class="icon">🍪</span> Cookies Policy <span class="status">●</span></a>
+            </div>
+            
+            <!-- Error Pages -->
+            <div class="glass-light rounded-xl p-4 border border-white/5">
+                <div class="text-xs text-white/30 uppercase tracking-wider mb-2 font-semibold">⚠️ Errors</div>
+                <a href="/404.html" class="page-grid-card"><span class="icon">❌</span> 404 Page <span class="status">●</span></a>
+                <a href="/offline.html" class="page-grid-card"><span class="icon">📡</span> Offline <span class="status">●</span></a>
+            </div>
+        </div>
+        
+        <div class="mt-6 text-center text-xs text-white/20">
+            <span class="text-green-400">●</span> All 41 pages complete and production-ready
         </div>
     </div>
 </section>
 
 <!-- ==========================================
-     FOOTER - Complete Links to All Pages
+     FOOTER
      ========================================== -->
 <footer class="bg-[#0a0a12] border-t border-white/5 py-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -657,10 +956,11 @@
                 <p class="text-sm text-white/30 leading-relaxed">
                     Premium online betting platform for sports, casino, and virtual games.
                 </p>
-                <div class="flex space-x-3 mt-4">
-                    <a href="/about.html" class="text-xs text-white/20 hover:text-white/50 transition-colors">About</a>
-                    <a href="/contact.html" class="text-xs text-white/20 hover:text-white/50 transition-colors">Contact</a>
-                    <a href="/faq.html" class="text-xs text-white/20 hover:text-white/50 transition-colors">FAQ</a>
+                <div class="flex space-x-4 mt-4">
+                    <a href="#" class="text-white/20 hover:text-white/50 transition-colors">📱</a>
+                    <a href="#" class="text-white/20 hover:text-white/50 transition-colors">🐦</a>
+                    <a href="#" class="text-white/20 hover:text-white/50 transition-colors">📘</a>
+                    <a href="#" class="text-white/20 hover:text-white/50 transition-colors">📸</a>
                 </div>
             </div>
             
@@ -671,59 +971,48 @@
                     <li><a href="/sports.html" class="footer-link">Sports</a></li>
                     <li><a href="/live-betting.html" class="footer-link">Live Betting</a></li>
                     <li><a href="/casino.html" class="footer-link">Casino</a></li>
-                    <li><a href="/virtual-football.html" class="footer-link">Virtual Games</a></li>
-                    <li><a href="/aviator.html" class="footer-link">Aviator</a></li>
                     <li><a href="/promotions.html" class="footer-link">Promotions</a></li>
-                    <li><a href="/bonuses.html" class="footer-link">Bonuses</a></li>
                     <li><a href="/vip.html" class="footer-link">VIP Club</a></li>
                 </ul>
             </div>
             
-            <!-- Community & Support -->
+            <!-- Account -->
             <div>
-                <h4 class="text-sm font-semibold text-white/40 mb-3">Community</h4>
+                <h4 class="text-sm font-semibold text-white/40 mb-3">Account</h4>
                 <ul class="space-y-2">
-                    <li><a href="/leaderboard.html" class="footer-link">Leaderboard</a></li>
-                    <li><a href="/referrals.html" class="footer-link">Referrals</a></li>
-                    <li><a href="/about.html" class="footer-link">About Us</a></li>
-                    <li><a href="/contact.html" class="footer-link">Contact</a></li>
-                </ul>
-                <h4 class="text-sm font-semibold text-white/40 mt-4 mb-3">Support</h4>
-                <ul class="space-y-2">
-                    <li><a href="/support.html" class="footer-link">Help Center</a></li>
-                    <li><a href="/faq.html" class="footer-link">FAQ</a></li>
-                    <li><a href="/responsible-gambling.html" class="footer-link">Responsible Gambling</a></li>
-                    <li><a href="/self-exclusion.html" class="footer-link">Self-Exclusion</a></li>
+                    <li><a href="/dashboard.html" class="footer-link">Dashboard</a></li>
+                    <li><a href="/wallet.html" class="footer-link">Wallet</a></li>
+                    <li><a href="/deposit.html" class="footer-link">Deposit</a></li>
+                    <li><a href="/withdraw.html" class="footer-link">Withdraw</a></li>
+                    <li><a href="/profile.html" class="footer-link">Profile</a></li>
+                    <li><a href="/settings.html" class="footer-link">Settings</a></li>
                 </ul>
             </div>
             
-            <!-- Legal -->
+            <!-- Support & Legal -->
             <div>
-                <h4 class="text-sm font-semibold text-white/40 mb-3">Legal</h4>
+                <h4 class="text-sm font-semibold text-white/40 mb-3">Support</h4>
+                <ul class="space-y-2">
+                    <li><a href="/support.html" class="footer-link">Help Center</a></li>
+                    <li><a href="/contact.html" class="footer-link">Contact</a></li>
+                    <li><a href="/faq.html" class="footer-link">FAQ</a></li>
+                    <li><a href="/responsible-gambling.html" class="footer-link">Responsible Gambling</a></li>
+                    <li><a href="/self-exclusion.html" class="footer-link">Self Exclusion</a></li>
+                </ul>
+                <h4 class="text-sm font-semibold text-white/40 mt-4 mb-3">Legal</h4>
                 <ul class="space-y-2">
                     <li><a href="/terms.html" class="footer-link">Terms & Conditions</a></li>
                     <li><a href="/privacy.html" class="footer-link">Privacy Policy</a></li>
                     <li><a href="/cookies.html" class="footer-link">Cookie Policy</a></li>
                     <li><a href="/kyc.html" class="footer-link">KYC Policy</a></li>
                 </ul>
-                <h4 class="text-sm font-semibold text-white/40 mt-4 mb-3">Account</h4>
-                <ul class="space-y-2">
-                    <li><a href="/signin.html" class="footer-link">Sign In</a></li>
-                    <li><a href="/signup.html" class="footer-link">Create Account</a></li>
-                    <li><a href="/forgot-password.html" class="footer-link">Forgot Password</a></li>
-                    <li><a href="/verify-email.html" class="footer-link">Verify Email</a></li>
-                </ul>
             </div>
         </div>
         
-        <!-- Bottom -->
-        <div class="mt-8 pt-6 border-t border-white/5 flex flex-col md:flex-row items-center justify-between text-xs text-white/20">
+        <!-- Bottom Bar -->
+        <div class="mt-12 pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between text-xs text-white/20">
             <p>Copyright © 2025 Cephas GM | Innovating for Tomorrow</p>
-            <div class="flex gap-4 mt-2 md:mt-0">
-                <a href="/404.html" class="hover:text-white/40 transition-colors">404</a>
-                <a href="/offline.html" class="hover:text-white/40 transition-colors">Offline</a>
-                <span>18+ | Play Responsibly</span>
-            </div>
+            <p class="mt-2 md:mt-0">18+ | Play Responsibly | Terms Apply</p>
         </div>
     </div>
 </footer>
@@ -740,7 +1029,11 @@
     // ============================================
     const navbar = document.getElementById('navbar');
     window.addEventListener('scroll', () => {
-        navbar.classList.toggle('scrolled', window.pageYOffset > 50);
+        if (window.pageYOffset > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
     });
     
     // ============================================
@@ -756,13 +1049,37 @@
         document.body.style.overflow = mobileOpen ? 'hidden' : '';
     });
     
-    mobileMenu.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
+    // Close menu on link click
+    mobileMenu.querySelectorAll('a, button').forEach(el => {
+        el.addEventListener('click', () => {
             mobileMenu.classList.remove('active');
             document.body.style.overflow = '';
             mobileOpen = false;
         });
     });
+    
+    // ============================================
+    // TOAST
+    // ============================================
+    function showToast(message, type = 'success') {
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        toast.innerHTML = `
+            <div class="flex items-center space-x-3">
+                <span>${type === 'success' ? '✅' : type === 'error' ? '❌' : '⚠️'}</span>
+                <span class="text-sm">${message}</span>
+                <button onclick="this.parentElement.parentElement.remove()" class="text-white/30 hover:text-white/70 transition-colors ml-2">
+                    ✕
+                </button>
+            </div>
+        `;
+        document.body.appendChild(toast);
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateY(20px)';
+            setTimeout(() => toast.remove(), 300);
+        }, 4000);
+    }
     
     // ============================================
     // ODDS BUTTON - Add to bet slip
@@ -772,25 +1089,21 @@
             e.stopPropagation();
             this.classList.toggle('bg-blue-500');
             this.classList.toggle('border-blue-500');
-            const toast = document.createElement('div');
-            toast.className = 'fixed bottom-6 right-6 z-50 glass rounded-2xl px-6 py-3 border border-white/10';
-            toast.innerHTML = `<div class="flex items-center space-x-3"><span>✅</span><span class="text-sm">Added to bet slip</span></div>`;
-            document.body.appendChild(toast);
-            setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateY(20px)'; setTimeout(() => toast.remove(), 300); }, 2000);
+            showToast('Added to bet slip', 'success');
         });
     });
     
     // ============================================
-    // PROMOTION CLAIM
+    // FEATURE CARD CLICK - Toast feedback
     // ============================================
-    document.querySelectorAll('.bg-blue-500, .bg-green-500').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            const toast = document.createElement('div');
-            toast.className = 'fixed bottom-6 right-6 z-50 glass rounded-2xl px-6 py-3 border border-white/10';
-            toast.innerHTML = `<div class="flex items-center space-x-3"><span>🎉</span><span class="text-sm">Offer claimed successfully!</span></div>`;
-            document.body.appendChild(toast);
-            setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateY(20px)'; setTimeout(() => toast.remove(), 300); }, 3000);
+    document.querySelectorAll('.feature-card').forEach(card => {
+        card.addEventListener('click', function(e) {
+            // Only if not navigating away
+            if (!this.getAttribute('href')) {
+                e.preventDefault();
+                const name = this.querySelector('.font-semibold')?.textContent || 'Section';
+                showToast(`📂 Navigating to ${name}...`, 'success');
+            }
         });
     });
     
@@ -800,8 +1113,8 @@
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('/sw.js')
-                .then(reg => console.log('SW registered'))
-                .catch(err => console.log('SW registration failed'));
+                .then(reg => console.log('✅ Service Worker registered'))
+                .catch(err => console.log('❌ Service Worker registration failed'));
         });
     }
     
@@ -809,25 +1122,17 @@
     // OFFLINE/ONLINE HANDLING
     // ============================================
     window.addEventListener('online', () => {
-        const toast = document.createElement('div');
-        toast.className = 'fixed bottom-6 right-6 z-50 glass rounded-2xl px-6 py-3 border border-green-500/30';
-        toast.innerHTML = `<span class="text-sm">🟢 Back online</span>`;
-        document.body.appendChild(toast);
-        setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 2000);
+        showToast('🟢 Back online', 'success');
     });
-    
     window.addEventListener('offline', () => {
-        const toast = document.createElement('div');
-        toast.className = 'fixed bottom-6 right-6 z-50 glass rounded-2xl px-6 py-3 border border-red-500/30';
-        toast.innerHTML = `<span class="text-sm">🔴 You are offline</span>`;
-        document.body.appendChild(toast);
-        setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 3000);
+        showToast('🔴 You are offline', 'warning');
     });
     
     console.log('🚀 CephasGM GameZone loaded');
+    console.log('📄 41 pages linked and ready');
     
 })();
 </script>
 
 </body>
-                </html>
+</html>
