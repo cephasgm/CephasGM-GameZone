@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0a0a12">
+    <meta name="description" content="Aviator – The ultimate crash game on CephasGM GameZone">
+    <title>Aviator | CephasGM GameZone</title>
+    
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a12;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a12; }
+        ::-webkit-scrollbar-thumb { 
+            background: linear-gradient(180deg, #0055ff, #542bff);
+            border-radius: 10px;
+        }
+        
+        .glass {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        
+        .glass-light {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 85, 255, 0.25);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 85, 255, 0.4);
+        }
+        
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #ff0044, #cc0033);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255,0,68,0.3);
+        }
+        
+        .btn-danger:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 16px 0;
+            background: rgba(10, 10, 18, 0.92);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .text-gradient {
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 10, 18, 0.98);
+            backdrop-filter: blur(20px);
+            z-index: 999;
+            display: none;
+            padding: 80px 24px 24px;
+            overflow-y: auto;
+        }
+        
+        .mobile-menu.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .footer-link {
+            color: rgba(255, 255, 255, 0.4);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .footer-link:hover {
+            color: #ffffff;
+        }
+        
+        .page-background {
+            min-height: 100vh;
+            background-image: url('https://images.unsplash.com/photo-1436491865332-7a61a109bb05?w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+        }
+        
+        .page-background::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, 
+                rgba(10, 10, 18, 0.9) 0%, 
+                rgba(10, 10, 18, 0.7) 50%,
+                rgba(10, 10, 18, 0.9) 100%
+            );
+            z-index: -1;
+        }
+        
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgba(10, 10, 18, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px;
+            min-width: 200px;
+            padding: 8px 0;
+            z-index: 1001;
+        }
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+        .dropdown-menu a {
+            display: block;
+            padding: 8px 16px;
+            color: rgba(255,255,255,0.6);
+            font-size: 13px;
+            transition: 0.2s;
+        }
+        .dropdown-menu a:hover {
+            background: rgba(255,255,255,0.05);
+            color: white;
+        }
+        
+        /* Aviator specific */
+        .game-canvas {
+            width: 100%;
+            height: 300px;
+            background: rgba(0,0,0,0.4);
+            border-radius: 20px;
+            display: block;
+            margin: 0 auto;
+        }
+        
+        .multiplier-display {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #00ff64, #00cc66);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: none;
+        }
+        .multiplier-display.crashed {
+            background: #ff0044;
+            -webkit-text-fill-color: #ff0044;
+            animation: shake 0.4s ease;
+        }
+        
+        @keyframes shake {
+            0%,100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        
+        .history-item {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-right: 4px;
+            margin-bottom: 4px;
+        }
+        .history-item.green { background: rgba(0,255,100,0.15); color: #00ff64; }
+        .history-item.red { background: rgba(255,0,68,0.15); color: #ff0044; }
+        
+        .input-field {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 14px 18px;
+            color: white;
+            width: 100%;
+            font-size: 15px;
+            transition: border-color 0.3s;
+        }
+        .input-field:focus {
+            outline: none;
+            border-color: #0055ff;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ==========================================
+     NAVBAR
+     ========================================== -->
+<nav class="navbar" id="navbar">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between">
+            
+            <a href="/index.html" class="flex items-center space-x-2" title="Go to Homepage">
+                <span class="text-xl font-bold">
+                    <span class="text-gradient">CephasGM</span>
+                    <span class="text-white font-light">|</span>
+                    <span class="text-white font-semibold">GameZone</span>
+                </span>
+            </a>
+            
+            <div class="hidden lg:flex items-center space-x-1">
+                <a href="/sports.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Sports</a>
+                <a href="/live-betting.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 flex items-center space-x-1">
+                    <span class="w-2 h-2 bg-red-500 rounded-full inline-block animate-pulse"></span>
+                    <span>Live</span>
+                </a>
+                <a href="/casino.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Casino</a>
+                <div class="dropdown">
+                    <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Virtual ▾</span>
+                    <div class="dropdown-menu">
+                        <a href="/virtual-football.html">Virtual Football</a>
+                        <a href="/virtual-horse-racing.html">Virtual Horse Racing</a>
+                        <a href="/virtual-car-racing.html">Virtual Car Racing</a>
+                        <a href="/virtual-netball.html">Virtual Netball</a>
+                        <a href="/adventure-games.html">Adventure Games</a>
+                        <a href="/aviator.html">Aviator</a>
+                    </div>
+                </div>
+                <a href="/promotions.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Promotions</a>
+                <div class="dropdown">
+                    <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Account ▾</span>
+                    <div class="dropdown-menu">
+                        <a href="/dashboard.html">Dashboard</a>
+                        <a href="/profile.html">Profile</a>
+                        <a href="/wallet.html">Wallet</a>
+                        <a href="/deposit.html">Deposit</a>
+                        <a href="/withdraw.html">Withdraw</a>
+                        <a href="/transactions.html">Transactions</a>
+                        <a href="/bet-history.html">Bet History</a>
+                        <a href="/bonuses.html">Bonuses</a>
+                        <a href="/kyc.html">KYC Verification</a>
+                        <a href="/settings.html">Settings</a>
+                        <a href="/signin.html">Sign In</a>
+                        <a href="/signup.html">Sign Up</a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Support ▾</span>
+                    <div class="dropdown-menu">
+                        <a href="/support.html">Help Center</a>
+                        <a href="/messages.html">Messages</a>
+                        <a href="/notifications.html">Notifications</a>
+                        <a href="/faq.html">FAQ</a>
+                        <a href="/contact.html">Contact Us</a>
+                        <a href="/responsible-gambling.html">Responsible Gambling</a>
+                        <a href="/self-exclusion.html">Self-Exclusion</a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Info ▾</span>
+                    <div class="dropdown-menu">
+                        <a href="/about.html">About Us</a>
+                        <a href="/vip.html">VIP Club</a>
+                        <a href="/referrals.html">Referrals</a>
+                        <a href="/privacy.html">Privacy Policy</a>
+                        <a href="/terms.html">Terms & Conditions</a>
+                        <a href="/cookies.html">Cookie Policy</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-3">
+                <button id="mobileToggle" class="lg:hidden p-2 text-white/40 hover:text-white transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div id="mobileMenu" class="mobile-menu">
+    <nav class="flex flex-col space-y-6">
+        <a href="/index.html" class="text-lg text-white/70 hover:text-white">Home</a>
+        <a href="/sports.html" class="text-lg text-white/70 hover:text-white">Sports</a>
+        <a href="/live-betting.html" class="text-lg text-white/70 hover:text-white">Live Betting</a>
+        <a href="/casino.html" class="text-lg text-white/70 hover:text-white">Casino</a>
+        <a href="/promotions.html" class="text-lg text-white/70 hover:text-white">Promotions</a>
+        <a href="/bonuses.html" class="text-lg text-white/70 hover:text-white">Bonuses</a>
+        <a href="/leaderboard.html" class="text-lg text-white/70 hover:text-white">Leaderboard</a>
+        <div class="border-t border-white/10 pt-4">
+            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Account</span>
+            <div class="grid grid-cols-2 gap-2 mt-2">
+                <a href="/dashboard.html" class="text-sm text-white/50 hover:text-white">Dashboard</a>
+                <a href="/profile.html" class="text-sm text-white/50 hover:text-white">Profile</a>
+                <a href="/wallet.html" class="text-sm text-white/50 hover:text-white">Wallet</a>
+                <a href="/deposit.html" class="text-sm text-white/50 hover:text-white">Deposit</a>
+                <a href="/withdraw.html" class="text-sm text-white/50 hover:text-white">Withdraw</a>
+                <a href="/transactions.html" class="text-sm text-white/50 hover:text-white">Transactions</a>
+                <a href="/bet-history.html" class="text-sm text-white/50 hover:text-white">Bet History</a>
+                <a href="/kyc.html" class="text-sm text-white/50 hover:text-white">KYC</a>
+                <a href="/settings.html" class="text-sm text-white/50 hover:text-white">Settings</a>
+                <a href="/signin.html" class="text-sm text-white/50 hover:text-white">Sign In</a>
+                <a href="/signup.html" class="text-sm text-white/50 hover:text-white">Sign Up</a>
+            </div>
+        </div>
+        <div class="border-t border-white/10 pt-4">
+            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Virtual Games</span>
+            <div class="grid grid-cols-2 gap-2 mt-2">
+                <a href="/virtual-football.html" class="text-sm text-white/50 hover:text-white">Virtual Football</a>
+                <a href="/virtual-horse-racing.html" class="text-sm text-white/50 hover:text-white">Horse Racing</a>
+                <a href="/virtual-car-racing.html" class="text-sm text-white/50 hover:text-white">Car Racing</a>
+                <a href="/virtual-netball.html" class="text-sm text-white/50 hover:text-white">Netball</a>
+                <a href="/adventure-games.html" class="text-sm text-white/50 hover:text-white">Adventure</a>
+                <a href="/aviator.html" class="text-sm text-white/50 hover:text-white">Aviator</a>
+            </div>
+        </div>
+        <div class="border-t border-white/10 pt-4">
+            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Support</span>
+            <div class="grid grid-cols-2 gap-2 mt-2">
+                <a href="/support.html" class="text-sm text-white/50 hover:text-white">Help Center</a>
+                <a href="/messages.html" class="text-sm text-white/50 hover:text-white">Messages</a>
+                <a href="/notifications.html" class="text-sm text-white/50 hover:text-white">Notifications</a>
+                <a href="/faq.html" class="text-sm text-white/50 hover:text-white">FAQ</a>
+                <a href="/contact.html" class="text-sm text-white/50 hover:text-white">Contact</a>
+                <a href="/responsible-gambling.html" class="text-sm text-white/50 hover:text-white">Responsible</a>
+                <a href="/self-exclusion.html" class="text-sm text-white/50 hover:text-white">Self-Exclusion</a>
+            </div>
+        </div>
+        <div class="border-t border-white/10 pt-4">
+            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Information</span>
+            <div class="grid grid-cols-2 gap-2 mt-2">
+                <a href="/about.html" class="text-sm text-white/50 hover:text-white">About</a>
+                <a href="/vip.html" class="text-sm text-white/50 hover:text-white">VIP</a>
+                <a href="/referrals.html" class="text-sm text-white/50 hover:text-white">Referrals</a>
+                <a href="/privacy.html" class="text-sm text-white/50 hover:text-white">Privacy</a>
+                <a href="/terms.html" class="text-sm text-white/50 hover:text-white">Terms</a>
+                <a href="/cookies.html" class="text-sm text-white/50 hover:text-white">Cookies</a>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<!-- ==========================================
+     AVIATOR GAME CONTENT
+     ========================================== -->
+<div class="page-background pt-20 pb-12 px-4">
+    <div class="max-w-5xl mx-auto relative z-10">
+        
+        <div class="text-center mb-8">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">
+                ✈️ <span class="text-gradient">Aviator</span>
+            </h1>
+            <p class="text-lg text-white/50 max-w-xl mx-auto">
+                Watch the multiplier rise and cash out before it flies away!
+            </p>
+        </div>
+        
+        <div class="grid lg:grid-cols-3 gap-6">
+            
+            <!-- Game Area (left 2 cols) -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Game Canvas -->
+                <div class="glass rounded-2xl p-6 relative">
+                    <!-- Multiplier Display -->
+                    <div class="absolute top-4 left-0 right-0 text-center z-10">
+                        <span id="multiplierDisplay" class="multiplier-display">1.00x</span>
+                    </div>
+                    <canvas id="gameCanvas" class="game-canvas"></canvas>
+                    
+                    <!-- History -->
+                    <div class="mt-4 flex flex-wrap items-center" id="historyContainer">
+                        <span class="text-xs text-white/40 mr-2">Recent: </span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Betting Panel (right) -->
+            <div class="space-y-6">
+                <div class="glass rounded-2xl p-6 sticky top-24">
+                    <h3 class="text-lg font-bold mb-4">Place Your Bet</h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="text-xs text-white/40 ml-1">Bet Amount ($)</label>
+                            <input type="number" id="stakeInput" class="input-field" value="10.00" min="0.10" step="0.10">
+                        </div>
+                        <div>
+                            <label class="text-xs text-white/40 ml-1">Auto Cash‑out At</label>
+                            <input type="number" id="autoCashoutInput" class="input-field" placeholder="Leave empty for manual" step="0.01">
+                        </div>
+                        
+                        <!-- Buttons -->
+                        <div class="flex gap-3">
+                            <button id="placeBetBtn" class="btn-primary flex-1 py-2.5">Place Bet</button>
+                            <button id="cashoutBtn" class="btn-danger flex-1 py-2.5 hidden" disabled>Cash Out (0.00x)</button>
+                        </div>
+                        
+                        <!-- Bet Status -->
+                        <div id="betStatus" class="text-xs text-center text-white/40 mt-2"></div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        
+    </div>
+</div>
+
+<!-- ==========================================
+     FOOTER
+     ========================================== -->
+<footer class="bg-[#0a0a12] border-t border-white/5 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div class="col-span-2 md:col-span-1">
+                <div class="text-lg font-bold mb-3">
+                    <span class="text-gradient">CephasGM</span>
+                    <span class="text-white font-light">|</span>
+                    <span class="text-white font-semibold">GameZone</span>
+                </div>
+                <p class="text-sm text-white/30 leading-relaxed">
+                    Premium online betting platform for sports, casino, and virtual games.
+                </p>
+            </div>
+            <div>
+                <h4 class="text-sm font-semibold text-white/40 mb-3">Quick Links</h4>
+                <ul class="space-y-2">
+                    <li><a href="/sports.html" class="footer-link">Sports</a></li>
+                    <li><a href="/live-betting.html" class="footer-link">Live Betting</a></li>
+                    <li><a href="/casino.html" class="footer-link">Casino</a></li>
+                    <li><a href="/promotions.html" class="footer-link">Promotions</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-sm font-semibold text-white/40 mb-3">Support</h4>
+                <ul class="space-y-2">
+                    <li><a href="/support.html" class="footer-link">Help Center</a></li>
+                    <li><a href="/contact.html" class="footer-link">Contact</a></li>
+                    <li><a href="/faq.html" class="footer-link">FAQ</a></li>
+                    <li><a href="/responsible-gambling.html" class="footer-link">Responsible Gambling</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-sm font-semibold text-white/40 mb-3">Legal</h4>
+                <ul class="space-y-2">
+                    <li><a href="/terms.html" class="footer-link">Terms</a></li>
+                    <li><a href="/privacy.html" class="footer-link">Privacy</a></li>
+                    <li><a href="/cookies.html" class="footer-link">Cookies</a></li>
+                    <li><a href="/kyc.html" class="footer-link">KYC</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="mt-8 pt-6 border-t border-white/5 flex flex-col md:flex-row items-center justify-between text-xs text-white/20">
+            <p>Copyright © 2025 Cephas GM | Innovating for Tomorrow</p>
+            <p class="mt-2 md:mt-0">18+ | Play Responsibly</p>
+        </div>
+    </div>
+</footer>
+
+<!-- ==========================================
+     JAVASCRIPT – AVIATOR GAME LOGIC
+     ========================================== -->
+<script>
+(function() {
+    'use strict';
+    
+    // Mobile menu
+    const mobileToggle = document.getElementById('mobileToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+    let mobileOpen = false;
+    
+    mobileToggle.addEventListener('click', () => {
+        mobileOpen = !mobileOpen;
+        mobileMenu.classList.toggle('active');
+        document.body.style.overflow = mobileOpen ? 'hidden' : '';
+    });
+    mobileMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            mobileMenu.classList.remove('active');
+            document.body.style.overflow = '';
+            mobileOpen = false;
+        });
+    });
+    
+    // ================== GAME VARIABLES ==================
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const multiplierDisplay = document.getElementById('multiplierDisplay');
+    const placeBetBtn = document.getElementById('placeBetBtn');
+    const cashoutBtn = document.getElementById('cashoutBtn');
+    const stakeInput = document.getElementById('stakeInput');
+    const autoCashoutInput = document.getElementById('autoCashoutInput');
+    const betStatus = document.getElementById('betStatus');
+    const historyContainer = document.getElementById('historyContainer');
+    
+    let gameRunning = false;
+    let currentMultiplier = 1.00;
+    let crashPoint = 0;
+    let betPlaced = false;
+    let cashedOut = false;
+    let animationFrame;
+    let startTime;
+    const gameDuration = 5000; // average flight time
+    const history = [];
+    
+    // Resize canvas to container width
+    function resizeCanvas() {
+        canvas.width = canvas.offsetWidth;
+        canvas.height = 300;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+    
+    // Draw graph
+    function drawGraph(multiplier) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // Background grid
+        ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+        ctx.lineWidth = 0.5;
+        for (let i = 0; i < canvas.width; i += 50) {
+            ctx.beginPath();
+            ctx.moveTo(i, 0);
+            ctx.lineTo(i, canvas.height);
+            ctx.stroke();
+        }
+        for (let j = 0; j < canvas.height; j += 50) {
+            ctx.beginPath();
+            ctx.moveTo(0, j);
+            ctx.lineTo(canvas.width, j);
+            ctx.stroke();
+        }
+        
+        // Draw the curve
+        const points = [];
+        const maxX = canvas.width;
+        const maxY = canvas.height;
+        const elapsed = (Date.now() - startTime) / 1000;
+        const progress = Math.min(elapsed / 3, 1); // animation over 3 seconds
+        
+        for (let x = 0; x <= maxX; x += 5) {
+            const t = x / maxX;
+            // Exponential growth curve: multiplier = 1 + (crashPoint-1) * t^2 (simplified)
+            const yMultiplier = 1 + (multiplier - 1) * (t * t);
+            const y = maxY - (yMultiplier - 1) * (maxY * 0.8) / (multiplier - 1 + 1);
+            points.push({ x, y: Math.max(10, y) });
+        }
+        
+        ctx.beginPath();
+        ctx.moveTo(0, maxY);
+        ctx.strokeStyle = '#00ff64';
+        ctx.lineWidth = 3;
+        ctx.shadowColor = '#00ff64';
+        ctx.shadowBlur = 10;
+        
+        for (let i = 0; i < points.length - 1; i++) {
+            ctx.lineTo(points[i].x, points[i].y);
+        }
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+        
+        // Draw the airplane icon at the tip
+        const lastPoint = points[points.length - 1];
+        ctx.font = '24px sans-serif';
+        ctx.fillStyle = '#00ff64';
+        ctx.fillText('✈️', lastPoint.x - 12, lastPoint.y - 12);
+    }
+    
+    // Start a new round
+    function startRound() {
+        if (gameRunning) return;
+        gameRunning = true;
+        cashedOut = false;
+        currentMultiplier = 1.00;
+        startTime = Date.now();
+        crashPoint = Math.random() * 15 + 1; // 1x to 16x
+        crashPoint = Math.round(crashPoint * 100) / 100;
+        
+        multiplierDisplay.classList.remove('crashed');
+        multiplierDisplay.style.animation = 'none';
+        updateMultiplierDisplay();
+        drawGraph(1.0);
+        
+        animate();
+    }
+    
+    function animate() {
+        if (!gameRunning) return;
+        
+        const elapsed = (Date.now() - startTime) / 1000;
+        // Exponential growth: multiplier = 1 + (crashPoint - 1) * (elapsed / maxTime)^2
+        const progress = Math.min(elapsed / 5, 1);
+        currentMultiplier = 1 + (crashPoint - 1) * progress * progress;
+        currentMultiplier = Math.round(currentMultiplier * 100) / 100;
+        
+        if (currentMultiplier >= crashPoint) {
+            currentMultiplier = crashPoint;
+            crash();
+            return;
+        }
+        
+        updateMultiplierDisplay();
+        drawGraph(currentMultiplier);
+        
+        // Auto cashout check
+        if (betPlaced && !cashedOut) {
+            const autoTarget = parseFloat(autoCashoutInput.value);
+            if (autoTarget && currentMultiplier >= autoTarget) {
+                cashOut();
+            }
+        }
+        
+        animationFrame = requestAnimationFrame(animate);
+    }
+    
+    function crash() {
+        gameRunning = false;
+        multiplierDisplay.classList.add('crashed');
+        multiplierDisplay.textContent = crashPoint.toFixed(2) + 'x';
+        cancelAnimationFrame(animationFrame);
+        drawGraph(crashPoint);
+        
+        // Add to history
+        history.unshift(crashPoint);
+        if (history.length > 15) history.pop();
+        renderHistory();
+        
+        // If user didn't cash out, they lose
+        if (betPlaced && !cashedOut) {
+            betStatus.textContent = 'Crashed! You lost your bet.';
+            betStatus.classList.add('text-red-400');
+            showToast('💥 Crashed at ' + crashPoint.toFixed(2) + 'x', 'error');
+        }
+        
+        // Reset after delay
+        setTimeout(() => {
+            resetRound();
+            startRound();
+        }, 3000);
+    }
+    
+    function cashOut() {
+        if (!betPlaced || cashedOut || !gameRunning) return;
+        cashedOut = true;
+        const stake = parseFloat(stakeInput.value) || 0;
+        const winAmount = (stake * currentMultiplier).toFixed(2);
+        betStatus.textContent = `Cashed out! Won $${winAmount}`;
+        betStatus.classList.add('text-green-400');
+        showToast(`✅ Cashed out at ${currentMultiplier}x – Won $${winAmount}`, 'success');
+        
+        // Disable cashout button
+        cashoutBtn.disabled = true;
+        cashoutBtn.classList.add('hidden');
+        placeBetBtn.classList.remove('hidden');
+        placeBetBtn.disabled = false;
+        betPlaced = false;
+    }
+    
+    function resetRound() {
+        gameRunning = false;
+        betPlaced = false;
+        cashedOut = false;
+        currentMultiplier = 1.00;
+        cancelAnimationFrame(animationFrame);
+        multiplierDisplay.classList.remove('crashed');
+        updateMultiplierDisplay();
+        drawGraph(1.0);
+        
+        cashoutBtn.classList.add('hidden');
+        cashoutBtn.disabled = true;
+        placeBetBtn.classList.remove('hidden');
+        placeBetBtn.disabled = false;
+        betStatus.textContent = '';
+    }
+    
+    function updateMultiplierDisplay() {
+        multiplierDisplay.textContent = currentMultiplier.toFixed(2) + 'x';
+    }
+    
+    function renderHistory() {
+        let html = '<span class="text-xs text-white/40 mr-2">Recent: </span>';
+        history.forEach(val => {
+            const colorClass = val < 1.01 ? 'red' : 'green';
+            html += `<span class="history-item ${colorClass}">${val.toFixed(2)}x</span>`;
+        });
+        historyContainer.innerHTML = html;
+    }
+    
+    // Place Bet
+    placeBetBtn.addEventListener('click', () => {
+        if (betPlaced || !gameRunning) return;
+        const stake = parseFloat(stakeInput.value);
+        if (!stake || stake <= 0) {
+            showToast('Enter a valid bet amount', 'error');
+            return;
+        }
+        
+        betPlaced = true;
+        placeBetBtn.disabled = true;
+        cashoutBtn.classList.remove('hidden');
+        cashoutBtn.disabled = false;
+        betStatus.textContent = 'Bet placed. Cash out before the crash!';
+        betStatus.classList.remove('text-red-400', 'text-green-400');
+        
+        // Update cashout button text
+        updateCashoutBtnText();
+    });
+    
+    // Cash Out button
+    cashoutBtn.addEventListener('click', () => {
+        if (!betPlaced || cashedOut) return;
+        cashOut();
+    });
+    
+    function updateCashoutBtnText() {
+        const autoTarget = parseFloat(autoCashoutInput.value);
+        if (autoTarget && autoTarget > 1) {
+            cashoutBtn.textContent = `Cash Out (Auto ${autoTarget}x)`;
+        } else {
+            cashoutBtn.textContent = `Cash Out (${currentMultiplier.toFixed(2)}x)`;
+        }
+    }
+    
+    // Update cashout button text dynamically (if we had real-time update)
+    // We'll use a small interval to update the button text while bet is placed
+    setInterval(() => {
+        if (betPlaced && !cashedOut && gameRunning) {
+            const autoTarget = parseFloat(autoCashoutInput.value);
+            if (autoTarget && autoTarget > 1) {
+                cashoutBtn.textContent = `Cash Out (Auto ${autoTarget}x)`;
+            } else {
+                cashoutBtn.textContent = `Cash Out (${currentMultiplier.toFixed(2)}x)`;
+            }
+        }
+    }, 100);
+    
+    function showToast(message, type = 'success') {
+        const toast = document.createElement('div');
+        toast.className = 'fixed bottom-6 right-6 z-50 bg-black/80 backdrop-blur-xl border border-white/10 rounded-2xl px-6 py-3';
+        toast.innerHTML = `<span class="text-sm">${message}</span>`;
+        document.body.appendChild(toast);
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateY(20px)';
+            setTimeout(() => toast.remove(), 300);
+        }, 2000);
+    }
+    
+    // Initialize first round
+    startRound();
+    
+    // PWA
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js')
+                .then(reg => console.log('SW registered'))
+                .catch(err => console.log('SW registration failed'));
+        });
+    }
+})();
+</script>
+
+</body>
+</html>
