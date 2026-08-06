@@ -209,12 +209,48 @@
             outline: none;
             border-color: #0055ff;
         }
+        
+        /* Tab buttons */
+        .tab-btn {
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: transparent;
+            color: white/60;
+        }
+        .tab-btn.active {
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            border-color: transparent;
+            color: white;
+        }
+        
+        /* Country select scrollable */
+        .country-select {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 14px 18px;
+            color: white;
+            width: 100%;
+            font-size: 15px;
+            transition: border-color 0.3s;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='white' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+        }
     </style>
 </head>
 <body>
 
 <!-- ==========================================
-     NAVBAR (same as index, ensures linking)
+     NAVBAR (full site links)
      ========================================== -->
 <nav class="navbar" id="navbar">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -370,33 +406,33 @@
 </div>
 
 <!-- ==========================================
-     MAIN CONTENT - Sign In Form
+     MAIN CONTENT - Sign In Form (Email / Phone)
      ========================================== -->
 <div class="page-background flex items-center justify-center pt-20 pb-12 px-4">
     <div class="w-full max-w-md z-10">
-        <!-- Card -->
         <div class="glass rounded-3xl p-8 md:p-10 border border-white/10 shadow-2xl">
             <!-- Header -->
             <div class="text-center mb-8">
                 <h1 class="text-3xl font-bold text-white mb-2">Welcome Back</h1>
-                <p class="text-sm text-white/40">Sign in to continue to CephasGM GameZone</p>
+                <p class="text-sm text-white/40">Sign in to your CephasGM GameZone account</p>
             </div>
             
-            <!-- Form -->
-            <form id="signinForm" class="space-y-5">
-                <!-- Email -->
+            <!-- Tab Switcher -->
+            <div class="flex justify-center mb-6 space-x-2">
+                <button id="tabEmail" class="tab-btn active">Email</button>
+                <button id="tabPhone" class="tab-btn">Phone</button>
+            </div>
+            
+            <!-- Form: Email Login -->
+            <form id="emailForm" class="space-y-5">
                 <div>
                     <label class="block text-xs text-white/40 mb-1.5 ml-1">Email</label>
                     <input type="email" id="email" placeholder="you@example.com" class="input-field" required autocomplete="email">
                 </div>
-                
-                <!-- Password -->
                 <div>
                     <label class="block text-xs text-white/40 mb-1.5 ml-1">Password</label>
-                    <input type="password" id="password" placeholder="••••••••" class="input-field" required autocomplete="current-password">
+                    <input type="password" id="passwordEmail" placeholder="••••••••" class="input-field" required autocomplete="current-password">
                 </div>
-                
-                <!-- Remember & Forgot -->
                 <div class="flex items-center justify-between text-sm">
                     <label class="flex items-center space-x-2 text-white/40">
                         <input type="checkbox" class="rounded bg-white/10 border-white/20 text-blue-500 focus:ring-0">
@@ -404,11 +440,224 @@
                     </label>
                     <a href="/forgot-password.html" class="text-blue-400 hover:text-blue-300 transition-colors">Forgot password?</a>
                 </div>
-                
-                <!-- Submit -->
-                <button type="submit" class="btn-primary w-full text-center py-3 text-base">
-                    Sign In
-                </button>
+                <button type="submit" class="btn-primary w-full text-center py-3 text-base">Sign In</button>
+            </form>
+            
+            <!-- Form: Phone Login (hidden by default) -->
+            <form id="phoneForm" class="space-y-5 hidden">
+                <div>
+                    <label class="block text-xs text-white/40 mb-1.5 ml-1">Country Code</label>
+                    <select id="countryCode" class="country-select" required>
+                        <option value="+93">🇦🇫 Afghanistan (+93)</option>
+                        <option value="+355">🇦🇱 Albania (+355)</option>
+                        <option value="+213">🇩🇿 Algeria (+213)</option>
+                        <option value="+376">🇦🇩 Andorra (+376)</option>
+                        <option value="+244">🇦🇴 Angola (+244)</option>
+                        <option value="+54">🇦🇷 Argentina (+54)</option>
+                        <option value="+374">🇦🇲 Armenia (+374)</option>
+                        <option value="+61">🇦🇺 Australia (+61)</option>
+                        <option value="+43">🇦🇹 Austria (+43)</option>
+                        <option value="+994">🇦🇿 Azerbaijan (+994)</option>
+                        <option value="+973">🇧🇭 Bahrain (+973)</option>
+                        <option value="+880">🇧🇩 Bangladesh (+880)</option>
+                        <option value="+375">🇧🇾 Belarus (+375)</option>
+                        <option value="+32">🇧🇪 Belgium (+32)</option>
+                        <option value="+501">🇧🇿 Belize (+501)</option>
+                        <option value="+229">🇧🇯 Benin (+229)</option>
+                        <option value="+975">🇧🇹 Bhutan (+975)</option>
+                        <option value="+591">🇧🇴 Bolivia (+591)</option>
+                        <option value="+387">🇧🇦 Bosnia and Herzegovina (+387)</option>
+                        <option value="+267">🇧🇼 Botswana (+267)</option>
+                        <option value="+55">🇧🇷 Brazil (+55)</option>
+                        <option value="+673">🇧🇳 Brunei (+673)</option>
+                        <option value="+359">🇧🇬 Bulgaria (+359)</option>
+                        <option value="+226">🇧🇫 Burkina Faso (+226)</option>
+                        <option value="+257">🇧🇮 Burundi (+257)</option>
+                        <option value="+855">🇰🇭 Cambodia (+855)</option>
+                        <option value="+237">🇨🇲 Cameroon (+237)</option>
+                        <option value="+1">🇨🇦 Canada (+1)</option>
+                        <option value="+238">🇨🇻 Cape Verde (+238)</option>
+                        <option value="+236">🇨🇫 Central African Republic (+236)</option>
+                        <option value="+235">🇹🇩 Chad (+235)</option>
+                        <option value="+56">🇨🇱 Chile (+56)</option>
+                        <option value="+86">🇨🇳 China (+86)</option>
+                        <option value="+57">🇨🇴 Colombia (+57)</option>
+                        <option value="+269">🇰🇲 Comoros (+269)</option>
+                        <option value="+242">🇨🇬 Congo (+242)</option>
+                        <option value="+243">🇨🇩 Congo, DR (+243)</option>
+                        <option value="+506">🇨🇷 Costa Rica (+506)</option>
+                        <option value="+225">🇨🇮 Côte d'Ivoire (+225)</option>
+                        <option value="+385">🇭🇷 Croatia (+385)</option>
+                        <option value="+53">🇨🇺 Cuba (+53)</option>
+                        <option value="+357">🇨🇾 Cyprus (+357)</option>
+                        <option value="+420">🇨🇿 Czech Republic (+420)</option>
+                        <option value="+45">🇩🇰 Denmark (+45)</option>
+                        <option value="+253">🇩🇯 Djibouti (+253)</option>
+                        <option value="+1-767">🇩🇲 Dominica (+1-767)</option>
+                        <option value="+1-809">🇩🇴 Dominican Republic (+1-809)</option>
+                        <option value="+593">🇪🇨 Ecuador (+593)</option>
+                        <option value="+20">🇪🇬 Egypt (+20)</option>
+                        <option value="+503">🇸🇻 El Salvador (+503)</option>
+                        <option value="+240">🇬🇶 Equatorial Guinea (+240)</option>
+                        <option value="+291">🇪🇷 Eritrea (+291)</option>
+                        <option value="+372">🇪🇪 Estonia (+372)</option>
+                        <option value="+251">🇪🇹 Ethiopia (+251)</option>
+                        <option value="+679">🇫🇯 Fiji (+679)</option>
+                        <option value="+358">🇫🇮 Finland (+358)</option>
+                        <option value="+33">🇫🇷 France (+33)</option>
+                        <option value="+241">🇬🇦 Gabon (+241)</option>
+                        <option value="+220">🇬🇲 Gambia (+220)</option>
+                        <option value="+995">🇬🇪 Georgia (+995)</option>
+                        <option value="+49">🇩🇪 Germany (+49)</option>
+                        <option value="+233">🇬🇭 Ghana (+233)</option>
+                        <option value="+30">🇬🇷 Greece (+30)</option>
+                        <option value="+1-473">🇬🇩 Grenada (+1-473)</option>
+                        <option value="+502">🇬🇹 Guatemala (+502)</option>
+                        <option value="+224">🇬🇳 Guinea (+224)</option>
+                        <option value="+245">🇬🇼 Guinea-Bissau (+245)</option>
+                        <option value="+592">🇬🇾 Guyana (+592)</option>
+                        <option value="+509">🇭🇹 Haiti (+509)</option>
+                        <option value="+504">🇭🇳 Honduras (+504)</option>
+                        <option value="+36">🇭🇺 Hungary (+36)</option>
+                        <option value="+354">🇮🇸 Iceland (+354)</option>
+                        <option value="+91">🇮🇳 India (+91)</option>
+                        <option value="+62">🇮🇩 Indonesia (+62)</option>
+                        <option value="+98">🇮🇷 Iran (+98)</option>
+                        <option value="+964">🇮🇶 Iraq (+964)</option>
+                        <option value="+353">🇮🇪 Ireland (+353)</option>
+                        <option value="+972">🇮🇱 Israel (+972)</option>
+                        <option value="+39">🇮🇹 Italy (+39)</option>
+                        <option value="+1-876">🇯🇲 Jamaica (+1-876)</option>
+                        <option value="+81">🇯🇵 Japan (+81)</option>
+                        <option value="+962">🇯🇴 Jordan (+962)</option>
+                        <option value="+7">🇰🇿 Kazakhstan (+7)</option>
+                        <option value="+254">🇰🇪 Kenya (+254)</option>
+                        <option value="+686">🇰🇮 Kiribati (+686)</option>
+                        <option value="+383">🇽🇰 Kosovo (+383)</option>
+                        <option value="+965">🇰🇼 Kuwait (+965)</option>
+                        <option value="+996">🇰🇬 Kyrgyzstan (+996)</option>
+                        <option value="+856">🇱🇦 Laos (+856)</option>
+                        <option value="+371">🇱🇻 Latvia (+371)</option>
+                        <option value="+961">🇱🇧 Lebanon (+961)</option>
+                        <option value="+266">🇱🇸 Lesotho (+266)</option>
+                        <option value="+231">🇱🇷 Liberia (+231)</option>
+                        <option value="+218">🇱🇾 Libya (+218)</option>
+                        <option value="+423">🇱🇮 Liechtenstein (+423)</option>
+                        <option value="+370">🇱🇹 Lithuania (+370)</option>
+                        <option value="+352">🇱🇺 Luxembourg (+352)</option>
+                        <option value="+389">🇲🇰 Macedonia (+389)</option>
+                        <option value="+261">🇲🇬 Madagascar (+261)</option>
+                        <option value="+265">🇲🇼 Malawi (+265)</option>
+                        <option value="+60">🇲🇾 Malaysia (+60)</option>
+                        <option value="+960">🇲🇻 Maldives (+960)</option>
+                        <option value="+223">🇲🇱 Mali (+223)</option>
+                        <option value="+356">🇲🇹 Malta (+356)</option>
+                        <option value="+692">🇲🇭 Marshall Islands (+692)</option>
+                        <option value="+222">🇲🇷 Mauritania (+222)</option>
+                        <option value="+230">🇲🇺 Mauritius (+230)</option>
+                        <option value="+52">🇲🇽 Mexico (+52)</option>
+                        <option value="+691">🇫🇲 Micronesia (+691)</option>
+                        <option value="+373">🇲🇩 Moldova (+373)</option>
+                        <option value="+377">🇲🇨 Monaco (+377)</option>
+                        <option value="+976">🇲🇳 Mongolia (+976)</option>
+                        <option value="+382">🇲🇪 Montenegro (+382)</option>
+                        <option value="+212">🇲🇦 Morocco (+212)</option>
+                        <option value="+258">🇲🇿 Mozambique (+258)</option>
+                        <option value="+95">🇲🇲 Myanmar (+95)</option>
+                        <option value="+264">🇳🇦 Namibia (+264)</option>
+                        <option value="+674">🇳🇷 Nauru (+674)</option>
+                        <option value="+977">🇳🇵 Nepal (+977)</option>
+                        <option value="+31">🇳🇱 Netherlands (+31)</option>
+                        <option value="+64">🇳🇿 New Zealand (+64)</option>
+                        <option value="+505">🇳🇮 Nicaragua (+505)</option>
+                        <option value="+227">🇳🇪 Niger (+227)</option>
+                        <option value="+234">🇳🇬 Nigeria (+234)</option>
+                        <option value="+850">🇰🇵 North Korea (+850)</option>
+                        <option value="+47">🇳🇴 Norway (+47)</option>
+                        <option value="+968">🇴🇲 Oman (+968)</option>
+                        <option value="+92">🇵🇰 Pakistan (+92)</option>
+                        <option value="+680">🇵🇼 Palau (+680)</option>
+                        <option value="+507">🇵🇦 Panama (+507)</option>
+                        <option value="+675">🇵🇬 Papua New Guinea (+675)</option>
+                        <option value="+595">🇵🇾 Paraguay (+595)</option>
+                        <option value="+51">🇵🇪 Peru (+51)</option>
+                        <option value="+63">🇵🇭 Philippines (+63)</option>
+                        <option value="+48">🇵🇱 Poland (+48)</option>
+                        <option value="+351">🇵🇹 Portugal (+351)</option>
+                        <option value="+974">🇶🇦 Qatar (+974)</option>
+                        <option value="+40">🇷🇴 Romania (+40)</option>
+                        <option value="+7">🇷🇺 Russia (+7)</option>
+                        <option value="+250">🇷🇼 Rwanda (+250)</option>
+                        <option value="+1-869">🇰🇳 Saint Kitts and Nevis (+1-869)</option>
+                        <option value="+1-758">🇱🇨 Saint Lucia (+1-758)</option>
+                        <option value="+1-784">🇻🇨 Saint Vincent and the Grenadines (+1-784)</option>
+                        <option value="+685">🇼🇸 Samoa (+685)</option>
+                        <option value="+378">🇸🇲 San Marino (+378)</option>
+                        <option value="+239">🇸🇹 Sao Tome and Principe (+239)</option>
+                        <option value="+966">🇸🇦 Saudi Arabia (+966)</option>
+                        <option value="+221">🇸🇳 Senegal (+221)</option>
+                        <option value="+381">🇷🇸 Serbia (+381)</option>
+                        <option value="+248">🇸🇨 Seychelles (+248)</option>
+                        <option value="+232">🇸🇱 Sierra Leone (+232)</option>
+                        <option value="+65">🇸🇬 Singapore (+65)</option>
+                        <option value="+421">🇸🇰 Slovakia (+421)</option>
+                        <option value="+386">🇸🇮 Slovenia (+386)</option>
+                        <option value="+677">🇸🇧 Solomon Islands (+677)</option>
+                        <option value="+252">🇸🇴 Somalia (+252)</option>
+                        <option value="+27">🇿🇦 South Africa (+27)</option>
+                        <option value="+82">🇰🇷 South Korea (+82)</option>
+                        <option value="+211">🇸🇸 South Sudan (+211)</option>
+                        <option value="+34">🇪🇸 Spain (+34)</option>
+                        <option value="+94">🇱🇰 Sri Lanka (+94)</option>
+                        <option value="+249">🇸🇩 Sudan (+249)</option>
+                        <option value="+597">🇸🇷 Suriname (+597)</option>
+                        <option value="+268">🇸🇿 Swaziland (+268)</option>
+                        <option value="+46">🇸🇪 Sweden (+46)</option>
+                        <option value="+41">🇨🇭 Switzerland (+41)</option>
+                        <option value="+963">🇸🇾 Syria (+963)</option>
+                        <option value="+886">🇹🇼 Taiwan (+886)</option>
+                        <option value="+992">🇹🇯 Tajikistan (+992)</option>
+                        <option value="+255">🇹🇿 Tanzania (+255)</option>
+                        <option value="+66">🇹🇭 Thailand (+66)</option>
+                        <option value="+670">🇹🇱 Timor-Leste (+670)</option>
+                        <option value="+228">🇹🇬 Togo (+228)</option>
+                        <option value="+676">🇹🇴 Tonga (+676)</option>
+                        <option value="+1-868">🇹🇹 Trinidad and Tobago (+1-868)</option>
+                        <option value="+216">🇹🇳 Tunisia (+216)</option>
+                        <option value="+90">🇹🇷 Turkey (+90)</option>
+                        <option value="+993">🇹🇲 Turkmenistan (+993)</option>
+                        <option value="+688">🇹🇻 Tuvalu (+688)</option>
+                        <option value="+256">🇺🇬 Uganda (+256)</option>
+                        <option value="+380">🇺🇦 Ukraine (+380)</option>
+                        <option value="+971">🇦🇪 United Arab Emirates (+971)</option>
+                        <option value="+44">🇬🇧 United Kingdom (+44)</option>
+                        <option value="+1">🇺🇸 United States (+1)</option>
+                        <option value="+598">🇺🇾 Uruguay (+598)</option>
+                        <option value="+998">🇺🇿 Uzbekistan (+998)</option>
+                        <option value="+678">🇻🇺 Vanuatu (+678)</option>
+                        <option value="+58">🇻🇪 Venezuela (+58)</option>
+                        <option value="+84">🇻🇳 Vietnam (+84)</option>
+                        <option value="+967">🇾🇪 Yemen (+967)</option>
+                        <option value="+260">🇿🇲 Zambia (+260)</option>
+                        <option value="+263">🇿🇼 Zimbabwe (+263)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs text-white/40 mb-1.5 ml-1">Mobile Number</label>
+                    <input type="tel" id="mobileNumber" placeholder="712345678" class="input-field" required>
+                </div>
+                <div>
+                    <label class="block text-xs text-white/40 mb-1.5 ml-1">Password</label>
+                    <input type="password" id="passwordPhone" placeholder="••••••••" class="input-field" required>
+                </div>
+                <div class="flex items-center justify-between text-sm">
+                    <label class="flex items-center space-x-2 text-white/40">
+                        <input type="checkbox" class="rounded bg-white/10 border-white/20 text-blue-500 focus:ring-0">
+                        <span>Remember me</span>
+                    </label>
+                    <a href="/forgot-password.html" class="text-blue-400 hover:text-blue-300 transition-colors">Forgot password?</a>
+                </div>
+                <button type="submit" class="btn-primary w-full text-center py-3 text-base">Sign In</button>
             </form>
             
             <!-- Divider -->
@@ -417,19 +666,15 @@
                     <div class="w-full border-t border-white/10"></div>
                 </div>
                 <div class="relative flex justify-center text-xs">
-                    <span class="px-4 bg-[#0a0a12] text-white/30">or</span>
+                    <span class="px-4 bg-[#0a0a12] text-white/30">or continue with</span>
                 </div>
             </div>
             
-            <!-- Social login stub -->
-            <div class="grid grid-cols-2 gap-3">
-                <button class="flex items-center justify-center space-x-2 py-2.5 rounded-xl bg-white/5 border border-white/10 text-sm text-white/70 hover:bg-white/10 transition-colors">
+            <!-- Social login (Google only) -->
+            <div class="flex justify-center">
+                <button class="flex items-center justify-center space-x-2 py-2.5 px-8 rounded-xl bg-white/5 border border-white/10 text-sm text-white/70 hover:bg-white/10 transition-colors">
                     <svg class="w-5 h-5" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
                     <span>Google</span>
-                </button>
-                <button class="flex items-center justify-center space-x-2 py-2.5 rounded-xl bg-white/5 border border-white/10 text-sm text-white/70 hover:bg-white/10 transition-colors">
-                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="white"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                    <span>GitHub</span>
                 </button>
             </div>
             
@@ -519,32 +764,68 @@
         });
     });
     
-    // Sign in form handling (mock)
-    document.getElementById('signinForm').addEventListener('submit', function(e) {
+    // Tab switching
+    const tabEmail = document.getElementById('tabEmail');
+    const tabPhone = document.getElementById('tabPhone');
+    const emailForm = document.getElementById('emailForm');
+    const phoneForm = document.getElementById('phoneForm');
+    
+    tabEmail.addEventListener('click', function() {
+        tabEmail.classList.add('active');
+        tabPhone.classList.remove('active');
+        emailForm.classList.remove('hidden');
+        phoneForm.classList.add('hidden');
+    });
+    
+    tabPhone.addEventListener('click', function() {
+        tabPhone.classList.add('active');
+        tabEmail.classList.remove('active');
+        phoneForm.classList.remove('hidden');
+        emailForm.classList.add('hidden');
+    });
+    
+    // Email sign in (mock)
+    document.getElementById('emailForm').addEventListener('submit', function(e) {
         e.preventDefault();
         const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        
+        const password = document.getElementById('passwordEmail').value;
         if (!email || !password) {
             alert('Please fill in all fields.');
             return;
         }
-        
-        // Mock sign-in: simulate redirect to dashboard
-        console.log('Sign in attempt:', { email });
-        
-        // Show a toast
-        const toast = document.createElement('div');
-        toast.className = 'fixed bottom-6 right-6 z-50 glass rounded-2xl px-6 py-3 border border-green-500/30';
-        toast.innerHTML = '<span class="text-sm">✅ Signing in...</span>';
-        document.body.appendChild(toast);
-        
-        setTimeout(() => {
-            window.location.href = '/dashboard.html';
-        }, 1000);
+        console.log('Sign in with email:', email);
+        showToast('✅ Signing in...');
+        setTimeout(() => { window.location.href = '/dashboard.html'; }, 1000);
     });
     
-    // PWA registration
+    // Phone sign in (mock)
+    document.getElementById('phoneForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const countryCode = document.getElementById('countryCode').value;
+        const mobile = document.getElementById('mobileNumber').value;
+        const password = document.getElementById('passwordPhone').value;
+        if (!countryCode || !mobile || !password) {
+            alert('Please fill in all fields.');
+            return;
+        }
+        console.log('Sign in with phone:', countryCode + mobile);
+        showToast('✅ Signing in...');
+        setTimeout(() => { window.location.href = '/dashboard.html'; }, 1000);
+    });
+    
+    function showToast(message) {
+        const toast = document.createElement('div');
+        toast.className = 'fixed bottom-6 right-6 z-50 glass rounded-2xl px-6 py-3 border border-green-500/30';
+        toast.innerHTML = `<span class="text-sm">${message}</span>`;
+        document.body.appendChild(toast);
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateY(20px)';
+            setTimeout(() => toast.remove(), 300);
+        }, 2000);
+    }
+    
+    // PWA
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('/sw.js')
