@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0a0a12">
+    <meta name="description" content="Sports Betting – CephasGM GameZone">
+    <title>Sports | CephasGM GameZone</title>
+    
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a12;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a12; }
+        ::-webkit-scrollbar-thumb { 
+            background: linear-gradient(180deg, #0055ff, #542bff);
+            border-radius: 10px;
+        }
+        
+        .glass {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        
+        .glass-light {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 85, 255, 0.25);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 85, 255, 0.4);
+        }
+        
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 16px 0;
+            background: rgba(10, 10, 18, 0.92);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .text-gradient {
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 10, 18, 0.98);
+            backdrop-filter: blur(20px);
+            z-index: 999;
+            display: none;
+            padding: 80px 24px 24px;
+            overflow-y: auto;
+        }
+        
+        .mobile-menu.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .footer-link {
+            color: rgba(255, 255, 255, 0.4);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .footer-link:hover {
+            color: #ffffff;
+        }
+        
+        .page-background {
+            min-height: 100vh;
+            background-image: url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+        }
+        
+        .page-background::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, 
+                rgba(10, 10, 18, 0.9) 0%, 
+                rgba(10, 10, 18, 0.7) 50%,
+                rgba(10, 10, 18, 0.9) 100%
+            );
+            z-index: -1;
+        }
+        
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgba(10, 10, 18, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px;
+            min-width: 200px;
+            padding: 8px 0;
+            z-index: 1001;
+        }
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+        .dropdown-menu a {
+            display: block;
+            padding: 8px 16px;
+            color: rgba(255,255,255,0.6);
+            font-size: 13px;
+            transition: 0.2s;
+        }
+        .dropdown-menu a:hover {
+            background: rgba(255,255,255,0.05);
+            color: white;
+        }
+        
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ff0044;
+            display: inline-block;
+            animation: pulse-dot 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.8); }
+        }
+        
+        .odds-btn-small {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 6px;
+            padding: 4px 12px;
+            font-size: 13px;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .odds-btn-small:hover {
+            background: #0055ff;
+            border-color: #0055ff;
+            transform: scale(1.05);
+        }
+        
+        .match-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        .match-item:last-child { border-bottom: none; }
+        
+        .sport-category {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            aspect-ratio: 1;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .sport-category:hover {
+            transform: scale(1.02);
+        }
+        .sport-category img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .sport-category .overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 10px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            text-align: center;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .bet-slip-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        .bet-slip-item .remove {
+            color: rgba(255,255,255,0.3);
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .bet-slip-item .remove:hover { color: #ff0044; }
+        
+        @media (max-width: 768px) {
+            .sport-category { aspect-ratio: 1; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ==========================================
+     NAVBAR
+     ========================================== -->
+<nav class="navbar" id="navbar">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between">
+            
+            <a href="/index.html" class="flex items-center space-x-2" title="Go to Homepage">
+                <span class="text-xl font-bold">
+                    <span class="text-gradient">CephasGM</span>
+                    <span class="text-white font-light">|</span>
+                    <span class="text-white font-semibold">GameZone</span>
+                </span>
+            </a>
+            
+            <div class="hidden lg:flex items-center space-x-1">
+                <a href="/sports.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Sports</a>
+                <a href="/live-betting.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 flex items-center space-x-1">
+                    <span class="live-dot"></span>
+                    <span>Live</span>
+                </a>
+                <a href="/casino.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Casino</a>
+                <div class="dropdown">
+                    <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Virtual ▾</span>
+                    <div class="dropdown-menu">
+                        <a href="/virtual-football.html">Virtual Football</a>
+                        <a href="/virtual-horse-racing.html">Virtual Horse Racing</a>
+                        <a href="/virtual-car-racing.html">Virtual Car Racing</a>
+                        <a href="/virtual-netball.html">Virtual Netball</a>
+                        <a href="/adventure-games.html">Adventure Games</a>
+                        <a href="/aviator.html">Aviator</a>
+                    </div>
+                </div>
+                <a href="/promotions.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Promotions</a>
+                <div class="dropdown">
+                    <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Account ▾</span>
+                    <div class="dropdown-menu">
+                        <a href="/dashboard.html">Dashboard</a>
+                        <a href="/profile.html">Profile</a>
+                        <a href="/wallet.html">Wallet</a>
+                        <a href="/deposit.html">Deposit</a>
+                        <a href="/withdraw.html">Withdraw</a>
+                        <a href="/transactions.html">Transactions</a>
+                        <a href="/bet-history.html">Bet History</a>
+                        <a href="/bonuses.html">Bonuses</a>
+                        <a href="/kyc.html">KYC Verification</a>
+                        <a href="/settings.html">Settings</a>
+                        <a href="/signin.html">Sign In</a>
+                        <a href="/signup.html">Sign Up</a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Support ▾</span>
+                    <div class="dropdown-menu">
+                        <a href="/support.html">Help Center</a>
+                        <a href="/messages.html">Messages</a>
+                        <a href="/notifications.html">Notifications</a>
+                        <a href="/faq.html">FAQ</a>
+                        <a href="/contact.html">Contact Us</a>
+                        <a href="/responsible-gambling.html">Responsible Gambling</a>
+                        <a href="/self-exclusion.html">Self-Exclusion</a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Info ▾</span>
+                    <div class="dropdown-menu">
+                        <a href="/about.html">About Us</a>
+                        <a href="/vip.html">VIP Club</a>
+                        <a href="/referrals.html">Referrals</a>
+                        <a href="/privacy.html">Privacy Policy</a>
+                        <a href="/terms.html">Terms & Conditions</a>
+                        <a href="/cookies.html">Cookie Policy</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-3">
+                <button id="mobileToggle" class="lg:hidden p-2 text-white/40 hover:text-white transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div id="mobileMenu" class="mobile-menu">
+    <nav class="flex flex-col space-y-6">
+        <a href="/index.html" class="text-lg text-white/70 hover:text-white">Home</a>
+        <a href="/sports.html" class="text-lg text-white/70 hover:text-white">Sports</a>
+        <a href="/live-betting.html" class="text-lg text-white/70 hover:text-white">Live Betting</a>
+        <a href="/casino.html" class="text-lg text-white/70 hover:text-white">Casino</a>
+        <a href="/promotions.html" class="text-lg text-white/70 hover:text-white">Promotions</a>
+        <a href="/bonuses.html" class="text-lg text-white/70 hover:text-white">Bonuses</a>
+        <a href="/leaderboard.html" class="text-lg text-white/70 hover:text-white">Leaderboard</a>
+        <div class="border-t border-white/10 pt-4">
+            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Account</span>
+            <div class="grid grid-cols-2 gap-2 mt-2">
+                <a href="/dashboard.html" class="text-sm text-white/50 hover:text-white">Dashboard</a>
+                <a href="/profile.html" class="text-sm text-white/50 hover:text-white">Profile</a>
+                <a href="/wallet.html" class="text-sm text-white/50 hover:text-white">Wallet</a>
+                <a href="/deposit.html" class="text-sm text-white/50 hover:text-white">Deposit</a>
+                <a href="/withdraw.html" class="text-sm text-white/50 hover:text-white">Withdraw</a>
+                <a href="/transactions.html" class="text-sm text-white/50 hover:text-white">Transactions</a>
+                <a href="/bet-history.html" class="text-sm text-white/50 hover:text-white">Bet History</a>
+                <a href="/kyc.html" class="text-sm text-white/50 hover:text-white">KYC</a>
+                <a href="/settings.html" class="text-sm text-white/50 hover:text-white">Settings</a>
+                <a href="/signin.html" class="text-sm text-white/50 hover:text-white">Sign In</a>
+                <a href="/signup.html" class="text-sm text-white/50 hover:text-white">Sign Up</a>
+            </div>
+        </div>
+        <div class="border-t border-white/10 pt-4">
+            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Virtual Games</span>
+            <div class="grid grid-cols-2 gap-2 mt-2">
+                <a href="/virtual-football.html" class="text-sm text-white/50 hover:text-white">Virtual Football</a>
+                <a href="/virtual-horse-racing.html" class="text-sm text-white/50 hover:text-white">Horse Racing</a>
+                <a href="/virtual-car-racing.html" class="text-sm text-white/50 hover:text-white">Car Racing</a>
+                <a href="/virtual-netball.html" class="text-sm text-white/50 hover:text-white">Netball</a>
+                <a href="/adventure-games.html" class="text-sm text-white/50 hover:text-white">Adventure</a>
+                <a href="/aviator.html" class="text-sm text-white/50 hover:text-white">Aviator</a>
+            </div>
+        </div>
+        <div class="border-t border-white/10 pt-4">
+            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Support</span>
+            <div class="grid grid-cols-2 gap-2 mt-2">
+                <a href="/support.html" class="text-sm text-white/50 hover:text-white">Help Center</a>
+                <a href="/messages.html" class="text-sm text-white/50 hover:text-white">Messages</a>
+                <a href="/notifications.html" class="text-sm text-white/50 hover:text-white">Notifications</a>
+                <a href="/faq.html" class="text-sm text-white/50 hover:text-white">FAQ</a>
+                <a href="/contact.html" class="text-sm text-white/50 hover:text-white">Contact</a>
+                <a href="/responsible-gambling.html" class="text-sm text-white/50 hover:text-white">Responsible</a>
+                <a href="/self-exclusion.html" class="text-sm text-white/50 hover:text-white">Self-Exclusion</a>
+            </div>
+        </div>
+        <div class="border-t border-white/10 pt-4">
+            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Information</span>
+            <div class="grid grid-cols-2 gap-2 mt-2">
+                <a href="/about.html" class="text-sm text-white/50 hover:text-white">About</a>
+                <a href="/vip.html" class="text-sm text-white/50 hover:text-white">VIP</a>
+                <a href="/referrals.html" class="text-sm text-white/50 hover:text-white">Referrals</a>
+                <a href="/privacy.html" class="text-sm text-white/50 hover:text-white">Privacy</a>
+                <a href="/terms.html" class="text-sm text-white/50 hover:text-white">Terms</a>
+                <a href="/cookies.html" class="text-sm text-white/50 hover:text-white">Cookies</a>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<!-- ==========================================
+     SPORTS CONTENT
+     ========================================== -->
+<div class="page-background pt-20 pb-12 px-4">
+    <div class="max-w-7xl mx-auto relative z-10">
+        
+        <div class="text-center mb-10">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">
+                Sports <span class="text-gradient">Betting</span>
+            </h1>
+            <p class="text-lg text-white/50 max-w-xl mx-auto">
+                Bet on thousands of markets across football, basketball, tennis, and more.
+            </p>
+        </div>
+        
+        <!-- Popular Sports Categories -->
+        <div class="mb-10">
+            <h2 class="text-xl font-bold mb-4">Popular Sports</h2>
+            <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
+                <a href="#" class="sport-category">
+                    <img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=400&q=80" alt="Football">
+                    <div class="overlay">⚽ Football</div>
+                </a>
+                <a href="#" class="sport-category">
+                    <img src="https://images.unsplash.com/photo-1546519638-68e1094989dd?w=400&q=80" alt="Basketball">
+                    <div class="overlay">🏀 Basketball</div>
+                </a>
+                <a href="#" class="sport-category">
+                    <img src="https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0?w=400&q=80" alt="Tennis">
+                    <div class="overlay">🎾 Tennis</div>
+                </a>
+                <a href="#" class="sport-category">
+                    <img src="https://images.unsplash.com/photo-1531415074968-036ba1b575da?w=400&q=80" alt="Cricket">
+                    <div class="overlay">🏏 Cricket</div>
+                </a>
+                <a href="#" class="sport-category">
+                    <img src="https://images.unsplash.com/photo-1517649763962-0c623066013b?w=400&q=80" alt="Rugby">
+                    <div class="overlay">🏉 Rugby</div>
+                </a>
+                <a href="#" class="sport-category">
+                    <img src="https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?w=400&q=80" alt="Esports">
+                    <div class="overlay">🎮 Esports</div>
+                </a>
+            </div>
+        </div>
+        
+        <div class="grid lg:grid-cols-3 gap-6">
+            
+            <!-- Live Matches (left 2 columns) -->
+            <div class="lg:col-span-2 space-y-6">
+                
+                <!-- Live Matches Section -->
+                <div class="glass rounded-2xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-lg font-bold flex items-center gap-2">
+                            <span class="live-dot"></span> Live Now
+                        </h2>
+                        <a href="/live-betting.html" class="text-sm text-blue-400 hover:text-blue-300">View All →</a>
+                    </div>
+                    <div class="space-y-1">
+                        <!-- Match 1 -->
+                        <div class="match-item">
+                            <div class="flex items-center gap-3">
+                                <span class="text-xl">⚽</span>
+                                <div>
+                                    <div class="font-semibold text-sm">Arsenal vs Chelsea</div>
+                                    <div class="text-xs text-white/30">Premier League • 67'</div>
+                                </div>
+                            </div>
+                            <div class="flex gap-1.5">
+                                <button class="odds-btn-small" data-match="Arsenal vs Chelsea" data-selection="Arsenal" data-odds="1.95">1.95</button>
+                                <button class="odds-btn-small" data-match="Arsenal vs Chelsea" data-selection="Draw" data-odds="3.20">3.20</button>
+                                <button class="odds-btn-small" data-match="Arsenal vs Chelsea" data-selection="Chelsea" data-odds="2.15">2.15</button>
+                            </div>
+                        </div>
+                        <!-- Match 2 -->
+                        <div class="match-item">
+                            <div class="flex items-center gap-3">
+                                <span class="text-xl">⚽</span>
+                                <div>
+                                    <div class="font-semibold text-sm">Barcelona vs Real Madrid</div>
+                                    <div class="text-xs text-white/30">La Liga • 12'</div>
+                                </div>
+                            </div>
+                            <div class="flex gap-1.5">
+                                <button class="odds-btn-small" data-match="Barcelona vs Real Madrid" data-selection="Barcelona" data-odds="2.50">2.50</button>
+                                <button class="odds-btn-small" data-match="Barcelona vs Real Madrid" data-selection="Draw" data-odds="3.40">3.40</button>
+                                <button class="odds-btn-small" data-match="Barcelona vs Real Madrid" data-selection="Real Madrid" data-odds="2.80">2.80</button>
+                            </div>
+                        </div>
+                        <!-- Match 3 -->
+                        <div class="match-item">
+                            <div class="flex items-center gap-3">
+                                <span class="text-xl">🏀</span>
+                                <div>
+                                    <div class="font-semibold text-sm">Lakers vs Celtics</div>
+                                    <div class="text-xs text-white/30">NBA • Q4</div>
+                                </div>
+                            </div>
+                            <div class="flex gap-1.5">
+                                <button class="odds-btn-small" data-match="Lakers vs Celtics" data-selection="Lakers -5.5" data-odds="1.75">1.75</button>
+                                <button class="odds-btn-small" data-match="Lakers vs Celtics" data-selection="Celtics +5.5" data-odds="1.95">1.95</button>
+                            </div>
+                        </div>
+                        <!-- Match 4 -->
+                        <div class="match-item">
+                            <div class="flex items-center gap-3">
+                                <span class="text-xl">🎾</span>
+                                <div>
+                                    <div class="font-semibold text-sm">Djokovic vs Nadal</div>
+                                    <div class="text-xs text-white/30">ATP Finals • Set 2</div>
+                                </div>
+                            </div>
+                            <div class="flex gap-1.5">
+                                <button class="odds-btn-small" data-match="Djokovic vs Nadal" data-selection="Djokovic" data-odds="1.65">1.65</button>
+                                <button class="odds-btn-small" data-match="Djokovic vs Nadal" data-selection="Nadal" data-odds="2.30">2.30</button>
+                            </div>
+                        </div>
+                        <!-- Match 5 -->
+                        <div class="match-item">
+                            <div class="flex items-center gap-3">
+                                <span class="text-xl">🏈</span>
+                                <div>
+                                    <div class="font-semibold text-sm">Chiefs vs 49ers</div>
+                                    <div class="text-xs text-white/30">NFL • Q3</div>
+                                </div>
+                            </div>
+                            <div class="flex gap-1.5">
+                                <button class="odds-btn-small" data-match="Chiefs vs 49ers" data-selection="Chiefs" data-odds="1.90">1.90</button>
+                                <button class="odds-btn-small" data-match="Chiefs vs 49ers" data-selection="49ers" data-odds="1.85">1.85</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Upcoming Matches -->
+                <div class="glass rounded-2xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-lg font-bold">📅 Upcoming</h2>
+                    </div>
+                    <div class="space-y-1">
+                        <div class="match-item">
+                            <div class="flex items-center gap-3">
+                                <span class="text-xl">⚽</span>
+                                <div>
+                                    <div class="font-semibold text-sm">Man City vs Liverpool</div>
+                                    <div class="text-xs text-white/30">Tomorrow, 20:00</div>
+                                </div>
+                            </div>
+                            <div class="flex gap-1.5">
+                                <button class="odds-btn-small" data-match="Man City vs Liverpool" data-selection="Man City" data-odds="2.10">2.10</button>
+                                <button class="odds-btn-small" data-match="Man City vs Liverpool" data-selection="Draw" data-odds="3.50">3.50</button>
+                                <button class="odds-btn-small" data-match="Man City vs Liverpool" data-selection="Liverpool" data-odds="3.00">3.00</button>
+                            </div>
+                        </div>
+                        <div class="match-item">
+                            <div class="flex items-center gap-3">
+                                <span class="text-xl">🏀</span>
+                                <div>
+                                    <div class="font-semibold text-sm">Bulls vs Heat</div>
+                                    <div class="text-xs text-white/30">Jan 22, 19:30</div>
+                                </div>
+                            </div>
+                            <div class="flex gap-1.5">
+                                <button class="odds-btn-small" data-match="Bulls vs Heat" data-selection="Bulls" data-odds="2.20">2.20</button>
+                                <button class="odds-btn-small" data-match="Bulls vs Heat" data-selection="Heat" data-odds="1.70">1.70</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <!-- Bet Slip (right column) -->
+            <div class="space-y-6">
+                <div class="glass rounded-2xl p-6 sticky top-24">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-lg font-bold">🎯 Bet Slip</h2>
+                        <span id="slipCount" class="text-xs text-white/30">0 selections</span>
+                    </div>
+                    <div id="betSlipContainer">
+                        <div id="emptySlip" class="text-center py-10 text-white/30">
+                            <div class="text-3xl mb-2">📋</div>
+                            <p class="text-sm">No selections yet</p>
+                            <p class="text-xs">Click odds to add to slip</p>
+                        </div>
+                        <div id="slipItems" class="space-y-1"></div>
+                    </div>
+                    <div id="slipFooter" class="hidden mt-4 pt-4 border-t border-white/10">
+                        <div class="flex justify-between text-sm font-semibold mb-3">
+                            <span>Total Odds</span>
+                            <span id="totalOdds">1.00</span>
+                        </div>
+                        <div class="flex items-center gap-3 mb-3">
+                            <input type="number" id="stakeInput" placeholder="Stake ($)" value="10.00" min="0.10" step="0.10"
+                                   class="bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-sm w-full focus:outline-none focus:border-blue-500">
+                            <span class="text-xs text-white/40 whitespace-nowrap">Potential: <strong id="potentialWin" class="text-green-400">$10.00</strong></span>
+                        </div>
+                        <button id="placeBetBtn" class="btn-primary w-full text-center py-3">Place Bet</button>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        
+    </div>
+</div>
+
+<!-- ==========================================
+     FOOTER
+     ========================================== -->
+<footer class="bg-[#0a0a12] border-t border-white/5 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div class="col-span-2 md:col-span-1">
+                <div class="text-lg font-bold mb-3">
+                    <span class="text-gradient">CephasGM</span>
+                    <span class="text-white font-light">|</span>
+                    <span class="text-white font-semibold">GameZone</span>
+                </div>
+                <p class="text-sm text-white/30 leading-relaxed">
+                    Premium online betting platform for sports, casino, and virtual games.
+                </p>
+            </div>
+            <div>
+                <h4 class="text-sm font-semibold text-white/40 mb-3">Quick Links</h4>
+                <ul class="space-y-2">
+                    <li><a href="/sports.html" class="footer-link">Sports</a></li>
+                    <li><a href="/live-betting.html" class="footer-link">Live Betting</a></li>
+                    <li><a href="/casino.html" class="footer-link">Casino</a></li>
+                    <li><a href="/promotions.html" class="footer-link">Promotions</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-sm font-semibold text-white/40 mb-3">Support</h4>
+                <ul class="space-y-2">
+                    <li><a href="/support.html" class="footer-link">Help Center</a></li>
+                    <li><a href="/contact.html" class="footer-link">Contact</a></li>
+                    <li><a href="/faq.html" class="footer-link">FAQ</a></li>
+                    <li><a href="/responsible-gambling.html" class="footer-link">Responsible Gambling</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-sm font-semibold text-white/40 mb-3">Legal</h4>
+                <ul class="space-y-2">
+                    <li><a href="/terms.html" class="footer-link">Terms</a></li>
+                    <li><a href="/privacy.html" class="footer-link">Privacy</a></li>
+                    <li><a href="/cookies.html" class="footer-link">Cookies</a></li>
+                    <li><a href="/kyc.html" class="footer-link">KYC</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="mt-8 pt-6 border-t border-white/5 flex flex-col md:flex-row items-center justify-between text-xs text-white/20">
+            <p>Copyright © 2025 Cephas GM | Innovating for Tomorrow</p>
+            <p class="mt-2 md:mt-0">18+ | Play Responsibly</p>
+        </div>
+    </div>
+</footer>
+
+<!-- ==========================================
+     JAVASCRIPT
+     ========================================== -->
+<script>
+(function() {
+    'use strict';
+    
+    // Mobile menu
+    const mobileToggle = document.getElementById('mobileToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+    let mobileOpen = false;
+    
+    mobileToggle.addEventListener('click', () => {
+        mobileOpen = !mobileOpen;
+        mobileMenu.classList.toggle('active');
+        document.body.style.overflow = mobileOpen ? 'hidden' : '';
+    });
+    mobileMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            mobileMenu.classList.remove('active');
+            document.body.style.overflow = '';
+            mobileOpen = false;
+        });
+    });
+    
+    // Bet Slip Logic (same as dashboard)
+    const slipItems = document.getElementById('slipItems');
+    const emptySlip = document.getElementById('emptySlip');
+    const slipFooter = document.getElementById('slipFooter');
+    const slipCount = document.getElementById('slipCount');
+    const totalOddsEl = document.getElementById('totalOdds');
+    const stakeInput = document.getElementById('stakeInput');
+    const potentialWin = document.getElementById('potentialWin');
+    const placeBetBtn = document.getElementById('placeBetBtn');
+    
+    let selections = [];
+    
+    function updateSlipUI() {
+        const count = selections.length;
+        slipCount.textContent = count + ' selection' + (count !== 1 ? 's' : '');
+        
+        if (count === 0) {
+            emptySlip.classList.remove('hidden');
+            slipFooter.classList.add('hidden');
+            slipItems.innerHTML = '';
+        } else {
+            emptySlip.classList.add('hidden');
+            slipFooter.classList.remove('hidden');
+            slipItems.innerHTML = '';
+            selections.forEach((sel, idx) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'bet-slip-item';
+                itemDiv.innerHTML = `
+                    <div>
+                        <div class="font-medium text-sm">${sel.selection}</div>
+                        <div class="text-xs text-white/30">${sel.match}</div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-sm font-semibold text-blue-400">${sel.odds}</span>
+                        <span class="remove" data-index="${idx}">✕</span>
+                    </div>
+                `;
+                slipItems.appendChild(itemDiv);
+            });
+            
+            document.querySelectorAll('.remove').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const index = parseInt(this.dataset.index);
+                    selections.splice(index, 1);
+                    updateSlipUI();
+                    showToast('Removed from bet slip', 'warning');
+                });
+            });
+            
+            let totalOdds = selections.length > 0 ? 1 : 0;
+            selections.forEach(s => totalOdds *= parseFloat(s.odds));
+            totalOddsEl.textContent = totalOdds.toFixed(2);
+            updatePotentialWin();
+        }
+    }
+    
+    function updatePotentialWin() {
+        const stake = parseFloat(stakeInput.value) || 0;
+        let totalOdds = 1;
+        selections.forEach(s => totalOdds *= parseFloat(s.odds));
+        const potential = stake * totalOdds;
+        potentialWin.textContent = '$' + potential.toFixed(2);
+    }
+    
+    document.querySelectorAll('.odds-btn-small').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const match = this.dataset.match;
+            const selection = this.dataset.selection;
+            const odds = this.dataset.odds;
+            
+            const exists = selections.find(s => s.match === match && s.selection === selection);
+            if (exists) {
+                showToast('Already in bet slip', 'warning');
+                return;
+            }
+            selections.push({ match, selection, odds });
+            updateSlipUI();
+            showToast(`Added ${selection} @ ${odds}`, 'success');
+        });
+    });
+    
+    stakeInput.addEventListener('input', updatePotentialWin);
+    
+    placeBetBtn.addEventListener('click', function() {
+        if (selections.length === 0) {
+            showToast('Add selections first', 'error');
+            return;
+        }
+        const stake = parseFloat(stakeInput.value);
+        if (!stake || stake <= 0) {
+            showToast('Enter valid stake', 'error');
+            return;
+        }
+        placeBetBtn.disabled = true;
+        placeBetBtn.textContent = 'Placing...';
+        setTimeout(() => {
+            showToast('Bet placed successfully! 🎉', 'success');
+            selections = [];
+            updateSlipUI();
+            placeBetBtn.disabled = false;
+            placeBetBtn.textContent = 'Place Bet';
+        }, 1500);
+    });
+    
+    function showToast(message, type = 'success') {
+        const toast = document.createElement('div');
+        toast.className = 'fixed bottom-6 right-6 z-50 bg-black/80 backdrop-blur-xl border border-white/10 rounded-2xl px-6 py-3';
+        toast.innerHTML = `<span class="text-sm">${type === 'error' ? '❌' : type === 'warning' ? '⚠️' : '✅'} ${message}</span>`;
+        document.body.appendChild(toast);
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateY(20px)';
+            setTimeout(() => toast.remove(), 300);
+        }, 2000);
+    }
+    
+    // PWA
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js')
+                .then(reg => console.log('SW registered'))
+                .catch(err => console.log('SW registration failed'));
+        });
+    }
+})();
+</script>
+
+</body>
+</html>
