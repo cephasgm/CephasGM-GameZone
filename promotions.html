@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0a0a12">
+    <meta name="description" content="Latest Promotions – CephasGM GameZone">
+    <title>Promotions | CephasGM GameZone</title>
+    
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a12;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a12; }
+        ::-webkit-scrollbar-thumb { 
+            background: linear-gradient(180deg, #0055ff, #542bff);
+            border-radius: 10px;
+        }
+        
+        .glass {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        
+        .glass-light {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 85, 255, 0.25);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 85, 255, 0.4);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.06);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 16px 0;
+            background: rgba(10, 10, 18, 0.92);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .text-gradient {
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 10, 18, 0.98);
+            backdrop-filter: blur(20px);
+            z-index: 999;
+            display: none;
+            padding: 80px 24px 24px;
+            overflow-y: auto;
+        }
+        
+        .mobile-menu.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .footer-link {
+            color: rgba(255, 255, 255, 0.4);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .footer-link:hover {
+            color: #ffffff;
+        }
+        
+        .page-background {
+            min-height: 100vh;
+            background-image: url('https://images.unsplash.com/photo-1517245386804-9c2a8b3d8d13?w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+        }
+        
+        .page-background::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, 
+                rgba(10, 10, 18, 0.9) 0%, 
+                rgba(10, 10, 18, 0.7) 50%,
+                rgba(10, 10, 18, 0.9) 100%
+            );
+            z-index: -1;
+        }
+        
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgba(10, 10, 18, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px;
+            min-width: 200px;
+            padding: 8px 0;
+            z-index: 1001;
+        }
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+        .dropdown-menu a {
+            display: block;
+            padding: 8px 16px;
+            color: rgba(255,255,255,0.6);
+            font-size: 13px;
+            transition: 0.2s;
+        }
+        .dropdown-menu a:hover {
+            background: rgba(255,255,255,0.05);
+            color: white;
+        }
+        
+        .promo-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 20px;
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+        .promo-card:hover {
+            transform: translateY(-4px);
+        }
+        .promo-card.featured {
+            border-color: rgba(255,215,0,0.3);
+            background: linear-gradient(135deg, rgba(255,215,0,0.05), rgba(255,215,0,0.02));
+        }
+        .promo-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .badge-hot { background: rgba(255,0,68,0.15); color: #ff3366; }
+        .badge-new { background: rgba(0,255,100,0.1); color: #00ff64; }
+        .badge-limited { background: rgba(255,215,0,0.1); color: #ffd700; }
+    </style>
+</head>
+<body>
+
+<!-- ==========================================
+     NAVBAR
+     ========================================== -->
+<nav class="navbar" id="navbar">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between">
+            
+            <a href="/index.html" class="flex items-center space-x-2" title="Go to Homepage">
+                <span class="text-xl font-bold">
+                    <span class="text-gradient">CephasGM</span>
+                    <span class="text-white font-light">|</span>
+                    <span class="text-white font-semibold">GameZone</span>
+                </span>
+            </a>
+            
+            <div class="hidden lg:flex items-center space-x-1">
+                <a href="/sports.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Sports</a>
+                <a href="/live-betting.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 flex items-center space-x-1">
+                    <span class="w-2 h-2 bg-red-500 rounded-full inline-block animate-pulse"></span>
+                    <span>Live</span>
+                </a>
+                <a href="/casino.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Casino</a>
+                <div class="dropdown">
+                    <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Virtual ▾</span>
+                    <div class="dropdown-menu">
+                        <a href="/virtual-football.html">Virtual Football</a>
+                        <a href="/virtual-horse-racing.html">Virtual Horse Racing</a>
+                        <a href="/virtual-car-racing.html">Virtual Car Racing</a>
+                        <a href="/virtual-netball.html">Virtual Netball</a>
+                        <a href="/adventure-games.html">Adventure Games</a>
+                        <a href="/aviator.html">Aviator</a>
+                    </div>
+                </div>
+                <a href="/promotions.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Promotions</a>
+                <div class="dropdown">
+                    <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Account ▾</span>
+                    <div class="dropdown-menu">
+                        <a href="/dashboard.html">Dashboard</a>
+                        <a href="/profile.html">Profile</a>
+                        <a href="/wallet.html">Wallet</a>
+                        <a href="/deposit.html">Deposit</a>
+                        <a href="/withdraw.html">Withdraw</a>
+                        <a href="/transactions.html">Transactions</a>
+                        <a href="/bet-history.html">Bet History</a>
+                        <a href="/bonuses.html">Bonuses</a>
+                        <a href="/kyc.html">KYC Verification</a>
+                        <a href="/settings.html">Settings</a>
+                        <a href="/signin.html">Sign In</a>
+                        <a href="/signup.html">Sign Up</a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Support ▾</span>
+                    <div class="dropdown-menu">
+                        <a href="/support.html">Help Center</a>
+                        <a href="/messages.html">Messages</a>
+                        <a href="/notifications.html">Notifications</a>
+                        <a href="/faq.html">FAQ</a>
+                        <a href="/contact.html">Contact Us</a>
+                        <a href="/responsible-gambling.html">Responsible Gambling</a>
+                        <a href="/self-exclusion.html">Self-Exclusion</a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Info ▾</span>
+                    <div class="dropdown-menu">
+                        <a href="/about.html">About Us</a>
+                        <a href="/vip.html">VIP Club</a>
+                        <a href="/referrals.html">Referrals</a>
+                        <a href="/privacy.html">Privacy Policy</a>
+                        <a href="/terms.html">Terms & Conditions</a>
+                        <a href="/cookies.html">Cookie Policy</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-3">
+                <button id="mobileToggle" class="lg:hidden p-2 text-white/40 hover:text-white transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div id="mobileMenu" class="mobile-menu">
+    <nav class="flex flex-col space-y-6">
+        <a href="/index.html" class="text-lg text-white/70 hover:text-white">Home</a>
+        <a href="/sports.html" class="text-lg text-white/70 hover:text-white">Sports</a>
+        <a href="/live-betting.html" class="text-lg text-white/70 hover:text-white">Live Betting</a>
+        <a href="/casino.html" class="text-lg text-white/70 hover:text-white">Casino</a>
+        <a href="/promotions.html" class="text-lg text-white/70 hover:text-white">Promotions</a>
+        <a href="/bonuses.html" class="text-lg text-white/70 hover:text-white">Bonuses</a>
+        <a href="/leaderboard.html" class="text-lg text-white/70 hover:text-white">Leaderboard</a>
+        <div class="border-t border-white/10 pt-4">
+            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Account</span>
+            <div class="grid grid-cols-2 gap-2 mt-2">
+                <a href="/dashboard.html" class="text-sm text-white/50 hover:text-white">Dashboard</a>
+                <a href="/profile.html" class="text-sm text-white/50 hover:text-white">Profile</a>
+                <a href="/wallet.html" class="text-sm text-white/50 hover:text-white">Wallet</a>
+                <a href="/deposit.html" class="text-sm text-white/50 hover:text-white">Deposit</a>
+                <a href="/withdraw.html" class="text-sm text-white/50 hover:text-white">Withdraw</a>
+                <a href="/transactions.html" class="text-sm text-white/50 hover:text-white">Transactions</a>
+                <a href="/bet-history.html" class="text-sm text-white/50 hover:text-white">Bet History</a>
+                <a href="/kyc.html" class="text-sm text-white/50 hover:text-white">KYC</a>
+                <a href="/settings.html" class="text-sm text-white/50 hover:text-white">Settings</a>
+                <a href="/signin.html" class="text-sm text-white/50 hover:text-white">Sign In</a>
+                <a href="/signup.html" class="text-sm text-white/50 hover:text-white">Sign Up</a>
+            </div>
+        </div>
+        <div class="border-t border-white/10 pt-4">
+            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Virtual Games</span>
+            <div class="grid grid-cols-2 gap-2 mt-2">
+                <a href="/virtual-football.html" class="text-sm text-white/50 hover:text-white">Virtual Football</a>
+                <a href="/virtual-horse-racing.html" class="text-sm text-white/50 hover:text-white">Horse Racing</a>
+                <a href="/virtual-car-racing.html" class="text-sm text-white/50 hover:text-white">Car Racing</a>
+                <a href="/virtual-netball.html" class="text-sm text-white/50 hover:text-white">Netball</a>
+                <a href="/adventure-games.html" class="text-sm text-white/50 hover:text-white">Adventure</a>
+                <a href="/aviator.html" class="text-sm text-white/50 hover:text-white">Aviator</a>
+            </div>
+        </div>
+        <div class="border-t border-white/10 pt-4">
+            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Support</span>
+            <div class="grid grid-cols-2 gap-2 mt-2">
+                <a href="/support.html" class="text-sm text-white/50 hover:text-white">Help Center</a>
+                <a href="/messages.html" class="text-sm text-white/50 hover:text-white">Messages</a>
+                <a href="/notifications.html" class="text-sm text-white/50 hover:text-white">Notifications</a>
+                <a href="/faq.html" class="text-sm text-white/50 hover:text-white">FAQ</a>
+                <a href="/contact.html" class="text-sm text-white/50 hover:text-white">Contact</a>
+                <a href="/responsible-gambling.html" class="text-sm text-white/50 hover:text-white">Responsible</a>
+                <a href="/self-exclusion.html" class="text-sm text-white/50 hover:text-white">Self-Exclusion</a>
+            </div>
+        </div>
+        <div class="border-t border-white/10 pt-4">
+            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Information</span>
+            <div class="grid grid-cols-2 gap-2 mt-2">
+                <a href="/about.html" class="text-sm text-white/50 hover:text-white">About</a>
+                <a href="/vip.html" class="text-sm text-white/50 hover:text-white">VIP</a>
+                <a href="/referrals.html" class="text-sm text-white/50 hover:text-white">Referrals</a>
+                <a href="/privacy.html" class="text-sm text-white/50 hover:text-white">Privacy</a>
+                <a href="/terms.html" class="text-sm text-white/50 hover:text-white">Terms</a>
+                <a href="/cookies.html" class="text-sm text-white/50 hover:text-white">Cookies</a>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<!-- ==========================================
+     PROMOTIONS CONTENT
+     ========================================== -->
+<div class="page-background pt-20 pb-12 px-4">
+    <div class="max-w-6xl mx-auto relative z-10">
+        
+        <div class="text-center mb-10">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">
+                Latest <span class="text-gradient">Promotions</span>
+            </h1>
+            <p class="text-lg text-white/50 max-w-xl mx-auto">
+                Don’t miss out on time‑limited offers, free bets, and exclusive event boosts.
+            </p>
+        </div>
+        
+        <!-- Featured Banner -->
+        <div class="glass rounded-2xl p-6 md:p-10 mb-10 text-center bg-gradient-to-r from-blue-600/10 to-purple-600/10">
+            <span class="promo-badge badge-hot">HOT PROMOTION</span>
+            <h2 class="text-3xl font-bold mt-2">Bet on the Super Bowl & Win a Car!</h2>
+            <p class="text-white/60 mt-3 max-w-2xl mx-auto">
+                Place a $20+ bet on any Super Bowl market and be entered into our grand prize draw. 
+                A brand‑new car could be yours!
+            </p>
+            <button class="btn-primary mt-6 text-lg px-8 py-3" onclick="claimPromo('Super Bowl Car Giveaway')">Join Now</button>
+        </div>
+        
+        <!-- Promo Cards Grid -->
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            
+            <!-- Promo 1 -->
+            <div class="promo-card">
+                <span class="promo-badge badge-new">NEW</span>
+                <div class="text-3xl mb-3">🔄</div>
+                <h3 class="text-xl font-bold">Risk‑Free First Bet</h3>
+                <p class="text-sm text-white/50 mt-2">Place your first bet up to $50. If it loses, get a full refund as a free bet.</p>
+                <div class="mt-4 pt-4 border-t border-white/5 flex justify-between items-center">
+                    <span class="text-xs text-white/30">Ends in 3 days</span>
+                    <button class="btn-primary text-sm py-2 px-5" onclick="claimPromo('Risk‑Free Bet')">Opt In</button>
+                </div>
+            </div>
+            
+            <!-- Promo 2 -->
+            <div class="promo-card">
+                <span class="promo-badge badge-limited">LIMITED</span>
+                <div class="text-3xl mb-3">⚽</div>
+                <h3 class="text-xl font-bold">Champions League Acca Boost</h3>
+                <p class="text-sm text-white/50 mt-2">Place an accumulator with 4+ legs on UCL games and get a 20% profit boost.</p>
+                <div class="mt-4 pt-4 border-t border-white/5 flex justify-between items-center">
+                    <span class="text-xs text-white/30">Valid today</span>
+                    <button class="btn-primary text-sm py-2 px-5" onclick="claimPromo('Acca Boost')">Activate</button>
+                </div>
+            </div>
+            
+            <!-- Promo 3 -->
+            <div class="promo-card">
+                <span class="promo-badge badge-hot">HOT</span>
+                <div class="text-3xl mb-3">🎰</div>
+                <h3 class="text-xl font-bold">Live Casino Cashback</h3>
+                <p class="text-sm text-white/50 mt-2">10% cashback on live casino losses every Monday, up to $100.</p>
+                <div class="mt-4 pt-4 border-t border-white/5 flex justify-between items-center">
+                    <span class="text-xs text-white/30">Ongoing</span>
+                    <button class="btn-primary text-sm py-2 px-5" onclick="claimPromo('Casino Cashback')">Subscribe</button>
+                </div>
+            </div>
+            
+            <!-- Promo 4 -->
+            <div class="promo-card">
+                <span class="promo-badge badge-new">NEW</span>
+                <div class="text-3xl mb-3">📱</div>
+                <h3 class="text-xl font-bold">Mobile App Exclusive</h3>
+                <p class="text-sm text-white/50 mt-2">Get a $10 free bet just for downloading and placing your first bet via the app.</p>
+                <div class="mt-4 pt-4 border-t border-white/5 flex justify-between items-center">
+                    <span class="text-xs text-white/30">For new app users</span>
+                    <button class="btn-primary text-sm py-2 px-5" onclick="claimPromo('App Exclusive')">Claim</button>
+                </div>
+            </div>
+            
+            <!-- Promo 5 -->
+            <div class="promo-card">
+                <span class="promo-badge badge-limited">LIMITED</span>
+                <div class="text-3xl mb-3">🏇</div>
+                <h3 class="text-xl font-bold">Derby Day Special</h3>
+                <p class="text-sm text-white/50 mt-2">Enhanced odds on the Kentucky Derby. Double your winnings on selected horses.</p>
+                <div class="mt-4 pt-4 border-t border-white/5 flex justify-between items-center">
+                    <span class="text-xs text-white/30">May 4th only</span>
+                    <button class="btn-primary text-sm py-2 px-5" onclick="claimPromo('Derby Special')">View Odds</button>
+                </div>
+            </div>
+            
+            <!-- Promo 6 -->
+            <div class="promo-card">
+                <span class="promo-badge badge-hot">HOT</span>
+                <div class="text-3xl mb-3">👥</div>
+                <h3 class="text-xl font-bold">Referral Double Bonus</h3>
+                <p class="text-sm text-white/50 mt-2">Refer a friend and both of you get $30 in free bets (usually $20).</p>
+                <div class="mt-4 pt-4 border-t border-white/5 flex justify-between items-center">
+                    <span class="text-xs text-white/30">Limited time</span>
+                    <a href="/referrals.html" class="btn-primary text-sm py-2 px-5">Refer Now</a>
+                </div>
+            </div>
+            
+        </div>
+        
+        <!-- Terms note -->
+        <div class="text-center mt-12">
+            <p class="text-xs text-white/30">
+                Terms & conditions apply to each promotion. Bonuses may have wagering requirements.
+                <a href="/terms.html" class="text-blue-400 hover:underline">View Full Terms</a>
+            </p>
+        </div>
+        
+    </div>
+</div>
+
+<!-- ==========================================
+     FOOTER
+     ========================================== -->
+<footer class="bg-[#0a0a12] border-t border-white/5 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div class="col-span-2 md:col-span-1">
+                <div class="text-lg font-bold mb-3">
+                    <span class="text-gradient">CephasGM</span>
+                    <span class="text-white font-light">|</span>
+                    <span class="text-white font-semibold">GameZone</span>
+                </div>
+                <p class="text-sm text-white/30 leading-relaxed">
+                    Premium online betting platform for sports, casino, and virtual games.
+                </p>
+            </div>
+            <div>
+                <h4 class="text-sm font-semibold text-white/40 mb-3">Quick Links</h4>
+                <ul class="space-y-2">
+                    <li><a href="/sports.html" class="footer-link">Sports</a></li>
+                    <li><a href="/live-betting.html" class="footer-link">Live Betting</a></li>
+                    <li><a href="/casino.html" class="footer-link">Casino</a></li>
+                    <li><a href="/promotions.html" class="footer-link">Promotions</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-sm font-semibold text-white/40 mb-3">Support</h4>
+                <ul class="space-y-2">
+                    <li><a href="/support.html" class="footer-link">Help Center</a></li>
+                    <li><a href="/contact.html" class="footer-link">Contact</a></li>
+                    <li><a href="/faq.html" class="footer-link">FAQ</a></li>
+                    <li><a href="/responsible-gambling.html" class="footer-link">Responsible Gambling</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-sm font-semibold text-white/40 mb-3">Legal</h4>
+                <ul class="space-y-2">
+                    <li><a href="/terms.html" class="footer-link">Terms</a></li>
+                    <li><a href="/privacy.html" class="footer-link">Privacy</a></li>
+                    <li><a href="/cookies.html" class="footer-link">Cookies</a></li>
+                    <li><a href="/kyc.html" class="footer-link">KYC</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="mt-8 pt-6 border-t border-white/5 flex flex-col md:flex-row items-center justify-between text-xs text-white/20">
+            <p>Copyright © 2025 Cephas GM | Innovating for Tomorrow</p>
+            <p class="mt-2 md:mt-0">18+ | Play Responsibly</p>
+        </div>
+    </div>
+</footer>
+
+<!-- ==========================================
+     JAVASCRIPT
+     ========================================== -->
+<script>
+(function() {
+    'use strict';
+    
+    // Mobile menu
+    const mobileToggle = document.getElementById('mobileToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+    let mobileOpen = false;
+    
+    mobileToggle.addEventListener('click', () => {
+        mobileOpen = !mobileOpen;
+        mobileMenu.classList.toggle('active');
+        document.body.style.overflow = mobileOpen ? 'hidden' : '';
+    });
+    mobileMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            mobileMenu.classList.remove('active');
+            document.body.style.overflow = '';
+            mobileOpen = false;
+        });
+    });
+    
+    // Mock claim
+    window.claimPromo = function(name) {
+        const toast = document.createElement('div');
+        toast.className = 'fixed bottom-6 right-6 z-50 bg-black/80 backdrop-blur-xl border border-white/10 rounded-2xl px-6 py-3';
+        toast.innerHTML = `<span class="text-sm">🎉 You've opted into <strong>${name}</strong>! Check your account for details.</span>`;
+        document.body.appendChild(toast);
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateY(20px)';
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    };
+    
+    // PWA
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js')
+                .then(reg => console.log('SW registered'))
+                .catch(err => console.log('SW registration failed'));
+        });
+    }
+})();
+</script>
+
+</body>
+</html>
