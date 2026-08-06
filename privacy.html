@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0a0a12">
+    <meta name="description" content="Privacy Policy – CephasGM GameZone">
+    <title>Privacy Policy | CephasGM GameZone</title>
+    
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a12;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a12; }
+        ::-webkit-scrollbar-thumb { 
+            background: linear-gradient(180deg, #0055ff, #542bff);
+            border-radius: 10px;
+        }
+        
+        .glass {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 85, 255, 0.25);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 85, 255, 0.4);
+        }
+        
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 16px 0;
+            background: rgba(10, 10, 18, 0.92);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .text-gradient {
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 10, 18, 0.98);
+            backdrop-filter: blur(20px);
+            z-index: 999;
+            display: none;
+            padding: 80px 24px 24px;
+            overflow-y: auto;
+        }
+        
+        .mobile-menu.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .footer-link {
+            color: rgba(255, 255, 255, 0.4);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .footer-link:hover {
+            color: #ffffff;
+        }
+        
+        .page-background {
+            min-height: 100vh;
+            background-image: url('https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+        }
+        
+        .page-background::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, 
+                rgba(10, 10, 18, 0.9) 0%, 
+                rgba(10, 10, 18, 0.7) 50%,
+                rgba(10, 10, 18, 0.9) 100%
+            );
+            z-index: -1;
+        }
+        
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgba(10, 10, 18, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px;
+            min-width: 200px;
+            padding: 8px 0;
+            z-index: 1001;
+        }
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+        .dropdown-menu a {
+            display: block;
+            padding: 8px 16px;
+            color: rgba(255,255,255,0.6);
+            font-size: 13px;
+            transition: 0.2s;
+        }
+        .dropdown-menu a:hover {
+            background: rgba(255,255,255,0.05);
+            color: white;
+        }
+        
+        .policy-section {
+            margin-bottom: 24px;
+        }
+        .policy-section h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #fff;
+        }
+        .policy-section p, .policy-section li {
+            color: rgba(255,255,255,0.7);
+            line-height: 1.7;
+            font-size: 15px;
+            margin-bottom: 8px;
+        }
+        .policy-section ul {
+            list-style: disc;
+            padding-left: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ==========================================
+     NAVBAR
+     ========================================== -->
+<nav class="navbar" id="navbar">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between">
+            
+            <a href="/index.html" class="flex items-center space-x-2" title="Go to Homepage">
+                <span class="text-xl font-bold">
+                    <span class="text-gradient">CephasGM</span>
+                    <span class="text-white font-light">|</span>
+                    <span class="text-white font-semibold">GameZone</span>
+                </span>
+            </a>
+            
+            <div class="hidden lg:flex items-center space-x-1">
+                <a href="/sports.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Sports</a>
+                <a href="/live-betting.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 flex items-center space-x-1">
+                    <span class="w-2 h-2 bg-red-500 rounded-full inline-block animate-pulse"></span>
+                    <span>Live</span>
+                </a>
+                <a href="/casino.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Casino</a>
+                <div class="dropdown">
+                    <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Virtual ▾</span>
+                    <div class="dropdown-menu">
+                        <a href="/virtual-football.html">Virtual Football</a>
+                        <a href="/virtual-horse-racing.html">Virtual Horse Racing</a>
+                        <a href="/virtual-car-racing.html">Virtual Car Racing</a>
+                        <a href="/virtual-netball.html">Virtual Netball</a>
+                        <a href="/adventure-games.html">Adventure Games</a>
+                        <a href="/aviator.html">Aviator</a>
+                    </div>
+                </div>
+                <a href="/promotions.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Promotions</a>
+                <div class="dropdown">
+                    <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Account ▾</span>
+                    <div class="dropdown-menu">
+                        <a href="/dashboard.html">Dashboard</a>
+                        <a href="/profile.html">Profile</a>
+                        <a href="/wallet.html">Wallet</a>
+                        <a href="/deposit.html">Deposit</a>
+                        <a href="/withdraw.html">Withdraw</a>
+                        <a href="/transactions.html">Transactions</a>
+                        <a href="/bet-history.html">Bet History</a>
+                        <a href="/kyc.html">KYC Verification</a>
+                        <a href="/settings.html">Settings</a>
+                        <a href="/signin.html">Sign In</a>
+                        <a href="/signup.html">Sign Up</a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Support ▾</span>
+                    <div class="dropdown-menu">
+                        <a href="/support.html">Help Center</a>
+                        <a href="/messages.html">Messages</a>
+                        <a href="/notifications.html">Notifications</a>
+                        <a href="/faq.html">FAQ</a>
+                        <a href="/contact.html">Contact Us</a>
+                        <a href="/responsible-gambling.html">Responsible Gambling</a>
+                        <a href="/self-exclusion.html">Self-Exclusion</a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Info ▾</span>
+                    <div class="dropdown-menu">
+                        <a href="/about.html">About Us</a>
+                        <a href="/vip.html">VIP Club</a>
+                        <a href="/referrals.html">Referrals</a>
+                        <a href="/privacy.html">Privacy Policy</a>
+                        <a href="/terms.html">Terms & Conditions</a>
+                        <a href="/cookies.html">Cookie Policy</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-3">
+                <button id="mobileToggle" class="lg:hidden p-2 text-white/40 hover:text-white transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div id="mobileMenu" class="mobile-menu">
+    <nav class="flex flex-col space-y-6">
+        <a href="/index.html" class="text-lg text-white/70 hover:text-white">Home</a>
+        <a href="/sports.html" class="text-lg text-white/70 hover:text-white">Sports</a>
+        <a href="/live-betting.html" class="text-lg text-white/70 hover:text-white">Live Betting</a>
+        <a href="/casino.html" class="text-lg text-white/70 hover:text-white">Casino</a>
+        <a href="/promotions.html" class="text-lg text-white/70 hover:text-white">Promotions</a>
+        <a href="/bonuses.html" class="text-lg text-white/70 hover:text-white">Bonuses</a>
+        <a href="/leaderboard.html" class="text-lg text-white/70 hover:text-white">Leaderboard</a>
+        <div class="border-t border-white/10 pt-4">
+            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Account</span>
+            <div class="grid grid-cols-2 gap-2 mt-2">
+                <a href="/dashboard.html" class="text-sm text-white/50 hover:text-white">Dashboard</a>
+                <a href="/profile.html" class="text-sm text-white/50 hover:text-white">Profile</a>
+                <a href="/wallet.html" class="text-sm text-white/50 hover:text-white">Wallet</a>
+                <a href="/deposit.html" class="text-sm text-white/50 hover:text-white">Deposit</a>
+                <a href="/withdraw.html" class="text-sm text-white/50 hover:text-white">Withdraw</a>
+                <a href="/transactions.html" class="text-sm text-white/50 hover:text-white">Transactions</a>
+                <a href="/bet-history.html" class="text-sm text-white/50 hover:text-white">Bet History</a>
+                <a href="/kyc.html" class="text-sm text-white/50 hover:text-white">KYC</a>
+                <a href="/settings.html" class="text-sm text-white/50 hover:text-white">Settings</a>
+                <a href="/signin.html" class="text-sm text-white/50 hover:text-white">Sign In</a>
+                <a href="/signup.html" class="text-sm text-white/50 hover:text-white">Sign Up</a>
+            </div>
+        </div>
+        <div class="border-t border-white/10 pt-4">
+            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Virtual Games</span>
+            <div class="grid grid-cols-2 gap-2 mt-2">
+                <a href="/virtual-football.html" class="text-sm text-white/50 hover:text-white">Virtual Football</a>
+                <a href="/virtual-horse-racing.html" class="text-sm text-white/50 hover:text-white">Horse Racing</a>
+                <a href="/virtual-car-racing.html" class="text-sm text-white/50 hover:text-white">Car Racing</a>
+                <a href="/virtual-netball.html" class="text-sm text-white/50 hover:text-white">Netball</a>
+                <a href="/adventure-games.html" class="text-sm text-white/50 hover:text-white">Adventure</a>
+                <a href="/aviator.html" class="text-sm text-white/50 hover:text-white">Aviator</a>
+            </div>
+        </div>
+        <div class="border-t border-white/10 pt-4">
+            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Support</span>
+            <div class="grid grid-cols-2 gap-2 mt-2">
+                <a href="/support.html" class="text-sm text-white/50 hover:text-white">Help Center</a>
+                <a href="/messages.html" class="text-sm text-white/50 hover:text-white">Messages</a>
+                <a href="/notifications.html" class="text-sm text-white/50 hover:text-white">Notifications</a>
+                <a href="/faq.html" class="text-sm text-white/50 hover:text-white">FAQ</a>
+                <a href="/contact.html" class="text-sm text-white/50 hover:text-white">Contact</a>
+                <a href="/responsible-gambling.html" class="text-sm text-white/50 hover:text-white">Responsible</a>
+                <a href="/self-exclusion.html" class="text-sm text-white/50 hover:text-white">Self-Exclusion</a>
+            </div>
+        </div>
+        <div class="border-t border-white/10 pt-4">
+            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Information</span>
+            <div class="grid grid-cols-2 gap-2 mt-2">
+                <a href="/about.html" class="text-sm text-white/50 hover:text-white">About</a>
+                <a href="/vip.html" class="text-sm text-white/50 hover:text-white">VIP</a>
+                <a href="/referrals.html" class="text-sm text-white/50 hover:text-white">Referrals</a>
+                <a href="/privacy.html" class="text-sm text-white/50 hover:text-white">Privacy</a>
+                <a href="/terms.html" class="text-sm text-white/50 hover:text-white">Terms</a>
+                <a href="/cookies.html" class="text-sm text-white/50 hover:text-white">Cookies</a>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<!-- ==========================================
+     PRIVACY CONTENT
+     ========================================== -->
+<div class="page-background pt-20 pb-12 px-4">
+    <div class="max-w-4xl mx-auto relative z-10">
+        
+        <div class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">
+                Privacy <span class="text-gradient">Policy</span>
+            </h1>
+            <p class="text-lg text-white/50">Effective Date: January 1, 2025</p>
+        </div>
+        
+        <div class="glass rounded-2xl p-6 md:p-10">
+            
+            <div class="policy-section">
+                <h2>1. Introduction</h2>
+                <p>At CephasGM GameZone, we are committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website or use our services. By using our platform, you consent to the practices described in this policy.</p>
+            </div>
+            
+            <div class="policy-section">
+                <h2>2. Information We Collect</h2>
+                <p><strong>Personal Data:</strong> When you register, we may collect your name, email address, phone number, date of birth, and payment information.</p>
+                <p><strong>KYC Information:</strong> To comply with regulations, we may request government‑issued ID, proof of address, and a selfie for identity verification.</p>
+                <p><strong>Usage Data:</strong> We automatically log your IP address, browser type, pages visited, and betting activity for analytics and security purposes.</p>
+                <p><strong>Cookies:</strong> We use cookies and similar tracking technologies to improve your experience. See our <a href="/cookies.html" class="text-blue-400 hover:underline">Cookie Policy</a>.</p>
+            </div>
+            
+            <div class="policy-section">
+                <h2>3. How We Use Your Information</h2>
+                <ul>
+                    <li>To create and manage your account.</li>
+                    <li>To process bets, deposits, and withdrawals.</li>
+                    <li>To send important account notifications and promotional offers (you can opt out).</li>
+                    <li>To detect and prevent fraud, money laundering, and other illegal activities.</li>
+                    <li>To comply with legal and regulatory obligations.</li>
+                </ul>
+            </div>
+            
+            <div class="policy-section">
+                <h2>4. Data Sharing</h2>
+                <p>We do not sell your personal data. We may share information with:</p>
+                <ul>
+                    <li><strong>Service Providers:</strong> Payment processors, identity verification providers, and email/SMS delivery services.</li>
+                    <li><strong>Regulatory Bodies:</strong> As required by gambling commissions and law enforcement.</li>
+                    <li><strong>Affiliates:</strong> For business operations, provided they adhere to this policy.</li>
+                </ul>
+            </div>
+            
+            <div class="policy-section">
+                <h2>5. Data Security</h2>
+                <p>We employ 256‑bit SSL encryption, firewalls, and regular security audits to protect your data. Access to personal information is restricted to authorized personnel only. Despite our efforts, no method of transmission over the Internet is 100% secure.</p>
+            </div>
+            
+            <div class="policy-section">
+                <h2>6. Your Rights</h2>
+                <ul>
+                    <li>Access and update your personal data in your account settings.</li>
+                    <li>Request deletion of your data (subject to legal retention requirements).</li>
+                    <li>Opt out of marketing communications at any time.</li>
+                    <li>Withdraw consent for non‑essential data processing.</li>
+                </ul>
+                <p>To exercise these rights, contact us at <a href="mailto:privacy@cephasgm.com" class="text-blue-400">privacy@cephasgm.com</a>.</p>
+            </div>
+            
+            <div class="policy-section">
+                <h2>7. Data Retention</h2>
+                <p>We retain your personal data for as long as your account is active or as needed to comply with legal obligations (typically 5‑7 years after account closure). KYC documents are stored securely for the mandated period.</p>
+            </div>
+            
+            <div class="policy-section">
+                <h2>8. Children's Privacy</h2>
+                <p>Our services are strictly for individuals aged 18 and above. We do not knowingly collect data from minors. If we discover that a minor has provided us with personal information, we will delete it immediately.</p>
+            </div>
+            
+            <div class="policy-section">
+                <h2>9. Changes to This Policy</h2>
+                <p>We may update this Privacy Policy from time to time. We will notify you of significant changes via email or a prominent notice on our website. Continued use of our services after changes constitutes acceptance.</p>
+            </div>
+            
+            <div class="policy-section">
+                <h2>10. Contact Us</h2>
+                <p>If you have questions about this policy, please contact our Data Protection Officer at:</p>
+                <p>Email: <a href="mailto:privacy@cephasgm.com" class="text-blue-400">privacy@cephasgm.com</a><br>
+                Address: 123 Betting Street, Suite 100, Las Vegas, NV 89109</p>
+            </div>
+            
+            <div class="mt-8 text-center">
+                <p class="text-sm text-white/40">Last updated: January 1, 2025</p>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<!-- ==========================================
+     FOOTER
+     ========================================== -->
+<footer class="bg-[#0a0a12] border-t border-white/5 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div class="col-span-2 md:col-span-1">
+                <div class="text-lg font-bold mb-3">
+                    <span class="text-gradient">CephasGM</span>
+                    <span class="text-white font-light">|</span>
+                    <span class="text-white font-semibold">GameZone</span>
+                </div>
+                <p class="text-sm text-white/30 leading-relaxed">
+                    Premium online betting platform for sports, casino, and virtual games.
+                </p>
+            </div>
+            <div>
+                <h4 class="text-sm font-semibold text-white/40 mb-3">Quick Links</h4>
+                <ul class="space-y-2">
+                    <li><a href="/sports.html" class="footer-link">Sports</a></li>
+                    <li><a href="/live-betting.html" class="footer-link">Live Betting</a></li>
+                    <li><a href="/casino.html" class="footer-link">Casino</a></li>
+                    <li><a href="/promotions.html" class="footer-link">Promotions</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-sm font-semibold text-white/40 mb-3">Support</h4>
+                <ul class="space-y-2">
+                    <li><a href="/support.html" class="footer-link">Help Center</a></li>
+                    <li><a href="/contact.html" class="footer-link">Contact</a></li>
+                    <li><a href="/faq.html" class="footer-link">FAQ</a></li>
+                    <li><a href="/responsible-gambling.html" class="footer-link">Responsible Gambling</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-sm font-semibold text-white/40 mb-3">Legal</h4>
+                <ul class="space-y-2">
+                    <li><a href="/terms.html" class="footer-link">Terms</a></li>
+                    <li><a href="/privacy.html" class="footer-link">Privacy</a></li>
+                    <li><a href="/cookies.html" class="footer-link">Cookies</a></li>
+                    <li><a href="/kyc.html" class="footer-link">KYC</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="mt-8 pt-6 border-t border-white/5 flex flex-col md:flex-row items-center justify-between text-xs text-white/20">
+            <p>Copyright © 2025 Cephas GM | Innovating for Tomorrow</p>
+            <p class="mt-2 md:mt-0">18+ | Play Responsibly</p>
+        </div>
+    </div>
+</footer>
+
+<!-- ==========================================
+     JAVASCRIPT
+     ========================================== -->
+<script>
+(function() {
+    'use strict';
+    
+    // Mobile menu
+    const mobileToggle = document.getElementById('mobileToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+    let mobileOpen = false;
+    
+    mobileToggle.addEventListener('click', () => {
+        mobileOpen = !mobileOpen;
+        mobileMenu.classList.toggle('active');
+        document.body.style.overflow = mobileOpen ? 'hidden' : '';
+    });
+    mobileMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            mobileMenu.classList.remove('active');
+            document.body.style.overflow = '';
+            mobileOpen = false;
+        });
+    });
+    
+    // PWA
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js')
+                .then(reg => console.log('SW registered'))
+                .catch(err => console.log('SW registration failed'));
+        });
+    }
+})();
+</script>
+
+</body>
+</html>
