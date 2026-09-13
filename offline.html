@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0a0a12">
+    <meta name="description" content="You're offline – CephasGM GameZone">
+    <title>Offline | CephasGM GameZone</title>
+
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a12;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a12; }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #0055ff, #542bff);
+            border-radius: 10px;
+        }
+
+        .glass {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            color: white;
+            padding: 12px 32px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 85, 255, 0.25);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 85, 255, 0.45);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.06);
+            color: white;
+            padding: 12px 32px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            padding: 16px 0;
+            background: rgba(10, 10, 18, 0.92);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .mobile-menu {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(10, 10, 18, 0.98);
+            backdrop-filter: blur(20px);
+            z-index: 999;
+            display: none;
+            padding: 80px 24px 24px;
+            overflow-y: auto;
+        }
+        .mobile-menu.active { display: block; animation: fadeIn .3s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .footer-link {
+            color: rgba(255, 255, 255, 0.4);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .footer-link:hover { color: #ffffff; }
+
+        .page-background {
+            min-height: 100vh;
+            background-image: url('https://static.vecteezy.com/system/resources/thumbnails/070/574/368/small/assorted-sports-equipment-on-black-backdrop-symbolizing-athleticism-competition-and-diverse-sporting-activities-photo.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+        }
+        .page-background::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(135deg,
+                rgba(10, 10, 18, 0.94) 0%,
+                rgba(10, 10, 18, 0.80) 50%,
+                rgba(10, 10, 18, 0.94) 100%);
+            z-index: -1;
+        }
+
+        .dropdown { position: relative; display: inline-block; }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%; left: 0;
+            background: rgba(10, 10, 18, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px;
+            min-width: 200px;
+            padding: 8px 0;
+            z-index: 1001;
+        }
+        .dropdown:hover .dropdown-menu { display: block; }
+        .dropdown-menu a {
+            display: block;
+            padding: 8px 16px;
+            color: rgba(255,255,255,0.6);
+            font-size: 13px;
+            transition: .2s;
+        }
+        .dropdown-menu a:hover { background: rgba(255,255,255,0.05); color: white; }
+
+        .live-dot {
+            width: 6px; height: 6px; border-radius: 50%;
+            background: #ff0044;
+            box-shadow: 0 0 8px #ff0044;
+            animation: pulseDot 1.4s infinite;
+            display: inline-block;
+        }
+        @keyframes pulseDot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: .35; transform: scale(.7); }
+        }
+
+        /* ============ OFFLINE SPECIFIC ============ */
+        .offline-icon {
+            width: 110px;
+            height: 110px;
+            margin: 0 auto 24px;
+            border-radius: 28px;
+            background: linear-gradient(135deg, rgba(0,85,255,0.15), rgba(84,43,255,0.10));
+            border: 1px solid rgba(0,85,255,0.28);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            animation: floatIcon 3.2s ease-in-out infinite;
+            box-shadow: 0 12px 40px rgba(0,85,255,0.25), inset 0 0 30px rgba(0,85,255,0.10);
+        }
+        @keyframes floatIcon {
+            0%, 100% { transform: translateY(0); }
+            50%      { transform: translateY(-8px); }
+        }
+
+        .offline-icon svg {
+            width: 56px;
+            height: 56px;
+            color: #6b8dff;
+            filter: drop-shadow(0 0 12px rgba(107,141,255,0.6));
+        }
+
+        /* Radar pulse behind the icon */
+        .offline-icon::before,
+        .offline-icon::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 28px;
+            border: 1px solid rgba(107,141,255,0.35);
+            animation: radar 2.8s ease-out infinite;
+            pointer-events: none;
+        }
+        .offline-icon::after { animation-delay: 1.4s; }
+        @keyframes radar {
+            0%   { transform: scale(1);   opacity: 0.8; }
+            100% { transform: scale(1.7); opacity: 0; }
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 999px;
+            background: rgba(255, 0, 68, 0.10);
+            border: 1px solid rgba(255, 0, 68, 0.28);
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.10em;
+            text-transform: uppercase;
+            color: #ff8098;
+            transition: all .3s ease;
+        }
+        .status-pill.online {
+            background: rgba(0, 224, 122, 0.12);
+            border-color: rgba(0, 224, 122, 0.32);
+            color: #6bffb0;
+        }
+
+        .status-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: #ff0044;
+            box-shadow: 0 0 10px #ff0044;
+            animation: pulseDot 1.4s infinite;
+        }
+        .status-pill.online .status-dot {
+            background: #00e07a;
+            box-shadow: 0 0 10px #00e07a;
+        }
+
+        .tip-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 14px;
+            padding: 14px 16px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            transition: all .25s ease;
+        }
+        .tip-card:hover {
+            background: rgba(255,255,255,0.05);
+            border-color: rgba(255,255,255,0.10);
+            transform: translateY(-2px);
+        }
+
+        .tip-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+            background: rgba(0,85,255,0.12);
+            border: 1px solid rgba(0,85,255,0.22);
+        }
+
+        /* Progress on retry */
+        .retry-ring {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: #fff;
+            animation: spin .8s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+<!-- ==========================================
+     NAVBAR
+     ========================================== -->
+<nav class="navbar" id="navbar">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between">
+
+            <a href="index.html" class="flex items-center space-x-2" title="Go to Homepage">
+                <span class="text-xl font-bold">
+                    <span class="text-gradient">CephasGM</span>
+                    <span class="text-white font-light">|</span>
+                    <span class="text-white font-semibold">GameZone</span>
+                </span>
+            </a>
+
+            <div class="hidden lg:flex items-center space-x-1">
+                <div class="dropdown">
+                    <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Info ▾</span>
+                    <div class="dropdown-menu">
+                        <a href="about.html">About Us</a>
+                        <a href="vip.html">VIP Club</a>
+                        <a href="referrals.html">Referrals</a>
+                        <a href="privacy.html">Privacy Policy</a>
+                        <a href="terms.html">Terms &amp; Conditions</a>
+                        <a href="cookies.html">Cookie Policy</a>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Account ▾</span>
+                    <div class="dropdown-menu">
+                        <a href="dashboard.html">Dashboard</a>
+                        <a href="profile.html">Profile</a>
+                        <a href="wallet.html">Wallet</a>
+                        <a href="deposit.html">Deposit</a>
+                        <a href="withdraw.html">Withdraw</a>
+                        <a href="transactions.html">Transactions</a>
+                        <a href="bet-history.html">Bet History</a>
+                        <a href="bonuses.html">Bonuses</a>
+                        <a href="kyc.html">KYC Verification</a>
+                        <a href="settings.html">Settings</a>
+                        <a href="signin.html">Sign In</a>
+                        <a href="signup.html">Sign Up</a>
+                        <a href="leaderboard.html">Leaders Board</a>
+                    </div>
+                </div>
+
+                <a href="promotions.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Promotions</a>
+                <a href="sports.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Sports</a>
+                <a href="casino.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Casino</a>
+
+                <a href="live-betting.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 flex items-center space-x-1">
+                    <span class="live-dot"></span><span>Live</span>
+                </a>
+
+                <div class="dropdown">
+                    <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Virtual ▾</span>
+                    <div class="dropdown-menu">
+                        <a href="virtual-football.html">Virtual Football</a>
+                        <a href="virtual-horse-racing.html">Virtual Horse Racing</a>
+                        <a href="virtual-car-racing.html">Virtual Car Racing</a>
+                        <a href="virtual-netball.html">Virtual Netball</a>
+                        <a href="adventure-games.html">Adventure Games</a>
+                        <a href="aviator.html">Aviator</a>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Support ▾</span>
+                    <div class="dropdown-menu">
+                        <a href="support.html">Help Center</a>
+                        <a href="messages.html">Messages</a>
+                        <a href="notifications.html">Notifications</a>
+                        <a href="faq.html">FAQ</a>
+                        <a href="contact.html">Contact Us</a>
+                        <a href="responsible-gambling.html">Responsible Gambling</a>
+                        <a href="self-exclusion.html">Self-Exclusion</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-3">
+                <button id="mobileToggle" class="lg:hidden p-2 text-white/40 hover:text-white transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div id="mobileMenu" class="mobile-menu">
+    <nav class="flex flex-col space-y-6">
+        <a href="index.html" class="text-lg text-white/70 hover:text-white">Home</a>
+        <a href="sports.html" class="text-lg text-white/70 hover:text-white">Sports</a>
+        <a href="live-betting.html" class="text-lg text-white/70 hover:text-white">Live Betting</a>
+        <a href="casino.html" class="text-lg text-white/70 hover:text-white">Casino</a>
+        <a href="promotions.html" class="text-lg text-white/70 hover:text-white">Promotions</a>
+        <a href="bonuses.html" class="text-lg text-white/70 hover:text-white">Bonuses</a>
+        <a href="leaderboard.html" class="text-lg text-white/70 hover:text-white">Leaderboard</a>
+        <div class="border-t border-white/10 pt-4">
+            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Account</span>
+            <div class="grid grid-cols-2 gap-2 mt-2">
+                <a href="dashboard.html" class="text-sm text-white/50 hover:text-white">Dashboard</a>
+                <a href="profile.html" class="text-sm text-white/50 hover:text-white">Profile</a>
+                <a href="wallet.html" class="text-sm text-white/50 hover:text-white">Wallet</a>
+                <a href="deposit.html" class="text-sm text-white/50 hover:text-white">Deposit</a>
+                <a href="withdraw.html" class="text-sm text-white/50 hover:text-white">Withdraw</a>
+                <a href="transactions.html" class="text-sm text-white/50 hover:text-white">Transactions</a>
+                <a href="bet-history.html" class="text-sm text-white/50 hover:text-white">Bet History</a>
+                <a href="kyc.html" class="text-sm text-white/50 hover:text-white">KYC</a>
+                <a href="settings.html" class="text-sm text-white/50 hover:text-white">Settings</a>
+                <a href="signin.html" class="text-sm text-white/50 hover:text-white">Sign In</a>
+                <a href="signup.html" class="text-sm text-white/50 hover:text-white">Sign Up</a>
+            </div>
+        </div>
+        <div class="border-t border-white/10 pt-4">
+            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Virtual Games</span>
+            <div class="grid grid-cols-2 gap-2 mt-2">
+                <a href="virtual-football.html" class="text-sm text-white/50 hover:text-white">Virtual Football</a>
+                <a href="virtual-horse-racing.html" class="text-sm text-white/50 hover:text-white">Horse Racing</a>
+                <a href="virtual-car-racing.html" class="text-sm text-white/50 hover:text-white">Car Racing</a>
+                <a href="virtual-netball.html" class="text-sm text-white/50 hover:text-white">Netball</a>
+                <a href="adventure-games.html" class="text-sm text-white/50 hover:text-white">Adventure</a>
+                <a href="aviator.html" class="text-sm text-white/50 hover:text-white">Aviator</a>
+            </div>
+        </div>
+        <div class="border-t border-white/10 pt-4">
+            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Support</span>
+            <div class="grid grid-cols-2 gap-2 mt-2">
+                <a href="support.html" class="text-sm text-white/50 hover:text-white">Help Center</a>
+                <a href="messages.html" class="text-sm text-white/50 hover:text-white">Messages</a>
+                <a href="notifications.html" class="text-sm text-white/50 hover:text-white">Notifications</a>
+                <a href="faq.html" class="text-sm text-white/50 hover:text-white">FAQ</a>
+                <a href="contact.html" class="text-sm text-white/50 hover:text-white">Contact</a>
+                <a href="responsible-gambling.html" class="text-sm text-white/50 hover:text-white">Responsible</a>
+                <a href="self-exclusion.html" class="text-sm text-white/50 hover:text-white">Self-Exclusion</a>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<!-- ==========================================
+     OFFLINE CONTENT
+     ========================================== -->
+<div class="page-background flex items-center justify-center pt-24 pb-12 px-4">
+    <div class="w-full max-w-2xl z-10">
+
+        <!-- Status pill -->
+        <div class="text-center mb-6">
+            <span id="statusPill" class="status-pill">
+                <span class="status-dot"></span>
+                <span id="statusText">Offline</span>
+            </span>
+        </div>
+
+        <!-- Main card -->
+        <div class="glass rounded-3xl p-8 md:p-10 border border-white/10 shadow-2xl text-center">
+
+            <!-- Animated icon -->
+            <div class="offline-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12.55a11 11 0 0 1 14.08 0"/>
+                    <path d="M1.42 9a16 16 0 0 1 21.16 0"/>
+                    <path d="M8.53 16.11a6 6 0 0 1 6.95 0"/>
+                    <line x1="12" y1="20" x2="12.01" y2="20"/>
+                    <line x1="2" y1="2" x2="22" y2="22" stroke="#ff2d55" stroke-width="2.2"/>
+                </svg>
+            </div>
+
+            <h1 class="text-3xl md:text-4xl font-bold mb-3">
+                You're <span class="text-gradient">Offline</span>
+            </h1>
+            <p class="text-sm md:text-base text-white/50 mb-8 max-w-md mx-auto">
+                It looks like your connection dropped. Don't worry — some pages are still available from cache, and we'll reconnect you the moment you're back online.
+            </p>
+
+            <!-- Action buttons -->
+            <div class="flex flex-wrap items-center justify-center gap-3 mb-8">
+                <button id="retryBtn" class="btn-primary">
+                    <span id="retryLabel">Retry Connection</span>
+                </button>
+                <a href="index.html" class="btn-secondary">Go to Homepage</a>
+            </div>
+
+            <!-- Divider -->
+            <div class="flex items-center gap-3 mb-6">
+                <div class="flex-1 h-px bg-white/10"></div>
+                <span class="text-[10px] uppercase tracking-wider text-white/30 font-bold">Available while offline</span>
+                <div class="flex-1 h-px bg-white/10"></div>
+            </div>
+
+            <!-- Cached pages grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-left">
+                <a href="index.html" class="tip-card">
+                    <div class="tip-icon">🏠</div>
+                    <div class="min-w-0">
+                        <div class="text-sm font-bold">Home</div>
+                        <div class="text-[10px] text-white/35">Landing page</div>
+                    </div>
+                </a>
+                <a href="aviator.html" class="tip-card">
+                    <div class="tip-icon">✈️</div>
+                    <div class="min-w-0">
+                        <div class="text-sm font-bold">Aviator</div>
+                        <div class="text-[10px] text-white/35">Crash game</div>
+                    </div>
+                </a>
+                <a href="virtual-football.html" class="tip-card">
+                    <div class="tip-icon">⚽</div>
+                    <div class="min-w-0">
+                        <div class="text-sm font-bold">V. Football</div>
+                        <div class="text-[10px] text-white/35">Sim matches</div>
+                    </div>
+                </a>
+                <a href="virtual-horse-racing.html" class="tip-card">
+                    <div class="tip-icon">🏇</div>
+                    <div class="min-w-0">
+                        <div class="text-sm font-bold">Horse Racing</div>
+                        <div class="text-[10px] text-white/35">8 runners</div>
+                    </div>
+                </a>
+                <a href="virtual-car-racing.html" class="tip-card">
+                    <div class="tip-icon">🏎️</div>
+                    <div class="min-w-0">
+                        <div class="text-sm font-bold">Car Racing</div>
+                        <div class="text-[10px] text-white/35">F1-style</div>
+                    </div>
+                </a>
+                <a href="virtual-netball.html" class="tip-card">
+                    <div class="tip-icon">🏐</div>
+                    <div class="min-w-0">
+                        <div class="text-sm font-bold">Netball</div>
+                        <div class="text-[10px] text-white/35">Live scoring</div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Offline tips -->
+            <div class="mt-8 pt-6 border-t border-white/5 text-left">
+                <div class="text-[10px] uppercase tracking-wider text-white/30 font-bold mb-3">Tips while offline</div>
+                <div class="grid sm:grid-cols-2 gap-2">
+                    <div class="tip-card">
+                        <div class="tip-icon">📶</div>
+                        <div class="min-w-0">
+                            <div class="text-xs font-semibold">Check your signal</div>
+                            <div class="text-[10px] text-white/35">Toggle Wi-Fi or mobile data</div>
+                        </div>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-icon">🔄</div>
+                        <div class="min-w-0">
+                            <div class="text-xs font-semibold">Retry when back</div>
+                            <div class="text-[10px] text-white/35">We auto‑sync on reconnect</div>
+                        </div>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-icon">💾</div>
+                        <div class="min-w-0">
+                            <div class="text-xs font-semibold">Cached pages work</div>
+                            <div class="text-[10px] text-white/35">Games keep playing locally</div>
+                        </div>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-icon">🔒</div>
+                        <div class="min-w-0">
+                            <div class="text-xs font-semibold">Your data is safe</div>
+                            <div class="text-[10px] text-white/35">Nothing is lost offline</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<!-- ==========================================
+     FOOTER
+     ========================================== -->
+<footer class="bg-[#0a0a12] border-t border-white/5 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div class="col-span-2 md:col-span-1">
+                <div class="text-lg font-bold mb-3">
+                    <span class="text-gradient">CephasGM</span>
+                    <span class="text-white font-light">|</span>
+                    <span class="text-white font-semibold">GameZone</span>
+                </div>
+                <p class="text-sm text-white/30 leading-relaxed">
+                    Premium online betting platform for sports, casino, and virtual games.
+                </p>
+            </div>
+            <div>
+                <h4 class="text-sm font-semibold text-white/40 mb-3">Quick Links</h4>
+                <ul class="space-y-2">
+                    <li><a href="sports.html" class="footer-link">Sports</a></li>
+                    <li><a href="live-betting.html" class="footer-link">Live Betting</a></li>
+                    <li><a href="casino.html" class="footer-link">Casino</a></li>
+                    <li><a href="promotions.html" class="footer-link">Promotions</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-sm font-semibold text-white/40 mb-3">Support</h4>
+                <ul class="space-y-2">
+                    <li><a href="support.html" class="footer-link">Help Center</a></li>
+                    <li><a href="contact.html" class="footer-link">Contact</a></li>
+                    <li><a href="faq.html" class="footer-link">FAQ</a></li>
+                    <li><a href="responsible-gambling.html" class="footer-link">Responsible Gambling</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-sm font-semibold text-white/40 mb-3">Legal</h4>
+                <ul class="space-y-2">
+                    <li><a href="terms.html" class="footer-link">Terms</a></li>
+                    <li><a href="privacy.html" class="footer-link">Privacy</a></li>
+                    <li><a href="cookies.html" class="footer-link">Cookies</a></li>
+                    <li><a href="kyc.html" class="footer-link">KYC</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="mt-8 pt-6 border-t border-white/5 flex flex-col md:flex-row items-center justify-between text-xs text-white/20">
+            <p>Copyright © 2025 Cephas GM | Innovating for Tomorrow</p>
+            <p class="mt-2 md:mt-0">18+ | Play Responsibly</p>
+        </div>
+    </div>
+</footer>
+
+<!-- ==========================================
+     JAVASCRIPT
+     ========================================== -->
+<script>
+(function () {
+    'use strict';
+
+    /* ============================================================
+       MOBILE MENU
+       ============================================================ */
+    const mobileToggle = document.getElementById('mobileToggle');
+    const mobileMenu   = document.getElementById('mobileMenu');
+    let mobileOpen = false;
+
+    mobileToggle.addEventListener('click', () => {
+        mobileOpen = !mobileOpen;
+        mobileMenu.classList.toggle('active', mobileOpen);
+        document.body.style.overflow = mobileOpen ? 'hidden' : '';
+    });
+    mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+        mobileMenu.classList.remove('active');
+        document.body.style.overflow = '';
+        mobileOpen = false;
+    }));
+
+    /* ============================================================
+       ONLINE / OFFLINE STATUS
+       ============================================================ */
+    const statusPill  = document.getElementById('statusPill');
+    const statusText  = document.getElementById('statusText');
+    const retryBtn    = document.getElementById('retryBtn');
+    const retryLabel  = document.getElementById('retryLabel');
+
+    function updateStatus() {
+        if (navigator.onLine) {
+            statusPill.classList.add('online');
+            statusText.textContent = 'Back online';
+            // Auto-redirect to the page they came from (or homepage)
+            setTimeout(() => {
+                const ref = document.referrer;
+                if (ref && !ref.includes('offline.html')) {
+                    window.location.href = ref;
+                } else {
+                    window.location.href = 'index.html';
+                }
+            }, 900);
+        } else {
+            statusPill.classList.remove('online');
+            statusText.textContent = 'Offline';
+        }
+    }
+
+    window.addEventListener('online',  updateStatus);
+    window.addEventListener('offline', updateStatus);
+    updateStatus();
+
+    /* ============================================================
+       RETRY BUTTON
+       ============================================================ */
+    retryBtn.addEventListener('click', () => {
+        retryLabel.innerHTML = '<span class="retry-ring"></span>Checking…';
+        retryBtn.disabled = true;
+
+        // Try a tiny fetch to test connection
+        fetch(window.location.href, { method: 'HEAD', cache: 'no-store' })
+            .then(() => {
+                retryLabel.textContent = '✅ Connected!';
+                statusPill.classList.add('online');
+                statusText.textContent = 'Back online';
+                setTimeout(() => {
+                    const ref = document.referrer;
+                    if (ref && !ref.includes('offline.html')) {
+                        window.location.href = ref;
+                    } else {
+                        window.location.href = 'index.html';
+                    }
+                }, 500);
+            })
+            .catch(() => {
+                retryLabel.textContent = 'Still offline — try again';
+                retryBtn.disabled = false;
+                setTimeout(() => {
+                    retryLabel.textContent = 'Retry Connection';
+                }, 1800);
+            });
+    });
+
+    /* ============================================================
+       SERVICE WORKER MESSAGE (optional version check)
+       ============================================================ */
+    if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+        navigator.serviceWorker.controller.postMessage({ type: 'GET_VERSION' });
+    }
+
+})();
+</script>
+
+</body>
+</html>
