@@ -661,30 +661,30 @@
                     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
                         <div class="flex-1">
                             <div class="flex items-center gap-2 mb-1">
-                                <span class="text-xs text-white/40">Tzs.{bet.sport}</span>
-                                <span class="status-badge Tzs.{getStatusClass(bet.status)}">Tzs.{bet.status}</span>
+                                <span class="text-xs text-white/40">${bet.sport}</span>
+                                <span class="status-badge ${getStatusClass(bet.status)}">${bet.status}</span>
                             </div>
-                            <h3 class="font-semibold">Tzs.{bet.match}</h3>
-                            <p class="text-sm text-white/50">Selection: <span class="text-white/80">Tzs.{bet.selection}</span></p>
+                            <h3 class="font-semibold">${bet.match}</h3>
+                            <p class="text-sm text-white/50">Selection: <span class="text-white/80">${bet.selection}</span></p>
                         </div>
                         <div class="flex items-center gap-4 md:gap-6">
                             <div class="text-center">
                                 <div class="text-xs text-white/40">Odds</div>
-                                <div class="font-bold">Tzs.{bet.odds.toFixed(2)}</div>
+                                <div class="font-bold">${bet.odds.toFixed(2)}</div>
                             </div>
                             <div class="text-center">
                                 <div class="text-xs text-white/40">Stake</div>
-                                <div class="font-bold">Tzs.Tzs.{bet.stake.toFixed(2)}</div>
+                                <div class="font-bold">$${bet.stake.toFixed(2)}</div>
                             </div>
                             <div class="text-center">
                                 <div class="text-xs text-white/40">Potential</div>
-                                <div class="font-bold Tzs.{bet.status === 'Won' ? 'text-green-400' : bet.status === 'Lost' ? 'text-red-400' : 'text-white'}">
-                                    Tzs.Tzs.{bet.status === 'Won' ? winAmount : bet.potential.toFixed(2)}
+                                <div class="font-bold ${bet.status === 'Won' ? 'text-green-400' : bet.status === 'Lost' ? 'text-red-400' : 'text-white'}">
+                                    $${bet.status === 'Won' ? winAmount : bet.potential.toFixed(2)}
                                 </div>
                             </div>
                             <div class="text-center">
                                 <div class="text-xs text-white/40">Date</div>
-                                <div class="text-sm">Tzs.{bet.date}</div>
+                                <div class="text-sm">${bet.date}</div>
                             </div>
                         </div>
                     </div>
