@@ -18,22 +18,23 @@
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body { height: 100%; }
+
         body {
             font-family: 'Inter', sans-serif;
             background: #0a0a12;
             color: #ffffff;
-            overflow-x: hidden;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
+
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #0a0a12; }
         ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #0055ff, #542bff); border-radius: 10px; }
-        
-        .glass {
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-        }
+
         .glass-light {
             background: rgba(255, 255, 255, 0.04);
             backdrop-filter: blur(10px);
@@ -43,10 +44,10 @@
         .btn-primary {
             background: linear-gradient(135deg, #0055ff, #542bff);
             color: white;
-            padding: 12px 32px;
+            padding: 10px 24px;
             border-radius: 50px;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 13px;
             border: none;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -56,21 +57,22 @@
         .btn-secondary {
             background: rgba(255, 255, 255, 0.06);
             color: white;
-            padding: 12px 32px;
+            padding: 10px 24px;
             border-radius: 50px;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 13px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             cursor: pointer;
             transition: all 0.3s ease;
         }
         .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-2px); }
-        
-        /* Navbar */
+
+        /* ---------- NAVBAR (in-flow, part of flex layout) ---------- */
         .navbar {
-            position: fixed;
-            top: 0; left: 0; right: 0; z-index: 1000;
-            padding: 16px 0;
+            position: relative;
+            flex-shrink: 0;
+            z-index: 100;
+            padding: 12px 0;
             background: rgba(10, 10, 18, 0.92);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255,255,255,0.05);
@@ -81,6 +83,8 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
+
+        /* ---------- MOBILE MENU ---------- */
         .mobile-menu {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -93,24 +97,32 @@
         }
         .mobile-menu.active { display: block; animation: fadeIn 0.3s ease; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        
+
         .footer-link {
             color: rgba(255, 255, 255, 0.4);
             transition: all 0.3s ease;
             text-decoration: none;
-            font-size: 14px;
+            font-size: 13px;
         }
         .footer-link:hover { color: #ffffff; }
-        
-        /* Hero */
+
+        /* ---------- PAGE CONTENT (flex column, fills remaining) ---------- */
+        .page-content {
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* ---------- HERO (compact band) ---------- */
         .hero-section {
-            min-height: 100vh;
+            flex-shrink: 0;
+            padding: 22px 0;
             background-image: url('https://st4.depositphotos.com/15208558/31446/i/450/depositphotos_314469620-stock-photo-gold-inscription-sports-betting-on.jpg');
             background-size: cover;
             background-position: center;
             position: relative;
-            display: flex;
-            align-items: center;
         }
         .hero-section::before {
             content: '';
@@ -118,60 +130,117 @@
             top: 0; left: 0; right: 0; bottom: 0;
             background: linear-gradient(135deg, rgba(10,10,18,0.85) 0%, rgba(10,10,18,0.6) 50%, rgba(10,10,18,0.85) 100%);
         }
-        
+
         .live-dot {
             width: 8px; height: 8px; border-radius: 50%;
             background: #ff0044; display: inline-block;
             animation: pulse-dot 1.5s ease-in-out infinite;
         }
         @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.4;transform:scale(0.8);} }
-        
-        .sport-category {
-            position: relative;
-            border-radius: 16px;
+
+        /* ---------- LIVE MATCHES (flex 1) ---------- */
+        .live-section {
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            padding: 14px 0;
             overflow: hidden;
-            aspect-ratio: 1;
-            cursor: pointer;
-            transition: transform 0.3s;
         }
-        .sport-category:hover { transform: scale(1.03); }
-        .sport-category img { width: 100%; height: 100%; object-fit: cover; }
-        .sport-category .overlay {
-            position: absolute;
-            bottom: 0; left: 0; right: 0;
-            padding: 10px;
-            background: linear-gradient(transparent, rgba(0,0,0,0.8));
-            text-align: center;
-            font-weight: 600;
-            font-size: 14px;
+        .live-grid {
+            flex: 1;
+            min-height: 0;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
         }
-        
+
         .match-card {
             background: rgba(255,255,255,0.03);
             border: 1px solid rgba(255,255,255,0.06);
-            border-radius: 16px;
-            padding: 16px;
+            border-radius: 14px;
+            padding: 14px 16px;
             transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
         }
         .match-card:hover { transform: translateY(-3px); background: rgba(255,255,255,0.05); }
+        .match-card .team-name { font-size: 1.05rem; font-weight: 600; }
+        .match-card .team-score { font-size: 0.9rem; color: rgba(255,255,255,0.4); }
+        .match-card .league-label { font-size: 0.8rem; color: rgba(255,255,255,0.4); }
+        .match-card .match-time { font-size: 0.85rem; color: rgba(255,255,255,0.4); }
+        .match-card .emoji-xl { font-size: 1.5rem; }
+
         .odds-btn-small {
             background: rgba(255,255,255,0.04);
             border: 1px solid rgba(255,255,255,0.06);
             border-radius: 6px;
-            padding: 4px 12px;
-            font-size: 13px;
+            padding: 5px 14px;
+            font-size: 14px;
             font-weight: 600;
             color: white;
             cursor: pointer;
             transition: all 0.2s;
         }
         .odds-btn-small:hover { background: #0055ff; border-color: #0055ff; transform: scale(1.05); }
-        
-        /* Dropdown */
-        .dropdown {
-            position: relative;
-            display: inline-block;
+
+        /* ---------- POPULAR SPORTS (flex 1, BIG tiles) ---------- */
+        .sports-section {
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            padding: 14px 0;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            overflow: hidden;
         }
+        .sports-grid {
+            flex: 1;
+            min-height: 0;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+        .sport-category {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s;
+            height: 100%;
+            min-height: 0;
+            display: block;
+        }
+        .sport-category:hover { transform: scale(1.03); }
+        .sport-category img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .sport-category .overlay {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            padding: 16px 12px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.85));
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.15rem;
+            letter-spacing: 0.01em;
+        }
+
+        /* ---------- FOOTER (compact single row) ---------- */
+        .site-footer {
+            flex-shrink: 0;
+            padding: 12px 0;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            background: #0a0a12;
+        }
+
+        /* ---------- DROPDOWN ---------- */
+        .dropdown { position: relative; display: inline-block; }
         .dropdown-menu {
             display: none;
             position: absolute;
@@ -185,9 +254,7 @@
             padding: 8px 0;
             z-index: 1001;
         }
-        .dropdown:hover .dropdown-menu {
-            display: block;
-        }
+        .dropdown:hover .dropdown-menu { display: block; }
         .dropdown-menu a {
             display: block;
             padding: 8px 16px;
@@ -195,20 +262,29 @@
             font-size: 13px;
             transition: 0.2s;
         }
-        .dropdown-menu a:hover {
-            background: rgba(255,255,255,0.05);
-            color: white;
+        .dropdown-menu a:hover { background: rgba(255,255,255,0.05); color: white; }
+
+        /* ---------- RESPONSIVE ---------- */
+        @media (min-width: 768px) {
+            .live-grid { grid-template-columns: repeat(3, 1fr); }
+            .sports-grid { grid-template-columns: repeat(6, 1fr); }
         }
-        
-        @media (max-width: 768px) {
-            .hero-section { min-height: 90vh; }
+
+        /* Small-screen fallback: allow vertical scroll if it won't fit */
+        @media (max-width: 767px) {
+            body { height: auto; overflow-y: auto; display: block; }
+            .page-content { overflow: visible; }
+            .live-section, .sports-section { overflow: visible; flex: none; }
+            .live-grid { grid-template-columns: 1fr; }
+            .sports-grid { grid-template-columns: repeat(3, 1fr); aspect-ratio: auto; }
+            .sport-category { aspect-ratio: 1; min-height: 110px; }
         }
     </style>
 </head>
 <body>
 
 <!-- ==========================================
-     NAVBAR (full dropdowns)
+     NAVBAR (in-flow, part of flex layout)
      ========================================== -->
 <nav class="navbar" id="navbar">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -221,9 +297,8 @@
                 </span>
             </a>
             
-            <!-- Desktop Nav (full links with dropdowns) -->
+            <!-- Desktop Nav -->
 <div class="hidden lg:flex items-center space-x-1">
-    <!-- Info dropdown -->
     <div class="dropdown">
         <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Info ▾</span>
         <div class="dropdown-menu">
@@ -236,7 +311,6 @@
         </div>
     </div>
 
-    <!-- Account dropdown -->
     <div class="dropdown">
         <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Account ▾</span>
         <div class="dropdown-menu">
@@ -255,21 +329,13 @@
         </div>
     </div>
 
-    <!-- Promotions link -->
     <a href="promotions.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Promotions</a>
-
-    <!-- Sports link -->
     <a href="sports.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Sports</a>
-
-    <!-- Casino link -->
     <a href="casino.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Casino</a>
-
-    <!-- Live link -->
     <a href="live-betting.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 flex items-center space-x-1">
         <span class="live-dot"></span><span>Live</span>
     </a>
 
-    <!-- Virtual dropdown -->
     <div class="dropdown">
         <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Virtual ▾</span>
         <div class="dropdown-menu">
@@ -282,7 +348,6 @@
         </div>
     </div>
 
-    <!-- Support dropdown -->
     <div class="dropdown">
         <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Support ▾</span>
         <div class="dropdown-menu">
@@ -308,7 +373,7 @@
 </div>
 </nav>
 
-<!-- Mobile Menu (comprehensive links) -->
+<!-- Mobile Menu -->
 <div id="mobileMenu" class="mobile-menu">
     <nav class="flex flex-col space-y-5">
         <a href="index.html" class="text-lg text-white/70 hover:text-white">Home</a>
@@ -372,276 +437,210 @@
 </div>
 
 <!-- ==========================================
-     HERO SECTION
+     PAGE CONTENT
      ========================================== -->
-<section class="hero-section">
-    <div class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div class="max-w-3xl">
-            <div class="inline-flex items-center space-x-2 glass-light px-4 py-1.5 rounded-full mb-6">
-                <span class="live-dot"></span>
-                <span class="text-xs text-white/60">Live Betting • 2,345 Active Now</span>
-            </div>
-            <h1 class="text-5xl md:text-7xl font-bold leading-tight mb-6">
-                <span class="text-gradient">Bet Smarter.</span><br>
-                <span class="text-white">Win Bigger.</span>
-            </h1>
-            <p class="text-lg text-white/50 max-w-lg mb-8 leading-relaxed">
-                Join the ultimate sports betting, live casino, and virtual games platform. 
-                Real‑time odds, instant payouts, and a world‑class experience.
-            </p>
-            <div class="flex flex-wrap gap-4">
-                <button onclick="window.location.href='signup.html'" class="btn-primary">
-                    Get Started
-                    <svg class="inline-block w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
-                    </svg>
-                </button>
-                <button onclick="window.location.href='sports.html'" class="btn-secondary">Explore Sports</button>
-            </div>
-            <div class="flex items-center space-x-8 mt-8">
-                <div><div class="text-2xl font-bold text-white">50K+</div><div class="text-xs text-white/30">Active Users</div></div>
-                <div><div class="text-2xl font-bold text-white">$2M+</div><div class="text-xs text-white/30">Daily Winnings</div></div>
-                <div><div class="text-2xl font-bold text-white">98%</div><div class="text-xs text-white/30">Payout Rate</div></div>
-            </div>
-        </div>
-    </div>
-</section>
+<div class="page-content">
 
-<!-- ==========================================
-     FEATURED MATCHES
-     ========================================== -->
-<section class="py-12 bg-[#0a0a12]">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between mb-6">
-            <div>
-                <h2 class="text-xl font-bold">🔥 Live Matches</h2>
-                <p class="text-xs text-white/30">Real‑time odds & updates</p>
-            </div>
-            <a href="live-betting.html" class="text-sm text-blue-400 hover:text-blue-300 transition-colors">View All →</a>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <!-- Match 1 -->
-            <div class="match-card">
-                <div class="flex justify-between items-center mb-2">
-                    <span class="text-xs text-white/30">Premier League</span>
-                    <span class="flex items-center space-x-1 text-xs text-red-400"><span class="live-dot"></span> Live</span>
-                </div>
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-2">
-                        <span class="text-xl">⚽</span>
-                        <div>
-                            <div class="font-semibold text-sm">Arsenal</div>
-                            <div class="text-xs text-white/30">2</div>
-                        </div>
+    <!-- HERO (compact band) -->
+    <section class="hero-section">
+        <div class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div class="max-w-2xl">
+                    <div class="inline-flex items-center space-x-2 glass-light px-3 py-1 rounded-full mb-2">
+                        <span class="live-dot"></span>
+                        <span class="text-xs text-white/60">Live Betting • 2,345 Active Now</span>
                     </div>
-                    <span class="text-xs text-white/20">vs</span>
-                    <div class="flex items-center gap-2 text-right">
-                        <div>
-                            <div class="font-semibold text-sm">Chelsea</div>
-                            <div class="text-xs text-white/30">1</div>
-                        </div>
-                        <span class="text-xl">⚽</span>
-                    </div>
+                    <h1 class="text-2xl md:text-3xl font-bold leading-tight mb-2">
+                        <span class="text-gradient">Bet Smarter.</span>
+                        <span class="text-white">Win Bigger.</span>
+                    </h1>
+                    <p class="text-xs md:text-sm text-white/50 leading-relaxed">
+                        Premium sports betting, live casino &amp; virtual games. Real‑time odds, instant payouts, world‑class experience.
+                    </p>
                 </div>
-                <div class="mt-3 flex justify-between items-center">
-                    <span class="text-xs text-white/30">67:23</span>
-                    <div class="flex gap-1">
-                        <button class="odds-btn-small">1.95</button>
-                        <button class="odds-btn-small">3.20</button>
-                        <button class="odds-btn-small">2.15</button>
+                <div class="flex flex-col items-start md:items-end gap-3">
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="window.location.href='signup.html'" class="btn-primary">Get Started →</button>
+                        <button onclick="window.location.href='sports.html'" class="btn-secondary">Explore Sports</button>
                     </div>
-                </div>
-            </div>
-            <!-- Match 2 -->
-            <div class="match-card">
-                <div class="flex justify-between items-center mb-2">
-                    <span class="text-xs text-white/30">La Liga</span>
-                    <span class="flex items-center space-x-1 text-xs text-red-400"><span class="live-dot"></span> Live</span>
-                </div>
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-2">
-                        <span class="text-xl">⚽</span>
-                        <div>
-                            <div class="font-semibold text-sm">Barcelona</div>
-                            <div class="text-xs text-white/30">0</div>
-                        </div>
-                    </div>
-                    <span class="text-xs text-white/20">vs</span>
-                    <div class="flex items-center gap-2 text-right">
-                        <div>
-                            <div class="font-semibold text-sm">Real Madrid</div>
-                            <div class="text-xs text-white/30">0</div>
-                        </div>
-                        <span class="text-xl">⚽</span>
-                    </div>
-                </div>
-                <div class="mt-3 flex justify-between items-center">
-                    <span class="text-xs text-white/30">12:18</span>
-                    <div class="flex gap-1">
-                        <button class="odds-btn-small">2.50</button>
-                        <button class="odds-btn-small">3.40</button>
-                        <button class="odds-btn-small">2.80</button>
-                    </div>
-                </div>
-            </div>
-            <!-- Match 3 -->
-            <div class="match-card">
-                <div class="flex justify-between items-center mb-2">
-                    <span class="text-xs text-white/30">NBA</span>
-                    <span class="flex items-center space-x-1 text-xs text-red-400"><span class="live-dot"></span> Live</span>
-                </div>
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-2">
-                        <span class="text-xl">🏀</span>
-                        <div>
-                            <div class="font-semibold text-sm">Lakers</div>
-                            <div class="text-xs text-white/30">89</div>
-                        </div>
-                    </div>
-                    <span class="text-xs text-white/20">vs</span>
-                    <div class="flex items-center gap-2 text-right">
-                        <div>
-                            <div class="font-semibold text-sm">Celtics</div>
-                            <div class="text-xs text-white/30">85</div>
-                        </div>
-                        <span class="text-xl">🏀</span>
-                    </div>
-                </div>
-                <div class="mt-3 flex justify-between items-center">
-                    <span class="text-xs text-white/30">Q4 2:34</span>
-                    <div class="flex gap-1">
-                        <button class="odds-btn-small">1.75</button>
-                        <button class="odds-btn-small">1.95</button>
+                    <div class="flex items-center space-x-5">
+                        <div><span class="text-base font-bold text-white">50K+</span><span class="text-[11px] text-white/30 ml-1">Users</span></div>
+                        <div><span class="text-base font-bold text-white">$2M+</span><span class="text-[11px] text-white/30 ml-1">Daily Winnings</span></div>
+                        <div><span class="text-base font-bold text-white">98%</span><span class="text-[11px] text-white/30 ml-1">Payout</span></div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- ==========================================
-     SPORTS CATEGORIES
-     ========================================== -->
-<section class="py-12 bg-[#0a0a12] border-t border-white/5">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="text-xl font-bold mb-6">Popular Sports</h2>
-        <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
-            <a href="sports.html" class="sport-category">
-                    <img src="https://png.pngtree.com/thumb_back/fh260/background/20230705/pngtree-intense-football-game-at-the-stadium-3d-rendering-of-competing-players-image_3821105.jpg">
+    <!-- LIVE MATCHES -->
+    <section class="live-section bg-[#0a0a12]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full h-full flex flex-col">
+            <div class="flex items-center justify-between mb-3 flex-shrink-0">
+                <div>
+                    <h2 class="text-2xl font-bold">🔥 Live Matches</h2>
+                    <p class="text-sm text-white/30">Real‑time odds &amp; updates</p>
+                </div>
+                <a href="live-betting.html" class="text-base text-blue-400 hover:text-blue-300 transition-colors">View All →</a>
+            </div>
+            <div class="live-grid">
+                <!-- Match 1 -->
+                <div class="match-card">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="league-label">Premier League</span>
+                        <span class="flex items-center space-x-1 text-sm text-red-400"><span class="live-dot"></span> Live</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <span class="emoji-xl">⚽</span>
+                            <div>
+                                <div class="team-name">Arsenal</div>
+                                <div class="team-score">2</div>
+                            </div>
+                        </div>
+                        <span class="text-sm text-white/20">vs</span>
+                        <div class="flex items-center gap-3 text-right">
+                            <div>
+                                <div class="team-name">Chelsea</div>
+                                <div class="team-score">1</div>
+                            </div>
+                            <span class="emoji-xl">⚽</span>
+                        </div>
+                    </div>
+                    <div class="mt-3 flex justify-between items-center">
+                        <span class="match-time">67:23</span>
+                        <div class="flex gap-2">
+                            <button class="odds-btn-small">1.95</button>
+                            <button class="odds-btn-small">3.20</button>
+                            <button class="odds-btn-small">2.15</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Match 2 -->
+                <div class="match-card">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="league-label">La Liga</span>
+                        <span class="flex items-center space-x-1 text-sm text-red-400"><span class="live-dot"></span> Live</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <span class="emoji-xl">⚽</span>
+                            <div>
+                                <div class="team-name">Barcelona</div>
+                                <div class="team-score">0</div>
+                            </div>
+                        </div>
+                        <span class="text-sm text-white/20">vs</span>
+                        <div class="flex items-center gap-3 text-right">
+                            <div>
+                                <div class="team-name">Real Madrid</div>
+                                <div class="team-score">0</div>
+                            </div>
+                            <span class="emoji-xl">⚽</span>
+                        </div>
+                    </div>
+                    <div class="mt-3 flex justify-between items-center">
+                        <span class="match-time">12:18</span>
+                        <div class="flex gap-2">
+                            <button class="odds-btn-small">2.50</button>
+                            <button class="odds-btn-small">3.40</button>
+                            <button class="odds-btn-small">2.80</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Match 3 -->
+                <div class="match-card">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="league-label">NBA</span>
+                        <span class="flex items-center space-x-1 text-sm text-red-400"><span class="live-dot"></span> Live</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <span class="emoji-xl">🏀</span>
+                            <div>
+                                <div class="team-name">Lakers</div>
+                                <div class="team-score">89</div>
+                            </div>
+                        </div>
+                        <span class="text-sm text-white/20">vs</span>
+                        <div class="flex items-center gap-3 text-right">
+                            <div>
+                                <div class="team-name">Celtics</div>
+                                <div class="team-score">85</div>
+                            </div>
+                            <span class="emoji-xl">🏀</span>
+                        </div>
+                    </div>
+                    <div class="mt-3 flex justify-between items-center">
+                        <span class="match-time">Q4 2:34</span>
+                        <div class="flex gap-2">
+                            <button class="odds-btn-small">1.75</button>
+                            <button class="odds-btn-small">1.95</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- POPULAR SPORTS (bigger tiles + fonts) -->
+    <section class="sports-section bg-[#0a0a12]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full h-full flex flex-col">
+            <h2 class="text-2xl font-bold mb-3 flex-shrink-0">Popular Sports</h2>
+            <div class="sports-grid">
+                <a href="sports.html" class="sport-category">
+                    <img src="https://png.pngtree.com/thumb_back/fh260/background/20230705/pngtree-intense-football-game-at-the-stadium-3d-rendering-of-competing-players-image_3821105.jpg" alt="Football">
                     <div class="overlay">⚽ Football</div>
-            </a>
+                </a>
                 <a href="#" class="sport-category">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoKmrSdc84MhjBeYybmeTq6HL1faFBzIs5_WGHz3s9tc0Fud0imyGwOpw&s=10">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoKmrSdc84MhjBeYybmeTq6HL1faFBzIs5_WGHz3s9tc0Fud0imyGwOpw&s=10" alt="Basketball">
                     <div class="overlay">🏀 Basketball</div>
                 </a>
                 <a href="#" class="sport-category">
-                    <img src="https://images.pexels.com/photos/13602337/pexels-photo-13602337.jpeg?cs=srgb&dl=pexels-iglp11-13602337.jpg&fm=jpg">
+                    <img src="https://images.pexels.com/photos/13602337/pexels-photo-13602337.jpeg?cs=srgb&dl=pexels-iglp11-13602337.jpg&fm=jpg" alt="Tennis">
                     <div class="overlay">🎾 Tennis</div>
                 </a>
                 <a href="#" class="sport-category">
-                    <img src="https://st2.depositphotos.com/2579941/7602/i/450/depositphotos_76025237-stock-photo-international-cricket-england-v-australia.jpg">
+                    <img src="https://st2.depositphotos.com/2579941/7602/i/450/depositphotos_76025237-stock-photo-international-cricket-england-v-australia.jpg" alt="Cricket">
                     <div class="overlay">🏏 Cricket</div>
                 </a>
                 <a href="#" class="sport-category">
-                    <img src="https://cdn.media.amplience.net/i/canon/canon-pro-rwc-shot-of-the-day-1-highres?w=1140&qlt=70&fmt=jpg&fmt.options=interlaced&bg=rgb(255,255,255)">
+                    <img src="https://cdn.media.amplience.net/i/canon/canon-pro-rwc-shot-of-the-day-1-highres?w=1140&qlt=70&fmt=jpg&fmt.options=interlaced&bg=rgb(255,255,255)" alt="Rugby">
                     <div class="overlay">🏉 Rugby</div>
                 </a>
                 <a href="#" class="sport-category">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLxsrvq26LZ5DtOSpQL8xpBGH7IvZZqSOq99fcX4Tn1TC5fIvhDLozI4k&s=10">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLxsrvq26LZ5DtOSpQL8xpBGH7IvZZqSOq99fcX4Tn1TC5fIvhDLozI4k&s=10" alt="Esports">
                     <div class="overlay">🎮 Esports</div>
-            </a>
+                </a>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
+
+</div>
 
 <!-- ==========================================
-     PROMOTIONS
+     FOOTER (compact single row)
      ========================================== -->
-<section class="py-12 bg-[#0a0a12] border-t border-white/5">
+<footer class="site-footer">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between mb-6">
-            <h2 class="text-xl font-bold">🎁 Promotions</h2>
-            <a href="promotions.html" class="text-sm text-blue-400 hover:text-blue-300 transition-colors">View All →</a>
-        </div>
-        <div class="grid md:grid-cols-3 gap-4">
-            <div class="glass-light rounded-2xl p-6 border border-white/5">
-                <div class="text-3xl mb-2">🎉</div>
-                <h3 class="text-lg font-bold">Welcome Bonus</h3>
-                <p class="text-sm text-white/40">100% match up to $500</p>
-                <div class="mt-4 flex items-center justify-between">
-                    <span class="text-xs text-white/30">Min deposit $10</span>
-                    <button class="px-4 py-2 bg-blue-500 rounded-xl text-sm font-semibold hover:bg-blue-600 transition-colors">Claim</button>
-                </div>
+        <div class="flex flex-col md:flex-row items-center justify-between gap-2 text-xs text-white/30">
+            <div class="flex items-center gap-2">
+                <span class="font-bold">
+                    <span class="text-gradient">CephasGM</span><span class="text-white/40"> | </span><span class="text-white/70">GameZone</span>
+                </span>
+                <span class="hidden md:inline">© 2025</span>
             </div>
-            <div class="glass-light rounded-2xl p-6 border border-white/5">
-                <div class="text-3xl mb-2">🔄</div>
-                <h3 class="text-lg font-bold">Cashback</h3>
-                <p class="text-sm text-white/40">10% weekly cashback</p>
-                <div class="mt-4 flex items-center justify-between">
-                    <span class="text-xs text-white/30">Up to $100</span>
-                    <button class="px-4 py-2 bg-green-500 rounded-xl text-sm font-semibold hover:bg-green-600 transition-colors">Opt In</button>
-                </div>
+            <div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
+                <a href="sports.html" class="footer-link">Sports</a>
+                <a href="live-betting.html" class="footer-link">Live</a>
+                <a href="casino.html" class="footer-link">Casino</a>
+                <a href="promotions.html" class="footer-link">Promotions</a>
+                <a href="support.html" class="footer-link">Support</a>
+                <a href="terms.html" class="footer-link">Terms</a>
+                <a href="privacy.html" class="footer-link">Privacy</a>
+                <a href="responsible-gambling.html" class="footer-link">Responsible</a>
             </div>
-            <div class="glass-light rounded-2xl p-6 border border-white/5">
-                <div class="text-3xl mb-2">👑</div>
-                <h3 class="text-lg font-bold">VIP Rewards</h3>
-                <p class="text-sm text-white/40">Exclusive bonuses & perks</p>
-                <div class="mt-4 flex items-center justify-between">
-                    <span class="text-xs text-white/30">Invite only</span>
-                    <span class="px-3 py-1 bg-yellow-500/20 text-yellow-400 rounded-xl text-xs font-semibold">VIP</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- ==========================================
-     FOOTER
-     ========================================== -->
-<footer class="bg-[#0a0a12] border-t border-white/5 py-12">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div class="col-span-2 md:col-span-1">
-                <div class="text-lg font-bold mb-3">
-                    <span class="text-gradient">CephasGM</span>
-                    <span class="text-white font-light">|</span>
-                    <span class="text-white font-semibold">GameZone</span>
-                </div>
-                <p class="text-sm text-white/30 leading-relaxed">
-                    Premium online betting platform for sports, casino, and virtual games.
-                </p>
-            </div>
-            <div>
-                <h4 class="text-sm font-semibold text-white/40 mb-3">Quick Links</h4>
-                <ul class="space-y-2">
-                    <li><a href="sports.html" class="footer-link">Sports</a></li>
-                    <li><a href="live-betting.html" class="footer-link">Live Betting</a></li>
-                    <li><a href="casino.html" class="footer-link">Casino</a></li>
-                    <li><a href="promotions.html" class="footer-link">Promotions</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-sm font-semibold text-white/40 mb-3">Support</h4>
-                <ul class="space-y-2">
-                    <li><a href="support.html" class="footer-link">Help Center</a></li>
-                    <li><a href="contact.html" class="footer-link">Contact</a></li>
-                    <li><a href="faq.html" class="footer-link">FAQ</a></li>
-                    <li><a href="responsible-gambling.html" class="footer-link">Responsible Gambling</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-sm font-semibold text-white/40 mb-3">Legal</h4>
-                <ul class="space-y-2">
-                    <li><a href="terms.html" class="footer-link">Terms</a></li>
-                    <li><a href="privacy.html" class="footer-link">Privacy</a></li>
-                    <li><a href="cookies.html" class="footer-link">Cookies</a></li>
-                    <li><a href="kyc.html" class="footer-link">KYC</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="mt-8 pt-6 border-t border-white/5 flex flex-col md:flex-row items-center justify-between text-xs text-white/20">
-            <p>Copyright © 2025 Cephas GM | Innovating for Tomorrow</p>
-            <p class="mt-2 md:mt-0">18+ | Play Responsibly</p>
+            <div>18+ | Play Responsibly</div>
         </div>
     </div>
 </footer>
@@ -653,7 +652,6 @@
 (function() {
     'use strict';
     
-    // Mobile menu toggle
     const mobileToggle = document.getElementById('mobileToggle');
     const mobileMenu = document.getElementById('mobileMenu');
     let mobileOpen = false;
@@ -671,7 +669,6 @@
         });
     });
     
-    // Odds buttons click (simple toast demo)
     document.querySelectorAll('.odds-btn-small').forEach(btn => {
         btn.addEventListener('click', function() {
             const toast = document.createElement('div');
@@ -686,7 +683,6 @@
         });
     });
     
-    // PWA registration
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('/sw.js')
