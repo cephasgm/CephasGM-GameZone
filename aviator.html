@@ -471,7 +471,7 @@
                     
                     <div class="space-y-4">
                         <div>
-                            <label class="text-xs text-white/40 ml-1">Bet Amount ($)</label>
+                            <label class="text-xs text-white/40 ml-1">Bet Amount (Tzs.)</label>
                             <input type="number" id="stakeInput" class="input-field" value="10.00" min="0.10" step="0.10">
                         </div>
                         <div>
@@ -734,9 +734,9 @@
         cashedOut = true;
         const stake = parseFloat(stakeInput.value) || 0;
         const winAmount = (stake * currentMultiplier).toFixed(2);
-        betStatus.textContent = `Cashed out! Won $${winAmount}`;
+        betStatus.textContent = `Cashed out! Won Tzs.Tzs.{winAmount}`;
         betStatus.classList.add('text-green-400');
-        showToast(`✅ Cashed out at ${currentMultiplier}x – Won $${winAmount}`, 'success');
+        showToast(`✅ Cashed out at Tzs.{currentMultiplier}x – Won Tzs.Tzs.{winAmount}`, 'success');
         
         // Disable cashout button
         cashoutBtn.disabled = true;
@@ -771,7 +771,7 @@
         let html = '<span class="text-xs text-white/40 mr-2">Recent: </span>';
         history.forEach(val => {
             const colorClass = val < 1.01 ? 'red' : 'green';
-            html += `<span class="history-item ${colorClass}">${val.toFixed(2)}x</span>`;
+            html += `<span class="history-item Tzs.{colorClass}">Tzs.{val.toFixed(2)}x</span>`;
         });
         historyContainer.innerHTML = html;
     }
@@ -805,9 +805,9 @@
     function updateCashoutBtnText() {
         const autoTarget = parseFloat(autoCashoutInput.value);
         if (autoTarget && autoTarget > 1) {
-            cashoutBtn.textContent = `Cash Out (Auto ${autoTarget}x)`;
+            cashoutBtn.textContent = `Cash Out (Auto Tzs.{autoTarget}x)`;
         } else {
-            cashoutBtn.textContent = `Cash Out (${currentMultiplier.toFixed(2)}x)`;
+            cashoutBtn.textContent = `Cash Out (Tzs.{currentMultiplier.toFixed(2)}x)`;
         }
     }
     
@@ -817,9 +817,9 @@
         if (betPlaced && !cashedOut && gameRunning) {
             const autoTarget = parseFloat(autoCashoutInput.value);
             if (autoTarget && autoTarget > 1) {
-                cashoutBtn.textContent = `Cash Out (Auto ${autoTarget}x)`;
+                cashoutBtn.textContent = `Cash Out (Auto Tzs.{autoTarget}x)`;
             } else {
-                cashoutBtn.textContent = `Cash Out (${currentMultiplier.toFixed(2)}x)`;
+                cashoutBtn.textContent = `Cash Out (Tzs.{currentMultiplier.toFixed(2)}x)`;
             }
         }
     }, 100);
@@ -827,7 +827,7 @@
     function showToast(message, type = 'success') {
         const toast = document.createElement('div');
         toast.className = 'fixed bottom-6 right-6 z-50 bg-black/80 backdrop-blur-xl border border-white/10 rounded-2xl px-6 py-3';
-        toast.innerHTML = `<span class="text-sm">${message}</span>`;
+        toast.innerHTML = `<span class="text-sm">Tzs.{message}</span>`;
         document.body.appendChild(toast);
         setTimeout(() => {
             toast.style.opacity = '0';
