@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#0a0a12">
-    <meta name="description" content="Virtual Car Racing – CephasGM GameZone">
-    <title>Virtual Car Racing | CephasGM GameZone</title>
+    <meta name="description" content="Virtual Netball – CephasGM GameZone">
+    <title>Virtual Netball | CephasGM GameZone</title>
 
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -203,399 +203,215 @@
         }
 
         /* ============================================
-           STADIUM / CIRCUIT
+           NETBALL COURT / MATCH ROWS
            ============================================ */
-        .stadium {
-            position: relative;
-            border-radius: 20px;
-            overflow: hidden;
-            background: #06060e;
-            border: 1px solid rgba(255,255,255,0.06);
-        }
-
-        /* Grandstand backdrop */
-        .crowd-strip {
-            height: 28px;
-            background:
-                repeating-linear-gradient(90deg,
-                    rgba(255,255,255,0.055) 0px, rgba(255,255,255,0.055) 3px,
-                    rgba(255,255,255,0.02) 3px, rgba(255,255,255,0.02) 7px,
-                    rgba(0,0,0,0) 7px, rgba(0,0,0,0) 12px),
-                linear-gradient(180deg, #11132280 0%, #05050d 100%);
-            border-bottom: 1px solid rgba(255,255,255,0.04);
-            position: relative;
-        }
-        .crowd-strip::after {
-            content: '🏁  GRANDSTAND  🏁';
-            position: absolute;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 8px;
-            letter-spacing: .35em;
-            font-weight: 800;
-            color: rgba(255,255,255,0.14);
-        }
-
-        /* Advertising board strip */
-        .ad-strip {
-            height: 18px;
-            background:
-                linear-gradient(180deg, #1a1c2c 0%, #0f1120 100%);
-            border-bottom: 1px solid rgba(0,0,0,0.6);
-            position: relative;
-            overflow: hidden;
-        }
-        .ad-strip::after {
-            content: '• CEPHASGM • GAMEZONE • VIRTUAL RACING • 18+ • PLAY RESPONSIBLY •';
-            position: absolute;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            white-space: nowrap;
-            font-size: 9px;
-            letter-spacing: .28em;
-            font-weight: 700;
-            color: rgba(0,180,255,0.28);
-            animation: adScroll 24s linear infinite;
-        }
-        @keyframes adScroll {
-            from { transform: translateX(0); }
-            to   { transform: translateX(-50%); }
-        }
-
-        /* Grass verge */
-        .grass-strip {
-            height: 12px;
-            background: linear-gradient(180deg, #1b3a1f 0%, #0e2413 100%);
-            border-bottom: 1px solid rgba(0,0,0,0.6);
-            position: relative;
-        }
-        .grass-strip::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: repeating-linear-gradient(90deg,
-                rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 8px,
-                transparent 8px, transparent 16px);
-        }
-
-        /* Racing surface (asphalt) */
-        .track-inner {
-            position: relative;
-            padding: 8px 0 0 0;
-            background:
-                linear-gradient(180deg,
-                    #2a2a30 0%, #1e1e24 12%,
-                    #1a1a20 50%,
-                    #1e1e24 88%, #2a2a30 100%);
-        }
-
-        /* Red/white curbs */
-        .curb {
-            height: 6px;
-            background: repeating-linear-gradient(90deg,
-                #dc2626 0px, #dc2626 10px,
-                #ffffff 10px, #ffffff 20px);
-            box-shadow: inset 0 -1px 0 rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.15);
-            position: relative;
-        }
-        .curb::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, transparent 60%, rgba(0,0,0,0.3) 100%);
-        }
-
-        /* Bottom asphalt verge with texture */
-        .bottom-track {
-            height: 12px;
-            background:
-                repeating-linear-gradient(90deg,
-                    rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 2px,
-                    transparent 2px, transparent 6px),
-                linear-gradient(180deg, #1e1e24 0%, #101014 100%);
-            border-top: 1px solid rgba(0,0,0,0.5);
-        }
-
-        /* Lane rows */
-        .race-lane {
-            position: relative;
-            height: 50px;
-            border-bottom: 1px dashed rgba(255,255,255,0.05);
-            overflow: visible;
-        }
-        .race-lane:last-child { border-bottom: none; }
-        .race-lane.leading {
-            background: linear-gradient(90deg, transparent 0%, rgba(0,255,136,0.05) 60%, rgba(0,255,136,0.10) 100%);
-        }
-
-        /* Lane number plate */
-        .lane-number {
-            position: absolute;
-            left: 6px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 26px;
-            height: 26px;
-            border-radius: 7px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 11px;
-            font-weight: 800;
-            z-index: 5;
-            border: 1.5px solid;
-            font-variant-numeric: tabular-nums;
-            box-shadow: inset 0 0 6px rgba(0,0,0,0.35);
-        }
-
-        /* Team colour bar */
-        .team-bar {
-            position: absolute;
-            left: 36px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 4px;
-            height: 24px;
-            border-radius: 2px;
-            opacity: .85;
-        }
-
-        /* Lane name */
-        .lane-name {
-            position: absolute;
-            left: 46px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 10px;
-            font-weight: 700;
-            color: rgba(255,255,255,0.32);
-            letter-spacing: .02em;
-            z-index: 4;
-            pointer-events: none;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 82px;
-        }
-
-        /* Car container */
-        .car {
-            position: absolute;
-            left: 0;
-            top: 50%;
-            width: 62px;
-            height: 34px;
-            transform: translateY(-50%);
-            z-index: 7;
-            will-change: left, transform;
-            pointer-events: none;
-        }
-
-        /* Engine vibration */
-        .car.racing {
-            animation: car-vibrate 0.12s infinite linear;
-        }
-        @keyframes car-vibrate {
-            0%, 100% { transform: translateY(-50%); }
-            50%      { transform: translateY(calc(-50% - 1px)); }
-        }
-
-        .car svg {
-            width: 100%;
-            height: 100%;
-            filter: drop-shadow(0 3px 5px rgba(0,0,0,0.75));
-        }
-
-        /* Speed lines */
-        .speed-line {
-            position: absolute;
-            top: 55%;
-            height: 2px;
-            border-radius: 2px;
-            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.55) 100%);
-            pointer-events: none;
-            z-index: 6;
-            opacity: 0.9;
-            animation: speedStreak .55s ease-out forwards;
-        }
-        @keyframes speedStreak {
-            0%   { transform: translateX(0) scaleX(1); opacity: 0.9; width: 30px; }
-            100% { transform: translateX(-55px) scaleX(1.6); opacity: 0; width: 30px; }
-        }
-
-        /* Exhaust puff */
-        .exhaust {
-            position: absolute;
-            top: 60%;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(200,200,210,0.5) 0%, rgba(160,160,180,0.15) 50%, rgba(160,160,180,0) 75%);
-            pointer-events: none;
-            z-index: 5;
-            animation: exhaustFade .7s ease-out forwards;
-        }
-        @keyframes exhaustFade {
-            0%   { transform: scale(0.5) translateX(0);   opacity: 0.75; }
-            100% { transform: scale(2.4) translateX(-28px); opacity: 0; }
-        }
-
-        /* Finish line — checkered */
-        .finish-line {
-            position: absolute;
-            top: 34px;
-            bottom: 18px;
-            right: 14px;
-            width: 6px;
-            background-image:
-                repeating-linear-gradient(0deg,
-                    #ffffff 0px, #ffffff 6px,
-                    #0a0a12 6px, #0a0a12 12px),
-                repeating-linear-gradient(90deg,
-                    #ffffff 0px, #ffffff 3px,
-                    #0a0a12 3px, #0a0a12 6px);
-            z-index: 3;
-            border-radius: 2px;
-            box-shadow: 0 0 14px rgba(255,255,255,0.55), inset 0 0 4px rgba(0,0,0,0.6);
-        }
-
-        /* Chequered flag post */
-        .finish-post {
-            position: absolute;
-            top: 6px;
-            right: 8px;
-            z-index: 8;
-            font-size: 20px;
-            filter: drop-shadow(0 3px 4px rgba(0,0,0,0.5));
-            animation: flagWave 1.6s infinite ease-in-out;
-        }
-        @keyframes flagWave {
-            0%, 100% { transform: rotate(-3deg); }
-            50%      { transform: rotate(4deg); }
-        }
-
-        /* Winner overlay */
-        .winner-flash {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(10,10,18,0.86);
-            backdrop-filter: blur(8px);
-            z-index: 30;
-            border-radius: 20px;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity .3s ease;
-        }
-        .winner-flash.show {
-            opacity: 1;
-            pointer-events: auto;
-        }
-        .winner-flash .inner {
-            text-align: center;
-            animation: popIn .45s cubic-bezier(.2,.9,.3,1.4);
-            padding: 20px;
-        }
-        @keyframes popIn {
-            from { transform: scale(.82); opacity: 0; }
-            to   { transform: scale(1);  opacity: 1; }
-        }
-
-        .winner-car-svg {
-            width: 150px;
-            height: 82px;
-            margin: 0 auto 12px;
-            filter: drop-shadow(0 8px 22px rgba(0,255,136,0.4));
-            animation: winnerBounce .7s ease-in-out infinite alternate;
-        }
-        @keyframes winnerBounce {
-            from { transform: translateY(0); }
-            to   { transform: translateY(-6px); }
-        }
-
-        /* ============================================
-           RUNNERS TABLE
-           ============================================ */
-        .runner-row {
+        .match-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 12px;
-            padding: 11px 14px;
+            padding: 16px 14px;
             border-bottom: 1px solid rgba(255,255,255,0.045);
             transition: background .25s ease;
-            cursor: pointer;
         }
-        .runner-row:last-child { border-bottom: none; }
-        .runner-row:hover { background: rgba(255,255,255,0.025); }
-        .runner-row.selected {
-            background: rgba(0,85,255,0.07);
-            border-left: 3px solid #0055ff;
-        }
+        .match-row:last-child { border-bottom: none; }
+        .match-row:hover { background: rgba(255,255,255,0.025); }
 
-        .runner-info {
+        .match-row.playing {
+            background: rgba(0,85,255,0.06);
+            border-left: 2px solid #0055ff;
+        }
+        .match-row.finished { opacity: 0.75; }
+
+        /* Team block: badge + name */
+        .team-block {
             display: flex;
             align-items: center;
             gap: 10px;
             min-width: 0;
             flex: 1;
         }
+        .team-block.away {
+            flex-direction: row-reverse;
+            text-align: right;
+        }
 
-        .runner-num {
-            width: 28px;
-            height: 28px;
-            border-radius: 8px;
+        .team-badge-v2 {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 12px;
-            font-weight: 800;
+            font-size: 13px;
+            font-weight: 900;
             flex-shrink: 0;
-            border: 1.5px solid;
-            font-variant-numeric: tabular-nums;
+            border: 2px solid;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.4), 0 4px 10px rgba(0,0,0,0.4);
+        }
+        .team-badge-v2::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 55%);
+            pointer-events: none;
         }
 
-        .runner-meta { min-width: 0; flex: 1; }
-        .runner-name {
+        .team-name-v2 {
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        .team-name-v2 .full-name {
             font-size: 13px;
             font-weight: 700;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
-        .runner-sub {
+        .team-name-v2 .sub {
             font-size: 10px;
             color: rgba(255,255,255,0.35);
             font-weight: 500;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .runner-form {
-            font-family: 'SF Mono', Menlo, monospace;
-            font-size: 10px;
+            text-transform: uppercase;
             letter-spacing: .05em;
-            color: rgba(255,255,255,0.4);
-            flex-shrink: 0;
-            display: none;
         }
-        @media (min-width: 640px) { .runner-form { display: block; } }
 
-        .runner-odds {
-            font-size: 15px;
-            font-weight: 800;
-            color: #4dffa8;
-            font-variant-numeric: tabular-nums;
+        /* Centre score block */
+        .score-block {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
             flex-shrink: 0;
-            min-width: 54px;
-            text-align: right;
+            min-width: 108px;
         }
+
+        .score-line {
+            font-variant-numeric: tabular-nums;
+            font-weight: 900;
+            font-size: 20px;
+            letter-spacing: .02em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .score-line .num {
+            padding: 3px 8px;
+            border-radius: 6px;
+            min-width: 32px;
+            text-align: center;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.06);
+            color: white;
+        }
+        .score-line .num.leading {
+            color: #6bffb0;
+            border-color: rgba(0,224,122,0.35);
+            background: rgba(0,224,122,0.10);
+        }
+
+        .score-line .dash {
+            color: rgba(255,255,255,0.25);
+            font-size: 14px;
+        }
+
+        .quarter-chip {
+            font-size: 10px;
+            font-weight: 800;
+            padding: 2px 9px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.05);
+            color: rgba(255,255,255,0.55);
+            letter-spacing: .06em;
+            text-transform: uppercase;
+        }
+        .quarter-chip.live {
+            background: rgba(255,0,68,0.13);
+            color: #ff8098;
+            animation: pulseChip 1.4s infinite;
+        }
+        .quarter-chip.done {
+            background: rgba(255,255,255,0.03);
+            color: rgba(255,255,255,0.35);
+        }
+        @keyframes pulseChip {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .55; }
+        }
+
+        /* Goal flash */
+        .goal-flash {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 12px;
+            font-weight: 900;
+            color: #6bffb0;
+            letter-spacing: .04em;
+            pointer-events: none;
+            animation: goalPop 1s ease-out forwards;
+            z-index: 5;
+            text-shadow: 0 0 12px rgba(0,255,136,0.5);
+        }
+        .goal-flash.left  { left: 44px; }
+        .goal-flash.right { right: 44px; }
+        @keyframes goalPop {
+            0%   { opacity: 0; transform: translateY(-50%) scale(0.6); }
+            25%  { opacity: 1; transform: translateY(-50%) scale(1.15); }
+            75%  { opacity: 1; transform: translateY(-70%) scale(1); }
+            100% { opacity: 0; transform: translateY(-110%) scale(1); }
+        }
+
+        /* Odds buttons */
+        .odds-grid {
+            display: flex;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+        .odds-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 9px;
+            padding: 8px 12px;
+            min-width: 58px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 700;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-variant-numeric: tabular-nums;
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            line-height: 1.15;
+        }
+        .odds-btn:hover:not(:disabled) {
+            background: #0055ff;
+            border-color: #0055ff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(0,85,255,0.35);
+        }
+        .odds-btn.selected {
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            border-color: transparent;
+            box-shadow: 0 6px 20px rgba(0,85,255,0.45);
+        }
+        .odds-btn:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
+        .odds-btn small {
+            font-size: 9px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.5);
+            text-transform: uppercase;
+            letter-spacing: .06em;
+        }
+        .odds-btn.selected small { color: rgba(255,255,255,0.85); }
 
         /* Bet slip */
         .bet-slip-item {
@@ -645,18 +461,33 @@
         }
         .quick-chip:hover { background: rgba(255,255,255,0.12); color: white; }
 
-        .position-badge {
-            font-size: 10px;
-            font-weight: 800;
-            padding: 2px 7px;
-            border-radius: 6px;
-            background: rgba(255,255,255,0.06);
-            color: rgba(255,255,255,0.5);
-            font-variant-numeric: tabular-nums;
+        /* Result flash overlay */
+        .result-flash {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(10,10,18,0.86);
+            backdrop-filter: blur(8px);
+            z-index: 20;
+            border-radius: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .3s ease;
         }
-        .position-badge.gold   { background: rgba(255,204,0,0.15);  color: #ffd93d; }
-        .position-badge.silver { background: rgba(200,200,210,0.13); color: #d0d0d8; }
-        .position-badge.bronze { background: rgba(205,127,50,0.15);  color: #e79a52; }
+        .result-flash.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .result-flash .inner {
+            text-align: center;
+            animation: popIn .4s cubic-bezier(.2,.9,.3,1.4);
+        }
+        @keyframes popIn {
+            from { transform: scale(.85); opacity: 0; }
+            to   { transform: scale(1);  opacity: 1; }
+        }
 
         /* Toasts */
         .toast {
@@ -682,66 +513,71 @@
         .toast-err { background: rgba(255,0,68,0.13); color: #ff97ab; box-shadow: 0 10px 36px rgba(255,0,68,0.18); }
         .toast-warn{ background: rgba(255,204,0,0.12); color: #ffe07d; box-shadow: 0 10px 36px rgba(255,204,0,0.16); }
 
-        /* Info chips */
-        .info-chip {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            padding: 4px 10px;
+        /* Court mini-view inside each match (only visible while live) */
+        .mini-court {
+            display: none;
+            margin-top: 10px;
+            padding: 8px 10px;
+            border-radius: 10px;
+            background: rgba(0,0,0,0.35);
+            border: 1px solid rgba(255,255,255,0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        .match-row.playing .mini-court { display: block; }
+
+        .mini-court-track {
+            position: relative;
+            height: 6px;
             border-radius: 999px;
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: .04em;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.07);
-            color: rgba(255,255,255,0.55);
+            background: linear-gradient(90deg,
+                rgba(59,130,246,0.35) 0%,
+                rgba(255,255,255,0.10) 50%,
+                rgba(239,68,68,0.35) 100%);
+            overflow: visible;
         }
-        .info-chip strong { color: #fff; }
-
-        /* Countdown lights */
-        .countdown-lights {
+        .mini-court-track::before {
+            content: '';
             position: absolute;
-            top: 8px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 6px;
-            z-index: 12;
-            padding: 4px 10px;
-            border-radius: 12px;
-            background: rgba(0,0,0,0.55);
-            border: 1px solid rgba(255,255,255,0.08);
-            opacity: 0;
-            transition: opacity .3s ease;
-            pointer-events: none;
+            left: 50%; top: -3px;
+            width: 2px; height: 12px;
+            background: rgba(255,255,255,0.35);
+            border-radius: 1px;
         }
-        .countdown-lights.show { opacity: 1; }
-        .cd-light {
-            width: 8px;
-            height: 8px;
+        .mini-court-ball {
+            position: absolute;
+            top: 50%;
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
-            background: #3a0a10;
-            box-shadow: inset 0 0 3px rgba(0,0,0,0.6);
-            transition: background .25s ease, box-shadow .25s ease;
+            background: radial-gradient(circle at 30% 30%, #fbbf24 0%, #d97706 60%, #92400e 100%);
+            transform: translate(-50%, -50%);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.5), 0 0 10px rgba(251,191,36,0.4);
+            transition: left 0.55s cubic-bezier(.4,.1,.4,1);
+            z-index: 3;
         }
-        .cd-light.on {
-            background: #ff1e3c;
-            box-shadow: 0 0 10px #ff1e3c, inset 0 0 3px rgba(255,255,255,0.5);
-        }
-        .cd-light.green {
-            background: #22ff88;
-            box-shadow: 0 0 12px #22ff88, inset 0 0 3px rgba(255,255,255,0.6);
+        .mini-court-ball::after {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            border-radius: 50%;
+            border: 1px dashed rgba(255,255,255,0.4);
+            opacity: 0.6;
         }
 
-        @media (max-width: 640px) {
-            .race-lane { height: 44px; }
-            .lane-name { font-size: 9px; max-width: 60px; }
-            .car { width: 50px; height: 28px; }
-            .finish-line { right: 10px; width: 5px; }
-            .crowd-strip { height: 22px; }
-            .crowd-strip::after { font-size: 7px; }
-            .ad-strip { height: 14px; }
-            .ad-strip::after { font-size: 7px; }
+        @media (max-width: 768px) {
+            .match-row { flex-wrap: wrap; padding: 12px 10px; }
+            .odds-grid { width: 100%; justify-content: stretch; margin-top: 4px; }
+            .odds-btn { flex: 1; min-width: 0; padding: 8px 6px; }
+            .team-badge-v2 { width: 32px; height: 32px; font-size: 11px; }
+            .team-name-v2 .full-name { font-size: 12px; }
+            .team-name-v2 .sub { font-size: 9px; }
+            .score-line { font-size: 17px; }
+            .score-line .num { min-width: 28px; }
+        }
+        @media (max-width: 420px) {
+            .team-name-v2 .full-name { font-size: 11px; }
+            .score-line { font-size: 15px; }
         }
     </style>
 </head>
@@ -910,10 +746,10 @@
 
         <div class="text-center mb-6 sm:mb-8">
             <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-3">
-                🏎️ <span class="text-gradient">Virtual Car Racing</span>
+                🏐 <span class="text-gradient">Virtual Netball</span>
             </h1>
             <p class="text-sm sm:text-lg text-white/50 max-w-xl mx-auto">
-                Ten cars. One finish line. Pick your winner before the lights go green.
+                Fast simulated netball matches every minute — bet live, cash out big.
             </p>
         </div>
 
@@ -924,17 +760,15 @@
                     <span class="live-dot"></span>LIVE
                 </span>
                 <span class="text-sm text-white/55 font-medium">
-                    Race <strong id="raceNum" class="text-white">#0001</strong>
+                    Round <strong id="roundNum" class="text-white">#0001</strong>
                 </span>
-                <span class="info-chip">🏁 <strong id="trackName">Monaco GP</strong></span>
-                <span class="info-chip hidden sm:inline-flex">🔧 <strong id="lapCount">3 Laps</strong></span>
-                <span class="info-chip hidden md:inline-flex">🏆 <strong>Purse $10,000</strong></span>
+                <span class="text-xs text-white/30 hidden sm:inline">• 8 matches per round</span>
             </div>
 
             <div class="flex items-center gap-4">
                 <div class="text-right">
-                    <div class="text-[10px] uppercase tracking-wider text-white/35 font-semibold">Race starts in</div>
-                    <div id="roundTimer" class="round-timer text-2xl text-gradient">00:60</div>
+                    <div class="text-[10px] uppercase tracking-wider text-white/35 font-semibold">Betting closes in</div>
+                    <div id="roundTimer" class="round-timer text-2xl text-gradient">01:00</div>
                 </div>
             </div>
 
@@ -945,67 +779,31 @@
 
         <div class="grid lg:grid-cols-3 gap-5">
 
-            <!-- ============ CIRCUIT + RUNNERS ============ -->
-            <div class="lg:col-span-2 space-y-5">
+            <!-- ============ MATCHES LIST ============ -->
+            <div class="lg:col-span-2">
+                <div class="glass rounded-3xl overflow-hidden relative">
 
-                <!-- Live Track -->
-                <div class="glass rounded-3xl p-3 sm:p-4">
-                    <div class="flex justify-between items-center mb-3 px-1">
-                        <h2 class="text-sm font-bold tracking-wide flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_10px_#00ff88]"></span>
-                            LIVE CIRCUIT
-                        </h2>
-                        <span id="raceStatus" class="text-[10px] uppercase tracking-wider font-bold text-white/40">Waiting…</span>
-                    </div>
-
-                    <div class="stadium">
-                        <div class="crowd-strip"></div>
-                        <div class="ad-strip"></div>
-                        <div class="grass-strip"></div>
-
-                        <!-- F1 start lights -->
-                        <div id="countdownLights" class="countdown-lights">
-                            <div class="cd-light" data-cd="1"></div>
-                            <div class="cd-light" data-cd="2"></div>
-                            <div class="cd-light" data-cd="3"></div>
-                            <div class="cd-light" data-cd="4"></div>
-                            <div class="cd-light" data-cd="5"></div>
-                        </div>
-
-                        <div class="track-inner" id="trackContainer">
-                            <!-- lanes injected by JS -->
-                        </div>
-
-                        <div class="curb"></div>
-                        <div class="bottom-track"></div>
-
-                        <div class="finish-line"></div>
-                        <div class="finish-post">🏁</div>
-
-                        <!-- Winner overlay -->
-                        <div id="winnerFlash" class="winner-flash">
-                            <div class="inner">
-                                <div id="winnerCarSlot"></div>
-                                <div id="winnerTitle" class="text-2xl font-bold mb-1">Photo Finish!</div>
-                                <div id="winnerSub" class="text-sm text-white/50">Preparing next race…</div>
-                            </div>
+                    <!-- Result flash overlay -->
+                    <div id="resultFlash" class="result-flash">
+                        <div class="inner">
+                            <div class="text-5xl mb-2">🏐</div>
+                            <div id="resultTitle" class="text-2xl font-bold mb-1">Round Complete</div>
+                            <div id="resultSub" class="text-sm text-white/50">Preparing next round…</div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Runner Table -->
-                <div class="glass rounded-3xl overflow-hidden">
+                    <!-- Table header -->
                     <div class="flex items-center justify-between px-4 py-3 border-b border-white/5 bg-white/[0.02]">
                         <div class="flex items-center gap-2">
-                            <h2 class="text-sm font-bold tracking-wide">DRIVERS &amp; ODDS</h2>
-                            <span id="runnersStatus" class="text-[10px] uppercase tracking-wider text-white/35 font-semibold">Betting open</span>
+                            <h2 class="text-sm font-bold tracking-wide">MATCHES</h2>
+                            <span id="matchesStatus" class="text-[10px] uppercase tracking-wider text-white/35 font-semibold">Waiting…</span>
                         </div>
-                        <div class="text-[10px] uppercase tracking-wider text-white/35 font-semibold">Win Odds</div>
+                        <div class="text-[10px] uppercase tracking-wider text-white/35 font-semibold">1 • X • 2</div>
                     </div>
 
-                    <div id="runnersContainer"></div>
-                </div>
+                    <div id="matchesContainer"></div>
 
+                </div>
             </div>
 
             <!-- ============ BET SLIP ============ -->
@@ -1020,16 +818,16 @@
                     </div>
 
                     <div id="emptySlip" class="text-center py-10 text-white/30">
-                        <div class="text-3xl mb-2">🎫</div>
-                        <p class="text-sm">No driver picked</p>
-                        <p class="text-xs mt-1">Tap a car to back it</p>
+                        <div class="text-3xl mb-2">📋</div>
+                        <p class="text-sm">No selections yet</p>
+                        <p class="text-xs mt-1">Tap any odds to add</p>
                     </div>
 
                     <div id="slipItems" class="space-y-0 max-h-72 overflow-y-auto"></div>
 
                     <div id="slipFooter" class="hidden mt-4 pt-4 border-t border-white/10">
                         <div class="flex justify-between text-sm font-semibold mb-3">
-                            <span class="text-white/50">Win Odds</span>
+                            <span class="text-white/50">Total Odds</span>
                             <span id="totalOdds" class="text-gradient font-extrabold">1.00</span>
                         </div>
 
@@ -1050,21 +848,21 @@
                         </div>
 
                         <button id="placeBetBtn" class="btn-primary w-full py-3">Place Bet</button>
-                        <button id="clearSlipBtn" class="w-full mt-2 text-xs text-white/40 hover:text-white/70 transition-colors py-1.5">Clear</button>
+                        <button id="clearSlipBtn" class="w-full mt-2 text-xs text-white/40 hover:text-white/70 transition-colors py-1.5">Clear all</button>
                     </div>
                 </div>
             </div>
 
         </div>
 
-        <!-- Recent Winners -->
+        <!-- Recent Results -->
         <div class="glass rounded-3xl p-5 mt-6">
             <div class="flex items-center justify-between mb-4">
-                <h2 class="text-base font-bold">🏆 Recent Winners</h2>
-                <span class="text-xs text-white/30">Last 6 races</span>
+                <h2 class="text-base font-bold">📊 Recent Results</h2>
+                <span class="text-xs text-white/30">Last 5 rounds</span>
             </div>
             <div id="historyContainer" class="flex flex-wrap gap-2">
-                <span class="text-xs text-white/25">No races completed yet…</span>
+                <span class="text-xs text-white/25">No rounds completed yet…</span>
             </div>
         </div>
 
@@ -1123,7 +921,7 @@
 </footer>
 
 <!-- ==========================================
-     CAR RACING ENGINE
+     VIRTUAL NETBALL ENGINE
      ========================================== -->
 <script>
 (function () {
@@ -1150,22 +948,15 @@
     /* ============================================================
        DOM
        ============================================================ */
-    const trackContainer   = document.getElementById('trackContainer');
-    const runnersContainer = document.getElementById('runnersContainer');
-    const raceNumEl        = document.getElementById('raceNum');
+    const matchesContainer = document.getElementById('matchesContainer');
+    const matchesStatus    = document.getElementById('matchesStatus');
+    const roundNumEl       = document.getElementById('roundNum');
     const roundTimerEl     = document.getElementById('roundTimer');
     const progressFill     = document.getElementById('progressFill');
-    const raceStatus       = document.getElementById('raceStatus');
-    const runnersStatus    = document.getElementById('runnersStatus');
-    const winnerFlash      = document.getElementById('winnerFlash');
-    const winnerTitle      = document.getElementById('winnerTitle');
-    const winnerSub        = document.getElementById('winnerSub');
-    const winnerCarSlot    = document.getElementById('winnerCarSlot');
+    const resultFlash      = document.getElementById('resultFlash');
+    const resultTitle      = document.getElementById('resultTitle');
+    const resultSub        = document.getElementById('resultSub');
     const historyContainer = document.getElementById('historyContainer');
-    const trackNameEl      = document.getElementById('trackName');
-    const lapCountEl       = document.getElementById('lapCount');
-    const countdownLights  = document.getElementById('countdownLights');
-    const cdLightEls       = countdownLights.querySelectorAll('.cd-light');
 
     const slipItems        = document.getElementById('slipItems');
     const emptySlip        = document.getElementById('emptySlip');
@@ -1178,162 +969,44 @@
     const clearSlipBtn     = document.getElementById('clearSlipBtn');
 
     /* ============================================================
-       CAR SVG FACTORY — side-view F1-style racing car
+       DATA POOLS — international netball nations
        ============================================================ */
-    function carSVG(mainColor, darkColor, accentColor) {
-        return `
-        <svg viewBox="0 0 120 60" preserveAspectRatio="xMidYMid meet">
-            <!-- Exhaust glow -->
-            <ellipse cx="9" cy="36" rx="6" ry="3" fill="#ff9d00" opacity="0.35"/>
-            <ellipse cx="6" cy="36" rx="4" ry="2" fill="#ffd166" opacity="0.6"/>
-
-            <!-- Rear wing (top) -->
-            <path d="M 8 20 L 32 20 L 32 24 L 8 24 Z" fill="${darkColor}"/>
-            <path d="M 10 22 L 30 22 L 30 23 L 10 23 Z" fill="${accentColor}" opacity="0.9"/>
-            <path d="M 14 24 L 16 30 L 18 30 L 16 24 Z" fill="${darkColor}"/>
-
-            <!-- Front wing (nose) -->
-            <path d="M 96 34 L 112 34 L 112 38 L 96 38 Z" fill="${darkColor}"/>
-            <path d="M 100 33 L 108 33 L 108 35 L 100 35 Z" fill="${accentColor}" opacity="0.85"/>
-
-            <!-- Rear tyre -->
-            <circle cx="26" cy="40" r="11" fill="#0f0f15"/>
-            <circle cx="26" cy="40" r="9.5" fill="#1a1a22"/>
-            <circle cx="26" cy="40" r="6" fill="${darkColor}"/>
-            <circle cx="26" cy="40" r="3" fill="#2a2a33"/>
-            <circle cx="26" cy="40" r="1.2" fill="#4a4a55"/>
-            <!-- Tyre highlight -->
-            <path d="M 17 40 A 9.5 9.5 0 0 1 26 30.5" stroke="rgba(255,255,255,0.18)" stroke-width="1.2" fill="none"/>
-
-            <!-- Front tyre -->
-            <circle cx="94" cy="40" r="11" fill="#0f0f15"/>
-            <circle cx="94" cy="40" r="9.5" fill="#1a1a22"/>
-            <circle cx="94" cy="40" r="6" fill="${darkColor}"/>
-            <circle cx="94" cy="40" r="3" fill="#2a2a33"/>
-            <circle cx="94" cy="40" r="1.2" fill="#4a4a55"/>
-            <path d="M 85 40 A 9.5 9.5 0 0 1 94 30.5" stroke="rgba(255,255,255,0.18)" stroke-width="1.2" fill="none"/>
-
-            <!-- Main body / chassis -->
-            <path d="M 14 30
-                     L 22 26
-                     L 40 24
-                     L 62 22
-                     L 86 24
-                     L 100 28
-                     L 108 32
-                     L 108 38
-                     L 96 40
-                     L 88 40
-                     L 84 40
-                     L 36 40
-                     L 30 40
-                     L 22 40
-                     L 14 40
-                     Z"
-                  fill="${mainColor}"/>
-
-            <!-- Body darker under-shadow -->
-            <path d="M 14 34
-                     L 24 34
-                     L 34 40
-                     L 84 40
-                     L 96 40
-                     L 108 38
-                     L 108 40
-                     L 96 42
-                     L 22 42
-                     Z"
-                  fill="${darkColor}" opacity="0.75"/>
-
-            <!-- Nose cone taper -->
-            <path d="M 100 28 L 110 30 L 112 33 L 108 34 L 100 32 Z" fill="${accentColor}"/>
-
-            <!-- Cockpit canopy -->
-            <path d="M 62 22
-                     Q 68 14 76 15
-                     Q 82 16 84 22
-                     Z"
-                  fill="#0f1018"/>
-            <path d="M 64 22
-                     Q 69 16 75 17
-                     Q 80 18 82 22
-                     Z"
-                  fill="#3b8bff" opacity="0.55"/>
-
-            <!-- Halo / roll hoop -->
-            <path d="M 60 22 L 58 17 L 62 17 L 63 22 Z" fill="#1a1a22"/>
-
-            <!-- Driver helmet -->
-            <circle cx="70" cy="19" r="3" fill="${accentColor}"/>
-            <circle cx="70" cy="19" r="3" fill="rgba(255,255,255,0.15)"/>
-            <rect x="67.5" y="18" width="5" height="1" fill="rgba(0,0,0,0.5)"/>
-
-            <!-- Sidepod / number plate -->
-            <path d="M 44 30 L 58 28 L 58 34 L 44 34 Z" fill="${accentColor}" opacity="0.9"/>
-            <text x="51" y="33" font-size="6"
-                  font-family="Inter, sans-serif"
-                  font-weight="900"
-                  fill="${mainColor === '#ffffff' || mainColor === '#e5e7eb' ? '#111' : '#fff'}"
-                  text-anchor="middle">01</text>
-
-            <!-- Livery stripes -->
-            <path d="M 16 32 L 20 32 L 24 30 L 22 32 L 20 34 L 16 34 Z" fill="${accentColor}" opacity="0.85"/>
-            <path d="M 88 30 L 100 30 L 104 32 L 100 32 L 88 32 Z" fill="${accentColor}" opacity="0.85"/>
-
-            <!-- Body highlight -->
-            <path d="M 30 26 L 60 23 L 60 25 L 30 28 Z" fill="#ffffff" opacity="0.14"/>
-
-            <!-- Windshield edge -->
-            <path d="M 60 22 Q 68 15 78 16"
-                  stroke="rgba(255,255,255,0.4)" stroke-width="0.7" fill="none"/>
-        </svg>`;
-    }
-
-    /* ============================================================
-       DATA POOLS
-       ============================================================ */
-    const DRIVERS = [
-        'M. Verstappen', 'L. Hamilton', 'C. Leclerc', 'L. Norris',
-        'C. Sainz', 'G. Russell', 'S. Perez', 'F. Alonso',
-        'E. Ocon', 'P. Gasly', 'V. Bottas', 'Y. Tsunoda'
-    ];
-
     const TEAMS = [
-        { name: 'Red Bull',  color: '#1e40af', dark: '#0a1a4d', accent: '#facc15', bg: 'rgba(30,64,175,.22)' },
-        { name: 'Ferrari',   color: '#dc2626', dark: '#7a1010', accent: '#facc15', bg: 'rgba(220,38,38,.22)' },
-        { name: 'Mercedes',  color: '#14b8a6', dark: '#0a5b52', accent: '#e5e7eb', bg: 'rgba(20,184,166,.22)' },
-        { name: 'McLaren',   color: '#ea580c', dark: '#7a2d05', accent: '#0ea5e9', bg: 'rgba(234,88,12,.22)' },
-        { name: 'Aston M.',  color: '#15803d', dark: '#0a3d1e', accent: '#facc15', bg: 'rgba(21,128,61,.22)' },
-        { name: 'Alpine',    color: '#2563eb', dark: '#0f2f80', accent: '#f43f5e', bg: 'rgba(37,99,235,.22)' },
-        { name: 'Williams',  color: '#0284c7', dark: '#0a3d5c', accent: '#e5e7eb', bg: 'rgba(2,132,199,.22)' },
-        { name: 'Haas',      color: '#e5e7eb', dark: '#4a4a55', accent: '#dc2626', bg: 'rgba(229,231,235,.18)' },
-        { name: 'Sauber',    color: '#16a34a', dark: '#0a4a1e', accent: '#ffffff', bg: 'rgba(22,163,74,.22)' },
-        { name: 'RB Racing', color: '#7c3aed', dark: '#3b1470', accent: '#facc15', bg: 'rgba(124,58,237,.22)' }
+        { name: 'Australia',    short: 'AUS', color: '#facc15', bg: 'rgba(250,204,21,.18)' },
+        { name: 'New Zealand',  short: 'NZL', color: '#111827', bg: 'rgba(255,255,255,.10)' },
+        { name: 'England',      short: 'ENG', color: '#dc2626', bg: 'rgba(220,38,38,.18)' },
+        { name: 'Jamaica',      short: 'JAM', color: '#fde047', bg: 'rgba(253,224,71,.18)' },
+        { name: 'South Africa', short: 'RSA', color: '#16a34a', bg: 'rgba(22,163,74,.18)' },
+        { name: 'Uganda',       short: 'UGA', color: '#facc15', bg: 'rgba(250,204,21,.16)' },
+        { name: 'Malawi',       short: 'MWI', color: '#dc2626', bg: 'rgba(220,38,38,.16)' },
+        { name: 'Wales',        short: 'WAL', color: '#ef4444', bg: 'rgba(239,68,68,.16)' },
+        { name: 'Scotland',     short: 'SCO', color: '#2563eb', bg: 'rgba(37,99,235,.18)' },
+        { name: 'N. Ireland',   short: 'NIR', color: '#16a34a', bg: 'rgba(22,163,74,.16)' },
+        { name: 'Trinidad',     short: 'TTO', color: '#dc2626', bg: 'rgba(220,38,38,.16)' },
+        { name: 'Fiji',         short: 'FIJ', color: '#0ea5e9', bg: 'rgba(14,165,233,.18)' },
+        { name: 'Barbados',     short: 'BAR', color: '#1e40af', bg: 'rgba(30,64,175,.18)' },
+        { name: 'Sri Lanka',    short: 'SRI', color: '#f59e0b', bg: 'rgba(245,158,11,.16)' },
+        { name: 'Singapore',    short: 'SGP', color: '#dc2626', bg: 'rgba(220,38,38,.16)' },
+        { name: 'Zimbabwe',     short: 'ZIM', color: '#16a34a', bg: 'rgba(22,163,74,.16)' }
     ];
 
-    const TRACKS = ['Monaco GP', 'Silverstone', 'Spa-Francorchamps', 'Monza', 'Suzuka', 'Interlagos'];
-
-    const NUM_RACERS = 8;
-    const ROUND_MS    = 58000;
-    const BETTING_MS  = 22000;
-    const RACE_MS     = 30000;
-    const RESULT_HOLD = 4200;
+    const NUM_MATCHES  = 8;
+    const ROUND_MS     = 60000;   // 1 minute per round
+    const BETTING_MS   = 22000;   // 22s betting window
+    const RACE_MS      = 30000;   // 30s playing window
+    const RESULT_HOLD  = 3800;
 
     /* ============================================================
        STATE
        ============================================================ */
-    let raceNumber   = 0;
-    let racers       = [];
-    let raceStartAt  = 0;
+    let roundNumber  = 0;
+    let matches      = [];
+    let roundStartAt = 0;
     let tickRAF      = null;
     let inResultHold = false;
     let selections   = [];
-    let raceHistory  = [];
-    let currentTrack = '';
-    let laneElements = {};
-    let finishOrder  = [];
-    let lastEffectAt = 0;
-    let lastLightAt  = -1;
+    let roundHistory = [];
+    let lastSimStep  = -1;
 
     /* ============================================================
        HELPERS
@@ -1341,202 +1014,216 @@
     function rand(min, max) { return Math.random() * (max - min) + min; }
     function randInt(min, max) { return Math.floor(rand(min, max + 1)); }
     function pick(arr) { return arr[randInt(0, arr.length - 1)]; }
-    function shuffle(arr) {
-        const a = [...arr];
-        for (let i = a.length - 1; i > 0; i--) {
-            const j = randInt(0, i);
-            [a[i], a[j]] = [a[j], a[i]];
+
+    function pickUniqueTeams(n) {
+        const pool = [...TEAMS];
+        const out = [];
+        for (let i = 0; i < n; i++) {
+            const idx = randInt(0, pool.length - 1);
+            out.push(pool.splice(idx, 1)[0]);
         }
-        return a;
+        return out;
     }
 
-    /* ============================================================
-       BUILD RACERS
-       ============================================================ */
-    function buildRacers() {
-        const drivers = shuffle(DRIVERS).slice(0, NUM_RACERS);
-        const teams   = shuffle(TEAMS).slice(0, NUM_RACERS);
-
+    function buildMatches() {
+        const teams = pickUniqueTeams(NUM_MATCHES * 2);
         const list = [];
 
-        for (let i = 0; i < NUM_RACERS; i++) {
-            const strength = rand(0.15, 0.95);
-            const prob     = 0.04 + strength * 0.20;
-            const form     = Array.from({ length: 5 }, () => randInt(1, 8)).join('-');
+        for (let i = 0; i < NUM_MATCHES; i++) {
+            const home = teams[i * 2];
+            const away = teams[i * 2 + 1];
+
+            const bias = rand(0.2, 0.8);
+
+            // Netball probabilities (no draw is possible in real netball, but we
+            // include X for betting markets — treat draw as rare)
+            let pHome = 0.35 + bias * 0.45;
+            let pDraw = 0.05;                      // rare, ~5%
+            let pAway = 1 - pHome - pDraw;
+            if (pAway < 0.08) { pAway = 0.08; pHome -= 0.05; }
+
+            const margin = 1.08;
+            const oddsHome = +(margin / pHome).toFixed(2);
+            const oddsDraw = +(margin / pDraw).toFixed(2);
+            const oddsAway = +(margin / pAway).toFixed(2);
 
             list.push({
-                id: 'c' + i + '_' + Date.now(),
-                number: i + 1,
-                driver: drivers[i],
-                team: teams[i],
-                form,
-                strength,
-                prob,
-                odds: 1,
-                progress: 0,
-                speedSeed: rand(0.85, 1.15),
-                finished: false,
-                finishPos: null
+                id: 'n' + i + '_' + Date.now(),
+                home, away,
+                pHome, pDraw, pAway,
+                oddsHome, oddsDraw, oddsAway,
+                scoreHome: 0,
+                scoreAway: 0,
+                quarter: 1,           // 1..4
+                quarterLabel: 'Q1',
+                status: 'upcoming',   // upcoming | live | finished
+                result: null,
+                ballPosition: 50      // 0..100 for mini court visual
             });
         }
-
-        const totalProb = list.reduce((a, r) => a + r.prob, 0);
-        const margin = 1.14;
-        list.forEach(r => {
-            const p = r.prob / totalProb;
-            r.odds = Math.max(1.15, +(margin / p).toFixed(2));
-        });
-
         return list;
     }
 
     /* ============================================================
-       RENDER TRACK LANES
+       RENDER MATCHES
        ============================================================ */
-    function renderTrack() {
-        trackContainer.innerHTML = '';
-        laneElements = {};
+    function renderMatches() {
+        matchesContainer.innerHTML = '';
 
-        racers.forEach(r => {
-            const lane = document.createElement('div');
-            lane.className = 'race-lane';
-            lane.dataset.rid = r.id;
-
-            lane.innerHTML = `
-                <div class="lane-number"
-                     style="background:${r.team.bg};color:${r.team.accent};border-color:${r.team.color}">
-                    ${r.number}
-                </div>
-                <div class="team-bar" style="background:${r.team.color}"></div>
-                <div class="lane-name">${r.team.name.toUpperCase()}</div>
-                <div class="car" id="car-${r.id}">
-                    ${carSVG(r.team.color, r.team.dark, r.team.accent)}
-                </div>
-            `;
-
-            trackContainer.appendChild(lane);
-            laneElements[r.id] = {
-                lane,
-                car: lane.querySelector('.car'),
-                isRacing: false
-            };
-        });
-
-        positionCars();
-    }
-
-    /* Move cars according to their progress */
-    function positionCars() {
-        racers.forEach(r => {
-            const el = laneElements[r.id];
-            if (!el) return;
-
-            const laneRect = el.lane.getBoundingClientRect();
-            const usableWidth = Math.max(60, laneRect.width - 95);
-
-            const leftPx = 36 + Math.max(0, Math.min(1, r.progress)) * usableWidth;
-            el.car.style.left = leftPx + 'px';
-
-            const shouldRace = r.progress > 0.001 && !r.finished;
-            if (shouldRace && !el.isRacing) {
-                el.car.classList.add('racing');
-                el.isRacing = true;
-            } else if (!shouldRace && el.isRacing) {
-                el.car.classList.remove('racing');
-                el.isRacing = false;
-            }
-        });
-    }
-
-    /* Speed streak behind a car */
-    function spawnSpeedLine(r) {
-        const el = laneElements[r.id];
-        if (!el) return;
-        const line = document.createElement('div');
-        line.className = 'speed-line';
-        line.style.left = (el.car.offsetLeft - 6) + 'px';
-        line.style.top  = '55%';
-        line.style.width = (18 + Math.random() * 18) + 'px';
-        el.lane.appendChild(line);
-        setTimeout(() => line.remove(), 600);
-    }
-
-    /* Exhaust puff */
-    function spawnExhaust(r) {
-        const el = laneElements[r.id];
-        if (!el) return;
-        const p = document.createElement('div');
-        p.className = 'exhaust';
-        p.style.left = (el.car.offsetLeft - 2) + 'px';
-        p.style.top  = '62%';
-        el.lane.appendChild(p);
-        setTimeout(() => p.remove(), 750);
-    }
-
-    /* ============================================================
-       RENDER RACERS TABLE
-       ============================================================ */
-    function renderRacersTable() {
-        runnersContainer.innerHTML = '';
-
-        const sorted = [...racers].sort((a, b) => a.odds - b.odds);
-
-        sorted.forEach((r, idx) => {
+        matches.forEach(m => {
             const row = document.createElement('div');
-            row.className = 'runner-row';
-            row.dataset.rid = r.id;
+            row.className = 'match-row' + (m.status === 'live' ? ' playing' : '') + (m.status === 'finished' ? ' finished' : '');
+            row.dataset.matchId = m.id;
 
-            const posBadge = idx === 0 ? '<span class="position-badge gold">FAV</span>'
-                          : idx === 1 ? '<span class="position-badge silver">2nd</span>'
-                          : idx === 2 ? '<span class="position-badge bronze">3rd</span>'
-                          : '';
+            // Determine which score is leading
+            const homeLeading = m.scoreHome > m.scoreAway;
+            const awayLeading = m.scoreAway > m.scoreHome;
+
+            const quarterLabel = m.status === 'finished' ? 'FT' : m.quarterLabel;
+            const quarterClass = m.status === 'live' ? 'quarter-chip live' : (m.status === 'finished' ? 'quarter-chip done' : 'quarter-chip');
 
             row.innerHTML = `
-                <div class="runner-info">
-                    <div class="runner-num"
-                         style="background:${r.team.bg};color:${r.team.accent};border-color:${r.team.color}">
-                        ${r.number}
-                    </div>
-                    <div class="runner-meta">
-                        <div class="runner-name flex items-center gap-2">
-                            <span>${r.driver}</span>
-                            ${posBadge}
+                <div class="flex items-center gap-3 flex-1 min-w-0">
+                    <div class="team-block">
+                        <div class="team-badge-v2"
+                             style="background:${m.home.bg};color:${m.home.color};border-color:${m.home.color}">
+                            ${m.home.short}
                         </div>
-                        <div class="runner-sub">${r.team.name}</div>
+                        <div class="team-name-v2">
+                            <span class="full-name">${m.home.name}</span>
+                            <span class="sub">Home</span>
+                        </div>
                     </div>
-                    <div class="runner-form">${r.form}</div>
-                </div>
-                <div class="runner-odds">${r.odds.toFixed(2)}</div>
-            `;
 
-            row.addEventListener('click', () => toggleSelection(r.id));
-            runnersContainer.appendChild(row);
+                    <div class="score-block">
+                        <div class="score-line">
+                            <span class="num ${homeLeading ? 'leading' : ''}">${m.scoreHome}</span>
+                            <span class="dash">–</span>
+                            <span class="num ${awayLeading ? 'leading' : ''}">${m.scoreAway}</span>
+                        </div>
+                        <span class="${quarterClass}">${quarterLabel}</span>
+                    </div>
+
+                    <div class="team-block away">
+                        <div class="team-badge-v2"
+                             style="background:${m.away.bg};color:${m.away.color};border-color:${m.away.color}">
+                            ${m.away.short}
+                        </div>
+                        <div class="team-name-v2" style="text-align:right">
+                            <span class="full-name">${m.away.name}</span>
+                            <span class="sub">Away</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="odds-grid">
+                    <button class="odds-btn" data-mid="${m.id}" data-pick="1" ${m.status !== 'upcoming' ? 'disabled' : ''}>
+                        <span>${m.oddsHome.toFixed(2)}</span><small>1</small>
+                    </button>
+                    <button class="odds-btn" data-mid="${m.id}" data-pick="X" ${m.status !== 'upcoming' ? 'disabled' : ''}>
+                        <span>${m.oddsDraw.toFixed(2)}</span><small>X</small>
+                    </button>
+                    <button class="odds-btn" data-mid="${m.id}" data-pick="2" ${m.status !== 'upcoming' ? 'disabled' : ''}>
+                        <span>${m.oddsAway.toFixed(2)}</span><small>2</small>
+                    </button>
+                </div>
+
+                <div class="mini-court" style="width:100%">
+                    <div class="mini-court-track">
+                        <div class="mini-court-ball" style="left:${m.ballPosition}%"></div>
+                    </div>
+                </div>
+            `;
+            matchesContainer.appendChild(row);
         });
+
+        applySelectedClass();
+
+        matchesContainer.querySelectorAll('.odds-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const mid  = btn.dataset.mid;
+                const pick = btn.dataset.pick;
+                toggleSelection(mid, pick);
+            });
+        });
+    }
+
+    /* Re-render just the score / quarter / ball for live matches */
+    function updateLiveRows() {
+        matches.forEach(m => {
+            const row = matchesContainer.querySelector('.match-row[data-match-id="' + m.id + '"]');
+            if (!row) return;
+
+            const nums = row.querySelectorAll('.score-line .num');
+            if (nums.length === 2) {
+                nums[0].textContent = m.scoreHome;
+                nums[1].textContent = m.scoreAway;
+                nums[0].classList.toggle('leading', m.scoreHome > m.scoreAway);
+                nums[1].classList.toggle('leading', m.scoreAway > m.scoreHome);
+            }
+
+            const chip = row.querySelector('.quarter-chip');
+            if (chip) chip.textContent = m.status === 'finished' ? 'FT' : m.quarterLabel;
+
+            const ball = row.querySelector('.mini-court-ball');
+            if (ball) ball.style.left = m.ballPosition + '%';
+        });
+    }
+
+    function applySelectedClass() {
+        matchesContainer.querySelectorAll('.odds-btn').forEach(btn => {
+            const mid  = btn.dataset.mid;
+            const pick = btn.dataset.pick;
+            const isSel = selections.some(s => s.mid === mid && s.pick === pick);
+            btn.classList.toggle('selected', isSel);
+        });
+    }
+
+    /* Goal flash animation */
+    function spawnGoalFlash(m, side) {
+        const row = matchesContainer.querySelector('.match-row[data-match-id="' + m.id + '"]');
+        if (!row) return;
+        const el = document.createElement('div');
+        el.className = 'goal-flash ' + (side === 'home' ? 'left' : 'right');
+        el.textContent = '+1 GOAL';
+        row.style.position = 'relative';
+        row.appendChild(el);
+        setTimeout(() => el.remove(), 1000);
     }
 
     /* ============================================================
        BET SLIP
        ============================================================ */
-    function toggleSelection(rid) {
-        if (inResultHold) { toast('Wait for the next race', 'warn'); return; }
+    function toggleSelection(mid, pick) {
+        const match = matches.find(m => m.id === mid);
+        if (!match) return;
 
-        const raceRunning = racers.some(r => r.progress > 0);
-        if (raceRunning) { toast('Race already started', 'warn'); return; }
+        if (match.status !== 'upcoming') {
+            toast('Betting closed for this match', 'warn');
+            return;
+        }
 
-        const racer = racers.find(r => r.id === rid);
-        if (!racer) return;
-
-        const idx = selections.findIndex(s => s.rid === rid);
+        const idx = selections.findIndex(s => s.mid === mid && s.pick === pick);
         if (idx > -1) {
             selections.splice(idx, 1);
         } else {
-            selections = [{
-                rid,
-                driver: racer.driver,
-                team: racer.team,
-                number: racer.number,
-                odds: racer.odds
-            }];
+            // Remove any other pick for same match
+            selections = selections.filter(s => s.mid !== mid);
+
+            const odds =
+                pick === '1' ? match.oddsHome :
+                pick === 'X' ? match.oddsDraw :
+                               match.oddsAway;
+
+            const label =
+                pick === '1' ? match.home.name + ' Win' :
+                pick === 'X' ? 'Draw' :
+                               match.away.name + ' Win';
+
+            selections.push({
+                mid, pick, odds, label,
+                fixture: match.home.short + ' vs ' + match.away.short
+            });
         }
 
         updateSlipUI();
@@ -1562,19 +1249,13 @@
             const div = document.createElement('div');
             div.className = 'bet-slip-item';
             div.innerHTML = `
-                <div class="flex items-center gap-3 min-w-0 flex-1">
-                    <div class="runner-num"
-                         style="background:${sel.team.bg};color:${sel.team.accent};border-color:${sel.team.color}">
-                        ${sel.number}
-                    </div>
-                    <div class="min-w-0 flex-1">
-                        <div class="font-semibold text-sm truncate">${sel.driver}</div>
-                        <div class="text-[10px] text-white/35">${sel.team.name} — To Win</div>
-                    </div>
+                <div class="min-w-0 flex-1">
+                    <div class="font-semibold text-sm truncate">${sel.label}</div>
+                    <div class="text-[11px] text-white/35 truncate">${sel.fixture}</div>
                 </div>
                 <div class="flex items-center gap-2 shrink-0">
-                    <span class="text-sm font-bold text-emerald-400">${sel.odds.toFixed(2)}</span>
-                    <span class="remove" data-idx="${idx}">✕</span>
+                    <span class="text-sm font-bold text-blue-400">${sel.odds.toFixed(2)}</span>
+                    <span class="remove" data-idx="${idx}" title="Remove">✕</span>
                 </div>
             `;
             slipItems.appendChild(div);
@@ -1589,21 +1270,18 @@
             });
         });
 
-        totalOddsEl.textContent = selections[0].odds.toFixed(2);
+        let total = 1;
+        selections.forEach(s => total *= s.odds);
+        totalOddsEl.textContent = total.toFixed(2);
+
         updatePotentialWin();
     }
 
     function updatePotentialWin() {
         const stake = parseFloat(stakeInput.value) || 0;
-        const odds  = selections[0] ? selections[0].odds : 1;
-        potentialWin.textContent = '$' + (stake * odds).toFixed(2);
-    }
-
-    function applySelectedClass() {
-        runnersContainer.querySelectorAll('.runner-row').forEach(row => {
-            const rid = row.dataset.rid;
-            row.classList.toggle('selected', selections.some(s => s.rid === rid));
-        });
+        let total = 1;
+        selections.forEach(s => total *= s.odds);
+        potentialWin.textContent = '$' + (stake * total).toFixed(2);
     }
 
     stakeInput.addEventListener('input', updatePotentialWin);
@@ -1632,7 +1310,7 @@
 
     placeBetBtn.addEventListener('click', () => {
         if (selections.length === 0) {
-            toast('Pick a driver first', 'err');
+            toast('Add at least one selection', 'err');
             return;
         }
         const stake = parseFloat(stakeInput.value);
@@ -1641,7 +1319,7 @@
             return;
         }
         if (inResultHold) {
-            toast('Wait for the next race', 'warn');
+            toast('Wait for the next round', 'warn');
             return;
         }
 
@@ -1649,98 +1327,43 @@
         placeBetBtn.textContent = 'Placing…';
 
         setTimeout(() => {
-            const sel = selections[0];
-            const win = (stake * sel.odds).toFixed(2);
-            toast(`✅ Bet placed • ${sel.driver} @ ${sel.odds.toFixed(2)} — Potential $${win}`, 'ok');
+            let total = 1;
+            selections.forEach(s => total *= s.odds);
+            const win = (stake * total).toFixed(2);
+            toast('✅ Bet placed • Potential win $' + win, 'ok');
+            selections = [];
+            updateSlipUI();
+            applySelectedClass();
             placeBetBtn.disabled = false;
             placeBetBtn.textContent = 'Place Bet';
         }, 600);
     });
 
     /* ============================================================
-       F1 START LIGHTS
+       ROUND LOOP
        ============================================================ */
-    function resetLights() {
-        cdLightEls.forEach(l => {
-            l.classList.remove('on');
-            l.classList.remove('green');
-        });
-        countdownLights.classList.remove('show');
-        lastLightAt = -1;
-    }
-
-    function updateLights(elapsed) {
-        // Betting phase: lights count down 5..1 in last 5 seconds of betting
-        const bettingRemaining = BETTING_MS - elapsed;
-
-        if (bettingRemaining > 5000) {
-            countdownLights.classList.remove('show');
-            return;
-        }
-
-        countdownLights.classList.add('show');
-
-        const secondsIn = Math.max(0, Math.ceil(bettingRemaining / 1000));
-        // 5,4,3,2,1 → light 1,2,3,4,5 turn on progressively
-        const activeCount = 5 - secondsIn + 1;
-
-        if (activeCount !== lastLightAt) {
-            lastLightAt = activeCount;
-            cdLightEls.forEach((l, i) => {
-                if (i < activeCount) l.classList.add('on');
-                else l.classList.remove('on');
-            });
-        }
-    }
-
-    function flashLightsGreen() {
-        cdLightEls.forEach(l => {
-            l.classList.remove('on');
-            l.classList.add('green');
-        });
-        setTimeout(() => {
-            countdownLights.classList.remove('show');
-            setTimeout(resetLights, 400);
-        }, 700);
-    }
-
-    /* ============================================================
-       RACE LOOP
-       ============================================================ */
-    function startNewRace() {
-        raceNumber++;
-        raceNumEl.textContent = '#' + String(raceNumber).padStart(4, '0');
-        currentTrack = pick(TRACKS);
-        trackNameEl.textContent = currentTrack;
-        lapCountEl.textContent = randInt(2, 5) + ' Laps';
-
-        racers = buildRacers();
-        raceStartAt = performance.now();
+    function startNewRound() {
+        roundNumber++;
+        roundNumEl.textContent = '#' + String(roundNumber).padStart(4, '0');
+        matches      = buildMatches();
+        roundStartAt = performance.now();
         inResultHold = false;
-        finishOrder = [];
-        lastEffectAt = 0;
+        lastSimStep  = -1;
 
-        resetLights();
+        matchesStatus.textContent = 'Betting open';
+        matchesStatus.style.color = '#6bffb0';
 
-        raceStatus.textContent = 'Betting open';
-        raceStatus.style.color = '#6bffb0';
-        runnersStatus.textContent = 'Betting open';
-        runnersStatus.style.color = '#6bffb0';
-
-        renderTrack();
-        renderRacersTable();
-        applySelectedClass();
-
-        requestAnimationFrame(() => positionCars());
+        renderMatches();
 
         if (tickRAF) cancelAnimationFrame(tickRAF);
         tickRAF = requestAnimationFrame(tick);
     }
 
     function tick(now) {
-        const elapsed   = now - raceStartAt;
+        const elapsed   = now - roundStartAt;
         const remaining = Math.max(0, ROUND_MS - elapsed);
 
+        // Progress + timer
         const frac = remaining / ROUND_MS;
         progressFill.style.transform = 'scaleX(' + frac + ')';
 
@@ -1750,137 +1373,122 @@
         roundTimerEl.textContent = mm + ':' + ss;
 
         if (elapsed < BETTING_MS) {
-            raceStatus.textContent = 'Formation lap';
-            raceStatus.style.color = '#6bffb0';
-            runnersStatus.textContent = 'Betting open';
-            runnersStatus.style.color = '#6bffb0';
-            updateLights(elapsed);
+            matchesStatus.textContent = 'Betting open';
+            matchesStatus.style.color = '#6bffb0';
         } else if (elapsed < BETTING_MS + RACE_MS) {
-            // First frame of race — flash green lights
-            if (elapsed - 16 < BETTING_MS && elapsed >= BETTING_MS) {
-                flashLightsGreen();
-            }
-
-            raceStatus.textContent = 'Race in progress';
-            raceStatus.style.color = '#ff8098';
-            runnersStatus.textContent = 'Racing…';
-            runnersStatus.style.color = '#ff8098';
-
-            simulateRace(elapsed - BETTING_MS, now);
-            positionCars();
+            matchesStatus.textContent = 'Matches in play';
+            matchesStatus.style.color = '#ff8098';
+            simulateMatches(elapsed - BETTING_MS);
+            updateLiveRows();
         } else {
-            raceStatus.textContent = 'Photo finish…';
-            raceStatus.style.color = '#ffd166';
+            matchesStatus.textContent = 'Closing…';
+            matchesStatus.style.color = '#ffd166';
         }
 
         if (remaining > 0) {
             tickRAF = requestAnimationFrame(tick);
         } else {
-            finishRace();
+            finishRound();
         }
     }
 
     /* ============================================================
-       SIMULATE RACE
+       MATCH SIMULATION
        ============================================================ */
-    function simulateRace(raceElapsed, now) {
-        const t = Math.min(1, raceElapsed / RACE_MS);
+    function simulateMatches(raceElapsed) {
+        const phase = raceElapsed / RACE_MS;      // 0..1
+        const step  = Math.floor(phase * 24);     // 24 sim ticks
 
-        racers.forEach(r => {
-            if (r.finished) return;
+        if (step === lastSimStep) return;
+        lastSimStep = step;
 
-            const jitter = Math.sin(raceElapsed / 380 + r.speedSeed * 9) * 0.03;
-            const surge  = Math.sin(raceElapsed / 900 + r.strength * 5) * 0.02;
-            const strengthFactor = 0.75 + r.strength * 0.5;
+        // Determine current quarter (1..4) based on phase
+        const quarter = Math.min(4, Math.floor(phase * 4) + 1);
+        const quarterLabel = 'Q' + quarter;
 
-            let progress = t * strengthFactor + jitter + surge;
+        matches.forEach(m => {
+            if (m.status === 'upcoming') m.status = 'live';
+            if (m.status === 'finished') return;
 
-            // Overtaking drama
-            if (Math.random() < 0.0025) progress -= 0.035;   // lock up / mistake
-            if (Math.random() < 0.0018) progress += 0.045;   // DRS boost
+            m.quarter      = quarter;
+            m.quarterLabel = quarterLabel;
 
-            r.progress = Math.max(0, Math.min(1.05, progress));
+            // Move ball randomly for court visual
+            const dir = Math.random() < 0.5 ? -1 : 1;
+            m.ballPosition = Math.max(10, Math.min(90, m.ballPosition + dir * randInt(8, 22)));
 
-            if (r.progress >= 1 && !r.finished) {
-                r.finished = true;
-                r.progress = 1;
-                r.finishPos = finishOrder.length + 1;
-                finishOrder.push(r);
-                if (laneElements[r.id]) laneElements[r.id].lane.classList.remove('leading');
-            } else if (!r.finished) {
-                if (laneElements[r.id]) {
-                    const isLeading = racers.every(o => o.finished || o.progress <= r.progress);
-                    laneElements[r.id].lane.classList.toggle('leading', isLeading);
+            // Netball scoring — fast-paced, typically ~15-20 goals per quarter team
+            const homeChance = m.pHome * 1.4;
+            const awayChance = m.pAway * 1.4;
+
+            // Multiple scoring events per step (netball is high-scoring)
+            const homeRolls = randInt(0, 2);
+            const awayRolls = randInt(0, 2);
+
+            for (let i = 0; i < homeRolls; i++) {
+                if (Math.random() < homeChance) {
+                    m.scoreHome++;
+                    if (i === 0) spawnGoalFlash(m, 'home');
+                }
+            }
+            for (let i = 0; i < awayRolls; i++) {
+                if (Math.random() < awayChance) {
+                    m.scoreAway++;
+                    if (i === 0) spawnGoalFlash(m, 'away');
+                }
+            }
+
+            // Late-game push (final quarter has more scoring)
+            if (quarter === 4 && Math.random() < 0.5) {
+                if (Math.random() < m.pHome / (m.pHome + m.pAway)) {
+                    m.scoreHome++;
+                } else {
+                    m.scoreAway++;
                 }
             }
         });
-
-        // Speed lines + exhaust puffs — throttled
-        if (now - lastEffectAt > 100) {
-            lastEffectAt = now;
-            racers.forEach(r => {
-                if (!r.finished && r.progress > 0.02 && r.progress < 0.99) {
-                    if (Math.random() < 0.55) spawnSpeedLine(r);
-                    if (Math.random() < 0.30) spawnExhaust(r);
-                }
-            });
-        }
     }
 
     /* ============================================================
-       FINISH RACE
+       FINISH
        ============================================================ */
-    function finishRace() {
+    function finishRound() {
         inResultHold = true;
-        raceStatus.textContent = 'Finished';
-        raceStatus.style.color = 'rgba(255,255,255,0.5)';
-        runnersStatus.textContent = 'Official result';
-        runnersStatus.style.color = 'rgba(255,255,255,0.5)';
+        matchesStatus.textContent = 'Round finished';
+        matchesStatus.style.color = 'rgba(255,255,255,0.5)';
 
-        racers.forEach(r => {
-            if (!r.finished) {
-                r.finished = true;
-                r.progress = 1;
-                r.finishPos = finishOrder.length + 1;
-                finishOrder.push(r);
-            }
-            if (laneElements[r.id]) {
-                laneElements[r.id].car.classList.remove('racing');
-                laneElements[r.id].lane.classList.remove('leading');
-            }
+        matches.forEach(m => {
+            m.status = 'finished';
+            m.quarter = 4;
+            m.quarterLabel = 'FT';
+
+            // Netball can't draw, but we allow it here for betting
+            if (m.scoreHome > m.scoreAway)      m.result = '1';
+            else if (m.scoreHome < m.scoreAway) m.result = '2';
+            else                                m.result = 'X';
         });
 
-        const winner = finishOrder[0];
+        updateLiveRows();
 
-        raceHistory.unshift({ race: raceNumber, track: currentTrack, winner });
-        if (raceHistory.length > 6) raceHistory.pop();
+        // History
+        roundHistory.unshift({
+            round: roundNumber,
+            matches: matches.map(m => ({
+                fixture: m.home.short + ' ' + m.scoreHome + '–' + m.scoreAway + ' ' + m.away.short
+            }))
+        });
+        if (roundHistory.length > 5) roundHistory.pop();
         renderHistory();
 
-        // Winner overlay with car SVG
-        winnerCarSlot.innerHTML = '<div class="winner-car-svg">' +
-            carSVG(winner.team.color, winner.team.dark, winner.team.accent) + '</div>';
-        winnerTitle.textContent = winner.driver + ' wins!';
-        winnerSub.textContent   = `${winner.team.name} • ${currentTrack} • Race #${String(raceNumber).padStart(4,'0')} • Odds ${winner.odds.toFixed(2)}`;
-        winnerFlash.classList.add('show');
+        const totalGoals = matches.reduce((a, m) => a + m.scoreHome + m.scoreAway, 0);
 
-        // Payout
-        if (selections.length > 0) {
-            const sel = selections[0];
-            if (sel.rid === winner.id) {
-                const stake = parseFloat(stakeInput.value) || 0;
-                const win = (stake * sel.odds).toFixed(2);
-                toast(`🎉 Winner! ${winner.driver} paid $${win}`, 'ok');
-            } else {
-                toast(`❌ ${sel.driver} didn't win — ${winner.driver} took it`, 'err');
-            }
-            selections = [];
-            updateSlipUI();
-            applySelectedClass();
-        }
+        resultTitle.textContent = 'Round #' + String(roundNumber).padStart(4, '0') + ' Complete';
+        resultSub.textContent = matches.length + ' matches settled • ' + totalGoals + ' goals scored';
+        resultFlash.classList.add('show');
 
         setTimeout(() => {
-            winnerFlash.classList.remove('show');
-            startNewRace();
+            resultFlash.classList.remove('show');
+            startNewRound();
         }, RESULT_HOLD);
     }
 
@@ -1888,25 +1496,27 @@
        HISTORY
        ============================================================ */
     function renderHistory() {
-        if (raceHistory.length === 0) {
-            historyContainer.innerHTML = '<span class="text-xs text-white/25">No races completed yet…</span>';
+        if (roundHistory.length === 0) {
+            historyContainer.innerHTML = '<span class="text-xs text-white/25">No rounds completed yet…</span>';
             return;
         }
 
         historyContainer.innerHTML = '';
-        raceHistory.forEach(r => {
-            const chip = document.createElement('div');
-            chip.className = 'glass-light rounded-xl px-3 py-2 flex items-center gap-2';
-            chip.innerHTML = `
-                <div style="width:22px;height:22px;border-radius:6px;background:${r.winner.team.bg};border:1.5px solid ${r.winner.team.color};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:${r.winner.team.accent}">
-                    ${r.winner.number}
+        roundHistory.forEach(r => {
+            const block = document.createElement('div');
+            block.className = 'glass-light rounded-xl p-3 flex-1 min-w-[220px]';
+            block.innerHTML = `
+                <div class="text-[10px] uppercase tracking-wider text-white/40 font-bold mb-1.5">
+                    Round #${String(r.round).padStart(4, '0')}
                 </div>
-                <div class="min-w-0">
-                    <div class="text-[11px] font-bold truncate max-w-[120px]">${r.winner.driver}</div>
-                    <div class="text-[9px] text-white/35 uppercase tracking-wider">#${String(r.race).padStart(4,'0')} • ${r.winner.odds.toFixed(2)}</div>
+                <div class="space-y-0.5">
+                    ${r.matches.slice(0, 4).map(m =>
+                        `<div class="text-[11px] text-white/55 font-mono">${m.fixture}</div>`
+                    ).join('')}
+                    ${r.matches.length > 4 ? `<div class="text-[10px] text-white/25 mt-1">+ ${r.matches.length - 4} more</div>` : ''}
                 </div>
             `;
-            historyContainer.appendChild(chip);
+            historyContainer.appendChild(block);
         });
     }
 
@@ -1927,18 +1537,9 @@
     }
 
     /* ============================================================
-       RESIZE
-       ============================================================ */
-    let resizeTimer = null;
-    window.addEventListener('resize', () => {
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(() => positionCars(), 120);
-    });
-
-    /* ============================================================
        BOOT
        ============================================================ */
-    startNewRace();
+    startNewRound();
 
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
