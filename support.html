@@ -18,7 +18,17 @@
     <script src="https://cdn.tailwindcss.com"></script>
     
     <style>
+        /* ==========================================================
+           BASE
+           ========================================================== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        /* Forces the browser to render native form controls (esp. the
+           <select> dropdown list) in dark mode — this is THE fix for
+           the invisible white-on-white option popup. */
+        :root, select, input, textarea, button, option {
+            color-scheme: dark;
+        }
         
         body {
             font-family: 'Inter', sans-serif;
@@ -34,109 +44,9 @@
             border-radius: 10px;
         }
         
-        .glass {
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-        }
-        
-        .glass-light {
-            background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, #0055ff, #542bff);
-            color: white;
-            padding: 10px 24px;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 14px;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(0, 85, 255, 0.25);
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(0, 85, 255, 0.4);
-        }
-        
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.06);
-            color: white;
-            padding: 10px 24px;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 14px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-2px);
-        }
-        
-        .navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            padding: 16px 0;
-            background: rgba(10, 10, 18, 0.92);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        
-        .text-gradient {
-            background: linear-gradient(135deg, #0055ff, #542bff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .mobile-menu {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(10, 10, 18, 0.98);
-            backdrop-filter: blur(20px);
-            z-index: 999;
-            display: none;
-            padding: 80px 24px 24px;
-            overflow-y: auto;
-        }
-        
-        .mobile-menu.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        .footer-link {
-            color: rgba(255, 255, 255, 0.4);
-            transition: all 0.3s ease;
-            text-decoration: none;
-            font-size: 14px;
-        }
-        
-        .footer-link:hover {
-            color: #ffffff;
-        }
-        
+        /* ==========================================================
+           PAGE BACKGROUND (image + readability overlay)
+           ========================================================== */
         .page-background {
             min-height: 100vh;
             background-image: url('https://static.vecteezy.com/system/resources/thumbnails/070/574/368/small/assorted-sports-equipment-on-black-backdrop-symbolizing-athleticism-competition-and-diverse-sporting-activities-photo.jpeg');
@@ -149,116 +59,305 @@
         .page-background::before {
             content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, 
-                rgba(10, 10, 18, 0.9) 0%, 
-                rgba(10, 10, 18, 0.7) 50%,
-                rgba(10, 10, 18, 0.9) 100%
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(135deg,
+                rgba(10, 10, 18, 0.92) 0%,
+                rgba(10, 10, 18, 0.78) 50%,
+                rgba(10, 10, 18, 0.92) 100%
             );
             z-index: -1;
+            pointer-events: none;
         }
         
-        .dropdown {
-            position: relative;
+        /* ==========================================================
+           BUTTONS
+           ========================================================== */
+        .btn-primary {
             display: inline-block;
+            text-align: center;
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            color: white;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 85, 255, 0.35);
+            text-decoration: none;
         }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 85, 255, 0.55);
+        }
+        
+        .btn-secondary {
+            display: inline-block;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateY(-2px);
+        }
+        
+        /* ==========================================================
+           NAVBAR
+           ========================================================== */
+        .navbar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            padding: 16px 0;
+            background: rgba(10, 10, 18, 0.78);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        
+        .text-gradient {
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .live-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: #ff0044; display: inline-block;
+            animation: pulse-dot 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse-dot {
+            0%,100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.8); }
+        }
+        
+        .mobile-menu {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(10, 10, 18, 0.98);
+            backdrop-filter: blur(20px);
+            z-index: 999;
+            display: none;
+            padding: 80px 24px 24px;
+            overflow-y: auto;
+        }
+        .mobile-menu.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .dropdown { position: relative; display: inline-block; }
         .dropdown-menu {
             display: none;
             position: absolute;
-            top: 100%;
-            left: 0;
-            background: rgba(10, 10, 18, 0.95);
+            top: 100%; left: 0;
+            background: rgba(10, 10, 18, 0.96);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.05);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 12px;
             min-width: 200px;
             padding: 8px 0;
             z-index: 1001;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
         }
-        .dropdown:hover .dropdown-menu {
-            display: block;
-        }
+        .dropdown:hover .dropdown-menu { display: block; }
         .dropdown-menu a {
             display: block;
             padding: 8px 16px;
-            color: rgba(255,255,255,0.6);
+            color: rgba(255, 255, 255, 0.65);
             font-size: 13px;
             transition: 0.2s;
+            text-decoration: none;
         }
         .dropdown-menu a:hover {
-            background: rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.06);
             color: white;
         }
         
+        /* ==========================================================
+           GLASS PANELS (matched to background brightness)
+           ========================================================== */
+        .glass {
+            background: rgba(10, 10, 18, 0.72);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+        }
+        
+        .glass-light {
+            background: rgba(10, 10, 18, 0.65);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        /* ==========================================================
+           FORM FIELDS
+           ========================================================== */
         .input-field, .select-field, .textarea-field {
-            background: rgba(255, 255, 255, 0.04);
+            background-color: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 12px;
-            padding: 14px 18px;
-            color: white;
+            padding: 12px 16px;
+            color: #ffffff;
             width: 100%;
-            font-size: 15px;
-            transition: border-color 0.3s;
-        }
-        .input-field:focus, .select-field:focus, .textarea-field:focus {
+            font-size: 14px;
+            font-family: inherit;
             outline: none;
+            transition: border-color 0.2s, background-color 0.2s, box-shadow 0.2s;
+        }
+        
+        .input-field::placeholder,
+        .textarea-field::placeholder {
+            color: rgba(255, 255, 255, 0.35);
+        }
+        
+        .input-field:focus, .select-field:focus, .textarea-field:focus {
             border-color: #0055ff;
+            background-color: rgba(0, 85, 255, 0.06);
+            box-shadow: 0 0 0 3px rgba(0, 85, 255, 0.2);
         }
-        .select-field {
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='white' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 1rem center;
-        }
+        
         .textarea-field {
             resize: vertical;
             min-height: 120px;
+            line-height: 1.5;
         }
         
+        /* ---------- Select: custom arrow + dark option list ---------- */
+        .select-field {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image:
+                url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2399a1b3' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>"),
+                linear-gradient(rgba(255,255,255,0.05), rgba(255,255,255,0.05));
+            background-repeat: no-repeat, no-repeat;
+            background-position: right 16px center, 0 0;
+            background-size: 12px, 100%;
+            padding-right: 44px;
+            cursor: pointer;
+        }
+        
+        /* THE white-popup fix: force dark option list */
+        .select-field option,
+        .select-field optgroup {
+            background-color: #12121c;
+            color: #ffffff;
+            padding: 10px 14px;
+            font-size: 14px;
+        }
+        .select-field option:checked,
+        .select-field option:hover,
+        .select-field option:focus {
+            background-color: #0055ff;
+            color: #ffffff;
+        }
+        .select-field optgroup {
+            color: #6b7280;
+            font-style: normal;
+            font-weight: 600;
+        }
+        
+        /* ==========================================================
+           TABS
+           ========================================================== */
+        .tab-btn {
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            color: rgba(255, 255, 255, 0.55);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: all 0.25s ease;
+        }
+        .tab-btn:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .tab-btn.active {
+            color: #ffffff;
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            border-color: transparent;
+            box-shadow: 0 4px 20px rgba(0, 85, 255, 0.4);
+        }
+        
+        /* ==========================================================
+           TICKET CARDS
+           ========================================================== */
         .ticket-card {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.06);
             border-radius: 16px;
-            padding: 16px;
+            padding: 20px;
             margin-bottom: 12px;
-            transition: transform 0.3s;
+            transition: transform 0.25s, border-color 0.25s, background 0.25s;
         }
         .ticket-card:hover {
             transform: translateY(-2px);
+            border-color: rgba(0, 85, 255, 0.35);
+            background: rgba(10, 10, 18, 0.78);
         }
         
+        /* ==========================================================
+           STATUS BADGES
+           ========================================================== */
         .status-badge {
             display: inline-block;
             padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
+            border-radius: 50px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            white-space: nowrap;
         }
-        .status-open { background: rgba(0,255,100,0.1); color: #00ff64; }
-        .status-pending { background: rgba(255,215,0,0.1); color: #ffd700; }
-        .status-resolved { background: rgba(0,85,255,0.1); color: #4d8aff; }
+        .status-open {
+            background: rgba(0, 85, 255, 0.15);
+            color: #6ba4ff;
+            border: 1px solid rgba(0, 85, 255, 0.35);
+        }
+        .status-resolved {
+            background: rgba(34, 197, 94, 0.15);
+            color: #4ade80;
+            border: 1px solid rgba(34, 197, 94, 0.35);
+        }
+        .status-pending {
+            background: rgba(234, 179, 8, 0.15);
+            color: #facc15;
+            border: 1px solid rgba(234, 179, 8, 0.35);
+        }
         
-        .tab-btn {
-            padding: 8px 20px;
-            border-radius: 20px;
+        /* ==========================================================
+           FOOTER
+           ========================================================== */
+        .footer-link {
+            color: rgba(255, 255, 255, 0.45);
+            transition: color 0.3s ease;
+            text-decoration: none;
             font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            border: 1px solid rgba(255,255,255,0.1);
-            background: transparent;
-            color: rgba(255,255,255,0.6);
-            transition: all 0.3s;
         }
-        .tab-btn.active {
-            background: linear-gradient(135deg, #0055ff, #542bff);
-            border-color: transparent;
-            color: white;
-        }
+        .footer-link:hover { color: #ffffff; }
     </style>
 </head>
 <body>
@@ -279,78 +378,78 @@
             </a>
             
             <div class="hidden lg:flex items-center space-x-1">
-    <div class="dropdown">
-        <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Info ▾</span>
-        <div class="dropdown-menu">
-            <a href="about.html">About Us</a>
-            <a href="vip.html">VIP Club</a>
-            <a href="referrals.html">Referrals</a>
-            <a href="privacy.html">Privacy Policy</a>
-            <a href="terms.html">Terms & Conditions</a>
-            <a href="cookies.html">Cookie Policy</a>
+                <div class="dropdown">
+                    <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Info ▾</span>
+                    <div class="dropdown-menu">
+                        <a href="about.html">About Us</a>
+                        <a href="vip.html">VIP Club</a>
+                        <a href="referrals.html">Referrals</a>
+                        <a href="privacy.html">Privacy Policy</a>
+                        <a href="terms.html">Terms & Conditions</a>
+                        <a href="cookies.html">Cookie Policy</a>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Account ▾</span>
+                    <div class="dropdown-menu">
+                        <a href="dashboard.html">Dashboard</a>
+                        <a href="profile.html">Profile</a>
+                        <a href="wallet.html">Wallet</a>
+                        <a href="deposit.html">Deposit</a>
+                        <a href="withdraw.html">Withdraw</a>
+                        <a href="transactions.html">Transactions</a>
+                        <a href="bet-history.html">Bet History</a>
+                        <a href="bonuses.html">Bonuses</a>
+                        <a href="kyc.html">KYC Verification</a>
+                        <a href="settings.html">Settings</a>
+                        <a href="signin.html">Sign In</a>
+                        <a href="signup.html">Sign Up</a>
+                    </div>
+                </div>
+
+                <a href="promotions.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Promotions</a>
+                <a href="sports.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Sports</a>
+                <a href="casino.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Casino</a>
+                <a href="live-betting.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 flex items-center space-x-1">
+                    <span class="live-dot"></span><span>Live</span>
+                </a>
+
+                <div class="dropdown">
+                    <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Virtual ▾</span>
+                    <div class="dropdown-menu">
+                        <a href="virtual-football.html">Virtual Football</a>
+                        <a href="virtual-horse-racing.html">Virtual Horse Racing</a>
+                        <a href="virtual-car-racing.html">Virtual Car Racing</a>
+                        <a href="virtual-netball.html">Virtual Netball</a>
+                        <a href="adventure-games.html">Adventure Games</a>
+                        <a href="aviator.html">Aviator</a>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Support ▾</span>
+                    <div class="dropdown-menu">
+                        <a href="support.html">Help Center</a>
+                        <a href="messages.html">Messages</a>
+                        <a href="notifications.html">Notifications</a>
+                        <a href="faq.html">FAQ</a>
+                        <a href="contact.html">Contact Us</a>
+                        <a href="responsible-gambling.html">Responsible Gambling</a>
+                        <a href="self-exclusion.html">Self-Exclusion</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-3">
+                <button id="mobileToggle" class="lg:hidden p-2 text-white/40 hover:text-white transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
         </div>
     </div>
-
-    <div class="dropdown">
-        <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Account ▾</span>
-        <div class="dropdown-menu">
-            <a href="dashboard.html">Dashboard</a>
-            <a href="profile.html">Profile</a>
-            <a href="wallet.html">Wallet</a>
-            <a href="deposit.html">Deposit</a>
-            <a href="withdraw.html">Withdraw</a>
-            <a href="transactions.html">Transactions</a>
-            <a href="bet-history.html">Bet History</a>
-            <a href="bonuses.html">Bonuses</a>
-            <a href="kyc.html">KYC Verification</a>
-            <a href="settings.html">Settings</a>
-            <a href="signin.html">Sign In</a>
-            <a href="signup.html">Sign Up</a>
-        </div>
-    </div>
-
-    <a href="promotions.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Promotions</a>
-    <a href="sports.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Sports</a>
-    <a href="casino.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Casino</a>
-    <a href="live-betting.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 flex items-center space-x-1">
-        <span class="live-dot"></span><span>Live</span>
-    </a>
-
-    <div class="dropdown">
-        <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Virtual ▾</span>
-        <div class="dropdown-menu">
-            <a href="virtual-football.html">Virtual Football</a>
-            <a href="virtual-horse-racing.html">Virtual Horse Racing</a>
-            <a href="virtual-car-racing.html">Virtual Car Racing</a>
-            <a href="virtual-netball.html">Virtual Netball</a>
-            <a href="adventure-games.html">Adventure Games</a>
-            <a href="aviator.html">Aviator</a>
-        </div>
-    </div>
-
-    <div class="dropdown">
-        <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Support ▾</span>
-        <div class="dropdown-menu">
-            <a href="support.html">Help Center</a>
-            <a href="messages.html">Messages</a>
-            <a href="notifications.html">Notifications</a>
-            <a href="faq.html">FAQ</a>
-            <a href="contact.html">Contact Us</a>
-            <a href="responsible-gambling.html">Responsible Gambling</a>
-            <a href="self-exclusion.html">Self-Exclusion</a>
-        </div>
-    </div>
-</div>
-
-<div class="flex items-center space-x-3">
-    <button id="mobileToggle" class="lg:hidden p-2 text-white/40 hover:text-white transition-colors">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-        </svg>
-    </button>
-</div>
-</div>
-</div>
 </nav>
 
 <!-- Mobile Menu -->
@@ -419,12 +518,12 @@
 <!-- ==========================================
      SUPPORT CONTENT
      ========================================== -->
-<div class="page-background pt-20 pb-12 px-4">
+<div class="page-background pt-24 pb-12 px-4">
     <div class="max-w-5xl mx-auto relative z-10">
         
         <div class="text-center mb-8">
-            <h1 class="text-4xl font-bold">Help <span class="text-gradient">Center</span></h1>
-            <p class="text-sm text-white/40 mt-2">Create a support ticket or check the status of existing ones.</p>
+            <h1 class="text-4xl font-bold text-white">Help <span class="text-gradient">Center</span></h1>
+            <p class="text-sm text-white/60 mt-2">Create a support ticket or check the status of existing ones.</p>
         </div>
         
         <!-- Tabs -->
@@ -435,10 +534,10 @@
         
         <!-- Create Ticket Form (default visible) -->
         <div id="createForm" class="glass rounded-2xl p-6 md:p-8 max-w-2xl mx-auto">
-            <h3 class="text-xl font-bold mb-6">Submit a Request</h3>
+            <h3 class="text-xl font-bold mb-6 text-white">Submit a Request</h3>
             <form id="ticketForm" class="space-y-5">
                 <div>
-                    <label class="block text-xs text-white/40 mb-1.5 ml-1">Category</label>
+                    <label class="block text-xs text-white/60 mb-1.5 ml-1">Category</label>
                     <select id="category" class="select-field" required>
                         <option value="">Select a category</option>
                         <option value="account">Account Issue</option>
@@ -450,11 +549,11 @@
                     </select>
                 </div>
                 <div>
-                    <label class="block text-xs text-white/40 mb-1.5 ml-1">Subject</label>
+                    <label class="block text-xs text-white/60 mb-1.5 ml-1">Subject</label>
                     <input type="text" id="subject" placeholder="Brief summary of your issue" class="input-field" required>
                 </div>
                 <div>
-                    <label class="block text-xs text-white/40 mb-1.5 ml-1">Description</label>
+                    <label class="block text-xs text-white/60 mb-1.5 ml-1">Description</label>
                     <textarea id="description" placeholder="Provide as much detail as possible..." class="textarea-field" required></textarea>
                 </div>
                 <button type="submit" class="btn-primary w-full py-3 text-base">Submit Ticket</button>
@@ -469,48 +568,48 @@
             <div class="space-y-4">
                 <!-- Ticket 1 -->
                 <div class="ticket-card glass-light">
-                    <div class="flex justify-between items-start mb-2">
+                    <div class="flex justify-between items-start mb-2 gap-3">
                         <div>
-                            <h4 class="font-semibold">#TKT-101 — Withdrawal Delay</h4>
+                            <h4 class="font-semibold text-white">#TKT-101 — Withdrawal Delay</h4>
                             <p class="text-xs text-white/50 mt-1">Created Jan 20, 2025</p>
                         </div>
                         <span class="status-badge status-open">Open</span>
                     </div>
-                    <p class="text-sm text-white/70">My withdrawal of $150 has been pending for 48 hours. Requested to Skrill.</p>
-                    <p class="text-xs text-white/30 mt-2">1 reply from support</p>
+                    <p class="text-sm text-white/75">My withdrawal of $150 has been pending for 48 hours. Requested to Skrill.</p>
+                    <p class="text-xs text-white/40 mt-2">1 reply from support</p>
                 </div>
                 
                 <!-- Ticket 2 -->
                 <div class="ticket-card glass-light">
-                    <div class="flex justify-between items-start mb-2">
+                    <div class="flex justify-between items-start mb-2 gap-3">
                         <div>
-                            <h4 class="font-semibold">#TKT-100 — Bonus Not Credited</h4>
+                            <h4 class="font-semibold text-white">#TKT-100 — Bonus Not Credited</h4>
                             <p class="text-xs text-white/50 mt-1">Created Jan 18, 2025</p>
                         </div>
                         <span class="status-badge status-resolved">Resolved</span>
                     </div>
-                    <p class="text-sm text-white/70">I claimed the welcome bonus but it wasn't added to my balance.</p>
-                    <p class="text-xs text-white/30 mt-2">3 replies • Last: Jan 19</p>
+                    <p class="text-sm text-white/75">I claimed the welcome bonus but it wasn't added to my balance.</p>
+                    <p class="text-xs text-white/40 mt-2">3 replies • Last: Jan 19</p>
                 </div>
                 
                 <!-- Ticket 3 -->
                 <div class="ticket-card glass-light">
-                    <div class="flex justify-between items-start mb-2">
+                    <div class="flex justify-between items-start mb-2 gap-3">
                         <div>
-                            <h4 class="font-semibold">#TKT-099 — KYC Rejection</h4>
+                            <h4 class="font-semibold text-white">#TKT-099 — KYC Rejection</h4>
                             <p class="text-xs text-white/50 mt-1">Created Jan 15, 2025</p>
                         </div>
                         <span class="status-badge status-pending">Pending</span>
                     </div>
-                    <p class="text-sm text-white/70">My documents were rejected. Need clarification on what went wrong.</p>
-                    <p class="text-xs text-white/30 mt-2">2 replies • Last: Jan 17</p>
+                    <p class="text-sm text-white/75">My documents were rejected. Need clarification on what went wrong.</p>
+                    <p class="text-xs text-white/40 mt-2">2 replies • Last: Jan 17</p>
                 </div>
             </div>
         </div>
         
         <!-- Quick Links -->
         <div class="mt-10 text-center">
-            <p class="text-sm text-white/40 mb-3">Need immediate help?</p>
+            <p class="text-sm text-white/60 mb-3">Need immediate help?</p>
             <div class="flex justify-center gap-4">
                 <a href="faq.html" class="btn-secondary">FAQ</a>
                 <a href="contact.html" class="btn-primary">Contact Us</a>
@@ -532,12 +631,12 @@
                     <span class="text-white font-light">|</span>
                     <span class="text-white font-semibold">GameZone</span>
                 </div>
-                <p class="text-sm text-white/30 leading-relaxed">
+                <p class="text-sm text-white/40 leading-relaxed">
                     Premium online betting platform for sports, casino, and virtual games.
                 </p>
             </div>
             <div>
-                <h4 class="text-sm font-semibold text-white/40 mb-3">Quick Links</h4>
+                <h4 class="text-sm font-semibold text-white/50 mb-3">Quick Links</h4>
                 <ul class="space-y-2">
                     <li><a href="sports.html" class="footer-link">Sports</a></li>
                     <li><a href="live-betting.html" class="footer-link">Live Betting</a></li>
@@ -546,7 +645,7 @@
                 </ul>
             </div>
             <div>
-                <h4 class="text-sm font-semibold text-white/40 mb-3">Support</h4>
+                <h4 class="text-sm font-semibold text-white/50 mb-3">Support</h4>
                 <ul class="space-y-2">
                     <li><a href="support.html" class="footer-link">Help Center</a></li>
                     <li><a href="contact.html" class="footer-link">Contact</a></li>
@@ -555,7 +654,7 @@
                 </ul>
             </div>
             <div>
-                <h4 class="text-sm font-semibold text-white/40 mb-3">Legal</h4>
+                <h4 class="text-sm font-semibold text-white/50 mb-3">Legal</h4>
                 <ul class="space-y-2">
                     <li><a href="terms.html" class="footer-link">Terms</a></li>
                     <li><a href="privacy.html" class="footer-link">Privacy</a></li>
@@ -564,7 +663,7 @@
                 </ul>
             </div>
         </div>
-        <div class="mt-8 pt-6 border-t border-white/5 flex flex-col md:flex-row items-center justify-between text-xs text-white/20">
+        <div class="mt-8 pt-6 border-t border-white/5 flex flex-col md:flex-row items-center justify-between text-xs text-white/30">
             <p>Copyright © 2025 Cephas GM | Innovating for Tomorrow</p>
             <p class="mt-2 md:mt-0">18+ | Play Responsibly</p>
         </div>
@@ -628,11 +727,9 @@
             return;
         }
         
-        // Mock submission
         document.getElementById('ticketForm').classList.add('hidden');
         document.getElementById('ticketSuccess').classList.remove('hidden');
         
-        // Auto-reset after 5 seconds
         setTimeout(() => {
             document.getElementById('ticketForm').reset();
             document.getElementById('ticketForm').classList.remove('hidden');
