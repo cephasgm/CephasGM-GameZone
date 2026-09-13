@@ -486,16 +486,10 @@
 <div class="dashboard-bg min-h-screen">
     <div class="content-wrapper py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         
-        <!-- Welcome Header -->
-        <div class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div>
-                <h1 class="text-3xl font-bold">Welcome back, John! 👋</h1>
-                <p class="text-sm text-white/40 mt-1">Here's your betting overview for today.</p>
-            </div>
-            <div class="flex gap-3">
-                <button onclick="window.location.href='/deposit.html'" class="btn-primary text-sm py-2 px-5">Deposit</button>
-                <button onclick="window.location.href='/withdraw.html'" class="btn-secondary text-sm py-2 px-5">Withdraw</button>
-            </div>
+        <!-- Welcome Header (Deposit/Withdraw buttons removed) -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold">Welcome back, John! 👋</h1>
+            <p class="text-sm text-white/40 mt-1">Here's your betting overview for today.</p>
         </div>
         
         <!-- Stats Row -->
@@ -750,13 +744,59 @@
             </div>
         </div>
         
-        <!-- Footer -->
-        <div class="text-center text-xs text-white/20 mt-6">
-            Copyright © 2025 Cephas GM | Innovating for Tomorrow
-        </div>
-        
     </div>
 </div>
+
+<!-- ==========================================
+     SHARED FOOTER (matches Aviator & other pages)
+     ========================================== -->
+<footer class="bg-[#0a0a12] border-t border-white/5 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div class="col-span-2 md:col-span-1">
+                <div class="text-lg font-bold mb-3">
+                    <span class="text-gradient">CephasGM</span>
+                    <span class="text-white font-light">|</span>
+                    <span class="text-white font-semibold">GameZone</span>
+                </div>
+                <p class="text-sm text-white/30 leading-relaxed">
+                    Premium online betting platform for sports, casino, and virtual games.
+                </p>
+            </div>
+            <div>
+                <h4 class="text-sm font-semibold text-white/40 mb-3">Quick Links</h4>
+                <ul class="space-y-2">
+                    <li><a href="sports.html" class="footer-link">Sports</a></li>
+                    <li><a href="live-betting.html" class="footer-link">Live Betting</a></li>
+                    <li><a href="casino.html" class="footer-link">Casino</a></li>
+                    <li><a href="promotions.html" class="footer-link">Promotions</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-sm font-semibold text-white/40 mb-3">Support</h4>
+                <ul class="space-y-2">
+                    <li><a href="support.html" class="footer-link">Help Center</a></li>
+                    <li><a href="contact.html" class="footer-link">Contact</a></li>
+                    <li><a href="faq.html" class="footer-link">FAQ</a></li>
+                    <li><a href="responsible-gambling.html" class="footer-link">Responsible Gambling</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-sm font-semibold text-white/40 mb-3">Legal</h4>
+                <ul class="space-y-2">
+                    <li><a href="terms.html" class="footer-link">Terms</a></li>
+                    <li><a href="privacy.html" class="footer-link">Privacy</a></li>
+                    <li><a href="cookies.html" class="footer-link">Cookies</a></li>
+                    <li><a href="kyc.html" class="footer-link">KYC</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="mt-8 pt-6 border-t border-white/5 flex flex-col md:flex-row items-center justify-between text-xs text-white/20">
+            <p>Copyright © 2025 Cephas GM | Innovating for Tomorrow</p>
+            <p class="mt-2 md:mt-0">18+ | Play Responsibly</p>
+        </div>
+    </div>
+</footer>
 
 <!-- ==========================================
      JAVASCRIPT
