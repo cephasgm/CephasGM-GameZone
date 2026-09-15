@@ -4,110 +4,72 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#0a0a12">
-    <meta name="description" content="Deposit funds into your CephasGM GameZone account securely.">
     <title>Deposit | CephasGM GameZone</title>
-    
-    <!-- PWA -->
+
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
     <script src="https://cdn.tailwindcss.com"></script>
-    
+    <script src="js/api.js"></script>
+    <script src="js/auth-ui.js"></script>
+
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+
         body {
             font-family: 'Inter', sans-serif;
             background: #0a0a12;
             color: #ffffff;
             overflow-x: hidden;
         }
-        
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #0a0a12; }
-        ::-webkit-scrollbar-thumb { 
-            background: linear-gradient(180deg, #0055ff, #542bff);
-            border-radius: 10px;
-        }
-        
+
         .glass {
             background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.06);
         }
-        
-        .glass-light {
-            background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        
+
         .btn-primary {
             background: linear-gradient(135deg, #0055ff, #542bff);
             color: white;
-            padding: 10px 24px;
+            padding: 14px 28px;
             border-radius: 50px;
-            font-weight: 600;
-            font-size: 14px;
+            font-weight: 700;
+            font-size: 15px;
             border: none;
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 4px 20px rgba(0, 85, 255, 0.25);
+            width: 100%;
+            font-family: inherit;
         }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(0, 85, 255, 0.4);
-        }
-        
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.06);
-            color: white;
-            padding: 10px 24px;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 14px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-2px);
-        }
-        
+        .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0, 85, 255, 0.4); }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
         .navbar {
-            position: fixed;
+            position: sticky;
             top: 0;
-            left: 0;
-            right: 0;
             z-index: 1000;
             padding: 16px 0;
             background: rgba(10, 10, 18, 0.92);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
-        
+
         .text-gradient {
             background: linear-gradient(135deg, #0055ff, #542bff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        
+
         .mobile-menu {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            inset: 0;
             background: rgba(10, 10, 18, 0.98);
             backdrop-filter: blur(20px);
             z-index: 999;
@@ -115,62 +77,97 @@
             padding: 80px 24px 24px;
             overflow-y: auto;
         }
-        
-        .mobile-menu.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        .footer-link {
-            color: rgba(255, 255, 255, 0.4);
-            transition: all 0.3s ease;
-            text-decoration: none;
-            font-size: 14px;
-        }
-        
-        .footer-link:hover {
-            color: #ffffff;
-        }
-        
-        .page-background {
-            min-height: 100vh;
+        .mobile-menu.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .dashboard-bg {
             background-image: url('https://static.vecteezy.com/system/resources/thumbnails/070/574/368/small/assorted-sports-equipment-on-black-backdrop-symbolizing-athleticism-competition-and-diverse-sporting-activities-photo.jpeg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
             position: relative;
         }
-        
-        .page-background::before {
+        .dashboard-bg::before {
             content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(10,10,18,0.9), rgba(10,10,18,0.78), rgba(10,10,18,0.9));
+            z-index: 0;
+        }
+        .content-wrapper { position: relative; z-index: 1; }
+
+        .input-field {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            padding: 14px 18px;
+            color: white;
             width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, 
-                rgba(10, 10, 18, 0.9) 0%, 
-                rgba(10, 10, 18, 0.7) 50%,
-                rgba(10, 10, 18, 0.9) 100%
-            );
-            z-index: -1;
+            font-size: 15px;
+            font-weight: 600;
+            transition: border-color 0.3s;
+            font-family: inherit;
         }
-        
-        .dropdown {
-            position: relative;
-            display: inline-block;
+        .input-field:focus { outline: none; border-color: #0055ff; background: rgba(0,85,255,0.06); }
+        .input-field::placeholder { color: rgba(255,255,255,0.22); font-weight: 400; }
+
+        .amount-chip {
+            padding: 10px 16px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: rgba(255,255,255,0.75);
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all .2s;
+            font-family: inherit;
+            flex: 1;
+            text-align: center;
         }
+        .amount-chip:hover { background: rgba(0,85,255,0.15); border-color: rgba(0,85,255,0.4); color: #fff; }
+        .amount-chip:active { transform: scale(0.96); }
+
+        .method-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px;
+            border-radius: 16px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            cursor: pointer;
+            transition: all .2s;
+        }
+        .method-card:hover {
+            background: rgba(255,255,255,0.05);
+            border-color: rgba(255,255,255,0.12);
+        }
+        .method-card.selected {
+            background: linear-gradient(135deg, rgba(0,85,255,0.14), rgba(84,43,255,0.10));
+            border-color: rgba(0,85,255,0.45);
+        }
+        .method-icon {
+            width: 44px; height: 44px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; flex-shrink: 0;
+            background: rgba(255,255,255,0.05);
+        }
+        .method-card.selected .method-icon {
+            background: rgba(0,85,255,0.2);
+        }
+        .method-name { font-weight: 700; font-size: 14px; }
+        .method-sub { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 2px; }
+
+        .footer-link { color: rgba(255,255,255,0.4); text-decoration: none; font-size: 14px; transition: 0.3s; }
+        .footer-link:hover { color: #fff; }
+
+        .dropdown { position: relative; display: inline-block; }
         .dropdown-menu {
             display: none;
             position: absolute;
-            top: 100%;
-            left: 0;
-            background: rgba(10, 10, 18, 0.95);
+            top: 100%; left: 0;
+            background: rgba(10,10,18,0.95);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255,255,255,0.05);
             border-radius: 12px;
@@ -178,9 +175,7 @@
             padding: 8px 0;
             z-index: 1001;
         }
-        .dropdown:hover .dropdown-menu {
-            display: block;
-        }
+        .dropdown:hover .dropdown-menu { display: block; }
         .dropdown-menu a {
             display: block;
             padding: 8px 16px;
@@ -188,520 +183,551 @@
             font-size: 13px;
             transition: 0.2s;
         }
-        .dropdown-menu a:hover {
-            background: rgba(255,255,255,0.05);
-            color: white;
+        .dropdown-menu a:hover { background: rgba(255,255,255,0.05); color: white; }
+
+        #userBar {
+            position: fixed;
+            top: 84px; right: 16px;
+            z-index: 999;
+            background: rgba(10,10,18,0.92);
+            backdrop-filter: blur(18px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 999px;
+            padding: 8px 8px 8px 14px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            gap: 10px;
         }
-        
-        .input-field, .select-field {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 14px 18px;
-            color: white;
-            width: 100%;
-            font-size: 15px;
-            transition: border-color 0.3s;
+        #userBar .avatar {
+            width: 30px; height: 30px; border-radius: 50%;
+            background: linear-gradient(135deg,#0055ff,#542bff);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 12px; flex-shrink: 0;
         }
-        .input-field:focus, .select-field:focus {
-            outline: none;
-            border-color: #0055ff;
+        #userBar .info { display: flex; flex-direction: column; line-height: 1.1; max-width: 140px; }
+        #userBar .name { font-weight: 700; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        #userBar .contact { font-size: 10px; color: rgba(255,255,255,0.5); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        #inlineSignOut {
+            padding: 6px 14px; border-radius: 999px;
+            background: rgba(255,0,68,0.15);
+            border: 1px solid rgba(255,0,68,0.3);
+            color: #ff8098; font-size: 11px; font-weight: 700;
+            cursor: pointer; font-family: inherit; white-space: nowrap;
         }
-        .select-field {
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='white' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 1rem center;
+
+        @media (max-width: 640px) {
+            #userBar { top: 76px; right: 8px; padding: 6px; }
+            #userBar .info { display: none; }
         }
-        
-        .payment-method-card {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.06);
-            border-radius: 16px;
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.88);
+            backdrop-filter: blur(12px);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
             padding: 16px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
         }
-        .payment-method-card:hover {
-            background: rgba(255,255,255,0.06);
-            border-color: rgba(255,255,255,0.15);
-            transform: translateY(-2px);
+        .modal-overlay.active { display: flex; }
+
+        .pulse-ring {
+            width: 80px; height: 80px; border-radius: 50%;
+            background: rgba(0,85,255,0.15);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 40px;
+            margin: 0 auto 16px;
+            animation: pulse 2s ease-in-out infinite;
         }
-        .payment-method-card.selected {
-            border-color: #0055ff;
-            background: rgba(0,85,255,0.1);
-        }
-        
-        .tab-btn {
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            border: 1px solid rgba(255,255,255,0.1);
-            background: transparent;
-            color: rgba(255,255,255,0.6);
-            transition: all 0.3s;
-        }
-        .tab-btn.active {
-            background: linear-gradient(135deg, #0055ff, #542bff);
-            border-color: transparent;
-            color: white;
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0,85,255,0.4); }
+            50% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(0,85,255,0); }
         }
     </style>
 </head>
-<body>
+<body data-requires-auth>
 
-<!-- ==========================================
-     NAVBAR
-     ========================================== -->
-<nav class="navbar" id="navbar">
+<div id="userBar">
+    <div class="avatar" id="userAvatar">U</div>
+    <div class="info">
+        <span class="name" id="userName">Loading…</span>
+        <span class="contact" id="userContact"></span>
+    </div>
+    <button id="inlineSignOut">Sign Out</button>
+</div>
+
+<nav class="navbar">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between">
-            
-            <a href="index.html" class="flex items-center space-x-2" title="Go to Homepage">
+            <a href="index.html" class="flex items-center space-x-2">
                 <span class="text-xl font-bold">
                     <span class="text-gradient">CephasGM</span>
                     <span class="text-white font-light">|</span>
                     <span class="text-white font-semibold">GameZone</span>
                 </span>
             </a>
-            
+
             <div class="hidden lg:flex items-center space-x-1">
-    <!-- Info dropdown -->
-    <div class="dropdown">
-        <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Info ▾</span>
-        <div class="dropdown-menu">
-            <a href="about.html">About Us</a>
-            <a href="vip.html">VIP Club</a>
-            <a href="referrals.html">Referrals</a>
-            <a href="privacy.html">Privacy Policy</a>
-            <a href="terms.html">Terms & Conditions</a>
-            <a href="cookies.html">Cookie Policy</a>
+                <a href="dashboard.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Dashboard</a>
+                <a href="wallet.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Wallet</a>
+                <a href="deposit.html" class="px-3 py-2 text-sm text-white font-semibold rounded-lg bg-white/5">Deposit</a>
+                <a href="withdraw.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Withdraw</a>
+                <a href="transactions.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Transactions</a>
+                <a href="sports.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Sports</a>
+            </div>
+
+            <button id="mobileToggle" class="lg:hidden p-2 text-white/40 hover:text-white transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
         </div>
     </div>
-
-    <!-- Account dropdown -->
-    <div class="dropdown">
-        <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Account ▾</span>
-        <div class="dropdown-menu">
-            <a href="dashboard.html">Dashboard</a>
-            <a href="profile.html">Profile</a>
-            <a href="wallet.html">Wallet</a>
-            <a href="deposit.html">Deposit</a>
-            <a href="withdraw.html">Withdraw</a>
-            <a href="transactions.html">Transactions</a>
-            <a href="bet-history.html">Bet History</a>
-            <a href="bonuses.html">Bonuses</a>
-            <a href="kyc.html">KYC Verification</a>
-            <a href="settings.html">Settings</a>
-            <a href="signin.html">Sign In</a>
-            <a href="signup.html">Sign Up</a>
-        </div>
-    </div>
-
-    <!-- Promotions link -->
-    <a href="promotions.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Promotions</a>
-
-    <!-- Sports link -->
-    <a href="sports.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Sports</a>
-
-    <!-- Casino link -->
-    <a href="casino.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Casino</a>
-
-    <!-- Live link -->
-    <a href="live-betting.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 flex items-center space-x-1">
-        <span class="live-dot"></span><span>Live</span>
-    </a>
-
-    <!-- Virtual dropdown -->
-    <div class="dropdown">
-        <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Virtual ▾</span>
-        <div class="dropdown-menu">
-            <a href="virtual-football.html">Virtual Football</a>
-            <a href="virtual-horse-racing.html">Virtual Horse Racing</a>
-            <a href="virtual-car-racing.html">Virtual Car Racing</a>
-            <a href="virtual-netball.html">Virtual Netball</a>
-            <a href="adventure-games.html">Adventure Games</a>
-            <a href="aviator.html">Aviator</a>
-        </div>
-    </div>
-
-    <!-- Support dropdown -->
-    <div class="dropdown">
-        <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Support ▾</span>
-        <div class="dropdown-menu">
-            <a href="support.html">Help Center</a>
-            <a href="messages.html">Messages</a>
-            <a href="notifications.html">Notifications</a>
-            <a href="faq.html">FAQ</a>
-            <a href="contact.html">Contact Us</a>
-            <a href="responsible-gambling.html">Responsible Gambling</a>
-            <a href="self-exclusion.html">Self-Exclusion</a>
-        </div>
-    </div>
-</div>
-
-<div class="flex items-center space-x-3">
-    <button id="mobileToggle" class="lg:hidden p-2 text-white/40 hover:text-white transition-colors">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-        </svg>
-    </button>
-</div>
-</div>
-</div>
 </nav>
 
-<!-- Mobile Menu -->
 <div id="mobileMenu" class="mobile-menu">
     <nav class="flex flex-col space-y-6">
-        <a href="index.html" class="text-lg text-white/70 hover:text-white">Home</a>
-        <a href="sports.html" class="text-lg text-white/70 hover:text-white">Sports</a>
-        <a href="live-betting.html" class="text-lg text-white/70 hover:text-white">Live Betting</a>
-        <a href="casino.html" class="text-lg text-white/70 hover:text-white">Casino</a>
-        <a href="promotions.html" class="text-lg text-white/70 hover:text-white">Promotions</a>
-        <a href="bonuses.html" class="text-lg text-white/70 hover:text-white">Bonuses</a>
-        <a href="leaderboard.html" class="text-lg text-white/70 hover:text-white">Leaderboard</a>
-        <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Account</span>
-            <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="dashboard.html" class="text-sm text-white/50 hover:text-white">Dashboard</a>
-                <a href="profile.html" class="text-sm text-white/50 hover:text-white">Profile</a>
-                <a href="wallet.html" class="text-sm text-white/50 hover:text-white">Wallet</a>
-                <a href="deposit.html" class="text-sm text-white/50 hover:text-white">Deposit</a>
-                <a href="withdraw.html" class="text-sm text-white/50 hover:text-white">Withdraw</a>
-                <a href="transactions.html" class="text-sm text-white/50 hover:text-white">Transactions</a>
-                <a href="bet-history.html" class="text-sm text-white/50 hover:text-white">Bet History</a>
-                <a href="kyc.html" class="text-sm text-white/50 hover:text-white">KYC</a>
-                <a href="settings.html" class="text-sm text-white/50 hover:text-white">Settings</a>
-                <a href="signin.html" class="text-sm text-white/50 hover:text-white">Sign In</a>
-                <a href="signup.html" class="text-sm text-white/50 hover:text-white">Sign Up</a>
-            </div>
-        </div>
-        <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Virtual Games</span>
-            <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="virtual-football.html" class="text-sm text-white/50 hover:text-white">Virtual Football</a>
-                <a href="virtual-horse-racing.html" class="text-sm text-white/50 hover:text-white">Horse Racing</a>
-                <a href="virtual-car-racing.html" class="text-sm text-white/50 hover:text-white">Car Racing</a>
-                <a href="virtual-netball.html" class="text-sm text-white/50 hover:text-white">Netball</a>
-                <a href="adventure-games.html" class="text-sm text-white/50 hover:text-white">Adventure</a>
-                <a href="aviator.html" class="text-sm text-white/50 hover:text-white">Aviator</a>
-            </div>
-        </div>
-        <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Support</span>
-            <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="support.html" class="text-sm text-white/50 hover:text-white">Help Center</a>
-                <a href="messages.html" class="text-sm text-white/50 hover:text-white">Messages</a>
-                <a href="notifications.html" class="text-sm text-white/50 hover:text-white">Notifications</a>
-                <a href="faq.html" class="text-sm text-white/50 hover:text-white">FAQ</a>
-                <a href="contact.html" class="text-sm text-white/50 hover:text-white">Contact</a>
-                <a href="responsible-gambling.html" class="text-sm text-white/50 hover:text-white">Responsible</a>
-                <a href="self-exclusion.html" class="text-sm text-white/50 hover:text-white">Self-Exclusion</a>
-            </div>
-        </div>
-        <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Information</span>
-            <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="about.html" class="text-sm text-white/50 hover:text-white">About</a>
-                <a href="vip.html" class="text-sm text-white/50 hover:text-white">VIP</a>
-                <a href="referrals.html" class="text-sm text-white/50 hover:text-white">Referrals</a>
-                <a href="privacy.html" class="text-sm text-white/50 hover:text-white">Privacy</a>
-                <a href="terms.html" class="text-sm text-white/50 hover:text-white">Terms</a>
-                <a href="cookies.html" class="text-sm text-white/50 hover:text-white">Cookies</a>
-            </div>
-        </div>
+        <a href="dashboard.html" class="text-lg text-white/70 hover:text-white">Dashboard</a>
+        <a href="wallet.html" class="text-lg text-white/70 hover:text-white">Wallet</a>
+        <a href="deposit.html" class="text-lg text-white/70 hover:text-white">Deposit</a>
+        <a href="withdraw.html" class="text-lg text-white/70 hover:text-white">Withdraw</a>
+        <a href="transactions.html" class="text-lg text-white/70 hover:text-white">Transactions</a>
     </nav>
 </div>
 
-<!-- ==========================================
-     DEPOSIT CONTENT
-     ========================================== -->
-<div class="page-background pt-20 pb-12 px-4">
-    <div class="max-w-3xl mx-auto relative z-10">
-        
-        <div class="text-center mb-8">
-            <h1 class="text-4xl font-bold">Deposit <span class="text-gradient">Funds</span></h1>
-            <p class="text-sm text-white/40 mt-2">Choose your preferred payment method to add funds instantly.</p>
+<div class="dashboard-bg min-h-screen">
+    <div class="content-wrapper py-8 px-4 sm:px-6 lg:px-8 max-w-3xl mx-auto">
+
+        <!-- Header -->
+        <div class="mb-6">
+            <a href="wallet.html" class="text-sm text-white/40 hover:text-white transition-colors inline-flex items-center gap-1 mb-3">← Back to wallet</a>
+            <h1 class="text-3xl font-bold">💰 Deposit</h1>
+            <p class="text-sm text-white/40 mt-1">Add funds to your wallet instantly</p>
         </div>
-        
-        <!-- Amount Input -->
-        <div class="glass rounded-2xl p-6 mb-8">
-            <label class="block text-xs text-white/40 mb-2 ml-1">Amount (USD)</label>
-            <input type="number" id="depositAmount" value="100.00" class="input-field text-xl font-bold" placeholder="0.00">
-            <p class="text-xs text-white/30 mt-2">Min $10 • Max $5,000 per transaction</p>
-        </div>
-        
-        <!-- Payment Method Tabs -->
-        <div class="flex flex-wrap gap-2 mb-6 overflow-x-auto pb-2">
-            <button class="tab-btn active" data-tab="mobile">📱 Mobile Money</button>
-            <button class="tab-btn" data-tab="card">💳 Credit/Debit Card</button>
-            <button class="tab-btn" data-tab="ewallet">💼 E‑Wallet</button>
-            <button class="tab-btn" data-tab="bank">🏦 Bank Transfer</button>
-            <button class="tab-btn" data-tab="crypto">₿ Cryptocurrency</button>
-        </div>
-        
-        <!-- Dynamic Form Container -->
-        <div class="glass rounded-2xl p-6 md:p-8" id="formContainer">
-            
-            <!-- Mobile Money Form -->
-            <div id="mobileForm" class="space-y-4">
-                <h3 class="text-lg font-semibold mb-2">Select Mobile Money Provider</h3>
-                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4" id="mobileProviders">
-                    <div class="payment-method-card selected" data-provider="mpesa">M‑PESA</div>
-                    <div class="payment-method-card" data-provider="airtel">Airtel Money</div>
-                    <div class="payment-method-card" data-provider="mtn">MTN Mobile Money</div>
-                    <div class="payment-method-card" data-provider="halopesa">HaloPesa</div>
-                    <div class="payment-method-card" data-provider="mixbyyas">MixByYas</div>
-                    <div class="payment-method-card" data-provider="tigopesa">Tigo Pesa</div>
-                </div>
+
+        <!-- Balance pill -->
+        <div class="glass rounded-2xl p-4 mb-6 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="text-2xl">💳</div>
                 <div>
-                    <label class="block text-xs text-white/40 mb-1.5 ml-1">Phone Number</label>
-                    <input type="tel" id="mobilePhone" placeholder="+255 7XX XXX XXX" class="input-field">
+                    <div class="text-xs text-white/40">Current Balance</div>
+                    <div class="font-bold text-lg" id="currentBalance">—</div>
                 </div>
-                <button class="btn-primary w-full py-3" onclick="submitDeposit('Mobile Money')">Deposit Now</button>
             </div>
-            
-            <!-- Card Form -->
-            <div id="cardForm" class="hidden space-y-4">
-                <h3 class="text-lg font-semibold mb-2">Card Details</h3>
-                <div class="flex gap-3 mb-4">
-                    <div class="payment-method-card selected" data-card="visa">Visa</div>
-                    <div class="payment-method-card" data-card="mastercard">MasterCard</div>
-                    <div class="payment-method-card" data-card="amex">Amex</div>
-                </div>
-                <div>
-                    <label class="block text-xs text-white/40 mb-1.5 ml-1">Card Number</label>
-                    <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" class="input-field">
-                </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs text-white/40 mb-1.5 ml-1">Expiry</label>
-                        <input type="text" id="expiry" placeholder="MM/YY" class="input-field">
-                    </div>
-                    <div>
-                        <label class="block text-xs text-white/40 mb-1.5 ml-1">CVV</label>
-                        <input type="text" id="cvv" placeholder="123" class="input-field">
-                    </div>
-                </div>
-                <button class="btn-primary w-full py-3" onclick="submitDeposit('Card')">Pay Now</button>
-            </div>
-            
-            <!-- E‑Wallet Form -->
-            <div id="ewalletForm" class="hidden space-y-4">
-                <h3 class="text-lg font-semibold mb-2">Select E‑Wallet</h3>
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4" id="ewalletProviders">
-                    <div class="payment-method-card selected" data-ewallet="skrill">Skrill</div>
-                    <div class="payment-method-card" data-ewallet="neteller">Neteller</div>
-                    <div class="payment-method-card" data-ewallet="paypal">PayPal</div>
-                    <div class="payment-method-card" data-ewallet="wise">Wise</div>
-                </div>
-                <div>
-                    <label class="block text-xs text-white/40 mb-1.5 ml-1">Email Address</label>
-                    <input type="email" id="walletEmail" placeholder="your@email.com" class="input-field">
-                </div>
-                <button class="btn-primary w-full py-3" onclick="submitDeposit('E‑Wallet')">Deposit</button>
-            </div>
-            
-            <!-- Bank Transfer Form -->
-            <div id="bankForm" class="hidden space-y-4">
-                <h3 class="text-lg font-semibold mb-2">Bank Transfer Instructions</h3>
-                <div class="bg-white/5 rounded-xl p-4 space-y-2 text-sm">
-                    <p class="text-white/70"><strong>Bank Name:</strong> Global Betting Bank</p>
-                    <p class="text-white/70"><strong>Account Name:</strong> CephasGM GameZone Ltd</p>
-                    <p class="text-white/70"><strong>Account Number:</strong> 1234567890</p>
-                    <p class="text-white/70"><strong>Routing/Sort Code:</strong> 987654321</p>
-                    <p class="text-white/70"><strong>Reference:</strong> Your CephasGM username</p>
-                </div>
-                <p class="text-xs text-white/40">Funds will be credited within 1‑3 business days. Please include the reference to avoid delays.</p>
-                <button class="btn-primary w-full py-3" onclick="submitDeposit('Bank Transfer')">I've Made the Transfer</button>
-            </div>
-            
-            <!-- Crypto Form -->
-            <div id="cryptoForm" class="hidden space-y-4">
-                <h3 class="text-lg font-semibold mb-2">Select Cryptocurrency</h3>
-                <div class="grid grid-cols-3 gap-3 mb-4" id="cryptoCoins">
-                    <div class="payment-method-card selected" data-crypto="btc">₿ Bitcoin</div>
-                    <div class="payment-method-card" data-crypto="eth">Ξ Ethereum</div>
-                    <div class="payment-method-card" data-crypto="usdt">₮ USDT (TRC20)</div>
-                </div>
-                <div class="bg-white/5 rounded-xl p-4 text-center">
-                    <div class="w-32 h-32 bg-white/10 mx-auto rounded-xl mb-3 flex items-center justify-center text-4xl">🔳</div>
-                    <p class="text-xs text-white/50 break-all" id="cryptoAddress">1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa</p>
-                    <button class="btn-secondary text-xs mt-2" onclick="copyAddress()">Copy Address</button>
-                </div>
-                <p class="text-xs text-white/40">Send exactly the amount shown. Confirmation required before crediting.</p>
-                <button class="btn-primary w-full py-3" onclick="submitDeposit('Cryptocurrency')">I've Paid</button>
-            </div>
-            
+            <a href="wallet.html" class="text-xs text-blue-400 hover:text-blue-300">View wallet →</a>
         </div>
-        
+
+        <!-- Form -->
+        <div class="glass rounded-2xl p-6 mb-6">
+
+            <!-- Amount -->
+            <div class="mb-6">
+                <label class="block text-xs uppercase tracking-wider text-white/40 font-semibold mb-2">Amount</label>
+                <div class="relative">
+                    <input type="number" id="amountInput" class="input-field text-2xl font-black py-4 pr-20"
+                           placeholder="0.00" min="1000" step="100">
+                    <span class="absolute right-5 top-1/2 -translate-y-1/2 text-sm font-bold text-white/40" id="currencyLabel">TZS</span>
+                </div>
+                <div class="flex gap-2 mt-3">
+                    <button type="button" class="amount-chip" data-amount="5000">5,000</button>
+                    <button type="button" class="amount-chip" data-amount="10000">10,000</button>
+                    <button type="button" class="amount-chip" data-amount="25000">25,000</button>
+                    <button type="button" class="amount-chip" data-amount="50000">50,000</button>
+                    <button type="button" class="amount-chip" data-amount="100000">100,000</button>
+                </div>
+                <p class="text-[11px] text-white/30 mt-3">Minimum: <span id="minLabel">1,000 TZS</span> · Maximum: <span id="maxLabel">5,000,000 TZS</span></p>
+            </div>
+
+            <!-- Payment Method -->
+            <div class="mb-6">
+                <label class="block text-xs uppercase tracking-wider text-white/40 font-semibold mb-3">Payment Method</label>
+                <div id="methodList" class="space-y-2">
+                    <div class="text-sm text-white/30 text-center py-6">Loading methods…</div>
+                </div>
+            </div>
+
+            <!-- Phone (only for mobile money) -->
+            <div id="phoneWrapper" class="mb-6 hidden">
+                <label class="block text-xs uppercase tracking-wider text-white/40 font-semibold mb-2">Phone Number</label>
+                <input type="tel" id="phoneInput" class="input-field" placeholder="+255712345678" value="">
+                <p class="text-[11px] text-white/30 mt-2">Enter the phone number registered with your mobile money account</p>
+            </div>
+
+            <!-- Submit -->
+            <button id="submitBtn" class="btn-primary" disabled>Continue</button>
+
+            <div id="errorMsg" class="mt-3 text-sm text-red-400 text-center hidden"></div>
+        </div>
+
+        <!-- Info -->
+        <div class="glass rounded-2xl p-4 text-xs text-white/40 leading-relaxed">
+            <strong class="text-white/60">ℹ️ How it works</strong><br>
+            Select a method and amount, then click Continue. You'll receive a prompt on your phone (for mobile money) or be redirected (for cards). Your wallet is credited the moment we receive the provider's confirmation.
+        </div>
+
     </div>
 </div>
 
-<!-- ==========================================
-     FOOTER
-     ========================================== -->
-<footer class="bg-[#0a0a12] border-t border-white/5 py-12">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div class="col-span-2 md:col-span-1">
-                <div class="text-lg font-bold mb-3">
-                    <span class="text-gradient">CephasGM</span>
-                    <span class="text-white font-light">|</span>
-                    <span class="text-white font-semibold">GameZone</span>
-                </div>
-                <p class="text-sm text-white/30 leading-relaxed">
-                    Premium online betting platform for sports, casino, and virtual games.
-                </p>
+<!-- MODAL: PROCESSING / SUCCESS -->
+<div id="statusModal" class="modal-overlay">
+    <div class="glass rounded-3xl p-8 max-w-md w-full border border-white/10 text-center">
+        <div id="modalIcon" class="pulse-ring">📱</div>
+        <h2 id="modalTitle" class="text-2xl font-bold mb-2">Waiting for approval</h2>
+        <p id="modalSubtitle" class="text-sm text-white/50 mb-6">
+            Check your phone for the payment prompt and approve it.
+        </p>
+
+        <div class="bg-black/30 rounded-xl p-4 mb-6 text-left">
+            <div class="flex justify-between text-xs py-1.5">
+                <span class="text-white/40">Reference</span>
+                <span id="modalRef" class="font-mono text-white/80">—</span>
             </div>
-            <div>
-                <h4 class="text-sm font-semibold text-white/40 mb-3">Quick Links</h4>
-                <ul class="space-y-2">
-                    <li><a href="sports.html" class="footer-link">Sports</a></li>
-                    <li><a href="live-betting.html" class="footer-link">Live Betting</a></li>
-                    <li><a href="casino.html" class="footer-link">Casino</a></li>
-                    <li><a href="promotions.html" class="footer-link">Promotions</a></li>
-                </ul>
+            <div class="flex justify-between text-xs py-1.5">
+                <span class="text-white/40">Amount</span>
+                <span id="modalAmount" class="font-semibold">—</span>
             </div>
-            <div>
-                <h4 class="text-sm font-semibold text-white/40 mb-3">Support</h4>
-                <ul class="space-y-2">
-                    <li><a href="support.html" class="footer-link">Help Center</a></li>
-                    <li><a href="contact.html" class="footer-link">Contact</a></li>
-                    <li><a href="faq.html" class="footer-link">FAQ</a></li>
-                    <li><a href="responsible-gambling.html" class="footer-link">Responsible Gambling</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-sm font-semibold text-white/40 mb-3">Legal</h4>
-                <ul class="space-y-2">
-                    <li><a href="terms.html" class="footer-link">Terms</a></li>
-                    <li><a href="privacy.html" class="footer-link">Privacy</a></li>
-                    <li><a href="cookies.html" class="footer-link">Cookies</a></li>
-                    <li><a href="kyc.html" class="footer-link">KYC</a></li>
-                </ul>
+            <div class="flex justify-between text-xs py-1.5">
+                <span class="text-white/40">Status</span>
+                <span id="modalStatus" class="font-semibold text-yellow-400">PENDING</span>
             </div>
         </div>
-        <div class="mt-8 pt-6 border-t border-white/5 flex flex-col md:flex-row items-center justify-between text-xs text-white/20">
-            <p>Copyright © 2025 Cephas GM | Innovating for Tomorrow</p>
-            <p class="mt-2 md:mt-0">18+ | Play Responsibly</p>
-        </div>
+
+        <button id="modalClose" class="btn-primary" style="display:none">Back to wallet</button>
+    </div>
+</div>
+
+<footer class="bg-[#0a0a12] border-t border-white/5 py-12 mt-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs text-white/20">
+        <p>Copyright © 2026 Cephas GM | Innovating for Tomorrow</p>
+        <p class="mt-2">18+ | Play Responsibly</p>
     </div>
 </footer>
 
-<!-- ==========================================
-     JAVASCRIPT
-     ========================================== -->
 <script>
-(function() {
+document.addEventListener('DOMContentLoaded', function () {
     'use strict';
-    
-    // Mobile menu
-    const mobileToggle = document.getElementById('mobileToggle');
-    const mobileMenu = document.getElementById('mobileMenu');
-    let mobileOpen = false;
-    
-    mobileToggle.addEventListener('click', () => {
+
+    /* ------------------------------------------------------------
+       AUTH GUARD
+       ------------------------------------------------------------ */
+    if (!window.CephasGM || !CephasGM.api) return;
+    if (!CephasGM.api.isLoggedIn()) {
+        window.location.href = 'signin.html';
+        return;
+    }
+
+    /* ------------------------------------------------------------
+       STATE
+       ------------------------------------------------------------ */
+    var state = {
+        methods: [],
+        selectedMethod: null,
+        currency: 'TZS',
+        minDeposit: 1000,
+        maxDeposit: 5000000,
+        currentDeposit: null,
+        pollTimer: null,
+    };
+
+    /* ------------------------------------------------------------
+       USER BADGE
+       ------------------------------------------------------------ */
+    var cachedUser = CephasGM.api.getUser();
+
+    function paintUserBadge(user) {
+        if (!user) return;
+        var name = user.fullName || user.username || 'Player';
+        var contact = user.email || user.phone || '';
+        var initial = name.charAt(0).toUpperCase();
+        document.getElementById('userAvatar').textContent = initial;
+        document.getElementById('userName').textContent = name;
+        document.getElementById('userContact').textContent = contact;
+        document.getElementById('userBar').style.display = 'flex';
+    }
+
+    if (cachedUser) paintUserBadge(cachedUser);
+
+    document.getElementById('inlineSignOut').addEventListener('click', function () {
+        var btn = this;
+        btn.disabled = true;
+        btn.textContent = 'Signing out…';
+        CephasGM.api.logout().catch(function () {}).then(function () {
+            CephasGM.api.clearTokens();
+            window.location.href = 'signin.html';
+        });
+    });
+
+    /* ------------------------------------------------------------
+       HELPERS
+       ------------------------------------------------------------ */
+    function fmt(n) {
+        return parseFloat(n || 0).toLocaleString('en-US', {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 2,
+        });
+    }
+
+    function escapeHtml(s) {
+        return String(s || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
+    function methodIcon(name, label) {
+        var l = (label || '').toLowerCase();
+        if (l.includes('m-pesa') || l.includes('mpesa')) return '📱';
+        if (l.includes('airtel')) return '📱';
+        if (l.includes('tigo')) return '📱';
+        if (l.includes('card') || l.includes('bank')) return '💳';
+        if (l.includes('flutter')) return '🌍';
+        return '💰';
+    }
+
+    /* ------------------------------------------------------------
+       LOAD BALANCE
+       ------------------------------------------------------------ */
+    CephasGM.api.wallet().then(function (res) {
+        if (res.success && res.data) {
+            state.currency = res.data.currency;
+            document.getElementById('currentBalance').textContent =
+                fmt(res.data.balance) + ' ' + res.data.currency;
+            document.getElementById('currencyLabel').textContent = res.data.currency;
+            document.getElementById('minLabel').textContent = fmt(state.minDeposit) + ' ' + res.data.currency;
+            document.getElementById('maxLabel').textContent = fmt(state.maxDeposit) + ' ' + res.data.currency;
+        }
+    }).catch(function () {});
+
+    /* ------------------------------------------------------------
+       LOAD PAYMENT METHODS
+       ------------------------------------------------------------ */
+    CephasGM.api.get('/deposits/methods').then(function (res) {
+        var list = document.getElementById('methodList');
+        state.methods = res.data || [];
+
+        if (state.methods.length === 0) {
+            list.innerHTML = '<div class="text-sm text-red-400 text-center py-6">No payment methods available right now. Please try again later.</div>';
+            return;
+        }
+
+        list.innerHTML = state.methods.map(function (m, i) {
+            return '' +
+                '<div class="method-card" data-method="' + escapeHtml(m.method) + '" data-index="' + i + '">' +
+                    '<div class="method-icon">' + methodIcon(m.method, m.label) + '</div>' +
+                    '<div style="flex:1">' +
+                        '<div class="method-name">' + escapeHtml(m.label) + '</div>' +
+                        '<div class="method-sub">Secure · Instant confirmation</div>' +
+                    '</div>' +
+                    '<div style="font-size:18px;color:rgba(255,255,255,0.3)">›</div>' +
+                '</div>';
+        }).join('');
+
+        list.querySelectorAll('.method-card').forEach(function (card) {
+            card.addEventListener('click', function () {
+                list.querySelectorAll('.method-card').forEach(function (c) { c.classList.remove('selected'); });
+                this.classList.add('selected');
+
+                state.selectedMethod = this.dataset.method;
+
+                /* Show phone field only for mobile money methods */
+                var requiresPhone = ['MPESA', 'AIRTEL_MONEY', 'TIGO_PESA'].includes(state.selectedMethod);
+                document.getElementById('phoneWrapper').classList.toggle('hidden', !requiresPhone);
+
+                validateForm();
+            });
+        });
+    }).catch(function (err) {
+        console.error('Failed to load methods:', err);
+        document.getElementById('methodList').innerHTML =
+            '<div class="text-sm text-red-400 text-center py-6">Could not load payment methods</div>';
+    });
+
+    /* ------------------------------------------------------------
+       AMOUNT CHIPS
+       ------------------------------------------------------------ */
+    document.querySelectorAll('.amount-chip').forEach(function (chip) {
+        chip.addEventListener('click', function () {
+            document.getElementById('amountInput').value = this.dataset.amount;
+            validateForm();
+        });
+    });
+
+    document.getElementById('amountInput').addEventListener('input', validateForm);
+    document.getElementById('phoneInput').addEventListener('input', validateForm);
+
+    /* ------------------------------------------------------------
+       FORM VALIDATION
+       ------------------------------------------------------------ */
+    function validateForm() {
+        var amount = parseFloat(document.getElementById('amountInput').value) || 0;
+        var method = state.selectedMethod;
+        var phone = document.getElementById('phoneInput').value.trim();
+        var requiresPhone = ['MPESA', 'AIRTEL_MONEY', 'TIGO_PESA'].includes(method);
+
+        var valid = true;
+        var error = '';
+
+        if (!method) { valid = false; error = 'Select a payment method'; }
+        else if (amount < state.minDeposit) { valid = false; error = 'Minimum is ' + fmt(state.minDeposit) + ' ' + state.currency; }
+        else if (amount > state.maxDeposit) { valid = false; error = 'Maximum is ' + fmt(state.maxDeposit) + ' ' + state.currency; }
+        else if (requiresPhone && phone.length < 10) { valid = false; error = 'Enter a valid phone number'; }
+
+        document.getElementById('submitBtn').disabled = !valid;
+        document.getElementById('submitBtn').textContent = valid ? 'Continue' : (error || 'Continue');
+
+        var errEl = document.getElementById('errorMsg');
+        if (!valid && error) {
+            errEl.textContent = error;
+            errEl.classList.remove('hidden');
+        } else {
+            errEl.classList.add('hidden');
+        }
+    }
+
+    /* ------------------------------------------------------------
+       SUBMIT
+       ------------------------------------------------------------ */
+    document.getElementById('submitBtn').addEventListener('click', function () {
+        var amount = parseFloat(document.getElementById('amountInput').value);
+        var method = state.selectedMethod;
+        var phone = document.getElementById('phoneInput').value.trim();
+
+        var btn = this;
+        btn.disabled = true;
+        btn.textContent = 'Processing…';
+
+        var body = {
+            amount: amount,
+            method: method,
+        };
+        if (phone) body.phone = phone;
+
+        CephasGM.api.post('/deposits', body)
+            .then(function (res) {
+                if (res.success && res.data) {
+                    var d = res.data.deposit;
+                    state.currentDeposit = d;
+
+                    /* Open modal */
+                    document.getElementById('modalRef').textContent = d.reference;
+                    document.getElementById('modalAmount').textContent = fmt(d.amount) + ' ' + d.currency;
+                    document.getElementById('modalStatus').textContent = d.status;
+                    document.getElementById('modalStatus').style.color = '#ffd166';
+                    document.getElementById('modalTitle').textContent = 'Waiting for approval';
+                    document.getElementById('modalIcon').textContent = '📱';
+                    document.getElementById('modalSubtitle').textContent = 'Check your phone and approve the payment prompt.';
+                    document.getElementById('modalClose').style.display = 'none';
+                    document.getElementById('statusModal').classList.add('active');
+
+                    /* Start polling */
+                    startPolling(d.reference);
+                } else {
+                    btn.disabled = false;
+                    btn.textContent = 'Continue';
+                    alert(res.message || 'Deposit failed');
+                }
+            })
+            .catch(function (err) {
+                var msg = err.message || (err.json && err.json.message) || 'Deposit failed';
+                btn.disabled = false;
+                btn.textContent = 'Continue';
+                alert(msg);
+            });
+    });
+
+    /* ------------------------------------------------------------
+       POLL FOR STATUS
+       ------------------------------------------------------------ */
+    function startPolling(reference) {
+        if (state.pollTimer) clearInterval(state.pollTimer);
+
+        var pollCount = 0;
+        var maxPolls = 40; // 40 x 3s = 2 min
+
+        state.pollTimer = setInterval(function () {
+            pollCount++;
+
+            CephasGM.api.get('/deposits/' + reference + '/status')
+                .then(function (res) {
+                    if (!res.success || !res.data) return;
+
+                    var d = res.data;
+                    document.getElementById('modalStatus').textContent = d.status;
+
+                    if (d.status === 'COMPLETED') {
+                        clearInterval(state.pollTimer);
+                        document.getElementById('modalIcon').textContent = '✅';
+                        document.getElementById('modalTitle').textContent = 'Deposit Successful!';
+                        document.getElementById('modalSubtitle').textContent = 'Your wallet has been credited.';
+                        document.getElementById('modalStatus').style.color = '#4dffa8';
+                        document.getElementById('modalStatus').textContent = 'COMPLETED';
+                        document.getElementById('modalClose').style.display = 'block';
+
+                        /* Refresh balance shown */
+                        CephasGM.api.wallet().then(function (w) {
+                            if (w.success) {
+                                document.getElementById('currentBalance').textContent =
+                                    fmt(w.data.balance) + ' ' + w.data.currency;
+                            }
+                        });
+                    } else if (d.status === 'FAILED') {
+                        clearInterval(state.pollTimer);
+                        document.getElementById('modalIcon').textContent = '❌';
+                        document.getElementById('modalTitle').textContent = 'Deposit Failed';
+                        document.getElementById('modalSubtitle').textContent = d.failureReason || 'The payment was not completed.';
+                        document.getElementById('modalStatus').style.color = '#ff4d6d';
+                        document.getElementById('modalClose').style.display = 'block';
+                    }
+
+                    if (pollCount >= maxPolls) {
+                        clearInterval(state.pollTimer);
+                    }
+                })
+                .catch(function () {});
+        }, 3000);
+    }
+
+    /* ------------------------------------------------------------
+       MODAL CLOSE
+       ------------------------------------------------------------ */
+    document.getElementById('modalClose').addEventListener('click', function () {
+        if (state.pollTimer) clearInterval(state.pollTimer);
+        document.getElementById('statusModal').classList.remove('active');
+        window.location.href = 'wallet.html';
+    });
+
+    /* ------------------------------------------------------------
+       MOBILE MENU
+       ------------------------------------------------------------ */
+    var mobileToggle = document.getElementById('mobileToggle');
+    var mobileMenu = document.getElementById('mobileMenu');
+    var mobileOpen = false;
+
+    mobileToggle.addEventListener('click', function () {
         mobileOpen = !mobileOpen;
-        mobileMenu.classList.toggle('active');
+        mobileMenu.classList.toggle('active', mobileOpen);
         document.body.style.overflow = mobileOpen ? 'hidden' : '';
     });
-    mobileMenu.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
+    mobileMenu.querySelectorAll('a').forEach(function (a) {
+        a.addEventListener('click', function () {
             mobileMenu.classList.remove('active');
             document.body.style.overflow = '';
             mobileOpen = false;
         });
     });
-    
-    // Tab switching
-    const tabs = document.querySelectorAll('.tab-btn');
-    const forms = {
-        mobile: document.getElementById('mobileForm'),
-        card: document.getElementById('cardForm'),
-        ewallet: document.getElementById('ewalletForm'),
-        bank: document.getElementById('bankForm'),
-        crypto: document.getElementById('cryptoForm')
-    };
-    
-    tabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-            tabs.forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-            const tabName = tab.dataset.tab;
-            Object.keys(forms).forEach(key => forms[key].classList.add('hidden'));
-            if (forms[tabName]) forms[tabName].classList.remove('hidden');
-        });
-    });
-    
-    // Provider selection (same logic for each type)
-    function setupCardSelection(containerId) {
-        const container = document.getElementById(containerId);
-        if (!container) return;
-        container.addEventListener('click', (e) => {
-            const card = e.target.closest('.payment-method-card');
-            if (!card) return;
-            container.querySelectorAll('.payment-method-card').forEach(c => c.classList.remove('selected'));
-            card.classList.add('selected');
-        });
-    }
-    setupCardSelection('mobileProviders');
-    setupCardSelection('ewalletProviders');
-    // For card types (visa/mastercard/amex) and crypto coins
-    document.querySelectorAll('#cardForm .payment-method-card, #cryptoCoins .payment-method-card').forEach(card => {
-        card.addEventListener('click', function() {
-            this.parentElement.querySelectorAll('.payment-method-card').forEach(c => c.classList.remove('selected'));
-            this.classList.add('selected');
-        });
-    });
-    
-    // Submit deposit (mock)
-    window.submitDeposit = function(method) {
-        const amount = parseFloat(document.getElementById('depositAmount').value) || 0;
-        if (amount < 10) {
-            alert('Minimum deposit is $10.');
-            return;
-        }
-        showToast(`Processing ${method} deposit of $${amount.toFixed(2)}...`);
-        setTimeout(() => {
-            showToast(`✅ $${amount.toFixed(2)} deposited successfully!`);
-        }, 2000);
-    };
-    
-    // Copy crypto address
-    window.copyAddress = function() {
-        const addr = document.getElementById('cryptoAddress').textContent;
-        navigator.clipboard.writeText(addr).then(() => {
-            showToast('Address copied to clipboard');
-        });
-    };
-    
-    function showToast(message) {
-        const toast = document.createElement('div');
-        toast.className = 'fixed bottom-6 right-6 z-50 bg-black/80 backdrop-blur-xl border border-white/10 rounded-2xl px-6 py-3';
-        toast.innerHTML = `<span class="text-sm">${message}</span>`;
-        document.body.appendChild(toast);
-        setTimeout(() => {
-            toast.style.opacity = '0';
-            setTimeout(() => toast.remove(), 300);
-        }, 3000);
-    }
-    
-    // PWA
+
     if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/sw.js')
-                .then(reg => console.log('SW registered'))
-                .catch(err => console.log('SW registration failed'));
+        window.addEventListener('load', function () {
+            navigator.serviceWorker.register('sw.js').catch(function () {});
         });
     }
-})();
+});
 </script>
 
 </body>
