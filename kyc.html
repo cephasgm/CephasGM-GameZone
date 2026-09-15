@@ -4,110 +4,85 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#0a0a12">
-    <meta name="description" content="KYC Verification – Verify your identity on CephasGM GameZone">
     <title>KYC Verification | CephasGM GameZone</title>
-    
-    <!-- PWA -->
+
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
     <script src="https://cdn.tailwindcss.com"></script>
-    
+    <script src="js/api.js"></script>
+    <script src="js/auth-ui.js"></script>
+
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+
         body {
             font-family: 'Inter', sans-serif;
             background: #0a0a12;
             color: #ffffff;
             overflow-x: hidden;
         }
-        
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #0a0a12; }
-        ::-webkit-scrollbar-thumb { 
-            background: linear-gradient(180deg, #0055ff, #542bff);
-            border-radius: 10px;
-        }
-        
+
         .glass {
             background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.06);
         }
-        
-        .glass-light {
-            background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        
+
         .btn-primary {
             background: linear-gradient(135deg, #0055ff, #542bff);
             color: white;
-            padding: 10px 24px;
+            padding: 12px 24px;
             border-radius: 50px;
-            font-weight: 600;
+            font-weight: 700;
             font-size: 14px;
             border: none;
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 4px 20px rgba(0, 85, 255, 0.25);
+            font-family: inherit;
         }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(0, 85, 255, 0.4);
-        }
-        
+        .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0, 85, 255, 0.4); }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
         .btn-secondary {
             background: rgba(255, 255, 255, 0.06);
             color: white;
-            padding: 10px 24px;
+            padding: 12px 24px;
             border-radius: 50px;
             font-weight: 600;
             font-size: 14px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             cursor: pointer;
             transition: all 0.3s ease;
+            font-family: inherit;
         }
-        
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-2px);
-        }
-        
+        .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-2px); }
+
         .navbar {
-            position: fixed;
+            position: sticky;
             top: 0;
-            left: 0;
-            right: 0;
             z-index: 1000;
             padding: 16px 0;
             background: rgba(10, 10, 18, 0.92);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
-        
+
         .text-gradient {
             background: linear-gradient(135deg, #0055ff, #542bff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        
+
         .mobile-menu {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            inset: 0;
             background: rgba(10, 10, 18, 0.98);
             backdrop-filter: blur(20px);
             z-index: 999;
@@ -115,62 +90,154 @@
             padding: 80px 24px 24px;
             overflow-y: auto;
         }
-        
-        .mobile-menu.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        .footer-link {
-            color: rgba(255, 255, 255, 0.4);
-            transition: all 0.3s ease;
-            text-decoration: none;
-            font-size: 14px;
-        }
-        
-        .footer-link:hover {
-            color: #ffffff;
-        }
-        
-        .page-background {
-            min-height: 100vh;
+        .mobile-menu.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .dashboard-bg {
             background-image: url('https://static.vecteezy.com/system/resources/thumbnails/070/574/368/small/assorted-sports-equipment-on-black-backdrop-symbolizing-athleticism-competition-and-diverse-sporting-activities-photo.jpeg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
             position: relative;
         }
-        
-        .page-background::before {
+        .dashboard-bg::before {
             content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(10,10,18,0.92), rgba(10,10,18,0.78), rgba(10,10,18,0.92));
+            z-index: 0;
+        }
+        .content-wrapper { position: relative; z-index: 1; }
+
+        .input-field {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 12px 16px;
+            color: white;
             width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, 
-                rgba(10, 10, 18, 0.9) 0%, 
-                rgba(10, 10, 18, 0.7) 50%,
-                rgba(10, 10, 18, 0.9) 100%
-            );
-            z-index: -1;
+            font-size: 14px;
+            font-weight: 500;
+            transition: border-color 0.3s;
+            font-family: inherit;
         }
-        
-        .dropdown {
+        .input-field:focus { outline: none; border-color: #0055ff; background: rgba(0,85,255,0.06); }
+        .input-field::placeholder { color: rgba(255,255,255,0.22); font-weight: 400; }
+
+        label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.4); font-weight: 700; display: block; margin-bottom: 6px; }
+
+        /* Status hero */
+        .status-hero {
+            border-radius: 24px;
+            padding: 32px;
+            margin-bottom: 24px;
             position: relative;
-            display: inline-block;
+            overflow: hidden;
+            text-align: center;
         }
+        .status-hero.not-submitted {
+            background: linear-gradient(135deg, rgba(0,85,255,0.14), rgba(84,43,255,0.10));
+            border: 1px solid rgba(0,85,255,0.28);
+        }
+        .status-hero.pending {
+            background: linear-gradient(135deg, rgba(255,204,0,0.14), rgba(255,153,0,0.10));
+            border: 1px solid rgba(255,204,0,0.28);
+        }
+        .status-hero.approved {
+            background: linear-gradient(135deg, rgba(0,224,122,0.14), rgba(0,153,82,0.10));
+            border: 1px solid rgba(0,224,122,0.28);
+        }
+        .status-hero.rejected {
+            background: linear-gradient(135deg, rgba(255,0,68,0.14), rgba(200,0,55,0.10));
+            border: 1px solid rgba(255,0,68,0.28);
+        }
+
+        .status-icon {
+            width: 80px; height: 80px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 40px;
+            margin: 0 auto 16px;
+        }
+
+        /* Document upload card */
+        .upload-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 18px;
+            padding: 20px;
+            transition: all .3s;
+        }
+        .upload-card:hover { border-color: rgba(0,85,255,0.3); }
+
+        .upload-zone {
+            border: 2px dashed rgba(255,255,255,0.15);
+            border-radius: 14px;
+            padding: 30px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all .25s;
+            background: rgba(255,255,255,0.02);
+            position: relative;
+            overflow: hidden;
+        }
+        .upload-zone:hover {
+            border-color: rgba(0,85,255,0.5);
+            background: rgba(0,85,255,0.05);
+        }
+        .upload-zone.has-file {
+            border-color: rgba(0,224,122,0.5);
+            border-style: solid;
+            padding: 12px;
+        }
+        .upload-zone input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+        .upload-icon { font-size: 32px; margin-bottom: 8px; }
+        .upload-text { font-size: 13px; color: rgba(255,255,255,0.6); font-weight: 600; }
+        .upload-hint { font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 4px; }
+
+        .preview-img {
+            max-width: 100%;
+            max-height: 180px;
+            border-radius: 10px;
+            object-fit: contain;
+            display: block;
+            margin: 0 auto;
+        }
+        .file-name {
+            font-size: 11px;
+            color: #6bffb0;
+            margin-top: 8px;
+            font-weight: 600;
+            word-break: break-all;
+        }
+
+        .doc-type-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 10px;
+            border-radius: 999px;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: rgba(255,255,255,0.6);
+        }
+
+        .footer-link { color: rgba(255,255,255,0.4); text-decoration: none; font-size: 14px; transition: 0.3s; }
+        .footer-link:hover { color: #fff; }
+
+        .dropdown { position: relative; display: inline-block; }
         .dropdown-menu {
             display: none;
             position: absolute;
-            top: 100%;
-            left: 0;
-            background: rgba(10, 10, 18, 0.95);
+            top: 100%; left: 0;
+            background: rgba(10,10,18,0.95);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255,255,255,0.05);
             border-radius: 12px;
@@ -178,444 +245,551 @@
             padding: 8px 0;
             z-index: 1001;
         }
-        .dropdown:hover .dropdown-menu {
-            display: block;
+        .dropdown:hover .dropdown-menu { display: block; }
+        .dropdown-menu a { display: block; padding: 8px 16px; color: rgba(255,255,255,0.6); font-size: 13px; transition: 0.2s; }
+        .dropdown-menu a:hover { background: rgba(255,255,255,0.05); color: white; }
+
+        #userBar {
+            position: fixed;
+            top: 84px; right: 16px;
+            z-index: 999;
+            background: rgba(10,10,18,0.92);
+            backdrop-filter: blur(18px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 999px;
+            padding: 8px 8px 8px 14px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            gap: 10px;
         }
-        .dropdown-menu a {
-            display: block;
-            padding: 8px 16px;
-            color: rgba(255,255,255,0.6);
-            font-size: 13px;
-            transition: 0.2s;
+        #userBar .avatar {
+            width: 30px; height: 30px; border-radius: 50%;
+            background: linear-gradient(135deg,#0055ff,#542bff);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 12px; flex-shrink: 0;
         }
-        .dropdown-menu a:hover {
-            background: rgba(255,255,255,0.05);
-            color: white;
+        #userBar .info { display: flex; flex-direction: column; line-height: 1.1; max-width: 140px; }
+        #userBar .name { font-weight: 700; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        #userBar .contact { font-size: 10px; color: rgba(255,255,255,0.5); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        #inlineSignOut {
+            padding: 6px 14px; border-radius: 999px;
+            background: rgba(255,0,68,0.15);
+            border: 1px solid rgba(255,0,68,0.3);
+            color: #ff8098; font-size: 11px; font-weight: 700;
+            cursor: pointer; font-family: inherit; white-space: nowrap;
         }
-        
-        .input-field, .select-field {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 14px 18px;
-            color: white;
-            width: 100%;
-            font-size: 15px;
-            transition: border-color 0.3s;
-        }
-        .input-field:focus, .select-field:focus {
-            outline: none;
-            border-color: #0055ff;
-        }
-        .select-field {
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='white' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 1rem center;
-        }
-        
-        .file-upload-area {
-            background: rgba(255,255,255,0.03);
-            border: 2px dashed rgba(255,255,255,0.1);
-            border-radius: 16px;
-            padding: 30px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .file-upload-area:hover {
-            border-color: #0055ff;
-            background: rgba(0,85,255,0.05);
+
+        @media (max-width: 640px) {
+            #userBar { top: 76px; right: 8px; padding: 6px; }
+            #userBar .info { display: none; }
         }
     </style>
 </head>
-<body>
+<body data-requires-auth>
 
-<!-- ==========================================
-     NAVBAR
-     ========================================== -->
-<nav class="navbar" id="navbar">
+<div id="userBar">
+    <div class="avatar" id="userAvatar">U</div>
+    <div class="info">
+        <span class="name" id="userName">Loading…</span>
+        <span class="contact" id="userContact"></span>
+    </div>
+    <button id="inlineSignOut">Sign Out</button>
+</div>
+
+<nav class="navbar">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between">
-            
-            <a href="index.html" class="flex items-center space-x-2" title="Go to Homepage">
+            <a href="index.html" class="flex items-center space-x-2">
                 <span class="text-xl font-bold">
                     <span class="text-gradient">CephasGM</span>
                     <span class="text-white font-light">|</span>
                     <span class="text-white font-semibold">GameZone</span>
                 </span>
             </a>
-            
+
             <div class="hidden lg:flex items-center space-x-1">
-    <!-- Info dropdown -->
-    <div class="dropdown">
-        <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Info ▾</span>
-        <div class="dropdown-menu">
-            <a href="about.html">About Us</a>
-            <a href="vip.html">VIP Club</a>
-            <a href="referrals.html">Referrals</a>
-            <a href="privacy.html">Privacy Policy</a>
-            <a href="terms.html">Terms & Conditions</a>
-            <a href="cookies.html">Cookie Policy</a>
+                <a href="dashboard.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Dashboard</a>
+                <a href="wallet.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Wallet</a>
+                <a href="profile.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Profile</a>
+                <a href="settings.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Settings</a>
+                <a href="kyc.html" class="px-3 py-2 text-sm text-white font-semibold rounded-lg bg-white/5">KYC</a>
+            </div>
+
+            <button id="mobileToggle" class="lg:hidden p-2 text-white/40 hover:text-white transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
         </div>
     </div>
-
-    <!-- Account dropdown -->
-    <div class="dropdown">
-        <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Account ▾</span>
-        <div class="dropdown-menu">
-            <a href="dashboard.html">Dashboard</a>
-            <a href="profile.html">Profile</a>
-            <a href="wallet.html">Wallet</a>
-            <a href="deposit.html">Deposit</a>
-            <a href="withdraw.html">Withdraw</a>
-            <a href="transactions.html">Transactions</a>
-            <a href="bet-history.html">Bet History</a>
-            <a href="bonuses.html">Bonuses</a>
-            <a href="kyc.html">KYC Verification</a>
-            <a href="settings.html">Settings</a>
-            <a href="signin.html">Sign In</a>
-            <a href="signup.html">Sign Up</a>
-        </div>
-    </div>
-
-    <!-- Promotions link -->
-    <a href="promotions.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Promotions</a>
-
-    <!-- Sports link -->
-    <a href="sports.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Sports</a>
-
-    <!-- Casino link -->
-    <a href="casino.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Casino</a>
-
-    <!-- Live link -->
-    <a href="live-betting.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 flex items-center space-x-1">
-        <span class="live-dot"></span><span>Live</span>
-    </a>
-
-    <!-- Virtual dropdown -->
-    <div class="dropdown">
-        <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Virtual ▾</span>
-        <div class="dropdown-menu">
-            <a href="virtual-football.html">Virtual Football</a>
-            <a href="virtual-horse-racing.html">Virtual Horse Racing</a>
-            <a href="virtual-car-racing.html">Virtual Car Racing</a>
-            <a href="virtual-netball.html">Virtual Netball</a>
-            <a href="adventure-games.html">Adventure Games</a>
-            <a href="aviator.html">Aviator</a>
-        </div>
-    </div>
-
-    <!-- Support dropdown -->
-    <div class="dropdown">
-        <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Support ▾</span>
-        <div class="dropdown-menu">
-            <a href="support.html">Help Center</a>
-            <a href="messages.html">Messages</a>
-            <a href="notifications.html">Notifications</a>
-            <a href="faq.html">FAQ</a>
-            <a href="contact.html">Contact Us</a>
-            <a href="responsible-gambling.html">Responsible Gambling</a>
-            <a href="self-exclusion.html">Self-Exclusion</a>
-        </div>
-    </div>
-</div>
-
-<div class="flex items-center space-x-3">
-    <button id="mobileToggle" class="lg:hidden p-2 text-white/40 hover:text-white transition-colors">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-        </svg>
-    </button>
-</div>
-</div>
-</div>
 </nav>
 
-<!-- Mobile Menu -->
 <div id="mobileMenu" class="mobile-menu">
     <nav class="flex flex-col space-y-6">
-        <a href="index.html" class="text-lg text-white/70 hover:text-white">Home</a>
-        <a href="sports.html" class="text-lg text-white/70 hover:text-white">Sports</a>
-        <a href="live-betting.html" class="text-lg text-white/70 hover:text-white">Live Betting</a>
-        <a href="casino.html" class="text-lg text-white/70 hover:text-white">Casino</a>
-        <a href="promotions.html" class="text-lg text-white/70 hover:text-white">Promotions</a>
-        <a href="bonuses.html" class="text-lg text-white/70 hover:text-white">Bonuses</a>
-        <a href="leaderboard.html" class="text-lg text-white/70 hover:text-white">Leaderboard</a>
-        <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Account</span>
-            <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="dashboard.html" class="text-sm text-white/50 hover:text-white">Dashboard</a>
-                <a href="profile.html" class="text-sm text-white/50 hover:text-white">Profile</a>
-                <a href="wallet.html" class="text-sm text-white/50 hover:text-white">Wallet</a>
-                <a href="deposit.html" class="text-sm text-white/50 hover:text-white">Deposit</a>
-                <a href="withdraw.html" class="text-sm text-white/50 hover:text-white">Withdraw</a>
-                <a href="transactions.html" class="text-sm text-white/50 hover:text-white">Transactions</a>
-                <a href="bet-history.html" class="text-sm text-white/50 hover:text-white">Bet History</a>
-                <a href="kyc.html" class="text-sm text-white/50 hover:text-white">KYC</a>
-                <a href="settings.html" class="text-sm text-white/50 hover:text-white">Settings</a>
-                <a href="signin.html" class="text-sm text-white/50 hover:text-white">Sign In</a>
-                <a href="signup.html" class="text-sm text-white/50 hover:text-white">Sign Up</a>
-            </div>
-        </div>
-        <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Virtual Games</span>
-            <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="virtual-football.html" class="text-sm text-white/50 hover:text-white">Virtual Football</a>
-                <a href="virtual-horse-racing.html" class="text-sm text-white/50 hover:text-white">Horse Racing</a>
-                <a href="virtual-car-racing.html" class="text-sm text-white/50 hover:text-white">Car Racing</a>
-                <a href="virtual-netball.html" class="text-sm text-white/50 hover:text-white">Netball</a>
-                <a href="adventure-games.html" class="text-sm text-white/50 hover:text-white">Adventure</a>
-                <a href="aviator.html" class="text-sm text-white/50 hover:text-white">Aviator</a>
-            </div>
-        </div>
-        <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Support</span>
-            <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="support.html" class="text-sm text-white/50 hover:text-white">Help Center</a>
-                <a href="messages.html" class="text-sm text-white/50 hover:text-white">Messages</a>
-                <a href="notifications.html" class="text-sm text-white/50 hover:text-white">Notifications</a>
-                <a href="faq.html" class="text-sm text-white/50 hover:text-white">FAQ</a>
-                <a href="contact.html" class="text-sm text-white/50 hover:text-white">Contact</a>
-                <a href="responsible-gambling.html" class="text-sm text-white/50 hover:text-white">Responsible</a>
-                <a href="self-exclusion.html" class="text-sm text-white/50 hover:text-white">Self-Exclusion</a>
-            </div>
-        </div>
-        <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Information</span>
-            <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="about.html" class="text-sm text-white/50 hover:text-white">About</a>
-                <a href="vip.html" class="text-sm text-white/50 hover:text-white">VIP</a>
-                <a href="referrals.html" class="text-sm text-white/50 hover:text-white">Referrals</a>
-                <a href="privacy.html" class="text-sm text-white/50 hover:text-white">Privacy</a>
-                <a href="terms.html" class="text-sm text-white/50 hover:text-white">Terms</a>
-                <a href="cookies.html" class="text-sm text-white/50 hover:text-white">Cookies</a>
-            </div>
-        </div>
+        <a href="dashboard.html" class="text-lg text-white/70 hover:text-white">Dashboard</a>
+        <a href="wallet.html" class="text-lg text-white/70 hover:text-white">Wallet</a>
+        <a href="profile.html" class="text-lg text-white/70 hover:text-white">Profile</a>
+        <a href="settings.html" class="text-lg text-white/70 hover:text-white">Settings</a>
+        <a href="kyc.html" class="text-lg text-white/70 hover:text-white">KYC</a>
     </nav>
 </div>
 
-<!-- ==========================================
-     KYC CONTENT
-     ========================================== -->
-<div class="page-background pt-20 pb-12 px-4">
-    <div class="max-w-3xl mx-auto relative z-10">
-        
-        <div class="text-center mb-8">
-            <h1 class="text-4xl font-bold">KYC <span class="text-gradient">Verification</span></h1>
-            <p class="text-sm text-white/40 mt-2">Verify your identity to unlock full account features and higher limits.</p>
+<div class="dashboard-bg min-h-screen">
+    <div class="content-wrapper py-8 px-4 sm:px-6 lg:px-8 max-w-3xl mx-auto">
+
+        <div class="mb-6">
+            <h1 class="text-3xl font-bold">🪪 Identity Verification</h1>
+            <p class="text-sm text-white/40 mt-1">Verify your identity to unlock withdrawals and higher limits</p>
         </div>
-        
-        <!-- Status Badge -->
-        <div class="glass rounded-2xl p-6 mb-8 text-center">
-            <h3 class="text-lg font-bold mb-2">Verification Status</h3>
-            <span id="kycStatus" class="inline-block px-4 py-2 rounded-full text-sm font-semibold bg-yellow-500/10 text-yellow-400">
-                ⚠️ Not Verified
-            </span>
-            <p class="text-xs text-white/40 mt-2">Complete the form below to start the verification process.</p>
+
+        <!-- STATUS HERO -->
+        <div id="statusHero" class="status-hero not-submitted">
+            <div class="status-icon" id="statusIcon">🛡️</div>
+            <h2 class="text-2xl font-bold mb-2" id="statusTitle">Verification Required</h2>
+            <p class="text-sm text-white/60 max-w-md mx-auto" id="statusSubtitle">
+                Upload a government-issued ID and a selfie to verify your identity.
+            </p>
+            <div id="statusMeta" class="text-xs text-white/40 mt-4"></div>
         </div>
-        
-        <!-- KYC Form -->
-        <div id="kycFormContainer" class="glass rounded-2xl p-6 md:p-8">
-            <h3 class="text-xl font-bold mb-6">Submit Your Documents</h3>
-            <form id="kycForm" class="space-y-5">
-                <div>
-                    <label class="block text-xs text-white/40 mb-1.5 ml-1">Full Name (as on ID)</label>
-                    <input type="text" id="fullName" placeholder="Cephas GM" class="input-field" required>
+
+        <!-- SUBMISSION VIEW (when not submitted / rejected) -->
+        <div id="submissionView">
+            <div class="glass rounded-3xl p-6 mb-6">
+                <div class="flex items-center gap-3 mb-5">
+                    <div class="settings-icon" style="width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;background:rgba(0,85,255,0.12);border:1px solid rgba(0,85,255,0.25);">📄</div>
+                    <div>
+                        <h3 class="font-bold">Submit Documents</h3>
+                        <p class="text-xs text-white/40">All fields required</p>
+                    </div>
                 </div>
-                <div>
-                    <label class="block text-xs text-white/40 mb-1.5 ml-1">Date of Birth</label>
-                    <input type="date" id="dob" class="input-field" required>
-                </div>
-                <div>
-                    <label class="block text-xs text-white/40 mb-1.5 ml-1">ID Type</label>
-                    <select id="idType" class="select-field" required>
-                        <option value="">Select ID type</option>
-                        <option value="passport">Passport</option>
-                        <option value="national_id">National ID</option>
-                        <option value="drivers_license">Driver's License</option>
+
+                <!-- ID Document -->
+                <div class="upload-card mb-4">
+                    <div class="flex items-center justify-between mb-3 flex-wrap gap-2">
+                        <span class="doc-type-pill">1 · GOVERNMENT ID</span>
+                        <span class="text-[10px] text-white/35">Front side · Clear photo</span>
+                    </div>
+                    <select id="idTypeSelect" class="input-field mb-3">
+                        <option value="ID">National ID Card</option>
+                        <option value="PASSPORT">Passport</option>
+                        <option value="DRIVER_LICENSE">Driver's License</option>
                     </select>
+                    <div class="upload-zone" id="idUploadZone">
+                        <input type="file" id="idFileInput" accept="image/*" capture="environment">
+                        <div id="idUploadPlaceholder">
+                            <div class="upload-icon">📷</div>
+                            <div class="upload-text">Click to upload or take photo</div>
+                            <div class="upload-hint">JPG, PNG · Max 5MB</div>
+                        </div>
+                        <div id="idPreviewWrap" style="display:none">
+                            <img id="idPreview" class="preview-img" alt="">
+                            <div class="file-name" id="idFileName"></div>
+                        </div>
+                    </div>
+                    <input type="text" id="idNumber" class="input-field mt-3" placeholder="Document number (e.g. 19900101-12345-00001-23)">
                 </div>
-                <div>
-                    <label class="block text-xs text-white/40 mb-1.5 ml-1">ID Number</label>
-                    <input type="text" id="idNumber" placeholder="Enter ID number" class="input-field" required>
-                </div>
-                
-                <!-- File Uploads -->
-                <div>
-                    <label class="block text-xs text-white/40 mb-1.5 ml-1">Front of ID</label>
-                    <div class="file-upload-area" id="idFrontUpload">
-                        <div class="text-3xl mb-2">📄</div>
-                        <p class="text-sm text-white/50">Click to upload or drag & drop</p>
-                        <p class="text-xs text-white/30">JPG, PNG or PDF (max 5MB)</p>
-                        <input type="file" accept="image/*,.pdf" class="hidden" id="idFrontFile">
+
+                <!-- Selfie -->
+                <div class="upload-card">
+                    <div class="flex items-center justify-between mb-3 flex-wrap gap-2">
+                        <span class="doc-type-pill">2 · SELFIE</span>
+                        <span class="text-[10px] text-white/35">Hold your ID next to your face</span>
+                    </div>
+                    <div class="upload-zone" id="selfieUploadZone">
+                        <input type="file" id="selfieFileInput" accept="image/*" capture="user">
+                        <div id="selfieUploadPlaceholder">
+                            <div class="upload-icon">🤳</div>
+                            <div class="upload-text">Click to upload or take selfie</div>
+                            <div class="upload-hint">Face clearly visible · Well-lit</div>
+                        </div>
+                        <div id="selfiePreviewWrap" style="display:none">
+                            <img id="selfiePreview" class="preview-img" alt="">
+                            <div class="file-name" id="selfieFileName"></div>
+                        </div>
                     </div>
                 </div>
-                <div>
-                    <label class="block text-xs text-white/40 mb-1.5 ml-1">Back of ID</label>
-                    <div class="file-upload-area" id="idBackUpload">
-                        <div class="text-3xl mb-2">📄</div>
-                        <p class="text-sm text-white/50">Click to upload or drag & drop</p>
-                        <p class="text-xs text-white/30">JPG, PNG or PDF (max 5MB)</p>
-                        <input type="file" accept="image/*,.pdf" class="hidden" id="idBackFile">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-xs text-white/40 mb-1.5 ml-1">Proof of Address (Utility Bill, Bank Statement)</label>
-                    <div class="file-upload-area" id="poaUpload">
-                        <div class="text-3xl mb-2">🏠</div>
-                        <p class="text-sm text-white/50">Click to upload or drag & drop</p>
-                        <p class="text-xs text-white/30">JPG, PNG or PDF (max 5MB)</p>
-                        <input type="file" accept="image/*,.pdf" class="hidden" id="poaFile">
-                    </div>
-                </div>
-                
-                <button type="submit" class="btn-primary w-full py-3 text-base">
-                    Submit for Verification
-                </button>
-            </form>
-            
-            <!-- Success Message (hidden) -->
-            <div id="successMsg" class="hidden text-center py-6">
-                <div class="text-4xl mb-3">✅</div>
-                <h3 class="text-xl font-bold text-green-400">Documents Submitted!</h3>
-                <p class="text-sm text-white/50 mt-2">Your verification is under review. We'll notify you within 24‑48 hours.</p>
-                <button onclick="window.location.reload()" class="btn-secondary mt-4">Upload Again</button>
+
+                <!-- Terms -->
+                <label class="flex items-start gap-2 text-xs text-white/50 mt-6 cursor-pointer">
+                    <input type="checkbox" id="kycTerms" class="mt-0.5 rounded bg-white/10 border-white/20 text-blue-500">
+                    <span>I confirm the documents are authentic and belong to me. I understand that falsified documents may result in account suspension.</span>
+                </label>
+
+                <!-- Submit -->
+                <button id="submitKycBtn" class="btn-primary w-full mt-4" disabled>Submit for Review</button>
+                <div id="kycError" class="mt-3 text-sm text-red-400 text-center hidden"></div>
+            </div>
+
+            <!-- Info -->
+            <div class="glass rounded-2xl p-4 text-xs text-white/40 leading-relaxed mb-6">
+                <strong class="text-white/60">ℹ️ Why we verify</strong><br>
+                Identity verification protects you and the platform from fraud and satisfies regulatory requirements for online betting. Your documents are encrypted and never shared with third parties.
             </div>
         </div>
-        
-        <!-- Help note -->
-        <p class="text-xs text-white/30 text-center mt-6">
-            Need help with verification? <a href="contact.html" class="text-blue-400 hover:underline">Contact Support</a>.
-        </p>
-        
+
+        <!-- STATUS VIEW (when pending / approved) -->
+        <div id="statusView" class="hidden">
+            <div class="glass rounded-3xl p-6 mb-6">
+                <h3 class="font-bold mb-4">📎 Submitted Documents</h3>
+                <div id="docList" class="space-y-3"></div>
+            </div>
+
+            <div id="approvedActions" class="hidden">
+                <div class="glass rounded-2xl p-4 mb-4 text-xs text-white/40 leading-relaxed">
+                    <strong class="text-white/60">✓ You're verified!</strong><br>
+                    You now have full access to withdrawals, higher betting limits, and VIP benefits.
+                </div>
+                <a href="wallet.html" class="btn-primary w-full text-center" style="display:block;text-decoration:none;">Go to Wallet →</a>
+            </div>
+
+            <div id="pendingActions" class="hidden">
+                <div class="glass rounded-2xl p-4 text-xs text-white/40 leading-relaxed">
+                    <strong class="text-white/60">⏳ Review in progress</strong><br>
+                    Our team typically reviews documents within 1–4 hours. You'll receive an email and in-app notification when your status changes.
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 
-<!-- ==========================================
-     FOOTER
-     ========================================== -->
-<footer class="bg-[#0a0a12] border-t border-white/5 py-12">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div class="col-span-2 md:col-span-1">
-                <div class="text-lg font-bold mb-3">
-                    <span class="text-gradient">CephasGM</span>
-                    <span class="text-white font-light">|</span>
-                    <span class="text-white font-semibold">GameZone</span>
-                </div>
-                <p class="text-sm text-white/30 leading-relaxed">
-                    Premium online betting platform for sports, casino, and virtual games.
-                </p>
-            </div>
-            <div>
-                <h4 class="text-sm font-semibold text-white/40 mb-3">Quick Links</h4>
-                <ul class="space-y-2">
-                    <li><a href="sports.html" class="footer-link">Sports</a></li>
-                    <li><a href="live-betting.html" class="footer-link">Live Betting</a></li>
-                    <li><a href="casino.html" class="footer-link">Casino</a></li>
-                    <li><a href="promotions.html" class="footer-link">Promotions</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-sm font-semibold text-white/40 mb-3">Support</h4>
-                <ul class="space-y-2">
-                    <li><a href="support.html" class="footer-link">Help Center</a></li>
-                    <li><a href="contact.html" class="footer-link">Contact</a></li>
-                    <li><a href="faq.html" class="footer-link">FAQ</a></li>
-                    <li><a href="responsible-gambling.html" class="footer-link">Responsible Gambling</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-sm font-semibold text-white/40 mb-3">Legal</h4>
-                <ul class="space-y-2">
-                    <li><a href="terms.html" class="footer-link">Terms</a></li>
-                    <li><a href="privacy.html" class="footer-link">Privacy</a></li>
-                    <li><a href="cookies.html" class="footer-link">Cookies</a></li>
-                    <li><a href="kyc.html" class="footer-link">KYC</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="mt-8 pt-6 border-t border-white/5 flex flex-col md:flex-row items-center justify-between text-xs text-white/20">
-            <p>Copyright © 2025 Cephas GM | Innovating for Tomorrow</p>
-            <p class="mt-2 md:mt-0">18+ | Play Responsibly</p>
-        </div>
+<footer class="bg-[#0a0a12] border-t border-white/5 py-12 mt-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs text-white/20">
+        <p>Copyright © 2026 Cephas GM | Innovating for Tomorrow</p>
+        <p class="mt-2">18+ | Play Responsibly</p>
     </div>
 </footer>
 
-<!-- ==========================================
-     JAVASCRIPT
-     ========================================== -->
 <script>
-(function() {
+document.addEventListener('DOMContentLoaded', function () {
     'use strict';
-    
-    // Mobile menu
-    const mobileToggle = document.getElementById('mobileToggle');
-    const mobileMenu = document.getElementById('mobileMenu');
-    let mobileOpen = false;
-    
-    mobileToggle.addEventListener('click', () => {
+
+    /* ------------------------------------------------------------
+       AUTH GUARD
+       ------------------------------------------------------------ */
+    if (!window.CephasGM || !CephasGM.api) return;
+    if (!CephasGM.api.isLoggedIn()) {
+        window.location.href = 'signin.html';
+        return;
+    }
+
+    /* ------------------------------------------------------------
+       STATE
+       ------------------------------------------------------------ */
+    var state = {
+        idFile: null,
+        idDataUrl: null,
+        selfieFile: null,
+        selfieDataUrl: null,
+        kycStatus: 'NOT_SUBMITTED',
+    };
+
+    var MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+
+    /* ------------------------------------------------------------
+       USER BADGE
+       ------------------------------------------------------------ */
+    function paintUserBadge(user) {
+        if (!user) return;
+        var name = user.fullName || user.username || 'Player';
+        var contact = user.email || user.phone || '';
+        var initial = name.charAt(0).toUpperCase();
+        document.getElementById('userAvatar').textContent = initial;
+        document.getElementById('userName').textContent = name;
+        document.getElementById('userContact').textContent = contact;
+        document.getElementById('userBar').style.display = 'flex';
+    }
+
+    var cachedUser = CephasGM.api.getUser();
+    if (cachedUser) paintUserBadge(cachedUser);
+
+    document.getElementById('inlineSignOut').addEventListener('click', function () {
+        var btn = this;
+        btn.disabled = true;
+        btn.textContent = 'Signing out…';
+        CephasGM.api.logout().catch(function () {}).then(function () {
+            CephasGM.api.clearTokens();
+            window.location.href = 'signin.html';
+        });
+    });
+
+    /* ------------------------------------------------------------
+       HELPERS
+       ------------------------------------------------------------ */
+    function escapeHtml(s) {
+        return String(s || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
+    function toast(msg, type) {
+        if (CephasGM && CephasGM.toast) CephasGM.toast(msg, type);
+        else alert(msg);
+    }
+
+    function readFileAsDataURL(file) {
+        return new Promise(function (resolve, reject) {
+            var reader = new FileReader();
+            reader.onload = function () { resolve(reader.result); };
+            reader.onerror = function () { reject(reader.error); };
+            reader.readAsDataURL(file);
+        });
+    }
+
+    /* ------------------------------------------------------------
+       FILE HANDLERS
+       ------------------------------------------------------------ */
+    function setupFileInput(zoneId, inputId, placeholderId, previewWrapId, previewId, fileNameId, fileKey) {
+        var input = document.getElementById(inputId);
+        var zone = document.getElementById(zoneId);
+        var placeholder = document.getElementById(placeholderId);
+        var previewWrap = document.getElementById(previewWrapId);
+        var preview = document.getElementById(previewId);
+        var fileName = document.getElementById(fileNameId);
+
+        input.addEventListener('change', function () {
+            var file = this.files[0];
+            if (!file) return;
+
+            if (file.size > MAX_FILE_SIZE) {
+                toast('File too large (max 5MB)', 'error');
+                this.value = '';
+                return;
+            }
+            if (!file.type.startsWith('image/')) {
+                toast('Only image files allowed', 'error');
+                this.value = '';
+                return;
+            }
+
+            readFileAsDataURL(file).then(function (dataUrl) {
+                state[fileKey + 'File'] = file;
+                state[fileKey + 'DataUrl'] = dataUrl;
+
+                preview.src = dataUrl;
+                fileName.textContent = file.name + ' · ' + (file.size / 1024).toFixed(0) + ' KB';
+                placeholder.style.display = 'none';
+                previewWrap.style.display = 'block';
+                zone.classList.add('has-file');
+
+                validateForm();
+            }).catch(function (err) {
+                toast('Could not read file', 'error');
+                console.error(err);
+            });
+        });
+    }
+
+    setupFileInput('idUploadZone', 'idFileInput', 'idUploadPlaceholder', 'idPreviewWrap', 'idPreview', 'idFileName', 'id');
+    setupFileInput('selfieUploadZone', 'selfieFileInput', 'selfieUploadPlaceholder', 'selfiePreviewWrap', 'selfiePreview', 'selfieFileName', 'selfie');
+
+    /* ------------------------------------------------------------
+       FORM VALIDATION
+       ------------------------------------------------------------ */
+    function validateForm() {
+        var hasId = !!state.idDataUrl;
+        var hasSelfie = !!state.selfieDataUrl;
+        var hasNumber = document.getElementById('idNumber').value.trim().length >= 4;
+        var termsAccepted = document.getElementById('kycTerms').checked;
+
+        var valid = hasId && hasSelfie && hasNumber && termsAccepted;
+
+        document.getElementById('submitKycBtn').disabled = !valid;
+
+        var err = document.getElementById('kycError');
+        if (!valid) {
+            var missing = [];
+            if (!hasId) missing.push('ID document');
+            if (!hasSelfie) missing.push('selfie');
+            if (!hasNumber) missing.push('document number');
+            if (!termsAccepted) missing.push('terms agreement');
+
+            err.textContent = 'Still needed: ' + missing.join(', ');
+            err.classList.remove('hidden');
+        } else {
+            err.classList.add('hidden');
+        }
+    }
+
+    document.getElementById('idNumber').addEventListener('input', validateForm);
+    document.getElementById('kycTerms').addEventListener('change', validateForm);
+
+    /* ------------------------------------------------------------
+       PAINT STATUS
+       ------------------------------------------------------------ */
+    function paintStatus(data) {
+        var status = data.status || 'NOT_SUBMITTED';
+        state.kycStatus = status;
+
+        var hero = document.getElementById('statusHero');
+        var icon = document.getElementById('statusIcon');
+        var title = document.getElementById('statusTitle');
+        var subtitle = document.getElementById('statusSubtitle');
+        var meta = document.getElementById('statusMeta');
+
+        hero.className = 'status-hero';
+
+        if (status === 'APPROVED') {
+            hero.classList.add('approved');
+            icon.textContent = '✅';
+            title.textContent = 'Identity Verified';
+            subtitle.textContent = 'Your identity has been successfully verified. You have full access to all features.';
+            meta.textContent = data.verifiedAt ? 'Verified on ' + new Date(data.verifiedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
+            document.getElementById('submissionView').classList.add('hidden');
+            document.getElementById('statusView').classList.remove('hidden');
+            document.getElementById('approvedActions').classList.remove('hidden');
+            document.getElementById('pendingActions').classList.add('hidden');
+        } else if (status === 'PENDING') {
+            hero.classList.add('pending');
+            icon.textContent = '⏳';
+            title.textContent = 'Under Review';
+            subtitle.textContent = 'We\'re reviewing your documents. This usually takes 1–4 hours.';
+            meta.textContent = 'You\'ll receive a notification when your status changes.';
+            document.getElementById('submissionView').classList.add('hidden');
+            document.getElementById('statusView').classList.remove('hidden');
+            document.getElementById('approvedActions').classList.add('hidden');
+            document.getElementById('pendingActions').classList.remove('hidden');
+        } else if (status === 'REJECTED') {
+            hero.classList.add('rejected');
+            icon.textContent = '❌';
+            title.textContent = 'Verification Failed';
+            subtitle.textContent = data.rejectionNote || 'Your documents were not approved. Please try again with clearer images.';
+            meta.textContent = 'You can resubmit below.';
+            document.getElementById('submissionView').classList.remove('hidden');
+            document.getElementById('statusView').classList.add('hidden');
+        } else {
+            hero.classList.add('not-submitted');
+            icon.textContent = '🛡️';
+            title.textContent = 'Verification Required';
+            subtitle.textContent = 'Upload a government-issued ID and a selfie to verify your identity.';
+            meta.textContent = '';
+            document.getElementById('submissionView').classList.remove('hidden');
+            document.getElementById('statusView').classList.add('hidden');
+        }
+
+        /* Paint documents list */
+        if (data.documents && data.documents.length > 0) {
+            document.getElementById('docList').innerHTML = data.documents.map(function (d) {
+                var pillClass = d.status === 'APPROVED' ? 'badge-verified' : (d.status === 'REJECTED' ? 'badge-failed' : 'badge-pending');
+                var pillText = d.status === 'APPROVED' ? '✓ Approved' : (d.status === 'REJECTED' ? '✕ Rejected' : '⏳ Pending');
+
+                return '' +
+                    '<div class="flex items-center gap-3 p-3 rounded-xl bg-white/3 border border-white/6" style="background:rgba(255,255,255,0.03)">' +
+                        '<div style="width:52px;height:52px;border-radius:10px;overflow:hidden;flex-shrink:0;background:#000">' +
+                            '<img src="' + escapeHtml(d.documentUrl || '') + '" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display=\'none\'">' +
+                        '</div>' +
+                        '<div style="flex:1;min-width:0">' +
+                            '<div class="font-semibold text-sm">' + escapeHtml(d.documentType) + '</div>' +
+                            '<div class="text-[10px] text-white/35">Submitted ' + new Date(d.createdAt).toLocaleDateString() + '</div>' +
+                        '</div>' +
+                        '<span class="stat-pill ' + pillClass + '" style="font-size:10px;padding:4px 10px;border-radius:999px;font-weight:800;letter-spacing:0.06em">' + pillText + '</span>' +
+                    '</div>';
+            }).join('');
+        } else {
+            document.getElementById('docList').innerHTML =
+                '<p class="text-sm text-white/40 text-center py-6">No documents on file</p>';
+        }
+    }
+
+    /* ------------------------------------------------------------
+       LOAD KYC STATUS
+       ------------------------------------------------------------ */
+    function loadKycStatus() {
+        CephasGM.api.get('/kyc/me')
+            .then(function (res) {
+                if (res.success && res.data) {
+                    paintStatus(res.data);
+                }
+            })
+            .catch(function (err) {
+                console.error('KYC load failed:', err);
+                paintStatus({ status: 'NOT_SUBMITTED', documents: [] });
+            });
+    }
+
+    /* ------------------------------------------------------------
+       SUBMIT KYC
+       ------------------------------------------------------------ */
+    document.getElementById('submitKycBtn').addEventListener('click', function () {
+        var btn = this;
+        var orig = btn.textContent;
+        btn.disabled = true;
+        btn.textContent = 'Submitting…';
+
+        var idType = document.getElementById('idTypeSelect').value;
+        var idNumber = document.getElementById('idNumber').value.trim();
+
+        var body = {
+            documents: [
+                {
+                    documentType: idType,
+                    documentUrl: state.idDataUrl,
+                    documentNumber: idNumber,
+                },
+                {
+                    documentType: 'SELFIE',
+                    documentUrl: state.selfieDataUrl,
+                },
+            ],
+        };
+
+        CephasGM.api.post('/kyc', body)
+            .then(function (res) {
+                if (res.success) {
+                    toast('Documents submitted! We\'ll review within 1–4 hours.', 'success');
+                    setTimeout(function () {
+                        loadKycStatus();
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }, 800);
+                } else {
+                    toast(res.message || 'Submission failed', 'error');
+                    btn.disabled = false;
+                    btn.textContent = orig;
+                }
+            })
+            .catch(function (err) {
+                var msg = err.message || (err.json && err.json.message) || 'Submission failed';
+                toast(msg, 'error');
+                btn.disabled = false;
+                btn.textContent = orig;
+            });
+    });
+
+    /* ------------------------------------------------------------
+       MOBILE MENU
+       ------------------------------------------------------------ */
+    var mobileToggle = document.getElementById('mobileToggle');
+    var mobileMenu = document.getElementById('mobileMenu');
+    var mobileOpen = false;
+
+    mobileToggle.addEventListener('click', function () {
         mobileOpen = !mobileOpen;
-        mobileMenu.classList.toggle('active');
+        mobileMenu.classList.toggle('active', mobileOpen);
         document.body.style.overflow = mobileOpen ? 'hidden' : '';
     });
-    mobileMenu.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
+    mobileMenu.querySelectorAll('a').forEach(function (a) {
+        a.addEventListener('click', function () {
             mobileMenu.classList.remove('active');
             document.body.style.overflow = '';
             mobileOpen = false;
         });
     });
-    
-    // File upload area clicks
-    function setupFileUpload(areaId, fileInputId) {
-        const area = document.getElementById(areaId);
-        const fileInput = document.getElementById(fileInputId);
-        area.addEventListener('click', () => fileInput.click());
-        fileInput.addEventListener('change', function() {
-            if (this.files.length > 0) {
-                area.innerHTML = `<div class="text-3xl mb-2">✅</div><p class="text-sm text-green-400">${this.files[0].name}</p>`;
-            }
-        });
-    }
-    setupFileUpload('idFrontUpload', 'idFrontFile');
-    setupFileUpload('idBackUpload', 'idBackFile');
-    setupFileUpload('poaUpload', 'poaFile');
-    
-    // Form submission
-    document.getElementById('kycForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        // Simple validation
-        const name = document.getElementById('fullName').value;
-        const idType = document.getElementById('idType').value;
-        const idNumber = document.getElementById('idNumber').value;
-        if (!name || !idType || !idNumber) {
-            alert('Please fill in all required fields.');
-            return;
-        }
-        
-        // Mock submission
-        document.getElementById('kycForm').classList.add('hidden');
-        document.getElementById('successMsg').classList.remove('hidden');
-        
-        // Update status badge
-        const statusEl = document.getElementById('kycStatus');
-        statusEl.className = 'inline-block px-4 py-2 rounded-full text-sm font-semibold bg-blue-500/10 text-blue-400';
-        statusEl.textContent = '⏳ Under Review';
-    });
-    
-    // PWA
+
+    /* ------------------------------------------------------------
+       BOOT
+       ------------------------------------------------------------ */
+    loadKycStatus();
+
     if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/sw.js')
-                .then(reg => console.log('SW registered'))
-                .catch(err => console.log('SW registration failed'));
+        window.addEventListener('load', function () {
+            navigator.serviceWorker.register('sw.js').catch(function () {});
         });
     }
-})();
+});
 </script>
 
 </body>
