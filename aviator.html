@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#0a0a12">
+    <meta name="description" content="Aviator – The ultimate crash game on CephasGM GameZone">
     <title>Aviator | CephasGM GameZone</title>
 
     <link rel="manifest" href="manifest.json">
@@ -12,6 +13,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="js/api.js"></script>
     <script src="js/auth-ui.js"></script>
@@ -26,15 +28,73 @@
             overflow-x: hidden;
         }
 
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a12; }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #0055ff, #542bff);
+            border-radius: 10px;
+        }
+
         .glass {
             background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.06);
         }
 
+        .btn-primary {
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 20px rgba(0, 85, 255, 0.25);
+            letter-spacing: .01em;
+        }
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 85, 255, 0.45);
+        }
+        .btn-primary:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ff9f0a, #ff6a00);
+            color: #1a0d00;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 22px rgba(255, 154, 10, 0.32);
+            letter-spacing: .01em;
+            animation: cashPulse 1.2s ease-in-out infinite;
+        }
+        .btn-danger:hover:not(:disabled) {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 34px rgba(255, 154, 10, 0.5);
+        }
+        .btn-danger:disabled { opacity: .55; cursor: not-allowed; animation: none; transform: none; }
+        @keyframes cashPulse {
+            0%, 100% { box-shadow: 0 4px 22px rgba(255, 154, 10, 0.32); }
+            50% { box-shadow: 0 4px 32px rgba(255, 154, 10, 0.6); }
+        }
+
+        .btn-primary.btn-cancel {
+            background: linear-gradient(135deg, #2a2a3a, #1b1b26);
+            box-shadow: 0 4px 20px rgba(0,0,0,.4);
+            color: #ff8098;
+        }
+
         .navbar {
-            position: sticky;
-            top: 0; z-index: 1000;
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
             padding: 16px 0;
             background: rgba(10, 10, 18, 0.92);
             backdrop-filter: blur(20px);
@@ -48,131 +108,309 @@
             background-clip: text;
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, #0055ff, #542bff);
-            color: white;
-            padding: 16px 28px;
-            border-radius: 50px;
-            font-weight: 800;
-            font-size: 15px;
-            border: none;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            box-shadow: 0 6px 22px rgba(0, 85, 255, 0.3);
-            font-family: inherit;
-            letter-spacing: 0.02em;
-            width: 100%;
+        .mobile-menu {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(10, 10, 18, 0.98);
+            backdrop-filter: blur(20px);
+            z-index: 999;
+            display: none;
+            padding: 80px 24px 24px;
+            overflow-y: auto;
         }
-        .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 34px rgba(0, 85, 255, 0.5); }
-        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+        .mobile-menu.active { display: block; animation: fadeIn .3s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .btn-cashout {
-            background: linear-gradient(135deg, #ff9f0a, #ff6a00);
-            color: #1a0d00;
-            padding: 16px 28px;
-            border-radius: 50px;
-            font-weight: 900;
-            font-size: 15px;
-            border: none;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            box-shadow: 0 6px 22px rgba(255, 154, 10, 0.35);
-            font-family: inherit;
-            letter-spacing: 0.02em;
-            width: 100%;
-            animation: cashPulse 1.2s ease-in-out infinite;
+        .footer-link {
+            color: rgba(255, 255, 255, 0.4);
+            transition: all .3s ease;
+            text-decoration: none;
+            font-size: 14px;
         }
-        .btn-cashout:hover:not(:disabled) { transform: translateY(-2px) scale(1.02); box-shadow: 0 10px 34px rgba(255, 154, 10, 0.55); }
-        .btn-cashout:disabled { opacity: 0.6; cursor: not-allowed; animation: none; }
-        @keyframes cashPulse {
-            0%, 100% { box-shadow: 0 6px 22px rgba(255, 154, 10, 0.35); }
-            50% { box-shadow: 0 6px 32px rgba(255, 154, 10, 0.6); }
+        .footer-link:hover { color: #ffffff; }
+
+        .page-background {
+            min-height: 100vh;
+            background-image: url('https://static.vecteezy.com/system/resources/thumbnails/070/574/368/small/assorted-sports-equipment-on-black-backdrop-symbolizing-athleticism-competition-and-diverse-sporting-activities-photo.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+        }
+        .page-background::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(135deg,
+                rgba(10, 10, 18, 0.94) 0%,
+                rgba(10, 10, 18, 0.78) 50%,
+                rgba(10, 10, 18, 0.94) 100%);
+            z-index: -1;
+        }
+
+        .dropdown { position: relative; display: inline-block; }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%; left: 0;
+            background: rgba(10, 10, 18, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px;
+            min-width: 200px;
+            padding: 8px 0;
+            z-index: 1001;
+        }
+        .dropdown:hover .dropdown-menu { display: block; }
+        .dropdown-menu a {
+            display: block;
+            padding: 8px 16px;
+            color: rgba(255,255,255,0.6);
+            font-size: 13px;
+            transition: .2s;
+        }
+        .dropdown-menu a:hover { background: rgba(255,255,255,0.05); color: white; }
+
+        .live-dot {
+            width: 6px; height: 6px; border-radius: 50%;
+            background: #ff0044;
+            box-shadow: 0 0 8px #ff0044;
+            animation: pulseDot 1.4s infinite;
+            display: inline-block;
+        }
+        @keyframes pulseDot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: .35; transform: scale(.7); }
+        }
+
+        .game-card { padding: 12px; border-radius: 26px; }
+        @media (min-width: 640px) { .game-card { padding: 18px; } }
+
+        .live-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 11px;
+            border-radius: 999px;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: .12em;
+            color: #ff8098;
+            background: rgba(255, 0, 68, 0.1);
+            border: 1px solid rgba(255, 0, 68, 0.22);
+            white-space: nowrap;
+        }
+
+        .history-strip {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            overflow-x: auto;
+            max-width: 62%;
+            padding-bottom: 2px;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .history-strip::-webkit-scrollbar { display: none; }
+
+        .history-item {
+            flex: 0 0 auto;
+            padding: 4px 9px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 800;
+            font-variant-numeric: tabular-nums;
+            animation: popIn .3s cubic-bezier(.2,.9,.3,1.4);
+        }
+        @keyframes popIn {
+            from { transform: scale(.6); opacity: 0; }
+            to   { transform: scale(1);  opacity: 1; }
+        }
+        .history-item.low  { background: rgba(255, 77, 109, .14); color: #ff7d95; }
+        .history-item.mid  { background: rgba(0, 224, 122, .14); color: #4dffa8; }
+        .history-item.high { background: rgba(255, 204, 0, .15); color: #ffd93d; }
+
+        .canvas-wrap {
+            position: relative;
+            width: 100%;
+            border-radius: 20px;
+            overflow: hidden;
+            background:
+                radial-gradient(ellipse 80% 70% at 50% 115%, rgba(0, 85, 255, 0.20), transparent 62%),
+                radial-gradient(ellipse 60% 60% at 88% -10%, rgba(84, 43, 255, 0.18), transparent 60%),
+                #05050c;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.6);
+        }
+
+        #gameCanvas {
+            display: block;
+            width: 100%;
+            height: 340px;
+        }
+        @media (min-width: 640px) { #gameCanvas { height: 400px; } }
+        @media (max-width: 420px) { #gameCanvas { height: 240px; } }
+
+        .sound-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            z-index: 6;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.55);
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            color: rgba(255, 255, 255, 0.75);
+            cursor: pointer;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: all .22s ease;
+        }
+        .sound-btn:hover {
+            color: #fff;
+            border-color: rgba(255,255,255,0.25);
+            transform: scale(1.06);
+        }
+        .sound-btn.muted { color: #ff5f7a; border-color: rgba(255,95,122,0.35); }
+        .sound-btn svg { width: 18px; height: 18px; }
+
+        .wait-bar {
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.06);
+            z-index: 4;
+            opacity: 0;
+            transition: opacity .35s ease;
+        }
+        .canvas-wrap.is-waiting .wait-bar { opacity: 1; }
+        .wait-bar > div {
+            height: 100%;
+            width: 100%;
+            transform-origin: left center;
+            transform: scaleX(1);
+            background: linear-gradient(90deg, #0055ff, #542bff, #00ff88);
+            box-shadow: 0 0 12px rgba(0, 255, 136, .45);
+        }
+
+        .game-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            pointer-events: none;
+            padding-bottom: 14px;
+        }
+
+        .multiplier-display {
+            font-size: clamp(2.7rem, 11vw, 4.6rem);
+            font-weight: 900;
+            line-height: 1;
+            letter-spacing: -0.03em;
+            font-variant-numeric: tabular-nums;
+            color: #ffffff;
+            text-shadow:
+                0 0 26px rgba(0, 255, 136, 0.55),
+                0 0 60px rgba(0, 255, 136, 0.22),
+                0 6px 24px rgba(0, 0, 0, 0.85);
+            transition: color .2s ease;
+        }
+        .multiplier-display.crashed {
+            color: #ff2d55;
+            text-shadow:
+                0 0 26px rgba(255, 45, 85, 0.7),
+                0 0 60px rgba(255, 45, 85, 0.3),
+                0 6px 24px rgba(0, 0, 0, 0.85);
+            animation: shake .45s ease;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-7px); }
+            40% { transform: translateX(7px); }
+            60% { transform: translateX(-4px); }
+            80% { transform: translateX(4px); }
+        }
+
+        .status-text {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .16em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.42);
+            transition: color .25s ease;
+            text-align: center;
+        }
+        .status-text.crash {
+            color: #ff2d55;
+            animation: shake .45s ease;
         }
 
         .input-field {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 14px;
             padding: 14px 16px;
             color: white;
             width: 100%;
             font-size: 15px;
-            font-weight: 700;
-            font-family: inherit;
+            font-weight: 600;
             font-variant-numeric: tabular-nums;
+            transition: border-color .25s, background .25s;
         }
-        .input-field:focus { outline: none; border-color: #0055ff; background: rgba(0,85,255,0.06); }
+        .input-field:focus {
+            outline: none;
+            border-color: #0055ff;
+            background: rgba(0, 85, 255, 0.06);
+        }
+        .input-field::placeholder { color: rgba(255,255,255,0.22); font-weight: 400; }
+        .input-field:disabled { opacity: 0.55; cursor: not-allowed; }
 
         .chip {
-            padding: 8px 14px;
-            border-radius: 12px;
-            font-size: 12px;
+            padding: 6px 13px;
+            border-radius: 999px;
+            font-size: 11px;
             font-weight: 700;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.08);
-            color: rgba(255,255,255,0.7);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.6);
             cursor: pointer;
-            transition: all .2s;
-            font-family: inherit;
-            flex: 1;
+            transition: all .2s ease;
         }
-        .chip:hover { background: rgba(0,85,255,0.15); border-color: rgba(0,85,255,0.4); color: #fff; }
+        .chip:hover { background: rgba(255,255,255,0.11); color: #fff; }
+        .chip:active { transform: scale(.94); }
 
-        .multiplier-display {
-            font-size: clamp(3rem, 14vw, 6rem);
-            font-weight: 900;
-            line-height: 1;
-            letter-spacing: -0.04em;
-            font-variant-numeric: tabular-nums;
-            transition: color 0.15s, text-shadow 0.15s;
-        }
-        .multiplier-display.flying {
-            color: #6bffb0;
-            text-shadow: 0 0 30px rgba(107,255,176,0.5), 0 0 60px rgba(107,255,176,0.2);
-        }
-        .multiplier-display.crashed {
-            color: #ff2d55;
-            text-shadow: 0 0 30px rgba(255,45,85,0.7), 0 0 60px rgba(255,45,85,0.3);
-            animation: shake 0.4s ease;
-        }
-        .multiplier-display.waiting {
-            color: rgba(255,255,255,0.35);
-        }
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-6px); }
-            75% { transform: translateX(6px); }
-        }
-
-        .status-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 14px;
-            border-radius: 999px;
-            font-size: 11px;
-            font-weight: 800;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-        }
-        .status-pill.waiting  { background: rgba(255,204,0,0.12); color: #ffd166; border: 1px solid rgba(255,204,0,0.3); }
-        .status-pill.flying   { background: rgba(0,224,122,0.12); color: #6bffb0; border: 1px solid rgba(0,224,122,0.3); }
-        .status-pill.crashed  { background: rgba(255,0,68,0.12);  color: #ff8098; border: 1px solid rgba(255,0,68,0.3); }
-
-        .stat-chip {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 12px;
-            border-radius: 999px;
-            font-size: 11px;
+        .toast {
+            position: fixed;
+            left: 50%;
+            bottom: 28px;
+            z-index: 9999;
+            padding: 13px 22px;
+            border-radius: 16px;
+            font-size: 13px;
             font-weight: 700;
-            background: rgba(255,255,255,0.05);
+            white-space: nowrap;
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
             border: 1px solid rgba(255,255,255,0.08);
-            color: rgba(255,255,255,0.7);
+            opacity: 0;
+            transform: translate(-50%, 22px) scale(.96);
+            transition: all .35s cubic-bezier(.2,.9,.3,1.35);
+            pointer-events: none;
         }
-        .stat-chip strong { color: #fff; }
+        .toast.show { opacity: 1; transform: translate(-50%, 0) scale(1); }
+        .toast-ok  { background: rgba(0,255,136,0.12); color: #7dffbe; box-shadow: 0 10px 36px rgba(0,255,136,0.16); }
+        .toast-err { background: rgba(255,0,68,0.13); color: #ff97ab; box-shadow: 0 10px 36px rgba(255,0,68,0.18); }
 
+        /* User badge */
         #userBar {
             position: fixed;
             top: 84px; right: 16px;
@@ -203,47 +441,15 @@
             color: #ff8098; font-size: 11px; font-weight: 700;
             cursor: pointer; font-family: inherit; white-space: nowrap;
         }
-
-        /* Canvas */
-        .game-canvas-wrap {
-            position: relative;
-            background:
-                radial-gradient(ellipse 80% 70% at 50% 115%, rgba(0,85,255,0.20), transparent 62%),
-                radial-gradient(ellipse 60% 60% at 88% -10%, rgba(84,43,255,0.18), transparent 60%),
-                #05050c;
-            border-radius: 22px;
-            overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.06);
-            box-shadow: inset 0 0 60px rgba(0,0,0,0.6);
-        }
-        #gameCanvas { display: block; width: 100%; height: 300px; }
-
         @media (max-width: 640px) {
             #userBar { top: 76px; right: 8px; padding: 6px; }
             #userBar .info { display: none; }
-            #gameCanvas { height: 220px; }
-        }
-
-        .history-item {
-            padding: 4px 10px;
-            border-radius: 8px;
-            font-size: 11px;
-            font-weight: 800;
-            font-variant-numeric: tabular-nums;
-            flex-shrink: 0;
-            animation: popIn 0.3s ease;
-        }
-        .history-item.low  { background: rgba(255,77,109,.15); color: #ff7d95; }
-        .history-item.mid  { background: rgba(0,224,122,.15); color: #4dffa8; }
-        .history-item.high { background: rgba(255,204,0,.15); color: #ffd93d; }
-        @keyframes popIn {
-            from { transform: scale(0.6); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
         }
     </style>
 </head>
 <body data-requires-auth>
 
+<!-- User badge (top-right) -->
 <div id="userBar">
     <div class="avatar" id="userAvatar">U</div>
     <div class="info">
@@ -253,82 +459,153 @@
     <button id="inlineSignOut">Sign Out</button>
 </div>
 
-<nav class="navbar">
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between">
-            <a href="index.html" class="flex items-center space-x-2">
+            <a href="index.html" class="flex items-center space-x-2" title="Go to Homepage">
                 <span class="text-xl font-bold">
                     <span class="text-gradient">CephasGM</span>
                     <span class="text-white font-light">|</span>
                     <span class="text-white font-semibold">GameZone</span>
                 </span>
             </a>
+            <div class="hidden lg:flex items-center space-x-1">
+                <div class="dropdown">
+                    <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Info ▾</span>
+                    <div class="dropdown-menu">
+                        <a href="about.html">About Us</a>
+                        <a href="vip.html">VIP Club</a>
+                        <a href="referrals.html">Referrals</a>
+                        <a href="privacy.html">Privacy Policy</a>
+                        <a href="terms.html">Terms &amp; Conditions</a>
+                        <a href="cookies.html">Cookie Policy</a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Account ▾</span>
+                    <div class="dropdown-menu">
+                        <a href="dashboard.html">Dashboard</a>
+                        <a href="wallet.html">Wallet</a>
+                        <a href="deposit.html">Deposit</a>
+                        <a href="withdraw.html">Withdraw</a>
+                        <a href="transactions.html">Transactions</a>
+                        <a href="bet-history.html">Bet History</a>
+                        <a href="kyc.html">KYC Verification</a>
+                        <a href="settings.html">Settings</a>
+                    </div>
+                </div>
+                <a href="sports.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Sports</a>
+                <a href="casino.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Casino</a>
+                <div class="dropdown">
+                    <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Virtual ▾</span>
+                    <div class="dropdown-menu">
+                        <a href="virtual-football.html">Virtual Football</a>
+                        <a href="virtual-horse-racing.html">Virtual Horse Racing</a>
+                        <a href="virtual-car-racing.html">Virtual Car Racing</a>
+                        <a href="virtual-netball.html">Virtual Netball</a>
+                        <a href="aviator.html">Aviator</a>
+                    </div>
+                </div>
+            </div>
             <div class="flex items-center gap-3">
-                <a href="wallet.html" class="hidden sm:flex stat-chip">
-                    💰 <strong id="walletBalanceNav">—</strong>
+                <a href="wallet.html" class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-bold">
+                    💰 <span id="navBalance">—</span>
                 </a>
-                <a href="dashboard.html" class="hidden sm:block text-sm text-white/60 hover:text-white">Dashboard</a>
+                <button id="mobileToggle" class="lg:hidden p-2 text-white/40 hover:text-white transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
             </div>
         </div>
     </div>
 </nav>
 
-<div class="min-h-screen py-6 px-3 sm:px-4">
-    <div class="max-w-5xl mx-auto">
+<div id="mobileMenu" class="mobile-menu">
+    <nav class="flex flex-col space-y-6">
+        <a href="index.html" class="text-lg text-white/70 hover:text-white">Home</a>
+        <a href="dashboard.html" class="text-lg text-white/70 hover:text-white">Dashboard</a>
+        <a href="wallet.html" class="text-lg text-white/70 hover:text-white">Wallet</a>
+        <a href="deposit.html" class="text-lg text-white/70 hover:text-white">Deposit</a>
+        <a href="aviator.html" class="text-lg text-white/70 hover:text-white">Aviator</a>
+        <a href="virtual-football.html" class="text-lg text-white/70 hover:text-white">Virtual Football</a>
+        <a href="virtual-horse-racing.html" class="text-lg text-white/70 hover:text-white">Horse Racing</a>
+        <a href="virtual-car-racing.html" class="text-lg text-white/70 hover:text-white">Car Racing</a>
+        <a href="virtual-netball.html" class="text-lg text-white/70 hover:text-white">Netball</a>
+    </nav>
+</div>
 
-        <!-- Header -->
-        <div class="text-center mb-5">
-            <h1 class="text-3xl sm:text-4xl font-bold mb-2">✈️ <span class="text-gradient">Aviator</span></h1>
-            <p class="text-sm text-white/50">Watch the multiplier rise — cash out before it flies away</p>
+<!-- MAIN -->
+<div class="page-background pt-20 sm:pt-24 pb-12 px-3 sm:px-4">
+    <div class="max-w-6xl mx-auto relative z-10">
+
+        <div class="text-center mb-6 sm:mb-8">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-3">
+                ✈️ <span class="text-gradient">Aviator</span>
+            </h1>
+            <p class="text-sm sm:text-lg text-white/50 max-w-xl mx-auto">
+                Watch the multiplier rise — cash out before it flies away!
+            </p>
         </div>
 
         <div class="grid lg:grid-cols-3 gap-5">
 
-            <!-- Game area -->
-            <div class="lg:col-span-2 space-y-4">
+            <!-- GAME AREA -->
+            <div class="lg:col-span-2">
+                <div class="glass game-card">
 
-                <!-- Round header -->
-                <div class="glass rounded-2xl p-3 flex items-center justify-between flex-wrap gap-3">
-                    <div class="flex items-center gap-2 flex-wrap">
-                        <span id="statusPill" class="status-pill waiting">● Waiting</span>
-                        <span class="stat-chip">Round <strong id="roundNumber">#—</strong></span>
-                    </div>
-                    <span class="text-xs text-white/50" id="phaseTimer">—</span>
-                </div>
-
-                <!-- Multiplier + canvas -->
-                <div class="glass rounded-2xl p-3">
-                    <div class="game-canvas-wrap relative">
-                        <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-10 pb-8">
-                            <div id="multiplierDisplay" class="multiplier-display waiting">1.00x</div>
-                            <div id="multiplierStatus" class="text-xs uppercase tracking-widest font-bold text-white/40 mt-3">Preparing…</div>
+                    <div class="flex items-center justify-between gap-3 mb-3 px-1">
+                        <div class="flex items-center gap-2 shrink-0">
+                            <span class="live-pill"><span class="live-dot"></span>LIVE</span>
+                            <span class="text-[11px] text-white/25 hidden sm:inline font-medium">
+                                Round #<span id="roundId">—</span>
+                            </span>
                         </div>
+                        <div id="historyContainer" class="history-strip"></div>
+                    </div>
+
+                    <div class="canvas-wrap is-waiting" id="canvasWrap">
+                        <div class="wait-bar"><div id="waitBar"></div></div>
+
+                        <button id="soundToggle" class="sound-btn" title="Toggle sound" aria-label="Toggle sound">
+                            <svg id="soundOnIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                                <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+                                <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+                            </svg>
+                            <svg id="soundOffIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+                                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                                <line x1="23" y1="9" x2="17" y2="15"/>
+                                <line x1="17" y1="9" x2="23" y2="15"/>
+                            </svg>
+                        </button>
+
                         <canvas id="gameCanvas"></canvas>
+
+                        <div class="game-overlay">
+                            <div id="multiplierDisplay" class="multiplier-display">1.00x</div>
+                            <div id="statusText" class="status-text">Connecting…</div>
+                        </div>
                     </div>
 
-                    <!-- History -->
-                    <div class="mt-3 flex items-center gap-2 overflow-x-auto pb-1" id="historyStrip">
-                        <span class="text-[10px] uppercase tracking-wider text-white/30 font-bold flex-shrink-0">Recent:</span>
-                        <span class="text-xs text-white/25">Loading…</span>
-                    </div>
                 </div>
-
             </div>
 
-            <!-- Bet panel -->
-            <div class="lg:col-span-1">
-                <div class="glass rounded-2xl p-5 lg:sticky lg:top-24">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="font-bold text-base">Place Your Bet</h3>
-                        <span class="text-xs text-white/40" id="balanceLabel">— TZS</span>
-                    </div>
+            <!-- BET PANEL -->
+            <div>
+                <div class="glass rounded-3xl p-5 lg:sticky lg:top-24">
+                    <h3 class="text-base font-bold mb-5 flex items-center gap-2">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_10px_#00ff88]"></span>
+                        Place Your Bet
+                    </h3>
 
                     <div class="space-y-4">
-                        <!-- Stake -->
+
                         <div>
-                            <label class="block text-[10px] uppercase tracking-wider text-white/40 font-bold mb-2">Stake (TZS)</label>
-                            <input type="number" id="stakeInput" class="input-field" value="1000" min="500" step="100">
-                            <div class="flex gap-2 mt-2">
+                            <label class="text-[11px] uppercase tracking-wider text-white/40 ml-1">Bet Amount (<span id="currLabel">TZS</span>)</label>
+                            <input type="number" id="stakeInput" class="input-field mt-1.5" value="1000" min="500" step="100">
+                            <div class="flex gap-2 mt-2.5">
                                 <button type="button" class="chip" data-add="500">+500</button>
                                 <button type="button" class="chip" data-add="1000">+1K</button>
                                 <button type="button" class="chip" data-add="5000">+5K</button>
@@ -336,56 +613,329 @@
                             </div>
                         </div>
 
-                        <!-- Bet status -->
-                        <div id="betStatus" class="text-xs text-center text-white/50 min-h-[18px]"></div>
-
-                        <!-- Buttons -->
                         <div>
-                            <button id="placeBetBtn" class="btn-primary">Place Bet</button>
-                            <button id="cashoutBtn" class="btn-cashout hidden" disabled>Cash Out</button>
+                            <label class="text-[11px] uppercase tracking-wider text-white/40 ml-1">Auto Cash‑out At</label>
+                            <input type="number" id="autoCashoutInput" class="input-field mt-1.5" placeholder="e.g. 2.00 (optional)" step="0.01" min="1.01">
                         </div>
 
-                        <!-- Live info -->
-                        <div id="liveBetInfo" class="hidden bg-black/30 rounded-xl p-3 space-y-1.5">
-                            <div class="flex justify-between text-xs">
-                                <span class="text-white/40">Stake</span>
-                                <span class="font-semibold" id="liveStake">—</span>
-                            </div>
-                            <div class="flex justify-between text-xs">
-                                <span class="text-white/40">Auto cash-out</span>
-                                <span class="font-semibold" id="liveAuto">—</span>
-                            </div>
-                            <div class="flex justify-between text-xs">
-                                <span class="text-white/40">Potential win</span>
-                                <span class="font-semibold text-green-400" id="livePotential">—</span>
-                            </div>
+                        <div class="pt-1">
+                            <button id="placeBetBtn" class="btn-primary w-full py-3.5">Place Bet</button>
+                            <button id="cashoutBtn" class="btn-danger w-full py-3.5 hidden" disabled>Cash Out</button>
                         </div>
-                    </div>
 
-                    <!-- Info -->
-                    <div class="mt-4 pt-4 border-t border-white/5 text-[10px] text-white/35 leading-relaxed">
-                        Auto-cashout cashes your bet automatically at your target multiplier. Leave blank to cash out manually.
+                        <div id="betStatus" class="text-xs text-center text-white/40 min-h-[16px]"></div>
+
+                        <div class="pt-2 border-t border-white/5 text-[10px] text-white/35 leading-relaxed">
+                            Bets are locked at takeoff. Cash out any time before the round ends. Auto cash-out secures your winnings automatically.
+                        </div>
+
                     </div>
                 </div>
             </div>
 
         </div>
-
     </div>
 </div>
 
-<footer class="bg-[#0a0a12] border-t border-white/5 py-8 mt-8">
-    <div class="max-w-7xl mx-auto px-4 text-center text-xs text-white/20">
-        <p>Copyright © 2026 Cephas GM · 18+ · Play Responsibly</p>
+<!-- FOOTER -->
+<footer class="bg-[#0a0a12] border-t border-white/5 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center text-xs text-white/20">
+            <p>Copyright © 2026 Cephas GM | Innovating for Tomorrow</p>
+            <p class="mt-2">18+ | Play Responsibly</p>
+        </div>
     </div>
 </footer>
 
+<!-- ==========================================
+     SOUND ENGINE (unchanged)
+     ========================================== -->
 <script>
-document.addEventListener('DOMContentLoaded', function () {
+const SoundEngine = (function () {
+    'use strict';
+    let ctx = null;
+    let masterGain = null;
+    let enabled = true;
+    let unlocked = false;
+    let engine = null;
+    let lastMilestone = 0;
+
+    function init() {
+        if (ctx) return;
+        try {
+            const AC = window.AudioContext || window.webkitAudioContext;
+            if (!AC) return;
+            ctx = new AC();
+            masterGain = ctx.createGain();
+            masterGain.gain.value = enabled ? 0.5 : 0;
+            masterGain.connect(ctx.destination);
+        } catch (e) {}
+    }
+    function unlock() {
+        init();
+        if (!ctx) return;
+        if (ctx.state === 'suspended') ctx.resume().catch(() => {});
+        unlocked = true;
+    }
+    function isReady() { return enabled && ctx && unlocked && ctx.state === 'running'; }
+    function setEnabled(v) {
+        enabled = !!v;
+        if (masterGain && ctx) {
+            const t = ctx.currentTime;
+            masterGain.gain.cancelScheduledValues(t);
+            masterGain.gain.setTargetAtTime(enabled ? 0.5 : 0.0001, t, 0.04);
+        }
+    }
+    function makeNoise(duration) {
+        const len = Math.floor(ctx.sampleRate * duration);
+        const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+        const data = buf.getChannelData(0);
+        for (let i = 0; i < len; i++) data[i] = Math.random() * 2 - 1;
+        return buf;
+    }
+    function playBet() {
+        if (!isReady()) return;
+        const t = ctx.currentTime;
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.type = 'sine';
+        o.frequency.setValueAtTime(880, t);
+        o.frequency.exponentialRampToValueAtTime(1500, t + 0.07);
+        g.gain.setValueAtTime(0, t);
+        g.gain.linearRampToValueAtTime(0.24, t + 0.008);
+        g.gain.exponentialRampToValueAtTime(0.001, t + 0.14);
+        o.connect(g).connect(masterGain);
+        o.start(t); o.stop(t + 0.16);
+    }
+    function playCancel() {
+        if (!isReady()) return;
+        const t = ctx.currentTime;
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.type = 'sine';
+        o.frequency.setValueAtTime(700, t);
+        o.frequency.exponentialRampToValueAtTime(320, t + 0.12);
+        g.gain.setValueAtTime(0, t);
+        g.gain.linearRampToValueAtTime(0.2, t + 0.008);
+        g.gain.exponentialRampToValueAtTime(0.001, t + 0.17);
+        o.connect(g).connect(masterGain);
+        o.start(t); o.stop(t + 0.18);
+    }
+    function playTick() {
+        if (!isReady()) return;
+        const t = ctx.currentTime;
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.type = 'triangle';
+        o.frequency.setValueAtTime(1300, t);
+        g.gain.setValueAtTime(0, t);
+        g.gain.linearRampToValueAtTime(0.07, t + 0.004);
+        g.gain.exponentialRampToValueAtTime(0.001, t + 0.06);
+        o.connect(g).connect(masterGain);
+        o.start(t); o.stop(t + 0.07);
+    }
+    function playCountdownBeep(isFinal) {
+        if (!isReady()) return;
+        const t = ctx.currentTime;
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.type = 'sine';
+        o.frequency.value = isFinal ? 1320 : 780;
+        const dur = isFinal ? 0.22 : 0.11;
+        g.gain.setValueAtTime(0, t);
+        g.gain.linearRampToValueAtTime(0.14, t + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+        o.connect(g).connect(masterGain);
+        o.start(t); o.stop(t + dur + 0.02);
+    }
+    function playTakeoff() {
+        if (!isReady()) return;
+        const t = ctx.currentTime;
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        const flt = ctx.createBiquadFilter();
+        o.type = 'sawtooth';
+        o.frequency.setValueAtTime(90, t);
+        o.frequency.exponentialRampToValueAtTime(620, t + 0.5);
+        flt.type = 'lowpass';
+        flt.frequency.setValueAtTime(220, t);
+        flt.frequency.exponentialRampToValueAtTime(2800, t + 0.5);
+        flt.Q.value = 8;
+        g.gain.setValueAtTime(0, t);
+        g.gain.linearRampToValueAtTime(0.16, t + 0.05);
+        g.gain.setValueAtTime(0.16, t + 0.42);
+        g.gain.exponentialRampToValueAtTime(0.001, t + 0.72);
+        o.connect(flt).connect(g).connect(masterGain);
+        o.start(t); o.stop(t + 0.78);
+        const noise = ctx.createBufferSource();
+        noise.buffer = makeNoise(0.7);
+        const nf = ctx.createBiquadFilter();
+        nf.type = 'bandpass';
+        nf.frequency.setValueAtTime(280, t);
+        nf.frequency.exponentialRampToValueAtTime(3200, t + 0.55);
+        nf.Q.value = 1.4;
+        const ng = ctx.createGain();
+        ng.gain.setValueAtTime(0, t);
+        ng.gain.linearRampToValueAtTime(0.13, t + 0.06);
+        ng.gain.exponentialRampToValueAtTime(0.001, t + 0.62);
+        noise.connect(nf).connect(ng).connect(masterGain);
+        noise.start(t); noise.stop(t + 0.68);
+    }
+    function startEngine() {
+        if (!isReady()) return;
+        stopEngine();
+        const t = ctx.currentTime;
+        engine = {
+            osc1: ctx.createOscillator(), osc2: ctx.createOscillator(), osc3: ctx.createOscillator(),
+            gain: ctx.createGain(), filter: ctx.createBiquadFilter()
+        };
+        engine.osc1.type = 'sawtooth';
+        engine.osc2.type = 'sawtooth';
+        engine.osc3.type = 'triangle';
+        engine.osc1.frequency.value = 72;
+        engine.osc2.frequency.value = 72.6;
+        engine.osc3.frequency.value = 145;
+        engine.filter.type = 'lowpass';
+        engine.filter.frequency.value = 420;
+        engine.filter.Q.value = 5;
+        engine.gain.gain.setValueAtTime(0.0001, t);
+        engine.gain.gain.linearRampToValueAtTime(0.075, t + 0.35);
+        engine.osc1.connect(engine.filter);
+        engine.osc2.connect(engine.filter);
+        engine.osc3.connect(engine.filter);
+        engine.filter.connect(engine.gain).connect(masterGain);
+        engine.osc1.start(t);
+        engine.osc2.start(t);
+        engine.osc3.start(t);
+    }
+    function updateEngine(multiplier) {
+        if (!engine || !ctx) return;
+        const t = ctx.currentTime;
+        const m = Math.min(multiplier, 40);
+        const base = 72 + m * 15;
+        const cutoff = Math.min(420 + m * 220, 7000);
+        engine.osc1.frequency.setTargetAtTime(base, t, 0.08);
+        engine.osc2.frequency.setTargetAtTime(base * 1.007, t, 0.08);
+        engine.osc3.frequency.setTargetAtTime(base * 2, t, 0.08);
+        engine.filter.frequency.setTargetAtTime(cutoff, t, 0.1);
+        engine.gain.gain.setTargetAtTime(0.075 + Math.min(m * 0.0035, 0.06), t, 0.12);
+        const milestones = [1.5, 2, 3, 5, 10, 20, 50, 100];
+        for (let i = 0; i < milestones.length; i++) {
+            const ms = milestones[i];
+            if (multiplier >= ms && lastMilestone < ms) {
+                lastMilestone = ms;
+                playMilestoneTick(ms);
+            }
+        }
+    }
+    function playMilestoneTick(ms) {
+        if (!isReady()) return;
+        const t = ctx.currentTime;
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.type = 'sine';
+        o.frequency.value = 900 + Math.log10(ms + 1) * 500;
+        g.gain.setValueAtTime(0, t);
+        g.gain.linearRampToValueAtTime(0.09, t + 0.006);
+        g.gain.exponentialRampToValueAtTime(0.001, t + 0.1);
+        o.connect(g).connect(masterGain);
+        o.start(t); o.stop(t + 0.12);
+    }
+    function stopEngine() {
+        if (!engine || !ctx) { engine = null; return; }
+        const t = ctx.currentTime;
+        const e = engine;
+        engine = null;
+        try {
+            e.gain.gain.cancelScheduledValues(t);
+            e.gain.gain.setTargetAtTime(0.0001, t, 0.07);
+        } catch (err) {}
+        setTimeout(() => {
+            try { e.osc1.stop(); } catch (err) {}
+            try { e.osc2.stop(); } catch (err) {}
+            try { e.osc3.stop(); } catch (err) {}
+        }, 320);
+    }
+    function playCashout() {
+        if (!isReady()) return;
+        const t = ctx.currentTime;
+        [880, 1174.66, 1567.98].forEach((f, i) => {
+            const o = ctx.createOscillator();
+            const g = ctx.createGain();
+            o.type = 'sine';
+            o.frequency.value = f;
+            const s = t + i * 0.075;
+            g.gain.setValueAtTime(0, s);
+            g.gain.linearRampToValueAtTime(0.22, s + 0.01);
+            g.gain.exponentialRampToValueAtTime(0.001, s + 0.5);
+            o.connect(g).connect(masterGain);
+            o.start(s); o.stop(s + 0.55);
+        });
+        const sh = ctx.createOscillator();
+        const sg = ctx.createGain();
+        sh.type = 'triangle';
+        sh.frequency.setValueAtTime(1800, t);
+        sh.frequency.exponentialRampToValueAtTime(3600, t + 0.32);
+        sg.gain.setValueAtTime(0.07, t);
+        sg.gain.exponentialRampToValueAtTime(0.001, t + 0.42);
+        sh.connect(sg).connect(masterGain);
+        sh.start(t); sh.stop(t + 0.46);
+    }
+    function playCrash() {
+        if (!isReady()) return;
+        const t = ctx.currentTime;
+        const sub = ctx.createOscillator();
+        const sg = ctx.createGain();
+        sub.type = 'sine';
+        sub.frequency.setValueAtTime(190, t);
+        sub.frequency.exponentialRampToValueAtTime(38, t + 0.55);
+        sg.gain.setValueAtTime(0, t);
+        sg.gain.linearRampToValueAtTime(0.42, t + 0.012);
+        sg.gain.exponentialRampToValueAtTime(0.001, t + 0.65);
+        sub.connect(sg).connect(masterGain);
+        sub.start(t); sub.stop(t + 0.7);
+        const noise = ctx.createBufferSource();
+        noise.buffer = makeNoise(0.9);
+        const nf = ctx.createBiquadFilter();
+        nf.type = 'lowpass';
+        nf.frequency.setValueAtTime(3400, t);
+        nf.frequency.exponentialRampToValueAtTime(180, t + 0.65);
+        const ng = ctx.createGain();
+        ng.gain.setValueAtTime(0.32, t);
+        ng.gain.exponentialRampToValueAtTime(0.001, t + 0.75);
+        noise.connect(nf).connect(ng).connect(masterGain);
+        noise.start(t); noise.stop(t + 0.8);
+        [220, 330, 440, 660].forEach(f => {
+            const o = ctx.createOscillator();
+            const og = ctx.createGain();
+            o.type = 'square';
+            o.frequency.value = f;
+            og.gain.setValueAtTime(0.05, t);
+            og.gain.exponentialRampToValueAtTime(0.001, t + 0.3);
+            o.connect(og).connect(masterGain);
+            o.start(t); o.stop(t + 0.34);
+        });
+    }
+    function resetRound() { lastMilestone = 0; }
+
+    return {
+        unlock, setEnabled, isEnabled: () => enabled,
+        playBet, playCancel, playTick, playCountdownBeep,
+        playTakeoff, startEngine, updateEngine, stopEngine,
+        playCashout, playCrash, resetRound
+    };
+})();
+</script>
+
+<!-- ==========================================
+     GAME ENGINE — Backend-Synced
+     ========================================== -->
+<script>
+(function () {
     'use strict';
 
     /* ============================================================
-       AUTH GUARD
+       AUTH CHECK
        ============================================================ */
     if (!window.CephasGM || !CephasGM.api) return;
     if (!CephasGM.api.isLoggedIn()) {
@@ -394,62 +944,166 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     /* ============================================================
-       STATE
+       MOBILE MENU
        ============================================================ */
-    var GAME_TYPE = 'AVIATOR';
-    var GROWTH_RATE = 0.18; // matches backend
+    const mobileToggle = document.getElementById('mobileToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+    let mobileOpen = false;
+    mobileToggle.addEventListener('click', () => {
+        mobileOpen = !mobileOpen;
+        mobileMenu.classList.toggle('active', mobileOpen);
+        document.body.style.overflow = mobileOpen ? 'hidden' : '';
+    });
+    mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+        mobileMenu.classList.remove('active');
+        document.body.style.overflow = '';
+        mobileOpen = false;
+    }));
 
-    var state = {
-        balance: 0,
-        currency: 'TZS',
-        currentRound: null,       // backend round object
-        currentBet: null,          // { reference, stake, auto }
-        cashedOut: false,
-        history: [],
-        pollTimer: null,
-        renderTimer: null,
-    };
-
-    var canvas = document.getElementById('gameCanvas');
-    var ctx = canvas.getContext('2d');
-    var W, H;
-
-    function resizeCanvas() {
-        var rect = canvas.getBoundingClientRect();
-        var dpr = Math.min(window.devicePixelRatio || 1, 2);
-        W = rect.width;
-        H = rect.height;
-        canvas.width = W * dpr;
-        canvas.height = H * dpr;
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    /* ============================================================
+       AUDIO UNLOCK
+       ============================================================ */
+    let audioUnlocked = false;
+    function unlockAudioOnce() {
+        if (audioUnlocked) return;
+        audioUnlocked = true;
+        SoundEngine.unlock();
+        window.removeEventListener('pointerdown', unlockAudioOnce);
+        window.removeEventListener('keydown', unlockAudioOnce);
+        window.removeEventListener('touchstart', unlockAudioOnce);
     }
+    window.addEventListener('pointerdown', unlockAudioOnce, { passive: true });
+    window.addEventListener('keydown', unlockAudioOnce);
+    window.addEventListener('touchstart', unlockAudioOnce, { passive: true });
+
+    const soundToggle = document.getElementById('soundToggle');
+    const soundOnIcon = document.getElementById('soundOnIcon');
+    const soundOffIcon = document.getElementById('soundOffIcon');
+    SoundEngine.setEnabled(true);
+    soundToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        unlockAudioOnce();
+        const nowEnabled = !SoundEngine.isEnabled();
+        SoundEngine.setEnabled(nowEnabled);
+        soundToggle.classList.toggle('muted', !nowEnabled);
+        soundOnIcon.style.display = nowEnabled ? '' : 'none';
+        soundOffIcon.style.display = nowEnabled ? 'none' : '';
+    });
+
+    /* ============================================================
+       DOM
+       ============================================================ */
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const multiplierDisplay = document.getElementById('multiplierDisplay');
+    const statusText = document.getElementById('statusText');
+    const placeBetBtn = document.getElementById('placeBetBtn');
+    const cashoutBtn = document.getElementById('cashoutBtn');
+    const stakeInput = document.getElementById('stakeInput');
+    const autoCashoutInput = document.getElementById('autoCashoutInput');
+    const betStatus = document.getElementById('betStatus');
+    const historyContainer = document.getElementById('historyContainer');
+    const waitBar = document.getElementById('waitBar');
+    const canvasWrap = document.getElementById('canvasWrap');
+    const roundIdEl = document.getElementById('roundId');
+    const navBalance = document.getElementById('navBalance');
+    const currLabel = document.getElementById('currLabel');
 
     /* ============================================================
        USER BADGE
        ============================================================ */
     function paintUserBadge(user) {
         if (!user) return;
-        var name = user.fullName || user.username || 'Player';
-        var contact = user.email || user.phone || '';
-        var initial = name.charAt(0).toUpperCase();
+        const name = user.fullName || user.username || 'Player';
+        const contact = user.email || user.phone || '';
+        const initial = name.charAt(0).toUpperCase();
         document.getElementById('userAvatar').textContent = initial;
         document.getElementById('userName').textContent = name;
         document.getElementById('userContact').textContent = contact;
         document.getElementById('userBar').style.display = 'flex';
     }
-
-    var cachedUser = CephasGM.api.getUser();
+    const cachedUser = CephasGM.api.getUser();
     if (cachedUser) paintUserBadge(cachedUser);
 
     document.getElementById('inlineSignOut').addEventListener('click', function () {
-        var btn = this;
+        const btn = this;
         btn.disabled = true;
         btn.textContent = 'Signing out…';
-        CephasGM.api.logout().catch(function () {}).then(function () {
+        CephasGM.api.logout().catch(() => {}).then(() => {
             CephasGM.api.clearTokens();
             window.location.href = 'signin.html';
         });
     });
+
+    /* ============================================================
+       GAME STATE
+       ============================================================ */
+    const GAME_TYPE = 'AVIATOR';
+    const GROWTH_RATE = 0.18;
+    const BETTING_MS = 15000;
+    const ACTIVE_MS = 30000;
+
+    const gameState = {
+        phase: null,              // BETTING_OPEN | IN_PROGRESS | COMPLETED
+        roundId: null,
+        roundNumber: null,
+        roundStartedAt: 0,
+        crashPoint: null,
+        myBet: null,              // { reference, stake, auto, cashedOut }
+        balance: 0,
+        currency: 'TZS',
+        history: [],
+    };
+
+    let lastCountdownSecond = -1;
+    let lastFlightTickAt = 0;
+    let lastFrame = performance.now();
+    let gridShift = 0;
+    let particles = [];
+    let crashTime = 0;
+
+    /* ============================================================
+       CANVAS SETUP
+       ============================================================ */
+    let W = 0, H = 0;
+    function resizeCanvas() {
+        const rect = canvas.getBoundingClientRect();
+        if (!rect.width || !rect.height) return;
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        W = rect.width;
+        H = rect.height;
+        canvas.width = Math.round(W * dpr);
+        canvas.height = Math.round(H * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+    window.addEventListener('orientationchange', () => setTimeout(resizeCanvas, 120));
+    if (window.ResizeObserver) new ResizeObserver(resizeCanvas).observe(canvas);
+
+    /* ============================================================
+       GEOMETRY
+       ============================================================ */
+    function getPad() {
+        const small = W < 560;
+        return {
+            l: small ? 26 : 46,
+            r: small ? 34 : 64,
+            t: small ? 40 : 58,
+            b: small ? 30 : 46
+        };
+    }
+    function multToP(m) { return 1 - Math.exp(-(Math.max(m, 1) - 1) / 3.2); }
+    function pathPoint(p) {
+        const pad = getPad();
+        const x0 = pad.l, x1 = W - pad.r;
+        const y0 = H - pad.b, y1 = pad.t;
+        const cp = Math.max(0, p);
+        return {
+            x: x0 + (x1 - x0) * cp,
+            y: y0 - (y0 - y1) * Math.pow(cp, 1.7)
+        };
+    }
 
     /* ============================================================
        HELPERS
@@ -457,487 +1111,617 @@ document.addEventListener('DOMContentLoaded', function () {
     function fmt(n) {
         return parseFloat(n || 0).toLocaleString('en-US', {
             minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
+            maximumFractionDigits: 2
         });
     }
 
-    function shortNum(n) {
-        return parseFloat(n || 0).toLocaleString('en-US', {
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 0,
-        });
+    function toast(message, type) {
+        const el = document.createElement('div');
+        el.className = 'toast ' + (type === 'error' ? 'toast-err' : 'toast-ok');
+        el.textContent = message;
+        document.body.appendChild(el);
+        requestAnimationFrame(() => el.classList.add('show'));
+        setTimeout(() => {
+            el.classList.remove('show');
+            setTimeout(() => el.remove(), 400);
+        }, 2400);
     }
 
-    function toast(msg, type) {
-        if (CephasGM && CephasGM.toast) CephasGM.toast(msg, type);
-        else alert(msg);
+    function currentMultiplier() {
+        if (!gameState.roundStartedAt) return 1;
+        const t = (Date.now() - gameState.roundStartedAt) / 1000;
+        const m = Math.exp(GROWTH_RATE * t);
+        return m > 5000 ? 5000 : m;
     }
 
     /* ============================================================
-       LOAD WALLET
+       BALANCE
        ============================================================ */
     function loadBalance() {
-        return CephasGM.api.wallet().then(function (res) {
+        return CephasGM.api.wallet().then(res => {
             if (res.success && res.data) {
-                state.balance = parseFloat(res.data.balance || 0);
-                state.currency = res.data.currency;
-                document.getElementById('balanceLabel').textContent =
-                    fmt(state.balance) + ' ' + state.currency;
-                document.getElementById('walletBalanceNav').textContent =
-                    fmt(state.balance);
+                gameState.balance = parseFloat(res.data.balance || 0);
+                gameState.currency = res.data.currency || 'TZS';
+                navBalance.textContent = fmt(gameState.balance) + ' ' + gameState.currency;
+                currLabel.textContent = gameState.currency;
             }
-        });
+        }).catch(() => {});
     }
 
     /* ============================================================
-       LOAD ROUND HISTORY
+       HISTORY
        ============================================================ */
     function loadHistory() {
-        CephasGM.api.get('/games/' + GAME_TYPE + '/history?limit=12')
-            .then(function (res) {
+        CephasGM.api.get('/games/' + GAME_TYPE + '/history?limit=14')
+            .then(res => {
                 if (res.success && Array.isArray(res.data)) {
-                    state.history = res.data.map(function (r) {
-                        return r.result && r.result.crashPoint ? r.result.crashPoint : null;
-                    }).filter(function (v) { return v !== null; });
+                    gameState.history = res.data
+                        .map(r => (r.result && r.result.crashPoint != null) ? r.result.crashPoint : null)
+                        .filter(v => v !== null);
                     renderHistory();
                 }
             })
-            .catch(function () {});
+            .catch(() => {});
     }
-
     function renderHistory() {
-        var strip = document.getElementById('historyStrip');
-        var items = state.history.slice(0, 12);
-        if (items.length === 0) {
-            strip.innerHTML = '<span class="text-[10px] uppercase tracking-wider text-white/30 font-bold flex-shrink-0 mr-2">Recent:</span><span class="text-xs text-white/25">No rounds yet</span>';
-            return;
-        }
-        var html = '<span class="text-[10px] uppercase tracking-wider text-white/30 font-bold flex-shrink-0 mr-2">Recent:</span>';
-        items.forEach(function (v) {
-            var cls = v < 1.5 ? 'low' : (v < 3 ? 'mid' : 'high');
+        let html = '';
+        for (let i = 0; i < gameState.history.length; i++) {
+            const v = gameState.history[i];
+            const cls = v < 2 ? 'low' : (v < 10 ? 'mid' : 'high');
             html += '<span class="history-item ' + cls + '">' + v.toFixed(2) + 'x</span>';
-        });
-        strip.innerHTML = html;
+        }
+        historyContainer.innerHTML = html;
     }
 
     /* ============================================================
-       FETCH CURRENT ROUND
+       PHASE CHANGE HANDLER
        ============================================================ */
-    function fetchCurrentRound() {
-        return CephasGM.api.get('/games/' + GAME_TYPE + '/current')
-            .then(function (res) {
-                if (!res.success || !res.data) return null;
+    function onPhaseChange(oldPhase, newPhase, round) {
+        if (newPhase === 'BETTING_OPEN') {
+            canvasWrap.classList.add('is-waiting');
+            multiplierDisplay.classList.remove('crashed');
+            multiplierDisplay.textContent = '1.00x';
+            statusText.classList.remove('crash');
+            statusText.textContent = 'Place your bet';
+            betStatus.textContent = '';
+            betStatus.className = 'text-xs text-center text-white/40 min-h-[16px]';
+            lastCountdownSecond = -1;
+            SoundEngine.resetRound();
+            updateButtons();
+        }
+        else if (newPhase === 'IN_PROGRESS') {
+            canvasWrap.classList.remove('is-waiting');
+            statusText.textContent = 'Flying…';
+            statusText.classList.remove('crash');
+            multiplierDisplay.classList.remove('crashed');
+            particles = [];
+            SoundEngine.playTakeoff();
+            SoundEngine.startEngine();
+            lastFlightTickAt = performance.now();
+            if (gameState.myBet && !gameState.myBet.cashedOut) {
+                betStatus.textContent = 'In flight — cash out anytime!';
+                betStatus.className = 'text-xs text-center text-white/50 min-h-[16px]';
+            }
+            updateButtons();
+        }
+        else if (newPhase === 'COMPLETED') {
+            const cp = (round.result && round.result.crashPoint != null)
+                ? round.result.crashPoint
+                : 1.0;
+            gameState.crashPoint = cp;
+            crashTime = performance.now();
 
-                var round = res.data;
-                if (!round.roundNumber) return null;
+            SoundEngine.stopEngine();
+            SoundEngine.playCrash();
 
-                /* Detect new round */
-                var isNew = !state.currentRound ||
-                            state.currentRound.roundNumber !== round.roundNumber;
+            multiplierDisplay.classList.add('crashed');
+            multiplierDisplay.textContent = cp.toFixed(2) + 'x';
+            statusText.textContent = 'FLEW AWAY!';
+            statusText.classList.add('crash');
 
-                if (isNew) {
-                    handleNewRound(round);
-                } else {
-                    state.currentRound = round;
+            if (gameState.myBet && !gameState.myBet.cashedOut) {
+                betStatus.textContent = 'Crashed at ' + cp.toFixed(2) + 'x — bet lost';
+                betStatus.className = 'text-xs text-center text-red-400 min-h-[16px]';
+                toast('💥 Flew away at ' + cp.toFixed(2) + 'x', 'error');
+            }
+            updateButtons();
+
+            /* Refresh balance to reflect settlement */
+            setTimeout(loadBalance, 900);
+        }
+    }
+
+    /* ============================================================
+       ROUND UPDATE (called from poll)
+       ============================================================ */
+    function handleRoundUpdate(round) {
+        if (!round || !round.roundNumber) return;
+
+        const isSameRound = gameState.roundId === round.id;
+
+        if (!isSameRound) {
+            /* New round: settle any leftover bet state */
+            gameState.roundId = round.id;
+            gameState.roundNumber = round.roundNumber;
+            gameState.crashPoint = null;
+            roundIdEl.textContent = round.roundNumber;
+            gameState.myBet = null;
+            particles = [];
+            loadHistory();
+        }
+
+        if (round.startedAt) {
+            gameState.roundStartedAt = new Date(round.startedAt).getTime();
+        }
+
+        const newPhase = round.status;
+        if (newPhase !== gameState.phase) {
+            onPhaseChange(gameState.phase, newPhase, round);
+            gameState.phase = newPhase;
+        }
+    }
+
+    /* ============================================================
+       POLL
+       ============================================================ */
+    function pollRound() {
+        CephasGM.api.get('/games/' + GAME_TYPE + '/current')
+            .then(res => {
+                if (res.success && res.data && res.data.roundNumber) {
+                    handleRoundUpdate(res.data);
                 }
-
-                return round;
             })
-            .catch(function (err) {
-                console.error('Round fetch failed:', err);
-                return null;
+            .catch(err => {
+                console.debug('Poll failed:', err);
             });
     }
 
-    function handleNewRound(round) {
-        state.currentRound = round;
-        state.cashedOut = false;
-
-        /* If previous round completed and we have a bet, it's settled */
-        if (state.currentBet && !state.cashedOut) {
-            /* Bet outcome is determined by the backend; refresh balance to see result */
-            loadBalance();
-            state.currentBet = null;
-        }
-
-        /* If we had a bet that already cashed out, clear it */
-        if (state.currentBet === null) {
-            /* keep as-is */
-        }
-
-        document.getElementById('roundNumber').textContent = '#' + round.roundNumber;
-        document.getElementById('liveBetInfo').classList.add('hidden');
-        document.getElementById('betStatus').textContent = '';
-
-        /* Refresh history to catch the just-completed round */
-        loadHistory();
-
-        updateUI();
-    }
-
     /* ============================================================
-       UI UPDATE (called every frame)
+       BUTTONS
        ============================================================ */
-    function updateUI() {
-        var r = state.currentRound;
-        var mDisplay = document.getElementById('multiplierDisplay');
-        var mStatus = document.getElementById('multiplierStatus');
-        var statusPill = document.getElementById('statusPill');
-        var phaseTimer = document.getElementById('phaseTimer');
-        var placeBtn = document.getElementById('placeBetBtn');
-        var cashoutBtn = document.getElementById('cashoutBtn');
-
-        if (!r) {
-            mDisplay.textContent = '1.00x';
-            mDisplay.className = 'multiplier-display waiting';
-            mStatus.textContent = 'Connecting…';
-            statusPill.className = 'status-pill waiting';
-            statusPill.textContent = '● Connecting';
-            phaseTimer.textContent = '—';
-            placeBtn.disabled = true;
+    function updateButtons() {
+        if (gameState.phase === 'BETTING_OPEN') {
+            placeBetBtn.classList.remove('hidden');
             cashoutBtn.classList.add('hidden');
-            return;
-        }
-
-        var now = Date.now();
-        var phase = r.status; // BETTING_OPEN | IN_PROGRESS | COMPLETED
-
-        if (phase === 'BETTING_OPEN') {
-            var msLeft = r.phaseEndsAt ? new Date(r.phaseEndsAt).getTime() - now : 0;
-            var secLeft = Math.max(0, Math.ceil(msLeft / 1000));
-
-            mDisplay.textContent = '1.00x';
-            mDisplay.className = 'multiplier-display waiting';
-            mStatus.textContent = 'Place your bets';
-            statusPill.className = 'status-pill waiting';
-            statusPill.textContent = '● Betting Open';
-            phaseTimer.textContent = secLeft + 's';
-
-            /* Place bet button state */
-            if (!state.currentBet) {
-                placeBtn.disabled = false;
-                placeBtn.textContent = 'Place Bet';
-                placeBtn.classList.remove('hidden');
+            placeBetBtn.disabled = false;
+            if (gameState.myBet) {
+                placeBetBtn.textContent = 'Cancel Bet';
+                placeBetBtn.classList.add('btn-cancel');
             } else {
-                placeBtn.disabled = true;
-                placeBtn.textContent = 'Bet placed ✓';
+                placeBetBtn.textContent = 'Place Bet';
+                placeBetBtn.classList.remove('btn-cancel');
             }
-            cashoutBtn.classList.add('hidden');
-
-            /* If user had a bet, clear it if new round */
-            if (state.currentBet) {
-                state.currentBet = null;
-            }
-        } else if (phase === 'IN_PROGRESS') {
-            var elapsed = (now - new Date(r.startedAt).getTime()) / 1000;
-            var multiplier = Math.exp(GROWTH_RATE * elapsed);
-
-            mDisplay.textContent = multiplier.toFixed(2) + 'x';
-            mDisplay.className = 'multiplier-display flying';
-            mStatus.textContent = 'Flying — cash out!';
-            statusPill.className = 'status-pill flying';
-            statusPill.textContent = '● Flying';
-            phaseTimer.textContent = 'Live';
-
-            /* Cash-out button */
-            if (state.currentBet && !state.cashedOut) {
+        } else if (gameState.phase === 'IN_PROGRESS') {
+            placeBetBtn.classList.add('hidden');
+            placeBetBtn.classList.remove('btn-cancel');
+            if (gameState.myBet && !gameState.myBet.cashedOut) {
                 cashoutBtn.classList.remove('hidden');
                 cashoutBtn.disabled = false;
-                cashoutBtn.textContent = 'CASH OUT ' +
-                    fmt(state.currentBet.stake * multiplier) + ' ' + state.currency;
-
-                /* Auto-cashout check */
-                if (state.currentBet.auto && multiplier >= state.currentBet.auto) {
-                    executeCashOut();
-                }
             } else {
                 cashoutBtn.classList.add('hidden');
             }
-
-            placeBtn.classList.add('hidden');
-        } else if (phase === 'COMPLETED') {
-            /* Show the crash result */
-            var crash = r.result && r.result.crashPoint ? r.result.crashPoint : 1.0;
-            mDisplay.textContent = crash.toFixed(2) + 'x';
-            mDisplay.className = 'multiplier-display crashed';
-            mStatus.textContent = 'FLEW AWAY!';
-            statusPill.className = 'status-pill crashed';
-            statusPill.textContent = '● Crashed';
-            phaseTimer.textContent = '—';
-
-            placeBtn.classList.add('hidden');
+        } else {
+            placeBetBtn.classList.add('hidden');
+            placeBetBtn.classList.remove('btn-cancel');
             cashoutBtn.classList.add('hidden');
-
-            /* If bet was not cashed out — it lost */
-            if (state.currentBet && !state.cashedOut) {
-                document.getElementById('betStatus').textContent =
-                    '💥 Flew away at ' + crash.toFixed(2) + 'x — bet lost';
-                document.getElementById('betStatus').className =
-                    'text-xs text-center text-red-400 min-h-[18px]';
-                state.currentBet = null;
-                state.cashedOut = false;
-                loadBalance();
-            }
         }
     }
 
-    /* ============================================================
-       DRAW LOOP
-       ============================================================ */
-    function draw() {
-        if (!W || !H) return;
-        ctx.clearRect(0, 0, W, H);
+    function handlePlaceBet() {
+        if (gameState.phase !== 'BETTING_OPEN') return;
 
-        /* Grid */
-        ctx.strokeStyle = 'rgba(255,255,255,0.03)';
-        ctx.lineWidth = 1;
-        for (var x = 0; x < W; x += 40) {
-            ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
-        }
-        for (var y = 0; y < H; y += 40) {
-            ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
-        }
-
-        var r = state.currentRound;
-        var now = Date.now();
-
-        if (r && r.status === 'IN_PROGRESS') {
-            var elapsed = (now - new Date(r.startedAt).getTime()) / 1000;
-            var multiplier = Math.exp(GROWTH_RATE * elapsed);
-
-            /* Path parameters */
-            var padL = 30, padR = 40, padT = 60, padB = 40;
-            var x0 = padL, x1 = W - padR;
-            var y0 = H - padB, y1 = padT;
-
-            var progress = Math.min(1, 1 - Math.exp(-(multiplier - 1) / 3.2));
-            var cx = x0 + (x1 - x0) * progress;
-            var cy = y0 - (y0 - y1) * Math.pow(progress, 1.6);
-
-            /* Fill under curve */
-            ctx.beginPath();
-            ctx.moveTo(x0, y0 + 20);
-            for (var i = 0; i <= 50; i++) {
-                var t = i / 50 * progress;
-                var px = x0 + (x1 - x0) * t;
-                var py = y0 - (y0 - y1) * Math.pow(t, 1.6);
-                ctx.lineTo(px, py);
-            }
-            ctx.lineTo(cx, y0 + 20);
-            ctx.closePath();
-            var fill = ctx.createLinearGradient(0, y1, 0, y0);
-            fill.addColorStop(0, 'rgba(0,255,136,0.3)');
-            fill.addColorStop(1, 'rgba(0,255,136,0)');
-            ctx.fillStyle = fill;
-            ctx.fill();
-
-            /* Curve line */
-            ctx.beginPath();
-            for (var i = 0; i <= 50; i++) {
-                var t = i / 50 * progress;
-                var px = x0 + (x1 - x0) * t;
-                var py = y0 - (y0 - y1) * Math.pow(t, 1.6);
-                if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
-            }
-            ctx.strokeStyle = '#00ff88';
-            ctx.lineWidth = 3;
-            ctx.shadowColor = '#00ff88';
-            ctx.shadowBlur = 16;
-            ctx.stroke();
-            ctx.shadowBlur = 0;
-
-            /* Plane */
-            var planeAngle = -Math.atan2((y0 - y1) * 1.6 * Math.pow(progress, 0.6) / (y0 - y1 + 0.01), (x1 - x0)) * 0.5;
-            ctx.save();
-            ctx.translate(cx, cy);
-            ctx.rotate(Math.max(-1.2, Math.min(-0.2, planeAngle)));
-            ctx.font = '32px sans-serif';
-            ctx.fillText('✈️', -16, 10);
-            ctx.restore();
-        } else if (r && r.status === 'COMPLETED') {
-            /* Crashed — show final marker */
-            var crash = r.result && r.result.crashPoint ? r.result.crashPoint : 1.0;
-            ctx.fillStyle = 'rgba(255,45,85,0.15)';
-            ctx.fillRect(0, 0, W, H);
-            ctx.font = '48px sans-serif';
-            ctx.textAlign = 'center';
-            ctx.fillStyle = '#ff2d55';
-            ctx.fillText('💥', W / 2, H / 2);
-            ctx.textAlign = 'left';
-        }
-    }
-
-    /* ============================================================
-       PLACE BET
-       ============================================================ */
-    document.getElementById('placeBetBtn').addEventListener('click', function () {
-        var r = state.currentRound;
-        if (!r) {
-            toast('Waiting for next round', 'warning');
-            return;
-        }
-        if (r.status !== 'BETTING_OPEN') {
-            toast('Betting is closed for this round', 'warning');
-            return;
-        }
-        if (state.currentBet) {
-            toast('Bet already placed for this round', 'warning');
+        /* Cancel */
+        if (gameState.myBet) {
+            gameState.myBet = null;
+            betStatus.textContent = 'Bet cancelled';
+            betStatus.className = 'text-xs text-center text-white/40 min-h-[16px]';
+            SoundEngine.playCancel();
+            updateButtons();
             return;
         }
 
-        var stake = parseFloat(document.getElementById('stakeInput').value);
-        if (!stake || stake < 500) {
-            toast('Minimum stake is 500', 'error');
-            return;
+        const amount = parseFloat(stakeInput.value);
+        if (!amount || amount <= 0) {
+            toast('Enter a valid stake', 'error'); return;
         }
-        if (stake > state.balance) {
-            toast('Insufficient balance', 'error');
-            return;
+        if (amount < 500) {
+            toast('Minimum stake is 500', 'error'); return;
+        }
+        if (amount > gameState.balance) {
+            toast('Insufficient balance', 'error'); return;
         }
 
-        var btn = this;
-        btn.disabled = true;
-        btn.textContent = 'Placing…';
+        const auto = parseFloat(autoCashoutInput.value);
+        const autoTarget = (auto && auto > 1) ? auto : 0;
+
+        placeBetBtn.disabled = true;
+        placeBetBtn.textContent = 'Placing…';
 
         CephasGM.api.post('/bets', {
             type: 'VIRTUAL',
-            stake: stake,
+            stake: amount,
             gameType: GAME_TYPE,
-            roundId: r.id,
+            roundId: gameState.roundId,
             selections: [{
-                eventId: r.id,
-                eventName: 'Aviator Round #' + r.roundNumber,
+                eventId: gameState.roundId,
+                eventName: 'Aviator Round #' + gameState.roundNumber,
                 market: 'MULTIPLIER',
                 selection: 'CASH_OUT',
-                odds: 1.0,
-            }],
+                odds: 1.0
+            }]
         })
-        .then(function (res) {
+        .then(res => {
             if (res.success && res.data) {
-                state.currentBet = {
+                gameState.myBet = {
                     reference: res.data.reference,
                     stake: parseFloat(res.data.stake),
-                    auto: 0,
+                    auto: autoTarget,
+                    cashedOut: false
                 };
-                state.cashedOut = false;
-
-                document.getElementById('liveStake').textContent = fmt(stake) + ' ' + state.currency;
-                document.getElementById('liveAuto').textContent = 'Manual';
-                document.getElementById('livePotential').textContent = '—';
-                document.getElementById('liveBetInfo').classList.remove('hidden');
-
-                document.getElementById('betStatus').textContent = '✅ Bet placed — wait for takeoff';
-                document.getElementById('betStatus').className =
-                    'text-xs text-center text-green-400 min-h-[18px]';
-
-                toast('Bet placed', 'success');
+                betStatus.textContent = 'Bet placed — waiting for takeoff…';
+                betStatus.className = 'text-xs text-center text-white/50 min-h-[16px]';
+                SoundEngine.playBet();
+                toast('✅ Bet placed', 'success');
                 loadBalance();
+                updateButtons();
             } else {
+                placeBetBtn.disabled = false;
+                placeBetBtn.textContent = 'Place Bet';
                 toast(res.message || 'Bet failed', 'error');
-                btn.disabled = false;
-                btn.textContent = 'Place Bet';
             }
         })
-        .catch(function (err) {
-            var msg = err.message || (err.json && err.json.message) || 'Bet failed';
+        .catch(err => {
+            placeBetBtn.disabled = false;
+            placeBetBtn.textContent = 'Place Bet';
+            const msg = err.message || (err.json && err.json.message) || 'Bet failed';
             toast(msg, 'error');
-            btn.disabled = false;
-            btn.textContent = 'Place Bet';
         });
-    });
+    }
 
-    /* ============================================================
-       CASH OUT
-       ============================================================ */
-    function executeCashOut() {
-        if (!state.currentBet || state.cashedOut) return;
+    function handleCashout() {
+        if (!gameState.myBet || gameState.myBet.cashedOut) return;
+        if (gameState.phase !== 'IN_PROGRESS') return;
 
-        var btn = document.getElementById('cashoutBtn');
-        btn.disabled = true;
-        btn.textContent = 'Cashing out…';
+        const m = currentMultiplier();
+        gameState.myBet.cashedOut = true;
 
-        CephasGM.api.post('/bets/' + state.currentBet.reference + '/cashout')
-            .then(function (res) {
-                if (res.success) {
-                    state.cashedOut = true;
-                    var payout = res.data && res.data.cashoutAmount ? res.data.cashoutAmount : '?';
-                    document.getElementById('betStatus').textContent =
-                        '🎉 Cashed out! +' + payout + ' ' + state.currency;
-                    document.getElementById('betStatus').className =
-                        'text-xs text-center text-green-400 min-h-[18px] font-bold';
-                    toast('Cashed out successfully!', 'success');
+        cashoutBtn.disabled = true;
+        cashoutBtn.textContent = 'Cashing out…';
+
+        CephasGM.api.post('/bets/' + gameState.myBet.reference + '/cashout')
+            .then(res => {
+                if (res.success && res.data) {
+                    const payout = res.data.cashoutAmount || res.data.actualWin || '?';
+                    betStatus.textContent = '🎉 Cashed out at ' + m.toFixed(2) + 'x — +' + payout + ' ' + gameState.currency;
+                    betStatus.className = 'text-xs text-center text-green-400 min-h-[16px] font-semibold';
+                    SoundEngine.playCashout();
+                    toast('✅ Cashed out!', 'success');
                     loadBalance();
-                    /* Keep state.currentBet until next round for display, but mark cashed */
-                    state.currentBet = null;
-                    document.getElementById('liveBetInfo').classList.add('hidden');
                 } else {
-                    toast(res.message || 'Cash out failed', 'error');
-                    btn.disabled = false;
+                    gameState.myBet.cashedOut = false;
+                    cashoutBtn.disabled = false;
+                    toast(res.message || 'Cashout failed', 'error');
                 }
             })
-            .catch(function (err) {
-                var msg = err.message || (err.json && err.json.message) || 'Cash out failed';
+            .catch(err => {
+                gameState.myBet.cashedOut = false;
+                cashoutBtn.disabled = false;
+                const msg = err.message || (err.json && err.json.message) || 'Cashout failed';
                 toast(msg, 'error');
-                btn.disabled = false;
             });
     }
 
-    document.getElementById('cashoutBtn').addEventListener('click', executeCashOut);
+    placeBetBtn.addEventListener('click', handlePlaceBet);
+    cashoutBtn.addEventListener('click', handleCashout);
 
-    /* ============================================================
-       STAKE CHIPS
-       ============================================================ */
-    document.querySelectorAll('.chip').forEach(function (chip) {
-        chip.addEventListener('click', function () {
-            var input = document.getElementById('stakeInput');
-            if (this.dataset.reset) {
-                input.value = '1000';
+    document.querySelectorAll('.chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+            unlockAudioOnce();
+            if (chip.dataset.reset) {
+                stakeInput.value = '1000';
                 return;
             }
-            var add = parseFloat(this.dataset.add) || 0;
-            var cur = parseFloat(input.value) || 0;
-            input.value = cur + add;
+            const add = parseFloat(chip.dataset.add) || 0;
+            const cur = parseFloat(stakeInput.value) || 0;
+            stakeInput.value = cur + add;
         });
     });
 
     /* ============================================================
-       POLLING LOOP
+       TICK
        ============================================================ */
-    function startPolling() {
-        fetchCurrentRound();
-        state.pollTimer = setInterval(fetchCurrentRound, 2000);
+    function tick(now) {
+        if (gameState.phase === 'BETTING_OPEN') {
+            const elapsedMs = Date.now() - gameState.roundStartedAt;
+            const remaining = Math.max(0, BETTING_MS - elapsedMs);
+            const frac = remaining / BETTING_MS;
+            waitBar.style.transform = 'scaleX(' + frac + ')';
+            const sec = Math.ceil(remaining / 1000);
+            statusText.textContent = 'Next round in ' + sec + 's';
+            if (sec !== lastCountdownSecond && sec >= 0 && sec <= 6) {
+                lastCountdownSecond = sec;
+                SoundEngine.playCountdownBeep(sec === 0);
+            }
+        }
+        else if (gameState.phase === 'IN_PROGRESS') {
+            const m = currentMultiplier();
+            multiplierDisplay.textContent = m.toFixed(2) + 'x';
+            SoundEngine.updateEngine(m);
+
+            if (now - lastFlightTickAt > 120) {
+                lastFlightTickAt = now;
+                SoundEngine.playTick();
+            }
+
+            /* Auto cashout */
+            if (gameState.myBet && !gameState.myBet.cashedOut && gameState.myBet.auto && m >= gameState.myBet.auto) {
+                handleCashout();
+            }
+
+            /* Update cashout label */
+            if (gameState.myBet && !gameState.myBet.cashedOut) {
+                cashoutBtn.textContent = 'CASH OUT ' + fmt(gameState.myBet.stake * m) + ' ' + gameState.currency;
+            }
+        }
     }
 
     /* ============================================================
-       RENDER LOOP (60fps for smooth animation)
+       RENDER
        ============================================================ */
-    function startRender() {
-        function loop() {
-            updateUI();
-            draw();
-            requestAnimationFrame(loop);
+    function render(now, dt) {
+        ctx.clearRect(0, 0, W, H);
+        drawBackground(now, dt);
+
+        let planePos = null, planeAngle = 0, planeAlpha = 1, planeColor = '#00ff88';
+
+        const flying = gameState.phase === 'IN_PROGRESS';
+        const crashed = gameState.phase === 'COMPLETED';
+        const m = crashed ? (gameState.crashPoint || 1) : (flying ? currentMultiplier() : 1);
+
+        if (flying || crashed) {
+            const p = multToP(m);
+            const curveP = Math.min(p, 1);
+            let planeP = p;
+
+            if (crashed) {
+                const ct = Math.min((now - crashTime) / 900, 1);
+                planeP = p + ct * 0.55;
+                planeAlpha = 1 - ct;
+                planeColor = '#ff2d55';
+            }
+
+            drawCurve(curveP, crashed);
+
+            if (planeAlpha > 0.01) {
+                const pt = pathPoint(Math.min(planeP, 1.55));
+                const pt0 = pathPoint(Math.max(0, Math.min(planeP, 1.55) - 0.03));
+                planeAngle = Math.atan2(pt.y - pt0.y, pt.x - pt0.x);
+                planeAngle = Math.max(-1.45, Math.min(0.25, planeAngle));
+                planePos = pt;
+            }
+
+            if (flying) spawnTrail(pathPoint(curveP));
+        } else {
+            const pt = pathPoint(0);
+            const bob = Math.sin(now / 380) * 3;
+            planePos = { x: pt.x + 8, y: pt.y - 14 + bob };
+            planeAngle = -0.14;
         }
-        loop();
+
+        updateParticles(dt);
+        drawParticles();
+
+        if (planePos) {
+            const scale = W < 560 ? 0.72 : 0.92;
+            drawPlane(planePos.x, planePos.y, planeAngle, scale, planeColor, planeAlpha);
+        }
+    }
+
+    function drawBackground(now, dt) {
+        const pad = getPad();
+        const baseY = H - pad.b;
+
+        if (gameState.phase === 'IN_PROGRESS') {
+            gridShift += dt * 0.055 * (1 + Math.min(currentMultiplier(), 20) * 0.12);
+        }
+
+        const gs = 46;
+        const off = gridShift % gs;
+        ctx.save();
+        ctx.strokeStyle = 'rgba(255,255,255,0.032)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        for (let x = -off; x <= W + gs; x += gs) {
+            ctx.moveTo(x, 0); ctx.lineTo(x, baseY);
+        }
+        for (let y = baseY; y >= -gs; y -= gs) {
+            ctx.moveTo(0, y); ctx.lineTo(W, y);
+        }
+        ctx.stroke();
+        ctx.restore();
+
+        const glow = ctx.createLinearGradient(0, baseY - 60, 0, baseY + 40);
+        glow.addColorStop(0, 'rgba(0, 85, 255, 0)');
+        glow.addColorStop(0.55, 'rgba(0, 85, 255, 0.10)');
+        glow.addColorStop(1, 'rgba(0, 85, 255, 0)');
+        ctx.fillStyle = glow;
+        ctx.fillRect(0, baseY - 60, W, 100);
+
+        const line = ctx.createLinearGradient(0, 0, W, 0);
+        line.addColorStop(0, 'rgba(0,255,136,0)');
+        line.addColorStop(0.5, 'rgba(0,255,136,0.30)');
+        line.addColorStop(1, 'rgba(0,255,136,0)');
+        ctx.strokeStyle = line;
+        ctx.lineWidth = 1.4;
+        ctx.beginPath();
+        ctx.moveTo(0, baseY);
+        ctx.lineTo(W, baseY);
+        ctx.stroke();
+    }
+
+    function drawCurve(p, crashed) {
+        if (p <= 0.0005) return;
+        const pad = getPad();
+        const baseY = H - pad.b;
+        const col = crashed ? '255,45,85' : '0,255,136';
+        const steps = 72;
+        const pts = [];
+        for (let i = 0; i <= steps; i++) pts.push(pathPoint(p * i / steps));
+
+        ctx.beginPath();
+        ctx.moveTo(pts[0].x, baseY + 24);
+        for (let i = 0; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
+        ctx.lineTo(pts[pts.length - 1].x, baseY + 24);
+        ctx.closePath();
+        const fillGrad = ctx.createLinearGradient(0, pad.t, 0, baseY);
+        fillGrad.addColorStop(0, 'rgba(' + col + ',0.34)');
+        fillGrad.addColorStop(0.6, 'rgba(' + col + ',0.12)');
+        fillGrad.addColorStop(1, 'rgba(' + col + ',0)');
+        ctx.fillStyle = fillGrad;
+        ctx.fill();
+
+        ctx.beginPath();
+        for (let i = 0; i < pts.length; i++) {
+            i ? ctx.lineTo(pts[i].x, pts[i].y) : ctx.moveTo(pts[i].x, pts[i].y);
+        }
+        ctx.lineJoin = 'round';
+        ctx.lineCap = 'round';
+        ctx.strokeStyle = 'rgb(' + col + ')';
+        ctx.lineWidth = W < 560 ? 3 : 3.6;
+        ctx.shadowColor = 'rgba(' + col + ',0.85)';
+        ctx.shadowBlur = 18;
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+
+        ctx.beginPath();
+        for (let i = 0; i < pts.length; i++) {
+            i ? ctx.lineTo(pts[i].x, pts[i].y) : ctx.moveTo(pts[i].x, pts[i].y);
+        }
+        ctx.strokeStyle = 'rgba(255,255,255,0.75)';
+        ctx.lineWidth = 1.1;
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(pts[0].x, pts[0].y, 4, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(' + col + ',0.85)';
+        ctx.shadowColor = 'rgba(' + col + ',0.9)';
+        ctx.shadowBlur = 12;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+    }
+
+    function drawPlane(x, y, angle, scale, color, alpha) {
+        ctx.save();
+        ctx.globalAlpha = alpha;
+        ctx.translate(x, y);
+        ctx.rotate(angle);
+        ctx.scale(scale, scale);
+
+        const trail = ctx.createLinearGradient(-46, 0, -6, 0);
+        trail.addColorStop(0, 'rgba(0,255,136,0)');
+        trail.addColorStop(1, color === '#ff2d55' ? 'rgba(255,45,85,0.55)' : 'rgba(0,255,136,0.55)');
+        ctx.beginPath();
+        ctx.moveTo(-4, -4);
+        ctx.lineTo(-46, 0);
+        ctx.lineTo(-4, 4);
+        ctx.closePath();
+        ctx.fillStyle = trail;
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.moveTo(22, 0);
+        ctx.lineTo(2, -5);
+        ctx.lineTo(-8, -16);
+        ctx.lineTo(-13, -14);
+        ctx.lineTo(-9, -4);
+        ctx.lineTo(-20, -3);
+        ctx.lineTo(-20, 3);
+        ctx.lineTo(-9, 4);
+        ctx.lineTo(-13, 14);
+        ctx.lineTo(-8, 16);
+        ctx.lineTo(2, 5);
+        ctx.closePath();
+        ctx.shadowColor = color;
+        ctx.shadowBlur = 20;
+        ctx.fillStyle = color;
+        ctx.fill();
+
+        ctx.shadowBlur = 0;
+        ctx.beginPath();
+        ctx.moveTo(22, 0);
+        ctx.lineTo(2, -5);
+        ctx.lineTo(-4, -3);
+        ctx.lineTo(6, 0);
+        ctx.closePath();
+        ctx.fillStyle = 'rgba(255,255,255,0.85)';
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(6, 0, 2.6, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(0,0,0,0.45)';
+        ctx.fill();
+        ctx.restore();
+    }
+
+    function spawnTrail(pt) {
+        if (particles.length > 95) return;
+        for (let i = 0; i < 2; i++) {
+            particles.push({
+                x: pt.x + (Math.random() - 0.5) * 7,
+                y: pt.y + (Math.random() - 0.5) * 7,
+                vx: -0.7 - Math.random() * 1.3,
+                vy: (Math.random() - 0.5) * 0.9,
+                life: 1,
+                size: 1 + Math.random() * 2.2
+            });
+        }
+    }
+    function updateParticles(dt) {
+        const k = Math.min(dt / 16.67, 3);
+        for (let i = particles.length - 1; i >= 0; i--) {
+            const p = particles[i];
+            p.x += p.vx * k;
+            p.y += p.vy * k;
+            p.life -= 0.022 * k;
+            if (p.life <= 0) particles.splice(i, 1);
+        }
+    }
+    function drawParticles() {
+        for (let i = 0; i < particles.length; i++) {
+            const p = particles[i];
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, Math.max(0.2, p.size * p.life), 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(0,255,136,' + (p.life * 0.55).toFixed(3) + ')';
+            ctx.fill();
+        }
+    }
+
+    /* ============================================================
+       MAIN LOOP
+       ============================================================ */
+    function loop(now) {
+        const dt = Math.min(now - lastFrame, 80);
+        lastFrame = now;
+        tick(now);
+        render(now, dt);
+        requestAnimationFrame(loop);
     }
 
     /* ============================================================
        BOOT
        ============================================================ */
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
-
     loadBalance();
     loadHistory();
-
-    startPolling();
-    startRender();
+    pollRound();
+    setInterval(pollRound, 2000);
+    requestAnimationFrame(loop);
 
     if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function () {
-            navigator.serviceWorker.register('sw.js').catch(function () {});
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('sw.js').catch(() => {});
         });
     }
-});
+})();
 </script>
 
 </body>
