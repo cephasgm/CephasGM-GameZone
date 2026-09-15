@@ -6,66 +6,48 @@
     <meta name="theme-color" content="#0a0a12">
     <meta name="description" content="CephasGM GameZone Dashboard – Your betting control center">
     <title>Dashboard | CephasGM GameZone</title>
-    
-    <!-- PWA -->
+
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
+
     <script src="https://cdn.tailwindcss.com"></script>
-    
+    <script src="js/api.js"></script>
+    <script src="js/auth-ui.js"></script>
+
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+
         body {
             font-family: 'Inter', sans-serif;
             background: #0a0a12;
             color: #ffffff;
             overflow-x: hidden;
         }
-        
-        /* Scrollbar */
+
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #0a0a12; }
-        ::-webkit-scrollbar-thumb { 
+        ::-webkit-scrollbar-thumb {
             background: linear-gradient(180deg, #0055ff, #542bff);
             border-radius: 10px;
         }
-        
-        /* Glassmorphism */
+
         .glass {
             background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.06);
         }
-        
+
         .glass-light {
             background: rgba(255, 255, 255, 0.04);
             backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
-        
-        .glass-hover:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.12);
-        }
-        
-        /* Navbar */
-        .navbar {
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            padding: 16px 0;
-            background: rgba(10, 10, 18, 0.92);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        
+
         .btn-primary {
             background: linear-gradient(135deg, #0055ff, #542bff);
             color: white;
@@ -78,18 +60,8 @@
             transition: all 0.3s ease;
             box-shadow: 0 4px 20px rgba(0, 85, 255, 0.25);
         }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(0, 85, 255, 0.4);
-        }
-        
-        .btn-primary:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0, 85, 255, 0.4); }
+
         .btn-secondary {
             background: rgba(255, 255, 255, 0.06);
             color: white;
@@ -101,26 +73,28 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
-        
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-2px);
+        .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-2px); }
+
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 16px 0;
+            background: rgba(10, 10, 18, 0.92);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
-        
+
         .text-gradient {
             background: linear-gradient(135deg, #0055ff, #542bff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        
-        /* Mobile menu */
+
         .mobile-menu {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            inset: 0;
             background: rgba(10, 10, 18, 0.98);
             backdrop-filter: blur(20px);
             z-index: 999;
@@ -128,16 +102,9 @@
             padding: 80px 24px 24px;
             overflow-y: auto;
         }
-        .mobile-menu.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        /* Background image */
+        .mobile-menu.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
         .dashboard-bg {
             background-image: url('https://static.vecteezy.com/system/resources/thumbnails/070/574/368/small/assorted-sports-equipment-on-black-backdrop-symbolizing-athleticism-competition-and-diverse-sporting-activities-photo.jpeg');
             background-size: cover;
@@ -148,22 +115,12 @@
         .dashboard-bg::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, 
-                rgba(10, 10, 18, 0.85) 0%, 
-                rgba(10, 10, 18, 0.7) 50%,
-                rgba(10, 10, 18, 0.85) 100%);
+            inset: 0;
+            background: linear-gradient(135deg, rgba(10,10,18,0.85), rgba(10,10,18,0.7), rgba(10,10,18,0.85));
             z-index: 0;
         }
-        .content-wrapper {
-            position: relative;
-            z-index: 1;
-        }
-        
-        /* Cards */
+        .content-wrapper { position: relative; z-index: 1; }
+
         .stat-card {
             background: rgba(255,255,255,0.03);
             backdrop-filter: blur(10px);
@@ -172,57 +129,8 @@
             padding: 20px;
             transition: transform 0.3s;
         }
-        .stat-card:hover {
-            transform: translateY(-4px);
-        }
-        
-        .live-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #ff0044;
-            display: inline-block;
-            animation: pulse-dot 1.5s ease-in-out infinite;
-        }
-        @keyframes pulse-dot {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.4; transform: scale(0.8); }
-        }
-        
-        /* Odds buttons */
-        .odds-btn-small {
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.06);
-            border-radius: 6px;
-            padding: 4px 12px;
-            font-size: 13px;
-            font-weight: 600;
-            color: white;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .odds-btn-small:hover {
-            background: #0055ff;
-            border-color: #0055ff;
-            transform: scale(1.05);
-        }
-        
-        /* Bet slip item */
-        .bet-slip-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.04);
-        }
-        .bet-slip-item .remove {
-            color: rgba(255,255,255,0.3);
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-        .bet-slip-item .remove:hover { color: #ff0044; }
-        
-        /* Quick action */
+        .stat-card:hover { transform: translateY(-4px); }
+
         .quick-action {
             background: rgba(255,255,255,0.03);
             border: 1px solid rgba(255,255,255,0.06);
@@ -231,54 +139,20 @@
             text-align: center;
             cursor: pointer;
             transition: all 0.3s;
-        }
-        .quick-action:hover {
-            background: rgba(255,255,255,0.06);
-            transform: translateY(-2px);
-        }
-        
-        /* Toast */
-        .toast {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            z-index: 9999;
-            background: rgba(26,26,46,0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 16px;
-            padding: 16px 24px;
-            min-width: 280px;
-            animation: slideUp 0.4s ease;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-        }
-        .toast-success { border-left: 4px solid #00ff64; }
-        .toast-error { border-left: 4px solid #ff0044; }
-        .toast-warning { border-left: 4px solid #ffd700; }
-        @keyframes slideUp {
-            from { transform: translateY(40px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        
-        /* Footer */
-        .footer-link {
-            color: rgba(255, 255, 255, 0.4);
-            transition: all 0.3s ease;
             text-decoration: none;
-            font-size: 14px;
+            color: inherit;
+            display: block;
         }
-        .footer-link:hover { color: #ffffff; }
-        
-        /* Dropdown */
-        .dropdown {
-            position: relative;
-            display: inline-block;
-        }
+        .quick-action:hover { background: rgba(255,255,255,0.06); transform: translateY(-2px); }
+
+        .footer-link { color: rgba(255,255,255,0.4); text-decoration: none; font-size: 14px; transition: 0.3s; }
+        .footer-link:hover { color: #fff; }
+
+        .dropdown { position: relative; display: inline-block; }
         .dropdown-menu {
             display: none;
             position: absolute;
-            top: 100%;
-            left: 0;
+            top: 100%; left: 0;
             background: rgba(10,10,18,0.95);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255,255,255,0.05);
@@ -287,9 +161,7 @@
             padding: 8px 0;
             z-index: 1001;
         }
-        .dropdown:hover .dropdown-menu {
-            display: block;
-        }
+        .dropdown:hover .dropdown-menu { display: block; }
         .dropdown-menu a {
             display: block;
             padding: 8px 16px;
@@ -297,31 +169,75 @@
             font-size: 13px;
             transition: 0.2s;
         }
-        .dropdown-menu a:hover {
-            background: rgba(255,255,255,0.05);
-            color: white;
+        .dropdown-menu a:hover { background: rgba(255,255,255,0.05); color: white; }
+
+        /* User badge (fallback if auth-ui.js doesn't load) */
+        #userBar {
+            position: fixed;
+            top: 84px;
+            right: 16px;
+            z-index: 999;
+            background: rgba(10,10,18,0.92);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 999px;
+            padding: 8px 8px 8px 14px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            gap: 10px;
         }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .stats-grid { grid-template-columns: 1fr 1fr; }
-            .dashboard-grid { grid-template-columns: 1fr; }
+        #userBar .avatar {
+            width: 30px; height: 30px; border-radius: 50%;
+            background: linear-gradient(135deg,#0055ff,#542bff);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 12px; flex-shrink: 0;
         }
-        @media (max-width: 480px) {
-            .stats-grid { grid-template-columns: 1fr; }
+        #userBar .info { display: flex; flex-direction: column; line-height: 1.1; max-width: 140px; }
+        #userBar .name { font-weight: 700; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        #userBar .contact { font-size: 10px; color: rgba(255,255,255,0.5); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        #inlineSignOut {
+            padding: 6px 14px; border-radius: 999px;
+            background: rgba(255,0,68,0.15);
+            border: 1px solid rgba(255,0,68,0.3);
+            color: #ff8098; font-size: 11px; font-weight: 700;
+            cursor: pointer; font-family: inherit; white-space: nowrap;
+            transition: all .2s;
         }
+        #inlineSignOut:hover { background: rgba(255,0,68,0.25); border-color: rgba(255,0,68,0.5); }
+
+        @media (max-width: 640px) {
+            #userBar { top: 76px; right: 8px; padding: 6px; }
+            #userBar .info { display: none; }
+        }
+
+        .loading-skeleton {
+            background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 8px;
+            color: transparent !important;
+        }
+        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
     </style>
 </head>
-<body>
+<body data-requires-auth>
 
-<!-- ==========================================
-     TOP NAVIGATION (no sidebar)
-     ========================================== -->
+<!-- USER BADGE — top right -->
+<div id="userBar">
+    <div class="avatar" id="userAvatar">U</div>
+    <div class="info">
+        <span class="name" id="userName">Loading…</span>
+        <span class="contact" id="userContact"></span>
+    </div>
+    <button id="inlineSignOut">Sign Out</button>
+</div>
+
+<!-- NAVBAR -->
 <nav class="navbar">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between">
-            
-            <!-- Logo -->
             <a href="index.html" class="flex items-center space-x-2">
                 <span class="text-xl font-bold">
                     <span class="text-gradient">CephasGM</span>
@@ -329,719 +245,358 @@
                     <span class="text-white font-semibold">GameZone</span>
                 </span>
             </a>
-            
-            <!-- Desktop Nav (full links) -->
+
             <div class="hidden lg:flex items-center space-x-1">
-    <!-- Info dropdown -->
-    <div class="dropdown">
-        <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Info ▾</span>
-        <div class="dropdown-menu">
-            <a href="about.html">About Us</a>
-            <a href="vip.html">VIP Club</a>
-            <a href="referrals.html">Referrals</a>
-            <a href="privacy.html">Privacy Policy</a>
-            <a href="terms.html">Terms & Conditions</a>
-            <a href="cookies.html">Cookie Policy</a>
+                <a href="sports.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Sports</a>
+                <a href="live-betting.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Live</a>
+                <a href="casino.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Casino</a>
+                <a href="aviator.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Aviator</a>
+                <div class="dropdown">
+                    <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Virtual ▾</span>
+                    <div class="dropdown-menu">
+                        <a href="virtual-football.html">Virtual Football</a>
+                        <a href="virtual-horse-racing.html">Virtual Horse Racing</a>
+                        <a href="virtual-car-racing.html">Virtual Car Racing</a>
+                        <a href="virtual-netball.html">Virtual Netball</a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Account ▾</span>
+                    <div class="dropdown-menu">
+                        <a href="dashboard.html">Dashboard</a>
+                        <a href="profile.html">Profile</a>
+                        <a href="wallet.html">Wallet</a>
+                        <a href="deposit.html">Deposit</a>
+                        <a href="withdraw.html">Withdraw</a>
+                        <a href="transactions.html">Transactions</a>
+                        <a href="bet-history.html">Bet History</a>
+                        <a href="kyc.html">KYC Verification</a>
+                        <a href="settings.html">Settings</a>
+                    </div>
+                </div>
+            </div>
+
+            <button id="mobileToggle" class="lg:hidden p-2 text-white/40 hover:text-white transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
         </div>
     </div>
-
-    <!-- Account dropdown -->
-    <div class="dropdown">
-        <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Account ▾</span>
-        <div class="dropdown-menu">
-            <a href="dashboard.html">Dashboard</a>
-            <a href="profile.html">Profile</a>
-            <a href="wallet.html">Wallet</a>
-            <a href="deposit.html">Deposit</a>
-            <a href="withdraw.html">Withdraw</a>
-            <a href="transactions.html">Transactions</a>
-            <a href="bet-history.html">Bet History</a>
-            <a href="bonuses.html">Bonuses</a>
-            <a href="kyc.html">KYC Verification</a>
-            <a href="settings.html">Settings</a>
-            <a href="signin.html">Sign In</a>
-            <a href="signup.html">Sign Up</a>
-            <a href="leaderboard.html">Leaders Board</a>
-        </div>
-    </div>
-
-    <!-- Promotions link -->
-    <a href="promotions.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Promotions</a>
-
-    <!-- Sports link -->
-    <a href="sports.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Sports</a>
-
-    <!-- Casino link -->
-    <a href="casino.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Casino</a>
-
-    <!-- Live link -->
-    <a href="live-betting.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 flex items-center space-x-1">
-        <span class="live-dot"></span><span>Live</span>
-    </a>
-
-    <!-- Virtual dropdown -->
-    <div class="dropdown">
-        <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Virtual ▾</span>
-        <div class="dropdown-menu">
-            <a href="virtual-football.html">Virtual Football</a>
-            <a href="virtual-horse-racing.html">Virtual Horse Racing</a>
-            <a href="virtual-car-racing.html">Virtual Car Racing</a>
-            <a href="virtual-netball.html">Virtual Netball</a>
-            <a href="adventure-games.html">Adventure Games</a>
-            <a href="aviator.html">Aviator</a>
-        </div>
-    </div>
-
-    <!-- Support dropdown -->
-    <div class="dropdown">
-        <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Support ▾</span>
-        <div class="dropdown-menu">
-            <a href="support.html">Help Center</a>
-            <a href="messages.html">Messages</a>
-            <a href="notifications.html">Notifications</a>
-            <a href="faq.html">FAQ</a>
-            <a href="contact.html">Contact Us</a>
-            <a href="responsible-gambling.html">Responsible Gambling</a>
-            <a href="self-exclusion.html">Self-Exclusion</a>
-        </div>
-    </div>
-</div>
-
-<div class="flex items-center space-x-3">
-    <button id="mobileToggle" class="lg:hidden p-2 text-white/40 hover:text-white transition-colors">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-        </svg>
-    </button>
-</div>
-</div>
-</div>
 </nav>
 
 <!-- Mobile Menu -->
 <div id="mobileMenu" class="mobile-menu">
     <nav class="flex flex-col space-y-6">
-        <a href="index.html" class="text-lg text-white/70 hover:text-white transition-colors">Home</a>
-        <a href="sports.html" class="text-lg text-white/70 hover:text-white transition-colors">Sports</a>
-        <a href="live-betting.html" class="text-lg text-white/70 hover:text-white transition-colors">Live Betting</a>
-        <a href="casino.html" class="text-lg text-white/70 hover:text-white transition-colors">Casino</a>
-        <a href="promotions.html" class="text-lg text-white/70 hover:text-white transition-colors">Promotions</a>
-        <a href="bonuses.html" class="text-lg text-white/70 hover:text-white transition-colors">Bonuses</a>
-        <a href="leaderboard.html" class="text-lg text-white/70 hover:text-white transition-colors">Leaderboard</a>
-        <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Account</span>
-            <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="dashboard.html" class="text-sm text-white/50 hover:text-white">Dashboard</a>
-                <a href="profile.html" class="text-sm text-white/50 hover:text-white">Profile</a>
-                <a href="wallet.html" class="text-sm text-white/50 hover:text-white">Wallet</a>
-                <a href="deposit.html" class="text-sm text-white/50 hover:text-white">Deposit</a>
-                <a href="withdraw.html" class="text-sm text-white/50 hover:text-white">Withdraw</a>
-                <a href="transactions.html" class="text-sm text-white/50 hover:text-white">Transactions</a>
-                <a href="bet-history.html" class="text-sm text-white/50 hover:text-white">Bet History</a>
-                <a href="kyc.html" class="text-sm text-white/50 hover:text-white">KYC</a>
-                <a href="settings.html" class="text-sm text-white/50 hover:text-white">Settings</a>
-                <a href="signin.html" class="text-sm text-white/50 hover:text-white">Sign In</a>
-                <a href="signup.html" class="text-sm text-white/50 hover:text-white">Sign Up</a>
-            </div>
-        </div>
-        <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Virtual Games</span>
-            <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="virtual-football.html" class="text-sm text-white/50 hover:text-white">Virtual Football</a>
-                <a href="virtual-horse-racing.html" class="text-sm text-white/50 hover:text-white">Horse Racing</a>
-                <a href="virtual-car-racing.html" class="text-sm text-white/50 hover:text-white">Car Racing</a>
-                <a href="virtual-netball.html" class="text-sm text-white/50 hover:text-white">Netball</a>
-                <a href="adventure-games.html" class="text-sm text-white/50 hover:text-white">Adventure</a>
-                <a href="aviator.html" class="text-sm text-white/50 hover:text-white">Aviator</a>
-            </div>
-        </div>
-        <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Support</span>
-            <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="support.html" class="text-sm text-white/50 hover:text-white">Help Center</a>
-                <a href="messages.html" class="text-sm text-white/50 hover:text-white">Messages</a>
-                <a href="notifications.html" class="text-sm text-white/50 hover:text-white">Notifications</a>
-                <a href="faq.html" class="text-sm text-white/50 hover:text-white">FAQ</a>
-                <a href="contact.html" class="text-sm text-white/50 hover:text-white">Contact</a>
-                <a href="responsible-gambling.html" class="text-sm text-white/50 hover:text-white">Responsible</a>
-                <a href="self-exclusion.html" class="text-sm text-white/50 hover:text-white">Self-Exclusion</a>
-            </div>
-        </div>
-        <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Information</span>
-            <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="about.html" class="text-sm text-white/50 hover:text-white">About</a>
-                <a href="vip.html" class="text-sm text-white/50 hover:text-white">VIP</a>
-                <a href="referrals.html" class="text-sm text-white/50 hover:text-white">Referrals</a>
-                <a href="privacy.html" class="text-sm text-white/50 hover:text-white">Privacy</a>
-                <a href="terms.html" class="text-sm text-white/50 hover:text-white">Terms</a>
-                <a href="cookies.html" class="text-sm text-white/50 hover:text-white">Cookies</a>
-            </div>
-        </div>
+        <a href="index.html" class="text-lg text-white/70 hover:text-white">Home</a>
+        <a href="sports.html" class="text-lg text-white/70 hover:text-white">Sports</a>
+        <a href="live-betting.html" class="text-lg text-white/70 hover:text-white">Live Betting</a>
+        <a href="casino.html" class="text-lg text-white/70 hover:text-white">Casino</a>
+        <a href="aviator.html" class="text-lg text-white/70 hover:text-white">Aviator</a>
+        <a href="wallet.html" class="text-lg text-white/70 hover:text-white">Wallet</a>
+        <a href="deposit.html" class="text-lg text-white/70 hover:text-white">Deposit</a>
+        <a href="withdraw.html" class="text-lg text-white/70 hover:text-white">Withdraw</a>
+        <a href="transactions.html" class="text-lg text-white/70 hover:text-white">Transactions</a>
+        <a href="bet-history.html" class="text-lg text-white/70 hover:text-white">Bet History</a>
+        <a href="kyc.html" class="text-lg text-white/70 hover:text-white">KYC</a>
+        <a href="settings.html" class="text-lg text-white/70 hover:text-white">Settings</a>
     </nav>
 </div>
 
-<!-- ==========================================
-     MAIN DASHBOARD CONTENT
-     ========================================== -->
+<!-- MAIN CONTENT -->
 <div class="dashboard-bg min-h-screen">
-<!-- USER BADGE + SIGN OUT (inline fallback) -->
-<div id="userBar" style="position:fixed;top:80px;right:16px;z-index:999;display:none;
-     background:rgba(10,10,18,0.92);backdrop-filter:blur(18px);
-     border:1px solid rgba(255,255,255,0.08);border-radius:999px;
-     padding:8px 8px 8px 14px;font-family:Inter,sans-serif;color:#fff;
-     box-shadow:0 8px 24px rgba(0,0,0,0.5);display:none;align-items:center;gap:10px;">
-  <div id="userAvatar" style="width:30px;height:30px;border-radius:50%;
-       background:linear-gradient(135deg,#0055ff,#542bff);
-       display:flex;align-items:center;justify-content:center;
-       font-weight:800;font-size:12px;">U</div>
-  <div style="display:flex;flex-direction:column;line-height:1.1;max-width:140px;">
-    <span id="userName" style="font-weight:700;font-size:12px;"></span>
-    <span id="userContact" style="font-size:10px;color:rgba(255,255,255,0.5);"></span>
-  </div>
-  <button id="inlineSignOut" style="padding:6px 14px;border-radius:999px;
-          background:rgba(255,0,68,0.15);border:1px solid rgba(255,0,68,0.3);
-          color:#ff8098;font-size:11px;font-weight:700;cursor:pointer;
-          font-family:inherit;white-space:nowrap;">Sign Out</button>
-</div>
     <div class="content-wrapper py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        
-        <!-- Welcome Header (Deposit/Withdraw buttons removed) -->
+
+        <!-- Welcome Header -->
         <div class="mb-8">
-            <h1 class="text-3xl font-bold">Welcome back,CephasGM! 👋</h1>
+            <h1 class="text-3xl font-bold">
+                Welcome back, <span id="welcomeName">Player</span>! 👋
+            </h1>
             <p class="text-sm text-white/40 mt-1">Here's your betting overview for today.</p>
         </div>
-        
+
         <!-- Stats Row -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
             <div class="stat-card glass">
-                <div class="text-xs text-white/40">Total Balance</div>
-                <div class="text-2xl font-bold mt-1">$1,245.80</div>
-                <div class="text-xs text-green-400 mt-2">▲ 12.5% this week</div>
+                <div class="text-xs text-white/40">Balance</div>
+                <div class="text-2xl font-bold mt-1" id="statBalance">—</div>
+                <div class="text-xs text-white/30 mt-2" id="statCurrency">TZS</div>
             </div>
             <div class="stat-card glass">
-                <div class="text-xs text-white/40">Active Bets</div>
-                <div class="text-2xl font-bold mt-1">4</div>
-                <div class="text-xs text-green-400 mt-2">▲ 2 pending</div>
+                <div class="text-xs text-white/40">Available</div>
+                <div class="text-2xl font-bold mt-1" id="statAvailable">—</div>
+                <div class="text-xs text-white/30 mt-2">Ready to bet</div>
             </div>
             <div class="stat-card glass">
                 <div class="text-xs text-white/40">Total Won</div>
-                <div class="text-2xl font-bold mt-1">$3,420</div>
-                <div class="text-xs text-green-400 mt-2">▲ +$280 today</div>
+                <div class="text-2xl font-bold mt-1" id="statWon">—</div>
+                <div class="text-xs text-white/30 mt-2">All-time</div>
             </div>
             <div class="stat-card glass">
-                <div class="text-xs text-white/40">Win Rate</div>
-                <div class="text-2xl font-bold mt-1">67%</div>
-                <div class="text-xs text-green-400 mt-2">▲ 128 bets placed</div>
+                <div class="text-xs text-white/40">VIP Tier</div>
+                <div class="text-2xl font-bold mt-1" id="statVip">—</div>
+                <div class="text-xs text-white/30 mt-2" id="statVipPoints">0 points</div>
             </div>
         </div>
-        
-        <!-- Main Grid: Live Matches & Bet Slip -->
-        <div class="grid lg:grid-cols-3 gap-6 mb-8">
-            
-            <!-- Left: Live Matches (span 2 cols) -->
-            <div class="lg:col-span-2 glass rounded-2xl p-6">
-                <div class="flex items-center justify-between mb-4">
-                    <h2 class="text-lg font-bold">🔥 Live Matches</h2>
-                    <a href="live-betting.html" class="text-sm text-blue-400 hover:text-blue-300">View All →</a>
-                </div>
-                <div class="space-y-3">
-                    <!-- Match 1 -->
-                    <div class="flex items-center justify-between py-3 border-b border-white/5">
-                        <div class="flex items-center gap-3">
-                            <span class="text-xl">⚽</span>
-                            <div>
-                                <div class="font-semibold text-sm">Arsenal <span class="text-white/30">vs</span> Chelsea</div>
-                                <div class="text-xs text-white/30 flex items-center gap-1">
-                                    <span class="live-dot"></span> Premier League • 67'
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex gap-1.5">
-                            <button class="odds-btn-small" data-match="Arsenal vs Chelsea" data-selection="Arsenal" data-odds="1.95">1.95</button>
-                            <button class="odds-btn-small" data-match="Arsenal vs Chelsea" data-selection="Draw" data-odds="3.20">3.20</button>
-                            <button class="odds-btn-small" data-match="Arsenal vs Chelsea" data-selection="Chelsea" data-odds="2.15">2.15</button>
-                        </div>
-                    </div>
-                    <!-- Match 2 -->
-                    <div class="flex items-center justify-between py-3 border-b border-white/5">
-                        <div class="flex items-center gap-3">
-                            <span class="text-xl">⚽</span>
-                            <div>
-                                <div class="font-semibold text-sm">Barcelona <span class="text-white/30">vs</span> Real Madrid</div>
-                                <div class="text-xs text-white/30 flex items-center gap-1">
-                                    <span class="live-dot"></span> La Liga • 12'
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex gap-1.5">
-                            <button class="odds-btn-small" data-match="Barcelona vs Real Madrid" data-selection="Barcelona" data-odds="2.50">2.50</button>
-                            <button class="odds-btn-small" data-match="Barcelona vs Real Madrid" data-selection="Draw" data-odds="3.40">3.40</button>
-                            <button class="odds-btn-small" data-match="Barcelona vs Real Madrid" data-selection="Real Madrid" data-odds="2.80">2.80</button>
-                        </div>
-                    </div>
-                    <!-- Match 3 -->
-                    <div class="flex items-center justify-between py-3 border-b border-white/5">
-                        <div class="flex items-center gap-3">
-                            <span class="text-xl">🏀</span>
-                            <div>
-                                <div class="font-semibold text-sm">Lakers <span class="text-white/30">vs</span> Celtics</div>
-                                <div class="text-xs text-white/30 flex items-center gap-1">
-                                    <span class="live-dot"></span> NBA • Q4
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex gap-1.5">
-                            <button class="odds-btn-small" data-match="Lakers vs Celtics" data-selection="Lakers -5.5" data-odds="1.75">1.75</button>
-                            <button class="odds-btn-small" data-match="Lakers vs Celtics" data-selection="Celtics +5.5" data-odds="1.95">1.95</button>
-                        </div>
-                    </div>
-                    <!-- Match 4 -->
-                    <div class="flex items-center justify-between py-3 border-b border-white/5">
-                        <div class="flex items-center gap-3">
-                            <span class="text-xl">🎾</span>
-                            <div>
-                                <div class="font-semibold text-sm">Djokovic <span class="text-white/30">vs</span> Nadal</div>
-                                <div class="text-xs text-white/30 flex items-center gap-1">
-                                    <span class="live-dot"></span> ATP Finals • Set 2
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex gap-1.5">
-                            <button class="odds-btn-small" data-match="Djokovic vs Nadal" data-selection="Djokovic" data-odds="1.65">1.65</button>
-                            <button class="odds-btn-small" data-match="Djokovic vs Nadal" data-selection="Nadal" data-odds="2.30">2.30</button>
-                        </div>
-                    </div>
-                    <!-- Match 5 -->
-                    <div class="flex items-center justify-between py-3">
-                        <div class="flex items-center gap-3">
-                            <span class="text-xl">🏈</span>
-                            <div>
-                                <div class="font-semibold text-sm">Chiefs <span class="text-white/30">vs</span> 49ers</div>
-                                <div class="text-xs text-white/30 flex items-center gap-1">
-                                    <span class="live-dot"></span> NFL • Q3
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex gap-1.5">
-                            <button class="odds-btn-small" data-match="Chiefs vs 49ers" data-selection="Chiefs" data-odds="1.90">1.90</button>
-                            <button class="odds-btn-small" data-match="Chiefs vs 49ers" data-selection="49ers" data-odds="1.85">1.85</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Right: Bet Slip -->
-            <div class="glass rounded-2xl p-6 self-start sticky top-24">
-                <div class="flex items-center justify-between mb-4">
-                    <h2 class="text-lg font-bold">🎯 Bet Slip</h2>
-                    <span id="slipCount" class="text-xs text-white/30">0 selections</span>
-                </div>
-                <div id="betSlipContainer">
-                    <div id="emptySlip" class="text-center py-10 text-white/30">
-                        <div class="text-3xl mb-2">📋</div>
-                        <p class="text-sm">No selections yet</p>
-                        <p class="text-xs">Click odds to add to slip</p>
-                    </div>
-                    <div id="slipItems" class="space-y-1"></div>
-                </div>
-                <div id="slipFooter" class="hidden mt-4 pt-4 border-t border-white/10">
-                    <div class="flex justify-between text-sm font-semibold mb-3">
-                        <span>Total Odds</span>
-                        <span id="totalOdds">1.00</span>
-                    </div>
-                    <div class="flex items-center gap-3 mb-3">
-                        <input type="number" id="stakeInput" placeholder="Stake ($)" value="10.00" min="0.10" step="0.10"
-                               class="bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-sm w-full focus:outline-none focus:border-blue-500">
-                        <span class="text-xs text-white/40 whitespace-nowrap">Pot. win: <strong id="potentialWin" class="text-green-400">$10.00</strong></span>
-                    </div>
-                    <button id="placeBetBtn" class="btn-primary w-full text-center py-3">Place Bet</button>
-                </div>
+
+        <!-- Quick Actions -->
+        <div class="glass rounded-2xl p-6 mb-8">
+            <h2 class="text-lg font-bold mb-4">⚡ Quick Actions</h2>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+                <a href="deposit.html" class="quick-action">
+                    <div class="text-2xl">💰</div>
+                    <div class="text-xs mt-1">Deposit</div>
+                </a>
+                <a href="withdraw.html" class="quick-action">
+                    <div class="text-2xl">💳</div>
+                    <div class="text-xs mt-1">Withdraw</div>
+                </a>
+                <a href="sports.html" class="quick-action">
+                    <div class="text-2xl">⚽</div>
+                    <div class="text-xs mt-1">Sports</div>
+                </a>
+                <a href="aviator.html" class="quick-action">
+                    <div class="text-2xl">✈️</div>
+                    <div class="text-xs mt-1">Aviator</div>
+                </a>
+                <a href="bonuses.html" class="quick-action">
+                    <div class="text-2xl">🎁</div>
+                    <div class="text-xs mt-1">Bonuses</div>
+                </a>
+                <a href="transactions.html" class="quick-action">
+                    <div class="text-2xl">📊</div>
+                    <div class="text-xs mt-1">History</div>
+                </a>
             </div>
         </div>
-        
-        <!-- Active Bets & Quick Actions -->
-        <div class="grid md:grid-cols-3 gap-6 mb-8">
-            
-            <!-- Active Bets -->
-            <div class="md:col-span-2 glass rounded-2xl p-6">
-                <div class="flex items-center justify-between mb-4">
-                    <h2 class="text-lg font-bold">📋 Your Active Bets</h2>
-                    <a href="bet-history.html" class="text-sm text-blue-400 hover:text-blue-300">View All</a>
-                </div>
-                <div class="space-y-3">
-                    <div class="flex items-center justify-between py-2 border-b border-white/5">
-                        <div>
-                            <div class="font-medium text-sm">Arsenal to Win</div>
-                            <div class="text-xs text-white/30">Stake: $25 • Potential: $48.75</div>
-                        </div>
-                        <span class="text-xs bg-blue-500/10 text-blue-400 px-3 py-1 rounded-full">Pending</span>
-                    </div>
-                    <div class="flex items-center justify-between py-2 border-b border-white/5">
-                        <div>
-                            <div class="font-medium text-sm">Barcelona vs Real Madrid - Draw</div>
-                            <div class="text-xs text-white/30">Stake: $15 • Potential: $51.00</div>
-                        </div>
-                        <span class="text-xs bg-blue-500/10 text-blue-400 px-3 py-1 rounded-full">Pending</span>
-                    </div>
-                    <div class="flex items-center justify-between py-2">
-                        <div>
-                            <div class="font-medium text-sm">Lakers -5.5</div>
-                            <div class="text-xs text-white/30">Stake: $30 • Potential: $52.50</div>
-                        </div>
-                        <span class="text-xs bg-yellow-500/10 text-yellow-400 px-3 py-1 rounded-full">In Progress</span>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Quick Actions -->
-            <div class="glass rounded-2xl p-6">
-                <h2 class="text-lg font-bold mb-4">⚡ Quick Actions</h2>
-                <div class="grid grid-cols-2 gap-3">
-                    <a href="deposit.html" class="quick-action">
-                        <div class="text-2xl">💰</div>
-                        <div class="text-xs mt-1">Deposit</div>
-                    </a>
-                    <a href="withdraw.html" class="quick-action">
-                        <div class="text-2xl">💳</div>
-                        <div class="text-xs mt-1">Withdraw</div>
-                    </a>
-                    <a href="sports.html" class="quick-action">
-                        <div class="text-2xl">⚽</div>
-                        <div class="text-xs mt-1">Sports</div>
-                    </a>
-                    <a href="promotions.html" class="quick-action">
-                        <div class="text-2xl">🎁</div>
-                        <div class="text-xs mt-1">Promotions</div>
-                    </a>
-                    <a href="live-betting.html" class="quick-action">
-                        <div class="text-2xl">🔴</div>
-                        <div class="text-xs mt-1">Live</div>
-                    </a>
-                    <a href="transactions.html" class="quick-action">
-                        <div class="text-2xl">📊</div>
-                        <div class="text-xs mt-1">History</div>
-                    </a>
-                </div>
-            </div>
-        </div>
-        
+
         <!-- Recent Transactions -->
         <div class="glass rounded-2xl p-6 mb-8">
             <div class="flex items-center justify-between mb-4">
                 <h2 class="text-lg font-bold">💵 Recent Transactions</h2>
                 <a href="transactions.html" class="text-sm text-blue-400 hover:text-blue-300">View All</a>
             </div>
-            <div class="space-y-2">
-                <div class="flex justify-between items-center py-2 border-b border-white/5">
-                    <div>
-                        <div class="font-medium text-sm">Deposit</div>
-                        <div class="text-xs text-white/30">Today, 14:30</div>
-                    </div>
-                    <span class="text-green-400 font-semibold text-sm">+$200.00</span>
+            <div id="transactionsList" class="space-y-2">
+                <div class="text-sm text-white/30 text-center py-6">Loading transactions…</div>
+            </div>
+        </div>
+
+        <!-- Account Status -->
+        <div class="glass rounded-2xl p-6">
+            <h2 class="text-lg font-bold mb-4">🔐 Account Status</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+                <div>
+                    <div class="text-white/40 text-xs">Email</div>
+                    <div class="font-semibold mt-1" id="accEmail">—</div>
                 </div>
-                <div class="flex justify-between items-center py-2 border-b border-white/5">
-                    <div>
-                        <div class="font-medium text-sm">Bet on Arsenal vs Chelsea</div>
-                        <div class="text-xs text-white/30">Today, 13:15</div>
-                    </div>
-                    <span class="text-red-400 font-semibold text-sm">-$25.00</span>
+                <div>
+                    <div class="text-white/40 text-xs">Status</div>
+                    <div class="font-semibold mt-1" id="accStatus">—</div>
                 </div>
-                <div class="flex justify-between items-center py-2 border-b border-white/5">
-                    <div>
-                        <div class="font-medium text-sm">Won - Barcelona vs Real Madrid</div>
-                        <div class="text-xs text-white/30">Today, 11:45</div>
-                    </div>
-                    <span class="text-green-400 font-semibold text-sm">+$87.50</span>
+                <div>
+                    <div class="text-white/40 text-xs">KYC</div>
+                    <div class="font-semibold mt-1" id="accKyc">—</div>
                 </div>
-                <div class="flex justify-between items-center py-2">
-                    <div>
-                        <div class="font-medium text-sm">Withdrawal</div>
-                        <div class="text-xs text-white/30">Yesterday, 20:10</div>
-                    </div>
-                    <span class="text-red-400 font-semibold text-sm">-$150.00</span>
+                <div>
+                    <div class="text-white/40 text-xs">Referral Code</div>
+                    <div class="font-semibold mt-1 font-mono" id="accRef">—</div>
                 </div>
             </div>
         </div>
-        
+
     </div>
 </div>
 
-<!-- ==========================================
-     SHARED FOOTER (matches Aviator & other pages)
-     ========================================== -->
+<!-- FOOTER -->
 <footer class="bg-[#0a0a12] border-t border-white/5 py-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div class="col-span-2 md:col-span-1">
-                <div class="text-lg font-bold mb-3">
-                    <span class="text-gradient">CephasGM</span>
-                    <span class="text-white font-light">|</span>
-                    <span class="text-white font-semibold">GameZone</span>
-                </div>
-                <p class="text-sm text-white/30 leading-relaxed">
-                    Premium online betting platform for sports, casino, and virtual games.
-                </p>
-            </div>
-            <div>
-                <h4 class="text-sm font-semibold text-white/40 mb-3">Quick Links</h4>
-                <ul class="space-y-2">
-                    <li><a href="sports.html" class="footer-link">Sports</a></li>
-                    <li><a href="live-betting.html" class="footer-link">Live Betting</a></li>
-                    <li><a href="casino.html" class="footer-link">Casino</a></li>
-                    <li><a href="promotions.html" class="footer-link">Promotions</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-sm font-semibold text-white/40 mb-3">Support</h4>
-                <ul class="space-y-2">
-                    <li><a href="support.html" class="footer-link">Help Center</a></li>
-                    <li><a href="contact.html" class="footer-link">Contact</a></li>
-                    <li><a href="faq.html" class="footer-link">FAQ</a></li>
-                    <li><a href="responsible-gambling.html" class="footer-link">Responsible Gambling</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-sm font-semibold text-white/40 mb-3">Legal</h4>
-                <ul class="space-y-2">
-                    <li><a href="terms.html" class="footer-link">Terms</a></li>
-                    <li><a href="privacy.html" class="footer-link">Privacy</a></li>
-                    <li><a href="cookies.html" class="footer-link">Cookies</a></li>
-                    <li><a href="kyc.html" class="footer-link">KYC</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="mt-8 pt-6 border-t border-white/5 flex flex-col md:flex-row items-center justify-between text-xs text-white/20">
-            <p>Copyright © 2025 Cephas GM | Innovating for Tomorrow</p>
-            <p class="mt-2 md:mt-0">18+ | Play Responsibly</p>
+        <div class="text-center text-xs text-white/20">
+            <p>Copyright © 2026 Cephas GM | Innovating for Tomorrow</p>
+            <p class="mt-2">18+ | Play Responsibly</p>
         </div>
     </div>
 </footer>
 
-<!-- ==========================================
-     JAVASCRIPT
-     ========================================== -->
 <script>
-(function() {
+document.addEventListener('DOMContentLoaded', function () {
     'use strict';
-    
-    // Mobile menu toggle
-    const mobileToggle = document.getElementById('mobileToggle');
-    const mobileMenu = document.getElementById('mobileMenu');
-    let mobileOpen = false;
-    
-    mobileToggle.addEventListener('click', () => {
-        mobileOpen = !mobileOpen;
-        mobileMenu.classList.toggle('active');
-        document.body.style.overflow = mobileOpen ? 'hidden' : '';
-    });
-    mobileMenu.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
-            mobileMenu.classList.remove('active');
-            document.body.style.overflow = '';
-            mobileOpen = false;
-        });
-    });
-    
-    // ================== BET SLIP LOGIC ==================
-    const slipItems = document.getElementById('slipItems');
-    const emptySlip = document.getElementById('emptySlip');
-    const slipFooter = document.getElementById('slipFooter');
-    const slipCount = document.getElementById('slipCount');
-    const totalOddsEl = document.getElementById('totalOdds');
-    const stakeInput = document.getElementById('stakeInput');
-    const potentialWin = document.getElementById('potentialWin');
-    const placeBetBtn = document.getElementById('placeBetBtn');
-    
-    let selections = []; // { match, selection, odds }
-    
-    function updateSlipUI() {
-        const count = selections.length;
-        slipCount.textContent = count + ' selection' + (count !== 1 ? 's' : '');
-        
-        if (count === 0) {
-            emptySlip.classList.remove('hidden');
-            slipFooter.classList.add('hidden');
-            slipItems.innerHTML = '';
-        } else {
-            emptySlip.classList.add('hidden');
-            slipFooter.classList.remove('hidden');
-            // Rebuild items
-            slipItems.innerHTML = '';
-            selections.forEach((sel, idx) => {
-                const itemDiv = document.createElement('div');
-                itemDiv.className = 'bet-slip-item';
-                itemDiv.innerHTML = `
-                    <div>
-                        <div class="font-medium text-sm">${sel.selection}</div>
-                        <div class="text-xs text-white/30">${sel.match}</div>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <span class="text-sm font-semibold text-blue-400">${sel.odds}</span>
-                        <span class="remove" data-index="${idx}">✕</span>
-                    </div>
-                `;
-                slipItems.appendChild(itemDiv);
-            });
-            
-            // Attach remove events
-            document.querySelectorAll('.remove').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const index = parseInt(this.dataset.index);
-                    selections.splice(index, 1);
-                    updateSlipUI();
-                    showToast('Removed from bet slip', 'warning');
-                });
-            });
-            
-            // Update total odds
-            let totalOdds = selections.length > 0 ? 1 : 0;
-            selections.forEach(s => totalOdds *= parseFloat(s.odds));
-            totalOddsEl.textContent = totalOdds.toFixed(2);
-            
-            updatePotentialWin();
-        }
-    }
-    
-    function updatePotentialWin() {
-        const stake = parseFloat(stakeInput.value) || 0;
-        let totalOdds = 1;
-        selections.forEach(s => totalOdds *= parseFloat(s.odds));
-        const potential = stake * totalOdds;
-        potentialWin.textContent = '$' + potential.toFixed(2);
-    }
-    
-    // Add odds to slip
-    document.querySelectorAll('.odds-btn-small').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const match = this.dataset.match;
-            const selection = this.dataset.selection;
-            const odds = this.dataset.odds;
-            
-            // Check if already exists
-            const exists = selections.find(s => s.match === match && s.selection === selection);
-            if (exists) {
-                showToast('Already in bet slip', 'warning');
-                return;
-            }
-            
-            selections.push({ match, selection, odds });
-            updateSlipUI();
-            showToast(`Added ${selection} @ ${odds}`, 'success');
-        });
-    });
-    
-    // Stake input change
-    stakeInput.addEventListener('input', updatePotentialWin);
-    
-    // Place bet
-    placeBetBtn.addEventListener('click', function() {
-        if (selections.length === 0) {
-            showToast('Add selections first', 'error');
-            return;
-        }
-        const stake = parseFloat(stakeInput.value);
-        if (!stake || stake <= 0) {
-            showToast('Enter valid stake', 'error');
-            return;
-        }
-        placeBetBtn.disabled = true;
-        placeBetBtn.textContent = 'Placing...';
-        setTimeout(() => {
-            showToast('Bet placed successfully! 🎉', 'success');
-            selections = [];
-            updateSlipUI();
-            placeBetBtn.disabled = false;
-            placeBetBtn.textContent = 'Place Bet';
-        }, 1500);
-    });
-    
-    // ================== TOAST ==================
-    function showToast(message, type = 'success') {
-        const toast = document.createElement('div');
-        toast.className = `toast toast-${type}`;
-        toast.innerHTML = `
-            <div class="flex items-center space-x-3">
-                <span>${type === 'success' ? '✅' : type === 'error' ? '❌' : '⚠️'}</span>
-                <span class="text-sm">${message}</span>
-                <button onclick="this.parentElement.parentElement.remove()" class="text-white/30 hover:text-white/70 transition-colors ml-2">✕</button>
-            </div>
-        `;
-        document.body.appendChild(toast);
-        setTimeout(() => {
-            toast.style.opacity = '0';
-            toast.style.transform = 'translateY(20px)';
-            setTimeout(() => toast.remove(), 300);
-        }, 4000);
-    }
-    
-    // ================== PWA ==================
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/sw.js')
-                .then(reg => console.log('SW registered'))
-                .catch(err => console.log('SW registration failed'));
-        });
-    }
-    
-    // ================== ONLINE/OFFLINE ==================
-    window.addEventListener('online', () => showToast('Back online', 'success'));
-    window.addEventListener('offline', () => showToast('You are offline', 'warning'));
-    
-})();
-</script>
-<script>
-(function () {
-  'use strict';
 
-  function renderUserBar() {
+    /* ============================================================
+       AUTH GUARD — redirect to signin if not logged in
+       ============================================================ */
     if (!window.CephasGM || !CephasGM.api) {
-      console.warn('CephasGM.api not loaded');
-      return;
+        console.error('CephasGM.api not loaded');
+        return;
     }
 
     if (!CephasGM.api.isLoggedIn()) {
-      window.location.href = 'signin.html';
-      return;
+        window.location.href = 'signin.html';
+        return;
     }
 
-    var user = CephasGM.api.getUser();
-    if (!user) {
-      // Try to fetch from server
-      CephasGM.api.me().then(function () {
-        renderUserBar();
-      }).catch(function () {
-        window.location.href = 'signin.html';
-      });
-      return;
+    /* ============================================================
+       USER BADGE + SIGN OUT
+       ============================================================ */
+    var cachedUser = CephasGM.api.getUser();
+
+    function paintUserBadge(user) {
+        var name = user.fullName || user.username || 'Player';
+        var contact = user.email || user.phone || '';
+        var initial = name.charAt(0).toUpperCase();
+
+        document.getElementById('userAvatar').textContent = initial;
+        document.getElementById('userName').textContent = name;
+        document.getElementById('userContact').textContent = contact;
+        document.getElementById('userBar').style.display = 'flex';
+
+        document.getElementById('welcomeName').textContent = name;
     }
 
-    var name = user.fullName || 'Player';
-    var contact = user.email || user.phone || '';
-    var initial = name.charAt(0).toUpperCase();
+    if (cachedUser) {
+        paintUserBadge(cachedUser);
+    }
 
-    var bar = document.getElementById('userBar');
-    document.getElementById('userAvatar').textContent = initial;
-    document.getElementById('userName').textContent = name;
-    document.getElementById('userContact').textContent = contact;
-    bar.style.display = 'flex';
+    var signOutBtn = document.getElementById('inlineSignOut');
+    signOutBtn.addEventListener('click', function () {
+        signOutBtn.disabled = true;
+        signOutBtn.textContent = 'Signing out…';
 
-    document.getElementById('inlineSignOut').addEventListener('click', function () {
-      this.disabled = true;
-      this.textContent = 'Signing out…';
-      CephasGM.api.logout().catch(function () {}).then(function () {
-        CephasGM.api.clearTokens();
-        window.location.href = 'signin.html';
-      });
+        Promise.resolve()
+            .then(function () { return CephasGM.api.logout(); })
+            .catch(function () { /* ignore */ })
+            .then(function () {
+                CephasGM.api.clearTokens();
+                window.location.href = 'signin.html';
+            });
     });
-  }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', renderUserBar);
-  } else {
-    renderUserBar();
-  }
-})();
+    /* ============================================================
+       LOAD USER PROFILE
+       ============================================================ */
+    CephasGM.api.me()
+        .then(function (res) {
+            if (res.success && res.data) {
+                var u = res.data;
+                paintUserBadge(u);
+
+                /* Account status */
+                document.getElementById('accEmail').textContent = u.email || u.phone || '—';
+                document.getElementById('accStatus').textContent = u.status || '—';
+                document.getElementById('accKyc').textContent = (u.kycStatus || 'NOT_SUBMITTED').replace(/_/g, ' ');
+                document.getElementById('accRef').textContent = u.referralCode || '—';
+
+                /* Stats from user object */
+                document.getElementById('statWon').textContent = fmtNumber(u.totalWon || 0);
+                document.getElementById('statVip').textContent = u.vipTier || 'BRONZE';
+                document.getElementById('statVipPoints').textContent = (u.vipPoints || 0) + ' points';
+            }
+        })
+        .catch(function (err) {
+            console.error('Failed to load profile:', err);
+        });
+
+    /* ============================================================
+       LOAD WALLET BALANCE
+       ============================================================ */
+    CephasGM.api.wallet()
+        .then(function (res) {
+            if (res.success && res.data) {
+                var w = res.data;
+                document.getElementById('statBalance').textContent = fmtNumber(w.balance) + ' ' + w.currency;
+                document.getElementById('statAvailable').textContent = fmtNumber(w.availableBalance) + ' ' + w.currency;
+                document.getElementById('statCurrency').textContent = w.currency;
+            }
+        })
+        .catch(function (err) {
+            console.error('Failed to load wallet:', err);
+            document.getElementById('statBalance').textContent = 'Error';
+        });
+
+    /* ============================================================
+       LOAD TRANSACTIONS
+       ============================================================ */
+    CephasGM.api.transactions(1)
+        .then(function (res) {
+            var list = document.getElementById('transactionsList');
+            var items = (res.data || []).slice(0, 5);
+
+            if (items.length === 0) {
+                list.innerHTML = '<div class="text-sm text-white/30 text-center py-6">No transactions yet. Make your first deposit to get started!</div>';
+                return;
+            }
+
+            list.innerHTML = items.map(function (t) {
+                var amount = parseFloat(t.amount);
+                var isPositive = amount > 0;
+                var amountClass = isPositive ? 'text-green-400' : 'text-red-400';
+                var sign = isPositive ? '+' : '';
+                var date = new Date(t.createdAt).toLocaleString();
+
+                return '' +
+                    '<div class="flex justify-between items-center py-2 border-b border-white/5">' +
+                        '<div>' +
+                            '<div class="font-medium text-sm">' + escapeHtml(t.description || t.type) + '</div>' +
+                            '<div class="text-xs text-white/30">' + escapeHtml(date) + '</div>' +
+                        '</div>' +
+                        '<span class="' + amountClass + ' font-semibold text-sm">' + sign + fmtNumber(amount) + ' ' + t.currency + '</span>' +
+                    '</div>';
+            }).join('');
+        })
+        .catch(function (err) {
+            console.error('Failed to load transactions:', err);
+            document.getElementById('transactionsList').innerHTML =
+                '<div class="text-sm text-red-400 text-center py-6">Could not load transactions</div>';
+        });
+
+    /* ============================================================
+       MOBILE MENU
+       ============================================================ */
+    var mobileToggle = document.getElementById('mobileToggle');
+    var mobileMenu = document.getElementById('mobileMenu');
+    var mobileOpen = false;
+
+    if (mobileToggle && mobileMenu) {
+        mobileToggle.addEventListener('click', function () {
+            mobileOpen = !mobileOpen;
+            mobileMenu.classList.toggle('active', mobileOpen);
+            document.body.style.overflow = mobileOpen ? 'hidden' : '';
+        });
+        mobileMenu.querySelectorAll('a').forEach(function (a) {
+            a.addEventListener('click', function () {
+                mobileMenu.classList.remove('active');
+                document.body.style.overflow = '';
+                mobileOpen = false;
+            });
+        });
+    }
+
+    /* ============================================================
+       HELPERS
+       ============================================================ */
+    function fmtNumber(n) {
+        var num = parseFloat(n || 0);
+        return num.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+    }
+
+    function escapeHtml(s) {
+        return String(s || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
+    /* ============================================================
+       SERVICE WORKER
+       ============================================================ */
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+            navigator.serviceWorker.register('sw.js').catch(function () {});
+        });
+    }
+});
 </script>
+
 </body>
 </html>
