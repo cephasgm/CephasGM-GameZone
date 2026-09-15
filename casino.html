@@ -2,95 +2,118 @@
 <html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#0a0a12">
     <meta name="description" content="Casino – Play slots, blackjack, roulette and more on CephasGM GameZone">
     <title>Casino | CephasGM GameZone</title>
-    
-    <!-- PWA -->
+
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
     <script src="https://cdn.tailwindcss.com"></script>
-    
+    <script src="js/api.js"></script>
+
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+        html { height: 100%; scroll-behavior: smooth; }
+
         body {
             font-family: 'Inter', sans-serif;
-            background: #0a0a12;
             color: #ffffff;
+            min-height: 100vh;
             overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            background-color: #0a0a12;
+            background-image:
+                linear-gradient(180deg, rgba(10,10,18,0.88) 0%, rgba(10,10,18,0.80) 40%, rgba(10,10,18,0.88) 100%),
+                url('https://static.vecteezy.com/system/resources/thumbnails/070/574/368/small/assorted-sports-equipment-on-black-backdrop-symbolizing-athleticism-competition-and-diverse-sporting-activities-photo.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
         }
-        
-        ::-webkit-scrollbar { width: 6px; }
+
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: #0a0a12; }
-        ::-webkit-scrollbar-thumb { 
-            background: linear-gradient(180deg, #0055ff, #542bff);
-            border-radius: 10px;
-        }
-        
+        ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #0055ff, #542bff); border-radius: 10px; }
+
         .glass {
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(10,10,18,0.72);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255,255,255,0.08);
         }
-        
         .glass-light {
             background: rgba(255, 255, 255, 0.04);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
-        
+
         .btn-primary {
             background: linear-gradient(135deg, #0055ff, #542bff);
             color: white;
-            padding: 10px 24px;
+            padding: 10px 22px;
             border-radius: 50px;
-            font-weight: 600;
-            font-size: 14px;
+            font-weight: 700;
+            font-size: 13px;
             border: none;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(0, 85, 255, 0.25);
+            box-shadow: 0 4px 20px rgba(0, 85, 255, 0.35);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-family: inherit;
+            white-space: nowrap;
         }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(0, 85, 255, 0.4);
+        .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0, 85, 255, 0.5); }
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.06);
+            color: white;
+            padding: 10px 22px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 13px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-family: inherit;
+            white-space: nowrap;
         }
-        
+        .btn-secondary:hover { background: rgba(255, 255, 255, 0.12); transform: translateY(-2px); }
+
         .navbar {
-            position: fixed;
+            position: sticky;
             top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            padding: 16px 0;
-            background: rgba(10, 10, 18, 0.92);
+            z-index: 100;
+            padding: 14px 0;
+            background: rgba(10, 10, 18, 0.75);
             backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
         }
-        
         .text-gradient {
             background: linear-gradient(135deg, #0055ff, #542bff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        
+
         .mobile-menu {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(10, 10, 18, 0.98);
             backdrop-filter: blur(20px);
             z-index: 999;
@@ -98,330 +121,817 @@
             padding: 80px 24px 24px;
             overflow-y: auto;
         }
-        
-        .mobile-menu.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        .footer-link {
-            color: rgba(255, 255, 255, 0.4);
-            transition: all 0.3s ease;
+        .mobile-menu.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .footer-link { color: rgba(255, 255, 255, 0.5); transition: all 0.3s ease; text-decoration: none; font-size: 13px; }
+        .footer-link:hover { color: #ffffff; }
+
+        .page-content { flex: 1; display: flex; flex-direction: column; }
+
+        .nav-link {
+            padding: 8px 14px;
+            font-size: 14px;
+            color: rgba(255,255,255,0.65);
+            border-radius: 10px;
+            transition: all 0.2s;
             text-decoration: none;
-            font-size: 14px;
-        }
-        
-        .footer-link:hover {
-            color: #ffffff;
-        }
-        
-        .page-background {
-            min-height: 100vh;
-            background-image: url('https://static.vecteezy.com/system/resources/thumbnails/070/574/368/small/assorted-sports-equipment-on-black-backdrop-symbolizing-athleticism-competition-and-diverse-sporting-activities-photo.jpeg');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            position: relative;
-        }
-        
-        .page-background::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, 
-                rgba(10, 10, 18, 0.85) 0%, 
-                rgba(10, 10, 18, 0.65) 50%,
-                rgba(10, 10, 18, 0.85) 100%
-            );
-            z-index: -1;
-        }
-        
-        .dropdown {
-            position: relative;
-            display: inline-block;
-        }
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background: rgba(10, 10, 18, 0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 12px;
-            min-width: 200px;
-            padding: 8px 0;
-            z-index: 1001;
-        }
-        .dropdown:hover .dropdown-menu {
-            display: block;
-        }
-        .dropdown-menu a {
-            display: block;
-            padding: 8px 16px;
-            color: rgba(255,255,255,0.6);
-            font-size: 13px;
-            transition: 0.2s;
-        }
-        .dropdown-menu a:hover {
-            background: rgba(255,255,255,0.05);
-            color: white;
-        }
-        
-        .game-card {
-            background: rgba(0,0,0,0.4);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 20px;
-            overflow: hidden;
-            transition: transform 0.3s, box-shadow 0.3s;
-            cursor: pointer;
-        }
-        .game-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 12px 40px rgba(0,0,0,0.6);
-        }
-        .game-card img {
-            width: 100%;
-            height: 160px;
-            object-fit: cover;
-            transition: transform 0.3s;
-        }
-        .game-card:hover img {
-            transform: scale(1.05);
-        }
-        
-        .category-tab {
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-size: 14px;
             font-weight: 500;
-            cursor: pointer;
-            border: 1px solid rgba(255,255,255,0.1);
-            background: transparent;
-            color: rgba(255,255,255,0.6);
-            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .nav-link:hover { background: rgba(255,255,255,0.06); color: #fff; }
+        .nav-link.active { background: rgba(0,85,255,0.15); color: #93c5fd; }
+
+        .live-dot {
+            width: 7px; height: 7px; border-radius: 50%;
+            background: #ff0044; display: inline-block;
+            animation: pulse-dot 1.5s ease-in-out infinite;
+            flex-shrink: 0;
+        }
+        @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.4;transform:scale(0.8);} }
+
+        /* ---------- HERO ---------- */
+        .casino-hero {
+            padding: 28px 0 24px;
+            position: relative;
+        }
+        .hero-banner {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            align-items: center;
+            padding: 28px;
+            border-radius: 22px;
+            background: linear-gradient(135deg, rgba(168,85,247,0.22), rgba(120,50,200,0.10));
+            border: 1px solid rgba(168,85,247,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        @media (min-width: 768px) { .hero-banner { grid-template-columns: 1.5fr 1fr; padding: 34px 40px; } }
+        .hero-banner::before {
+            content: '';
+            position: absolute;
+            top: -40%; right: -15%;
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(168,85,247,0.28), transparent 65%);
+            pointer-events: none;
+        }
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 12px;
+            border-radius: 999px;
+            background: rgba(168,85,247,0.2);
+            border: 1px solid rgba(168,85,247,0.4);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            color: #d8b4fe;
+            width: fit-content;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+        .hero-banner h1 { font-size: 2.1rem; font-weight: 900; line-height: 1.1; margin-bottom: 10px; letter-spacing: -0.02em; }
+        .hero-banner p { font-size: 14px; color: rgba(255,255,255,0.65); line-height: 1.55; margin-bottom: 18px; max-width: 460px; }
+        .hero-ctas { display: flex; gap: 10px; flex-wrap: wrap; }
+
+        .hero-visual {
+            position: relative;
+            height: 180px;
+            border-radius: 18px;
+            background: rgba(0,0,0,0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 1px solid rgba(168,85,247,0.2);
+        }
+        .hero-visual .hv-emoji {
+            font-size: 78px;
+            animation: slotSpin 4s ease-in-out infinite;
+        }
+        @keyframes slotSpin {
+            0%, 100% { transform: rotateY(0) rotateX(0); }
+            50% { transform: rotateY(180deg) rotateX(10deg); }
+        }
+        .hero-visual .hv-jackpot {
+            position: absolute;
+            bottom: 14px; left: 16px; right: 16px;
+            padding: 8px 12px;
+            border-radius: 10px;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(168,85,247,0.3);
+            text-align: center;
+        }
+        .hv-jackpot .hv-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.5); font-weight: 700; }
+        .hv-jackpot .hv-amount { font-size: 20px; font-weight: 900; color: #6bffb0; font-variant-numeric: tabular-nums; margin-top: 2px; }
+
+        /* ---------- CATEGORY TABS ---------- */
+        .category-tabs-wrap {
+            background: rgba(10,10,18,0.75);
+            backdrop-filter: blur(14px);
+            border-top: 1px solid rgba(255,255,255,0.06);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            position: sticky;
+            top: 70px;
+            z-index: 50;
+            margin-bottom: 22px;
+        }
+        .category-tabs-wrap::-webkit-scrollbar { display: none; }
+        .category-tabs {
+            display: flex;
+            gap: 6px;
+            padding: 12px 16px;
+            max-width: 1280px;
+            margin: 0 auto;
             white-space: nowrap;
         }
+        .category-tab {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 700;
+            color: rgba(255,255,255,0.6);
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            cursor: pointer;
+            transition: all 0.2s;
+            flex-shrink: 0;
+            font-family: inherit;
+        }
+        .category-tab:hover { background: rgba(255,255,255,0.08); color: #fff; }
         .category-tab.active {
             background: linear-gradient(135deg, #0055ff, #542bff);
             border-color: transparent;
             color: white;
+            box-shadow: 0 4px 14px rgba(0,85,255,0.4);
+        }
+        .category-tab .ct-count {
+            font-size: 10px;
+            padding: 1px 6px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.12);
+            font-weight: 800;
+        }
+        .category-tab.active .ct-count { background: rgba(255,255,255,0.25); }
+
+        /* ---------- SECTION HEADER ---------- */
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .section-title { font-size: 1.25rem; font-weight: 800; }
+        .section-sub { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 2px; }
+        .section-link { font-size: 12px; color: #60a5fa; transition: 0.2s; text-decoration: none; font-weight: 600; }
+        .section-link:hover { color: #93c5fd; }
+
+        /* ---------- FEATURED GAME ---------- */
+        .featured-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+        @media (min-width: 768px) { .featured-grid { grid-template-columns: 1.6fr 1fr 1fr; } }
+
+        .featured-card {
+            position: relative;
+            border-radius: 18px;
+            overflow: hidden;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 18px;
+            cursor: pointer;
+            transition: all 0.25s;
+            border: 1px solid rgba(255,255,255,0.08);
+            color: inherit;
+            text-decoration: none;
+        }
+        .featured-card:hover { transform: translateY(-4px); border-color: rgba(0,85,255,0.5); }
+        .featured-card img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+            opacity: 0.55;
+        }
+        .featured-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.85) 100%);
+            z-index: 1;
+        }
+        .featured-card > * { position: relative; z-index: 2; }
+
+        .fc-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            width: fit-content;
+        }
+        .fc-badge.hot { background: rgba(255,0,68,0.25); color: #ff8098; border: 1px solid rgba(255,0,68,0.4); }
+        .fc-badge.new { background: rgba(0,224,122,0.25); color: #6bffb0; border: 1px solid rgba(0,224,122,0.4); }
+        .fc-badge.jackpot { background: rgba(255,204,0,0.25); color: #ffd93d; border: 1px solid rgba(255,204,0,0.4); }
+        .fc-badge.live { background: rgba(255,0,68,0.25); color: #ff8098; border: 1px solid rgba(255,0,68,0.4); }
+
+        .fc-title { font-size: 1.15rem; font-weight: 900; margin-top: 8px; }
+        .fc-sub { font-size: 11px; color: rgba(255,255,255,0.65); margin-top: 2px; }
+        .fc-play {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 50px;
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            color: #fff;
+            font-weight: 800;
+            font-size: 12px;
+            width: fit-content;
+            margin-top: 12px;
+            box-shadow: 0 4px 14px rgba(0,85,255,0.4);
+        }
+
+        /* ---------- GAME GRID ---------- */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+        @media (min-width: 640px) { .games-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (min-width: 900px) { .games-grid { grid-template-columns: repeat(4, 1fr); } }
+        @media (min-width: 1100px) { .games-grid { grid-template-columns: repeat(5, 1fr); } }
+
+        .game-card {
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        .game-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+            border-color: rgba(0,85,255,0.4);
+        }
+        .game-card .gc-img-wrap {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1;
+            overflow: hidden;
+            background: #0a0a12;
+        }
+        .game-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.35s;
+        }
+        .game-card:hover img { transform: scale(1.08); }
+        .game-card .gc-badge {
+            position: absolute;
+            top: 8px; left: 8px;
+            padding: 3px 8px;
+            border-radius: 999px;
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            z-index: 2;
+        }
+        .gc-badge.hot { background: rgba(255,0,68,0.85); color: #fff; }
+        .gc-badge.new { background: rgba(0,224,122,0.85); color: #052; }
+        .gc-badge.live { background: rgba(255,0,68,0.85); color: #fff; }
+        .gc-badge.jackpot { background: rgba(255,204,0,0.9); color: #331a00; }
+
+        .gc-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.85) 100%);
+            opacity: 0;
+            transition: opacity 0.25s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
+        .game-card:hover .gc-overlay { opacity: 1; }
+        .gc-overlay .gc-play-btn {
+            padding: 8px 18px;
+            border-radius: 50px;
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            color: #fff;
+            font-weight: 800;
+            font-size: 12px;
+            transform: translateY(10px);
+            transition: transform 0.25s;
+            box-shadow: 0 6px 20px rgba(0,85,255,0.5);
+        }
+        .game-card:hover .gc-overlay .gc-play-btn { transform: translateY(0); }
+
+        .game-card .gc-info {
+            padding: 10px 12px;
+        }
+        .game-card .gc-name {
+            font-size: 13px;
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .game-card .gc-meta {
+            font-size: 10px;
+            color: rgba(255,255,255,0.4);
+            margin-top: 2px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .gc-provider {
+            display: inline-block;
+            padding: 1px 6px;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.06);
+            font-size: 9px;
+            font-weight: 700;
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* ---------- CONTINUE PLAYING (empty state) ---------- */
+        .continue-empty {
+            padding: 24px;
+            border-radius: 16px;
+            background: rgba(255,255,255,0.02);
+            border: 1px dashed rgba(255,255,255,0.1);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .continue-empty .ce-icon { font-size: 32px; margin-bottom: 6px; }
+        .continue-empty .ce-title { font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.7); }
+        .continue-empty .ce-sub { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 2px; }
+
+        /* ---------- GUEST NOTICE ---------- */
+        .guest-notice {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, rgba(255,204,0,0.12), rgba(255,153,0,0.08));
+            border: 1px solid rgba(255,204,0,0.3);
+            margin-bottom: 20px;
+        }
+        .guest-notice .gn-icon { font-size: 24px; }
+        .guest-notice .gn-text { flex: 1; min-width: 0; }
+        .guest-notice .gn-title { font-size: 13px; font-weight: 800; color: #ffd93d; }
+        .guest-notice .gn-sub { font-size: 11px; color: rgba(255,255,255,0.55); margin-top: 2px; }
+
+        /* ---------- TRUST ROW ---------- */
+        .trust-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+        @media (min-width: 768px) { .trust-row { grid-template-columns: repeat(4, 1fr); } }
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            background: rgba(10,10,18,0.55);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 12px;
+        }
+        .trust-item .ti-icon { font-size: 18px; flex-shrink: 0; }
+        .trust-item .ti-title { font-size: 12px; font-weight: 700; }
+        .trust-item .ti-sub   { font-size: 10px; color: rgba(255,255,255,0.4); margin-top: 1px; }
+
+        /* ---------- FOOTER ---------- */
+        .site-footer {
+            flex-shrink: 0;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            background: rgba(10, 10, 18, 0.75);
+            backdrop-filter: blur(20px);
+        }
+
+        /* ---------- USER CHIPS ---------- */
+        .wallet-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 14px;
+            border-radius: 999px;
+            background: rgba(0,224,122,0.12);
+            border: 1px solid rgba(0,224,122,0.28);
+            color: #6bffb0;
+            font-size: 12px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.2s;
+            font-variant-numeric: tabular-nums;
+        }
+        .wallet-chip:hover { background: rgba(0,224,122,0.2); }
+
+        .icon-btn {
+            width: 36px; height: 36px;
+            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: rgba(255,255,255,0.7);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            position: relative;
+        }
+        .icon-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+        .icon-badge {
+            position: absolute;
+            top: -4px; right: -4px;
+            min-width: 16px; height: 16px;
+            padding: 0 4px;
+            border-radius: 999px;
+            background: #ff0044;
+            color: #fff;
+            font-size: 9px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #0a0a12;
+        }
+
+        .user-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 12px 4px 4px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .user-pill:hover { background: rgba(255,255,255,0.1); }
+        .user-pill .up-avatar {
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 11px;
+        }
+        .user-pill .up-name { font-size: 12px; font-weight: 600; }
+
+        .dropdown { position: relative; display: inline-block; }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            background: rgba(10, 10, 18, 0.98);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 12px;
+            min-width: 220px;
+            padding: 8px 0;
+            z-index: 1001;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+        }
+        .dropdown:hover .dropdown-menu { display: block; }
+        .dropdown-menu a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 16px;
+            color: rgba(255,255,255,0.7);
+            font-size: 13px;
+            transition: 0.2s;
+            text-decoration: none;
+        }
+        .dropdown-menu a:hover { background: rgba(255,255,255,0.05); color: white; }
+        .dropdown-menu .divider { height: 1px; background: rgba(255,255,255,0.06); margin: 6px 0; }
+
+        @media (max-width: 640px) {
+            .hero-banner h1 { font-size: 1.5rem; }
+            .category-tabs-wrap { top: 62px; }
+            .featured-card { min-height: 160px; }
         }
     </style>
 </head>
 <body>
 
 <!-- ==========================================
-     NAVBAR (same full‑site nav)
+     NAVBAR
      ========================================== -->
 <nav class="navbar" id="navbar">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between">
-            
-            <a href="index.html" class="flex items-center space-x-2" title="Go to Homepage">
+        <div class="flex items-center justify-between gap-3">
+
+            <a href="index.html" class="flex items-center space-x-2 shrink-0" title="CephasGM GameZone — Home">
                 <span class="text-xl font-bold">
                     <span class="text-gradient">CephasGM</span>
                     <span class="text-white font-light">|</span>
                     <span class="text-white font-semibold">GameZone</span>
                 </span>
             </a>
-            
-            <div class="hidden lg:flex items-center space-x-1">
-    <!-- Info dropdown -->
-    <div class="dropdown">
-        <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Info ▾</span>
-        <div class="dropdown-menu">
-            <a href="about.html">About Us</a>
-            <a href="vip.html">VIP Club</a>
-            <a href="referrals.html">Referrals</a>
-            <a href="privacy.html">Privacy Policy</a>
-            <a href="terms.html">Terms & Conditions</a>
-            <a href="cookies.html">Cookie Policy</a>
+
+            <!-- Guest nav -->
+            <div id="guestNav" class="hidden lg:flex items-center gap-0.5">
+                <a href="sports.html" class="nav-link">Sports</a>
+                <a href="live-betting.html" class="nav-link">
+                    <span class="live-dot"></span><span>Live</span>
+                </a>
+                <a href="casino.html" class="nav-link active">Casino</a>
+                <a href="aviator.html" class="nav-link">Aviator</a>
+            </div>
+
+            <!-- User nav -->
+            <div id="userNav" class="hidden lg:flex items-center gap-0.5">
+                <a href="bet-history.html" class="nav-link">My Bets</a>
+                <a href="bonuses.html" class="nav-link">Bonuses</a>
+                <a href="wallet.html" class="wallet-chip ml-2">
+                    <span>💰</span>
+                    <span id="navBalance">—</span>
+                </a>
+                <a href="notifications.html" class="icon-btn ml-1" title="Notifications">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
+                        <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
+                    </svg>
+                    <span id="notifBadge" class="icon-badge" style="display:none">0</span>
+                </a>
+                <div class="dropdown ml-1">
+                    <div class="user-pill">
+                        <span class="up-avatar" id="navAvatar">U</span>
+                        <span class="up-name hidden xl:inline" id="navName">Account</span>
+                        <span class="text-white/40 text-xs">▾</span>
+                    </div>
+                    <div class="dropdown-menu">
+                        <a href="dashboard.html">📊 Dashboard</a>
+                        <a href="profile.html">👤 Profile</a>
+                        <a href="wallet.html">💰 Wallet</a>
+                        <a href="deposit.html">➕ Deposit</a>
+                        <a href="withdraw.html">➖ Withdraw</a>
+                        <a href="transactions.html">📋 Transactions</a>
+                        <a href="bet-history.html">🎯 Bet History</a>
+                        <a href="bonuses.html">🎁 Bonuses</a>
+                        <a href="referrals.html">👥 Referrals</a>
+                        <a href="kyc.html">🪪 KYC Verification</a>
+                        <div class="divider"></div>
+                        <a href="settings.html">⚙️ Settings</a>
+                        <a href="support.html">🆘 Help Center</a>
+                        <div class="divider"></div>
+                        <a href="#" id="navSignOut" style="color:#ff8098">🚪 Sign Out</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-2 lg:hidden">
+                <a href="wallet.html" id="mobileWalletChip" class="hidden wallet-chip" style="padding:5px 10px;font-size:11px">
+                    <span>💰</span>
+                    <span id="mobileNavBalance">—</span>
+                </a>
+                <button id="mobileToggle" class="p-2 text-white/60 hover:text-white transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
         </div>
     </div>
-
-    <!-- Account dropdown -->
-    <div class="dropdown">
-        <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Account ▾</span>
-        <div class="dropdown-menu">
-            <a href="dashboard.html">Dashboard</a>
-            <a href="profile.html">Profile</a>
-            <a href="wallet.html">Wallet</a>
-            <a href="deposit.html">Deposit</a>
-            <a href="withdraw.html">Withdraw</a>
-            <a href="transactions.html">Transactions</a>
-            <a href="bet-history.html">Bet History</a>
-            <a href="bonuses.html">Bonuses</a>
-            <a href="kyc.html">KYC Verification</a>
-            <a href="settings.html">Settings</a>
-            <a href="signin.html">Sign In</a>
-            <a href="signup.html">Sign Up</a>
-        </div>
-    </div>
-
-    <!-- Promotions link -->
-    <a href="promotions.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Promotions</a>
-
-    <!-- Sports link -->
-    <a href="sports.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Sports</a>
-
-    <!-- Casino link -->
-    <a href="casino.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Casino</a>
-
-    <!-- Live link -->
-    <a href="live-betting.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 flex items-center space-x-1">
-        <span class="live-dot"></span><span>Live</span>
-    </a>
-
-    <!-- Virtual dropdown -->
-    <div class="dropdown">
-        <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Virtual ▾</span>
-        <div class="dropdown-menu">
-            <a href="virtual-football.html">Virtual Football</a>
-            <a href="virtual-horse-racing.html">Virtual Horse Racing</a>
-            <a href="virtual-car-racing.html">Virtual Car Racing</a>
-            <a href="virtual-netball.html">Virtual Netball</a>
-            <a href="adventure-games.html">Adventure Games</a>
-            <a href="aviator.html">Aviator</a>
-        </div>
-    </div>
-
-    <!-- Support dropdown -->
-    <div class="dropdown">
-        <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Support ▾</span>
-        <div class="dropdown-menu">
-            <a href="support.html">Help Center</a>
-            <a href="messages.html">Messages</a>
-            <a href="notifications.html">Notifications</a>
-            <a href="faq.html">FAQ</a>
-            <a href="contact.html">Contact Us</a>
-            <a href="responsible-gambling.html">Responsible Gambling</a>
-            <a href="self-exclusion.html">Self-Exclusion</a>
-        </div>
-    </div>
-</div>
-
-<div class="flex items-center space-x-3">
-    <button id="mobileToggle" class="lg:hidden p-2 text-white/40 hover:text-white transition-colors">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-        </svg>
-    </button>
-</div>
-</div>
-</div>
 </nav>
 
-<!-- Mobile Menu (full) -->
+<!-- Mobile Menu -->
 <div id="mobileMenu" class="mobile-menu">
-    <nav class="flex flex-col space-y-6">
-        <a href="index.html" class="text-lg text-white/70 hover:text-white">Home</a>
-        <a href="sports.html" class="text-lg text-white/70 hover:text-white">Sports</a>
-        <a href="live-betting.html" class="text-lg text-white/70 hover:text-white">Live Betting</a>
-        <a href="casino.html" class="text-lg text-white/70 hover:text-white">Casino</a>
-        <a href="promotions.html" class="text-lg text-white/70 hover:text-white">Promotions</a>
-        <a href="bonuses.html" class="text-lg text-white/70 hover:text-white">Bonuses</a>
-        <a href="leaderboard.html" class="text-lg text-white/70 hover:text-white">Leaderboard</a>
-        <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Account</span>
-            <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="dashboard.html" class="text-sm text-white/50 hover:text-white">Dashboard</a>
-                <a href="profile.html" class="text-sm text-white/50 hover:text-white">Profile</a>
-                <a href="wallet.html" class="text-sm text-white/50 hover:text-white">Wallet</a>
-                <a href="deposit.html" class="text-sm text-white/50 hover:text-white">Deposit</a>
-                <a href="withdraw.html" class="text-sm text-white/50 hover:text-white">Withdraw</a>
-                <a href="transactions.html" class="text-sm text-white/50 hover:text-white">Transactions</a>
-                <a href="bet-history.html" class="text-sm text-white/50 hover:text-white">Bet History</a>
-                <a href="kyc.html" class="text-sm text-white/50 hover:text-white">KYC</a>
-                <a href="settings.html" class="text-sm text-white/50 hover:text-white">Settings</a>
-                <a href="signin.html" class="text-sm text-white/50 hover:text-white">Sign In</a>
-                <a href="signup.html" class="text-sm text-white/50 hover:text-white">Sign Up</a>
+    <nav class="flex flex-col space-y-5">
+        <div>
+            <span class="text-xs font-semibold text-white/30 uppercase tracking-widest">Betting</span>
+            <div class="mt-2 space-y-1">
+                <a href="sports.html" class="block text-base text-white/80 hover:text-white py-2">Sports</a>
+                <a href="live-betting.html" class="block text-base text-white/80 hover:text-white py-2">Live Betting</a>
+                <a href="casino.html" class="block text-base text-white/80 hover:text-white py-2">Casino</a>
+                <a href="aviator.html" class="block text-base text-white/80 hover:text-white py-2">Aviator</a>
+                <a href="promotions.html" class="block text-base text-white/80 hover:text-white py-2">Promotions</a>
             </div>
         </div>
         <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Virtual Games</span>
+            <span class="text-xs font-semibold text-white/30 uppercase tracking-widest">Virtual Games</span>
             <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="virtual-football.html" class="text-sm text-white/50 hover:text-white">Virtual Football</a>
-                <a href="virtual-horse-racing.html" class="text-sm text-white/50 hover:text-white">Horse Racing</a>
-                <a href="virtual-car-racing.html" class="text-sm text-white/50 hover:text-white">Car Racing</a>
-                <a href="virtual-netball.html" class="text-sm text-white/50 hover:text-white">Netball</a>
-                <a href="adventure-games.html" class="text-sm text-white/50 hover:text-white">Adventure</a>
-                <a href="aviator.html" class="text-sm text-white/50 hover:text-white">Aviator</a>
+                <a href="virtual-football.html" class="text-sm text-white/60 hover:text-white">Virtual Football</a>
+                <a href="virtual-horse-racing.html" class="text-sm text-white/60 hover:text-white">Horse Racing</a>
+                <a href="virtual-car-racing.html" class="text-sm text-white/60 hover:text-white">Car Racing</a>
+                <a href="virtual-netball.html" class="text-sm text-white/60 hover:text-white">Netball</a>
+                <a href="adventure-games.html" class="text-sm text-white/60 hover:text-white">Adventure</a>
             </div>
         </div>
-        <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Support</span>
+        <div id="mobileAccountSection" class="border-t border-white/10 pt-4 hidden">
+            <span class="text-xs font-semibold text-white/30 uppercase tracking-widest">My Account</span>
             <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="support.html" class="text-sm text-white/50 hover:text-white">Help Center</a>
-                <a href="messages.html" class="text-sm text-white/50 hover:text-white">Messages</a>
-                <a href="notifications.html" class="text-sm text-white/50 hover:text-white">Notifications</a>
-                <a href="faq.html" class="text-sm text-white/50 hover:text-white">FAQ</a>
-                <a href="contact.html" class="text-sm text-white/50 hover:text-white">Contact</a>
-                <a href="responsible-gambling.html" class="text-sm text-white/50 hover:text-white">Responsible</a>
-                <a href="self-exclusion.html" class="text-sm text-white/50 hover:text-white">Self-Exclusion</a>
+                <a href="dashboard.html" class="text-sm text-white/60 hover:text-white">Dashboard</a>
+                <a href="wallet.html" class="text-sm text-white/60 hover:text-white">Wallet</a>
+                <a href="deposit.html" class="text-sm text-white/60 hover:text-white">Deposit</a>
+                <a href="withdraw.html" class="text-sm text-white/60 hover:text-white">Withdraw</a>
+                <a href="bet-history.html" class="text-sm text-white/60 hover:text-white">Bet History</a>
+                <a href="bonuses.html" class="text-sm text-white/60 hover:text-white">Bonuses</a>
+                <a href="profile.html" class="text-sm text-white/60 hover:text-white">Profile</a>
+                <a href="kyc.html" class="text-sm text-white/60 hover:text-white">KYC</a>
+                <a href="settings.html" class="text-sm text-white/60 hover:text-white">Settings</a>
+                <a href="#" id="mobileSignOut" class="text-sm text-red-400 hover:text-red-300">Sign Out</a>
             </div>
         </div>
-        <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Information</span>
-            <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="about.html" class="text-sm text-white/50 hover:text-white">About</a>
-                <a href="vip.html" class="text-sm text-white/50 hover:text-white">VIP</a>
-                <a href="referrals.html" class="text-sm text-white/50 hover:text-white">Referrals</a>
-                <a href="privacy.html" class="text-sm text-white/50 hover:text-white">Privacy</a>
-                <a href="terms.html" class="text-sm text-white/50 hover:text-white">Terms</a>
-                <a href="cookies.html" class="text-sm text-white/50 hover:text-white">Cookies</a>
+        <div id="mobileAuthSection" class="border-t border-white/10 pt-4">
+            <div class="flex gap-2">
+                <a href="signin.html" class="btn-secondary flex-1 text-xs py-2.5">Sign In</a>
+                <a href="signup.html" class="btn-primary flex-1 text-xs py-2.5">Sign Up</a>
             </div>
         </div>
     </nav>
 </div>
 
 <!-- ==========================================
-     CASINO CONTENT
+     PAGE CONTENT
      ========================================== -->
-<div class="page-background pt-20 pb-12 px-4">
-    <div class="max-w-7xl mx-auto relative z-10">
-        
-        <div class="text-center mb-10">
-            <h1 class="text-4xl md:text-5xl font-bold mb-4">
-                🎰 <span class="text-gradient">Casino</span>
-            </h1>
-            <p class="text-lg text-white/50 max-w-xl mx-auto">
-                Spin, deal, and win big. Explore our premium collection of casino games.
-            </p>
+<div class="page-content">
+
+    <!-- ============ HERO ============ -->
+    <section class="casino-hero">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div class="hero-banner">
+                <div>
+                    <div class="hero-tag">🎰 Premium Casino</div>
+                    <h1>Spin, Deal &amp; <span class="text-gradient">Win Big</span></h1>
+                    <p>Thousands of slots, table games, and live dealer classics — all from the comfort of your phone. Instant play, no downloads.</p>
+                    <div class="hero-ctas">
+                        <a href="#gamesGrid" class="btn-primary text-sm py-3 px-6" id="playNowBtn">Play Now →</a>
+                        <a href="promotions.html" class="btn-secondary text-sm py-3 px-6">🎁 Bonuses</a>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="hv-emoji">🎰</div>
+                    <div class="hv-jackpot">
+                        <div class="hv-label">Current Jackpot</div>
+                        <div class="hv-amount" id="jackpotCounter">12,456,789 TZS</div>
+                    </div>
+                </div>
+            </div>
         </div>
-        
-        <!-- Category Tabs -->
-        <div class="flex flex-wrap gap-2 mb-8 overflow-x-auto pb-2" id="categoryTabs">
-            <button class="category-tab active" data-category="all">All Games</button>
-            <button class="category-tab" data-category="slots">🎰 Slots</button>
-            <button class="category-tab" data-category="table">🃏 Table Games</button>
-            <button class="category-tab" data-category="live">🔴 Live Casino</button>
-            <button class="category-tab" data-category="jackpot">💰 Jackpots</button>
+    </section>
+
+    <!-- ============ CATEGORY TABS (sticky) ============ -->
+    <div class="category-tabs-wrap">
+        <div class="category-tabs" id="categoryTabs">
+            <button class="category-tab active" data-category="all">🔥 All Games <span class="ct-count" id="countAll">0</span></button>
+            <button class="category-tab" data-category="slots">🎰 Slots <span class="ct-count" id="countSlots">0</span></button>
+            <button class="category-tab" data-category="table">🃏 Table <span class="ct-count" id="countTable">0</span></button>
+            <button class="category-tab" data-category="live">🔴 Live <span class="ct-count" id="countLive">0</span></button>
+            <button class="category-tab" data-category="jackpot">💰 Jackpots <span class="ct-count" id="countJackpot">0</span></button>
+            <button class="category-tab" data-category="new">✨ New <span class="ct-count" id="countNew">0</span></button>
         </div>
-        
-        <!-- Games Grid -->
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4" id="gamesGrid">
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+
+        <!-- Guest notice -->
+        <div id="guestNotice" class="guest-notice" style="display:none">
+            <div class="gn-icon">🎰</div>
+            <div class="gn-text">
+                <div class="gn-title">Sign in to play</div>
+                <div class="gn-sub">Browse the collection as a guest — you need an account to play and win real money.</div>
+            </div>
+            <a href="signin.html" class="btn-primary text-xs py-2 px-4" style="flex-shrink:0">Sign In →</a>
+        </div>
+
+        <!-- Continue playing (signed-in only, empty state) -->
+        <div id="continuePlaying" class="continue-empty hidden">
+            <div class="ce-icon">🕹️</div>
+            <div class="ce-title">No recent games</div>
+            <div class="ce-sub">Start playing to see your game history here</div>
+        </div>
+
+        <!-- ============ FEATURED GAMES ============ -->
+        <div class="section-header">
+            <div>
+                <div class="section-title">🌟 Featured Games</div>
+                <div class="section-sub">Hand-picked by our team</div>
+            </div>
+            <a href="#gamesGrid" class="section-link">See all →</a>
+        </div>
+
+        <div class="featured-grid">
+            <a href="#" class="featured-card" data-game="Mega Moolah" data-category="jackpot">
+                <div>
+                    <span class="fc-badge jackpot">💰 Mega Jackpot</span>
+                    <div class="fc-title">Mega Moolah</div>
+                    <div class="fc-sub">Progressive jackpot · Win millions</div>
+                </div>
+                <div class="fc-play">▶ Play Now</div>
+            </a>
+            <a href="#" class="featured-card" data-game="Starburst" data-category="slots">
+                <div>
+                    <span class="fc-badge hot">🔥 Hot</span>
+                    <div class="fc-title">Starburst</div>
+                    <div class="fc-sub">Legendary slot · 96% RTP</div>
+                </div>
+                <div class="fc-play">▶ Play Now</div>
+            </a>
+            <a href="#" class="featured-card" data-game="Live Lightning Roulette" data-category="live">
+                <div>
+                    <span class="fc-badge live">● Live</span>
+                    <div class="fc-title">Lightning Roulette</div>
+                    <div class="fc-sub">Live dealer · Up to 500×</div>
+                </div>
+                <div class="fc-play">▶ Play Now</div>
+            </a>
+        </div>
+
+        <!-- ============ ALL GAMES GRID ============ -->
+        <div class="section-header">
+            <div>
+                <div class="section-title" id="gridTitle">🎮 All Games</div>
+                <div class="section-sub" id="gridSub">— games available</div>
+            </div>
+            <span class="text-xs text-white/40" id="gridCount">—</span>
+        </div>
+
+        <div class="games-grid" id="gamesGrid">
             <!-- Dynamically filled -->
         </div>
-        
+
+        <!-- ============ TRUST ============ -->
+        <div class="trust-row">
+            <div class="trust-item">
+                <div class="ti-icon">⚡</div>
+                <div>
+                    <div class="ti-title">Instant Play</div>
+                    <div class="ti-sub">No downloads</div>
+                </div>
+            </div>
+            <div class="trust-item">
+                <div class="ti-icon">🔒</div>
+                <div>
+                    <div class="ti-title">SSL Secured</div>
+                    <div class="ti-sub">Bank-grade security</div>
+                </div>
+            </div>
+            <div class="trust-item">
+                <div class="ti-icon">🏆</div>
+                <div>
+                    <div class="ti-title">Fair Gaming</div>
+                    <div class="ti-sub">RNG certified</div>
+                </div>
+            </div>
+            <div class="trust-item">
+                <div class="ti-icon">🎧</div>
+                <div>
+                    <div class="ti-title">24/7 Support</div>
+                    <div class="ti-sub">Always here</div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 
 <!-- ==========================================
      FOOTER
      ========================================== -->
-<footer class="bg-[#0a0a12] border-t border-white/5 py-12">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<footer class="site-footer">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div class="col-span-2 md:col-span-1">
                 <div class="text-lg font-bold mb-3">
@@ -429,16 +939,22 @@
                     <span class="text-white font-light">|</span>
                     <span class="text-white font-semibold">GameZone</span>
                 </div>
-                <p class="text-sm text-white/30 leading-relaxed">
+                <p class="text-sm text-white/30 leading-relaxed mb-4">
                     Premium online betting platform for sports, casino, and virtual games.
                 </p>
+                <div class="flex items-center gap-2 text-[10px] uppercase tracking-widest font-bold text-white/25">
+                    <span>18+</span>
+                    <span class="w-1 h-1 rounded-full bg-white/20"></span>
+                    <span>Play Responsibly</span>
+                </div>
             </div>
             <div>
-                <h4 class="text-sm font-semibold text-white/40 mb-3">Quick Links</h4>
+                <h4 class="text-sm font-semibold text-white/40 mb-3">Betting</h4>
                 <ul class="space-y-2">
                     <li><a href="sports.html" class="footer-link">Sports</a></li>
                     <li><a href="live-betting.html" class="footer-link">Live Betting</a></li>
                     <li><a href="casino.html" class="footer-link">Casino</a></li>
+                    <li><a href="aviator.html" class="footer-link">Aviator</a></li>
                     <li><a href="promotions.html" class="footer-link">Promotions</a></li>
                 </ul>
             </div>
@@ -461,9 +977,13 @@
                 </ul>
             </div>
         </div>
-        <div class="mt-8 pt-6 border-t border-white/5 flex flex-col md:flex-row items-center justify-between text-xs text-white/20">
+        <div class="mt-8 pt-6 border-t border-white/5 flex flex-col md:flex-row items-center justify-between text-xs text-white/25 gap-3">
             <p>Copyright © 2025 Cephas GM | Innovating for Tomorrow</p>
-            <p class="mt-2 md:mt-0">18+ | Play Responsibly</p>
+            <div class="flex items-center gap-4">
+                <span class="flex items-center gap-1">🔒 Secured by SSL</span>
+                <span class="w-1 h-1 rounded-full bg-white/20"></span>
+                <span>Licensed Operator</span>
+            </div>
         </div>
     </div>
 </footer>
@@ -474,86 +994,272 @@
 <script>
 (function() {
     'use strict';
-    
-    // Mobile menu
-    const mobileToggle = document.getElementById('mobileToggle');
-    const mobileMenu = document.getElementById('mobileMenu');
-    let mobileOpen = false;
-    
-    mobileToggle.addEventListener('click', () => {
+
+    /* ------------------------------------------------------------
+       MOBILE MENU
+       ------------------------------------------------------------ */
+    var mobileToggle = document.getElementById('mobileToggle');
+    var mobileMenu = document.getElementById('mobileMenu');
+    var mobileOpen = false;
+
+    mobileToggle.addEventListener('click', function() {
         mobileOpen = !mobileOpen;
-        mobileMenu.classList.toggle('active');
+        mobileMenu.classList.toggle('active', mobileOpen);
         document.body.style.overflow = mobileOpen ? 'hidden' : '';
     });
-    mobileMenu.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
+    mobileMenu.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() {
             mobileMenu.classList.remove('active');
             document.body.style.overflow = '';
             mobileOpen = false;
         });
     });
-    
-    // ================== CASINO GAMES DATA ==================
-    const allGames = [
-        { name: 'Starburst', category: 'slots', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnrajtS_RJs7aaBTEtCrfUTBaUgR5mMR6vBrx8ZBNSwK5A6_gTPjYer9Q&s=10', badge: 'Hot' },
-        { name: 'Gonzo\'s Quest', category: 'slots', image: 'https://www.sportsboom.co.uk/_next/image?url=https%3A%2F%2Fassets.sportsboom.com%2FGonzo_s_Quest_ba642c9448.png&w=1200&q=75', badge: 'New' },
-        { name: 'Book of Dead', category: 'slots', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQH3BMowj1Dwd3Shs8Ei8dnj6JjxNn1OhaMBFbRVXjVI_vJUgnqYMI9GOY&s=10', badge: null },
-        { name: 'Mega Moolah', category: 'jackpot', image: 'https://static.bonuscodes.com/uploads/v2/other/cropped/1699537462/mega-moolah-at-bitstarz.png', badge: 'Jackpot' },
-        { name: 'Divine Fortune', category: 'jackpot', image: 'https://tscom.imgix.net/01_banner_720x300_divinefortune_3d9a3e5d85.false?auto=compress,format', badge: 'Jackpot' },
-        { name: 'European Roulette', category: 'table', image: 'https://evoplay.games/wp-content/uploads/2025/11/EUROPEAN-ROULETTE.webp', badge: 'Live' },
-        { name: 'Blackjack Classic', category: 'table', image: 'https://www.olg.ca/content/dam/olg/web/product/casino/2022/april-to-june/ig-may-online-casino-games/classic-blackjack/ewma/desktop-carousel-logo.png', badge: 'Live' },
-        { name: 'Baccarat', category: 'table', image: 'https://assets.nintendo.com/image/upload/ar_16:9,c_lpad,w_1240/b_white/f_auto/q_auto/store/software/switch/70010000100159/96e893c8088f4e9d0a48fe70aa222890a8b80b6275179f5886eca3e89079c7b3', badge: null },
-        { name: 'Live Lightning Roulette', category: 'live', image: 'https://eidk95seyu2.exactdn.com/en/blog/wp-content/uploads/2024/01/lightning-roulette-header.png?strip=all', badge: 'Live' },
-        { name: 'Live Dream Catcher', category: 'live', image: 'https://digiwheel.com/wp-content/uploads/2023/02/Use_Case_Dream_Catcher_v2_650x450px.png', badge: 'Live' },
-        { name: 'Buffalo Blitz', category: 'slots', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAGVlAE9gyhSvJ9SHN7oD4p9J8Ydbqff10D-1RAYjcnDv3E9Usi-4enIA&s=10', badge: null },
-        { name: 'Wild Wild West', category: 'slots', image: 'https://www.casinonewsdaily.com/wp-content/uploads/2017/11/wild-wild-west-the-great-train-heist-netent.jpg', badge: null },
-        { name: 'Jack Hammer', category: 'slots', image: 'https://www.betandskill.com/images/stories/slotmachine/jackhammer.jpg', badge: null },
-        { name: 'Caribbean Stud Poker', category: 'table', image: 'https://lottostar.co.za/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2F2wd3p14m%2Fproduction%2F10de5ea23f37d495824ee76fd9c076b7d32a0f96-640x267.jpg%3Fq%3D75%26auto%3Dformat&w=1920&q=75', badge: null },
-        { name: 'Live Blackjack Party', category: 'live', image: 'https://www.blackjack.com.au/wp-content/uploads/2024/07/blackjackparty.jpg', badge: 'Live' }
-    ];
-    
-    function renderGames(category) {
-        const grid = document.getElementById('gamesGrid');
-        let filtered = category === 'all' ? allGames : allGames.filter(g => g.category === category);
-        let html = '';
-        filtered.forEach(game => {
-            html += `
-                <div class="game-card" onclick="alert('Launching ${game.name}...')">
-                    <div class="relative overflow-hidden">
-                        <img src="${game.image}" alt="${game.name}">
-                        ${game.badge ? `<span class="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">${game.badge}</span>` : ''}
-                    </div>
-                    <div class="p-3">
-                        <h3 class="font-semibold text-sm truncate">${game.name}</h3>
-                        <p class="text-xs text-white/50 mt-1">Click to play</p>
-                    </div>
-                </div>
-            `;
-        });
-        grid.innerHTML = html || '<p class="col-span-full text-center text-white/30">No games found.</p>';
+
+    /* ------------------------------------------------------------
+       AUTH-AWARE UI
+       ------------------------------------------------------------ */
+    var isLoggedIn = false;
+    var currentUser = null;
+
+    if (window.CephasGM && CephasGM.api) {
+        isLoggedIn = CephasGM.api.isLoggedIn();
+        currentUser = CephasGM.api.getUser();
     }
-    
-    // Category tab switching
-    const tabs = document.querySelectorAll('.category-tab');
-    tabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-            tabs.forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-            renderGames(tab.dataset.category);
+
+    var guestNav = document.getElementById('guestNav');
+    var userNav = document.getElementById('userNav');
+    var mobileWalletChip = document.getElementById('mobileWalletChip');
+    var mobileAuthSection = document.getElementById('mobileAuthSection');
+    var mobileAccountSection = document.getElementById('mobileAccountSection');
+    var guestNotice = document.getElementById('guestNotice');
+    var continuePlaying = document.getElementById('continuePlaying');
+
+    if (isLoggedIn && currentUser) {
+        guestNav.classList.add('hidden');
+        userNav.classList.remove('hidden');
+        mobileWalletChip.classList.remove('hidden');
+        mobileAuthSection.classList.add('hidden');
+        mobileAccountSection.classList.remove('hidden');
+        if (guestNotice) guestNotice.style.display = 'none';
+        if (continuePlaying) continuePlaying.classList.remove('hidden');
+
+        var name = currentUser.fullName || currentUser.username || 'Player';
+        var initial = name.charAt(0).toUpperCase();
+        document.getElementById('navAvatar').textContent = initial;
+        document.getElementById('navName').textContent = name.split(' ')[0];
+
+        CephasGM.api.wallet().then(function(res) {
+            if (res.success && res.data) {
+                var bal = parseFloat(res.data.balance).toLocaleString('en-US', { maximumFractionDigits: 0 });
+                document.getElementById('navBalance').textContent = bal + ' ' + res.data.currency;
+                document.getElementById('mobileNavBalance').textContent = bal;
+            }
+        }).catch(function() {});
+
+        CephasGM.api.get('/notifications?limit=1&unreadOnly=true').then(function(res) {
+            if (res.success && typeof res.unreadCount === 'number' && res.unreadCount > 0) {
+                var badge = document.getElementById('notifBadge');
+                badge.textContent = res.unreadCount > 9 ? '9+' : res.unreadCount;
+                badge.style.display = 'flex';
+            }
+        }).catch(function() {});
+    } else {
+        guestNav.classList.remove('hidden');
+        userNav.classList.add('hidden');
+        mobileWalletChip.classList.add('hidden');
+        mobileAuthSection.classList.remove('hidden');
+        mobileAccountSection.classList.add('hidden');
+        if (guestNotice) guestNotice.style.display = 'flex';
+        if (continuePlaying) continuePlaying.classList.add('hidden');
+    }
+
+    function doSignOut() {
+        if (window.CephasGM && CephasGM.api) {
+            CephasGM.api.logout().catch(function() {}).then(function() {
+                CephasGM.api.clearTokens();
+                window.location.href = 'signin.html';
+            });
+        } else {
+            window.location.href = 'signin.html';
+        }
+    }
+
+    var navSignOut = document.getElementById('navSignOut');
+    if (navSignOut) navSignOut.addEventListener('click', function(e) {
+        e.preventDefault();
+        this.textContent = 'Signing out…';
+        doSignOut();
+    });
+
+    var mobileSignOut = document.getElementById('mobileSignOut');
+    if (mobileSignOut) mobileSignOut.addEventListener('click', function(e) {
+        e.preventDefault();
+        doSignOut();
+    });
+
+    /* ------------------------------------------------------------
+       GAMES DATA
+       ------------------------------------------------------------ */
+    var allGames = [
+        { name: 'Starburst', category: 'slots', provider: 'NetEnt', badge: 'hot', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnrajtS_RJs7aaBTEtCrfUTBaUgR5mMR6vBrx8ZBNSwK5A6_gTPjYer9Q&s=10' },
+        { name: "Gonzo's Quest", category: 'new', provider: 'NetEnt', badge: 'new', image: 'https://www.sportsboom.co.uk/_next/image?url=https%3A%2F%2Fassets.sportsboom.com%2FGonzo_s_Quest_ba642c9448.png&w=1200&q=75' },
+        { name: 'Book of Dead', category: 'slots', provider: "Play'n GO", badge: null, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQH3BMowj1Dwd3Shs8Ei8dnj6JjxNn1OhaMBFbRVXjVI_vJUgnqYMI9GOY&s=10' },
+        { name: 'Mega Moolah', category: 'jackpot', provider: 'Microgaming', badge: 'jackpot', image: 'https://static.bonuscodes.com/uploads/v2/other/cropped/1699537462/mega-moolah-at-bitstarz.png' },
+        { name: 'Divine Fortune', category: 'jackpot', provider: 'NetEnt', badge: 'jackpot', image: 'https://tscom.imgix.net/01_banner_720x300_divinefortune_3d9a3e5d85.false?auto=compress,format' },
+        { name: 'European Roulette', category: 'table', provider: 'Evolution', badge: 'live', image: 'https://evoplay.games/wp-content/uploads/2025/11/EUROPEAN-ROULETTE.webp' },
+        { name: 'Blackjack Classic', category: 'table', provider: 'Evolution', badge: 'live', image: 'https://www.olg.ca/content/dam/olg/web/product/casino/2022/april-to-june/ig-may-online-casino-games/classic-blackjack/ewma/desktop-carousel-logo.png' },
+        { name: 'Baccarat', category: 'table', provider: 'Evolution', badge: null, image: 'https://assets.nintendo.com/image/upload/ar_16:9,c_lpad,w_1240/b_white/f_auto/q_auto/store/software/switch/70010000100159/96e893c8088f4e9d0a48fe70aa222890a8b80b6275179f5886eca3e89079c7b3' },
+        { name: 'Lightning Roulette', category: 'live', provider: 'Evolution', badge: 'live', image: 'https://eidk95seyu2.exactdn.com/en/blog/wp-content/uploads/2024/01/lightning-roulette-header.png?strip=all' },
+        { name: 'Dream Catcher', category: 'live', provider: 'Evolution', badge: 'live', image: 'https://digiwheel.com/wp-content/uploads/2023/02/Use_Case_Dream_Catcher_v2_650x450px.png' },
+        { name: 'Buffalo Blitz', category: 'slots', provider: "Playtech", badge: null, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAGVlAE9gyhSvJ9SHN7oD4p9J8Ydbqff10D-1RAYjcnDv3E9Usi-4enIA&s=10' },
+        { name: 'Wild Wild West', category: 'slots', provider: 'NetEnt', badge: null, image: 'https://www.casinonewsdaily.com/wp-content/uploads/2017/11/wild-wild-west-the-great-train-heist-netent.jpg' },
+        { name: 'Jack Hammer', category: 'slots', provider: 'NetEnt', badge: null, image: 'https://www.betandskill.com/images/stories/slotmachine/jackhammer.jpg' },
+        { name: 'Caribbean Stud Poker', category: 'table', provider: 'Playtech', badge: null, image: 'https://lottostar.co.za/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2F2wd3p14m%2Fproduction%2F10de5ea23f37d495824ee76fd9c076b7d32a0f96-640x267.jpg%3Fq%3D75%26auto%3Dformat&w=1920&q=75' },
+        { name: 'Blackjack Party', category: 'live', provider: 'Evolution', badge: 'live', image: 'https://www.blackjack.com.au/wp-content/uploads/2024/07/blackjackparty.jpg' },
+        { name: 'Book of Ra', category: 'new', provider: 'Novomatic', badge: 'new', image: 'https://www.greentube.com/wp-content/uploads/untitled-design-108.png' },
+        { name: 'Sizzling Hot', category: 'new', provider: 'Novomatic', badge: 'new', image: 'https://www.greentube.com/wp-content/uploads/2026/07/mail-chimp-800x600_ccsizzling.jpg' }
+    ];
+
+    function renderGames(category) {
+        var grid = document.getElementById('gamesGrid');
+        var filtered = category === 'all' ? allGames : allGames.filter(function(g) { return g.category === category; });
+
+        if (filtered.length === 0) {
+            grid.innerHTML = '<div class="col-span-full text-center py-12 text-white/40 text-sm">No games in this category yet</div>';
+        } else {
+            grid.innerHTML = filtered.map(function(game) {
+                var badgeHtml = '';
+                if (game.badge) {
+                    var badgeText = game.badge === 'hot' ? '🔥 Hot'
+                                  : game.badge === 'new' ? '✨ New'
+                                  : game.badge === 'live' ? '● Live'
+                                  : '💰 Jackpot';
+                    badgeHtml = '<span class="gc-badge ' + game.badge + '">' + badgeText + '</span>';
+                }
+                return '' +
+                    '<div class="game-card" data-game="' + game.name + '" data-category="' + game.category + '">' +
+                        '<div class="gc-img-wrap">' +
+                            badgeHtml +
+                            '<img src="' + game.image + '" alt="' + game.name + '" onerror="this.src=\'https://via.placeholder.com/300x300/0a0a12/0055ff?text=' + encodeURIComponent(game.name) + '\'">' +
+                            '<div class="gc-overlay">' +
+                                '<div class="gc-play-btn">▶ Play Now</div>' +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="gc-info">' +
+                            '<div class="gc-name">' + game.name + '</div>' +
+                            '<div class="gc-meta">' +
+                                '<span class="gc-provider">' + game.provider + '</span>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>';
+            }).join('');
+        }
+
+        document.getElementById('gridCount').textContent = filtered.length + ' game' + (filtered.length !== 1 ? 's' : '');
+        document.getElementById('gridSub').textContent = filtered.length + ' game' + (filtered.length !== 1 ? 's' : '') + ' available';
+
+        /* Wire up click handlers */
+        grid.querySelectorAll('.game-card').forEach(function(card) {
+            card.addEventListener('click', function() {
+                var name = card.dataset.game;
+                launchGame(name);
+            });
+        });
+    }
+
+    function updateCategoryCounts() {
+        document.getElementById('countAll').textContent = allGames.length;
+        ['slots','table','live','jackpot','new'].forEach(function(cat) {
+            var id = 'count' + cat.charAt(0).toUpperCase() + cat.slice(1);
+            var el = document.getElementById(id);
+            if (el) {
+                el.textContent = allGames.filter(function(g) { return g.category === cat; }).length;
+            }
+        });
+    }
+
+    function launchGame(name) {
+        if (!isLoggedIn) {
+            window.location.href = 'signin.html?redirect=' + encodeURIComponent('casino.html');
+            return;
+        }
+        if (CephasGM.toast) {
+            CephasGM.toast('🎮 ' + name + ' — coming soon!', 'warning');
+        } else {
+            alert(name + ' — launching soon');
+        }
+    }
+
+    /* ------------------------------------------------------------
+       CATEGORY TAB SWITCHING
+       ------------------------------------------------------------ */
+    document.querySelectorAll('.category-tab').forEach(function(tab) {
+        tab.addEventListener('click', function() {
+            document.querySelectorAll('.category-tab').forEach(function(t) {
+                t.classList.remove('active');
+            });
+            this.classList.add('active');
+            var cat = this.dataset.category;
+            renderGames(cat);
+
+            /* Update title */
+            var titles = {
+                all: '🎮 All Games',
+                slots: '🎰 Slots',
+                table: '🃏 Table Games',
+                live: '🔴 Live Casino',
+                jackpot: '💰 Progressive Jackpots',
+                new: '✨ New Releases'
+            };
+            document.getElementById('gridTitle').textContent = titles[cat] || '🎮 Games';
         });
     });
-    
-    // Initial render
-    renderGames('all');
-    
-    // PWA
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/sw.js')
-                .then(reg => console.log('SW registered'))
-                .catch(err => console.log('SW registration failed'));
+
+    /* ------------------------------------------------------------
+       PLAY NOW BUTTON — scroll to grid
+       ------------------------------------------------------------ */
+    var playNowBtn = document.getElementById('playNowBtn');
+    if (playNowBtn) {
+        playNowBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('gamesGrid').scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
     }
+
+    /* ------------------------------------------------------------
+       FEATURED CARDS — launch
+       ------------------------------------------------------------ */
+    document.querySelectorAll('.featured-card').forEach(function(card) {
+        card.addEventListener('click', function(e) {
+            e.preventDefault();
+            launchGame(card.dataset.game || 'Featured Game');
+        });
+    });
+
+    /* ------------------------------------------------------------
+       JACKPOT COUNTER ANIMATION
+       ------------------------------------------------------------ */
+    var jackpotEl = document.getElementById('jackpotCounter');
+    if (jackpotEl) {
+        var base = 12456789;
+        setInterval(function() {
+            base += Math.floor(Math.random() * 500);
+            jackpotEl.textContent = base.toLocaleString('en-US') + ' TZS';
+        }, 3000);
+    }
+
+    /* ------------------------------------------------------------
+       BOOT
+       ------------------------------------------------------------ */
+    renderGames('all');
+    updateCategoryCounts();
+
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('sw.js').catch(function() {});
+        });
+    }
+
 })();
 </script>
 
