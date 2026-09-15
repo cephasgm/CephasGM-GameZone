@@ -4,54 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#0a0a12">
-    <meta name="description" content="Your Wallet – CephasGM GameZone">
     <title>Wallet | CephasGM GameZone</title>
-    
-    <!-- PWA -->
+
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    
+    <script src="js/api.js"></script>
+    <script src="js/auth-ui.js"></script>
+
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+
         body {
             font-family: 'Inter', sans-serif;
             background: #0a0a12;
             color: #ffffff;
             overflow-x: hidden;
         }
-        
+
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #0a0a12; }
-        ::-webkit-scrollbar-thumb { 
+        ::-webkit-scrollbar-thumb {
             background: linear-gradient(180deg, #0055ff, #542bff);
             border-radius: 10px;
         }
-        
+
         .glass {
             background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.06);
         }
-        
+
         .glass-light {
             background: rgba(255, 255, 255, 0.04);
             backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
-        
+
         .btn-primary {
             background: linear-gradient(135deg, #0055ff, #542bff);
             color: white;
-            padding: 10px 24px;
+            padding: 12px 28px;
             border-radius: 50px;
             font-weight: 600;
             font-size: 14px;
@@ -59,55 +57,48 @@
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 4px 20px rgba(0, 85, 255, 0.25);
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
         }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(0, 85, 255, 0.4);
-        }
-        
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0, 85, 255, 0.4); }
+
         .btn-secondary {
             background: rgba(255, 255, 255, 0.06);
             color: white;
-            padding: 10px 24px;
+            padding: 12px 28px;
             border-radius: 50px;
             font-weight: 600;
             font-size: 14px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             cursor: pointer;
             transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
         }
-        
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-2px);
-        }
-        
+        .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-2px); }
+
         .navbar {
-            position: fixed;
+            position: sticky;
             top: 0;
-            left: 0;
-            right: 0;
             z-index: 1000;
             padding: 16px 0;
             background: rgba(10, 10, 18, 0.92);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
-        
+
         .text-gradient {
             background: linear-gradient(135deg, #0055ff, #542bff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        
+
         .mobile-menu {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            inset: 0;
             background: rgba(10, 10, 18, 0.98);
             backdrop-filter: blur(20px);
             z-index: 999;
@@ -115,62 +106,100 @@
             padding: 80px 24px 24px;
             overflow-y: auto;
         }
-        
-        .mobile-menu.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        .footer-link {
-            color: rgba(255, 255, 255, 0.4);
-            transition: all 0.3s ease;
-            text-decoration: none;
-            font-size: 14px;
-        }
-        
-        .footer-link:hover {
-            color: #ffffff;
-        }
-        
-        .page-background {
-            min-height: 100vh;
+        .mobile-menu.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .dashboard-bg {
             background-image: url('https://static.vecteezy.com/system/resources/thumbnails/070/574/368/small/assorted-sports-equipment-on-black-backdrop-symbolizing-athleticism-competition-and-diverse-sporting-activities-photo.jpeg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
             position: relative;
         }
-        
-        .page-background::before {
+        .dashboard-bg::before {
             content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, 
-                rgba(10, 10, 18, 0.9) 0%, 
-                rgba(10, 10, 18, 0.7) 50%,
-                rgba(10, 10, 18, 0.9) 100%
-            );
-            z-index: -1;
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(10,10,18,0.9), rgba(10,10,18,0.75), rgba(10,10,18,0.9));
+            z-index: 0;
         }
-        
-        .dropdown {
+        .content-wrapper { position: relative; z-index: 1; }
+
+        .stat-card {
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 20px;
+            transition: transform 0.3s;
+        }
+        .stat-card:hover { transform: translateY(-4px); }
+
+        .balance-hero {
+            background: linear-gradient(135deg, rgba(0,85,255,0.15), rgba(84,43,255,0.10));
+            border: 1px solid rgba(0,85,255,0.28);
+            border-radius: 24px;
+            padding: 32px;
             position: relative;
-            display: inline-block;
+            overflow: hidden;
         }
+        .balance-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%; right: -20%;
+            width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(0,85,255,0.2), transparent 70%);
+            pointer-events: none;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all .2s;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.04);
+            color: rgba(255,255,255,0.6);
+            font-family: inherit;
+        }
+        .filter-btn:hover { background: rgba(255,255,255,0.08); color: #fff; }
+        .filter-btn.active {
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            border-color: transparent;
+            color: white;
+        }
+
+        .txn-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 16px;
+            border-radius: 14px;
+            transition: background .2s;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        .txn-row:hover { background: rgba(255,255,255,0.03); }
+        .txn-row:last-child { border-bottom: none; }
+
+        .txn-icon {
+            width: 38px; height: 38px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px; flex-shrink: 0;
+        }
+        .txn-in  { background: rgba(0, 224, 122, 0.12); }
+        .txn-out { background: rgba(255, 77, 109, 0.12); }
+
+        .footer-link { color: rgba(255,255,255,0.4); text-decoration: none; font-size: 14px; transition: 0.3s; }
+        .footer-link:hover { color: #fff; }
+
+        .dropdown { position: relative; display: inline-block; }
         .dropdown-menu {
             display: none;
             position: absolute;
-            top: 100%;
-            left: 0;
-            background: rgba(10, 10, 18, 0.95);
+            top: 100%; left: 0;
+            background: rgba(10,10,18,0.95);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255,255,255,0.05);
             border-radius: 12px;
@@ -178,9 +207,7 @@
             padding: 8px 0;
             z-index: 1001;
         }
-        .dropdown:hover .dropdown-menu {
-            display: block;
-        }
+        .dropdown:hover .dropdown-menu { display: block; }
         .dropdown-menu a {
             display: block;
             padding: 8px 16px;
@@ -188,84 +215,77 @@
             font-size: 13px;
             transition: 0.2s;
         }
-        .dropdown-menu a:hover {
-            background: rgba(255,255,255,0.05);
-            color: white;
-        }
-        
-        .balance-card {
-            background: linear-gradient(135deg, rgba(0,85,255,0.15), rgba(84,43,255,0.15));
-            border: 1px solid rgba(0,85,255,0.3);
-            border-radius: 24px;
-            padding: 24px;
-            text-align: center;
-        }
-        
-        .transaction-item {
-            display: flex;
-            justify-content: space-between;
+        .dropdown-menu a:hover { background: rgba(255,255,255,0.05); color: white; }
+
+        #userBar {
+            position: fixed;
+            top: 84px; right: 16px;
+            z-index: 999;
+            background: rgba(10,10,18,0.92);
+            backdrop-filter: blur(18px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 999px;
+            padding: 8px 8px 8px 14px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            display: none;
             align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.04);
+            gap: 10px;
         }
-        .transaction-item:last-child { border-bottom: none; }
+        #userBar .avatar {
+            width: 30px; height: 30px; border-radius: 50%;
+            background: linear-gradient(135deg,#0055ff,#542bff);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 12px; flex-shrink: 0;
+        }
+        #userBar .info { display: flex; flex-direction: column; line-height: 1.1; max-width: 140px; }
+        #userBar .name { font-weight: 700; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        #userBar .contact { font-size: 10px; color: rgba(255,255,255,0.5); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        #inlineSignOut {
+            padding: 6px 14px; border-radius: 999px;
+            background: rgba(255,0,68,0.15);
+            border: 1px solid rgba(255,0,68,0.3);
+            color: #ff8098; font-size: 11px; font-weight: 700;
+            cursor: pointer; font-family: inherit; white-space: nowrap;
+            transition: all .2s;
+        }
+        #inlineSignOut:hover { background: rgba(255,0,68,0.25); border-color: rgba(255,0,68,0.5); }
+
+        @media (max-width: 640px) {
+            #userBar { top: 76px; right: 8px; padding: 6px; }
+            #userBar .info { display: none; }
+            .balance-hero { padding: 24px; }
+        }
     </style>
 </head>
-<body>
+<body data-requires-auth>
 
-<!-- ==========================================
-     NAVBAR
-     ========================================== -->
-<nav class="navbar" id="navbar">
+<!-- USER BADGE -->
+<div id="userBar">
+    <div class="avatar" id="userAvatar">U</div>
+    <div class="info">
+        <span class="name" id="userName">Loading…</span>
+        <span class="contact" id="userContact"></span>
+    </div>
+    <button id="inlineSignOut">Sign Out</button>
+</div>
+
+<!-- NAVBAR -->
+<nav class="navbar">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between">
-            
-            <a href="index.html" class="flex items-center space-x-2" title="Go to Homepage">
+            <a href="index.html" class="flex items-center space-x-2">
                 <span class="text-xl font-bold">
                     <span class="text-gradient">CephasGM</span>
                     <span class="text-white font-light">|</span>
                     <span class="text-white font-semibold">GameZone</span>
                 </span>
             </a>
-            
+
             <div class="hidden lg:flex items-center space-x-1">
-                <div class="dropdown">
-                    <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Info ▾</span>
-                    <div class="dropdown-menu">
-                        <a href="about.html">About Us</a>
-                        <a href="vip.html">VIP Club</a>
-                        <a href="referrals.html">Referrals</a>
-                        <a href="privacy.html">Privacy Policy</a>
-                        <a href="terms.html">Terms & Conditions</a>
-                        <a href="cookies.html">Cookie Policy</a>
-                    </div>
-                </div>
-
-                <div class="dropdown">
-                    <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Account ▾</span>
-                    <div class="dropdown-menu">
-                        <a href="dashboard.html">Dashboard</a>
-                        <a href="profile.html">Profile</a>
-                        <a href="wallet.html">Wallet</a>
-                        <a href="deposit.html">Deposit</a>
-                        <a href="withdraw.html">Withdraw</a>
-                        <a href="transactions.html">Transactions</a>
-                        <a href="bet-history.html">Bet History</a>
-                        <a href="bonuses.html">Bonuses</a>
-                        <a href="kyc.html">KYC Verification</a>
-                        <a href="settings.html">Settings</a>
-                        <a href="signin.html">Sign In</a>
-                        <a href="signup.html">Sign Up</a>
-                    </div>
-                </div>
-
-                <a href="promotions.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Promotions</a>
+                <a href="dashboard.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Dashboard</a>
+                <a href="wallet.html" class="px-3 py-2 text-sm text-white font-semibold rounded-lg bg-white/5">Wallet</a>
                 <a href="sports.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Sports</a>
-                <a href="casino.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Casino</a>
-                <a href="live-betting.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 flex items-center space-x-1">
-                    <span class="live-dot"></span><span>Live</span>
-                </a>
-
+                <a href="aviator.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Aviator</a>
                 <div class="dropdown">
                     <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Virtual ▾</span>
                     <div class="dropdown-menu">
@@ -273,253 +293,427 @@
                         <a href="virtual-horse-racing.html">Virtual Horse Racing</a>
                         <a href="virtual-car-racing.html">Virtual Car Racing</a>
                         <a href="virtual-netball.html">Virtual Netball</a>
-                        <a href="adventure-games.html">Adventure Games</a>
-                        <a href="aviator.html">Aviator</a>
                     </div>
                 </div>
-
                 <div class="dropdown">
-                    <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Support ▾</span>
+                    <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Account ▾</span>
                     <div class="dropdown-menu">
-                        <a href="support.html">Help Center</a>
-                        <a href="messages.html">Messages</a>
-                        <a href="notifications.html">Notifications</a>
-                        <a href="faq.html">FAQ</a>
-                        <a href="contact.html">Contact Us</a>
-                        <a href="responsible-gambling.html">Responsible Gambling</a>
-                        <a href="self-exclusion.html">Self-Exclusion</a>
+                        <a href="dashboard.html">Dashboard</a>
+                        <a href="profile.html">Profile</a>
+                        <a href="deposit.html">Deposit</a>
+                        <a href="withdraw.html">Withdraw</a>
+                        <a href="transactions.html">Transactions</a>
+                        <a href="kyc.html">KYC</a>
+                        <a href="settings.html">Settings</a>
                     </div>
                 </div>
             </div>
 
-            <div class="flex items-center space-x-3">
-                <button id="mobileToggle" class="lg:hidden p-2 text-white/40 hover:text-white transition-colors">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                    </svg>
-                </button>
-            </div>
+            <button id="mobileToggle" class="lg:hidden p-2 text-white/40 hover:text-white transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
         </div>
     </div>
 </nav>
 
-<!-- Mobile Menu -->
 <div id="mobileMenu" class="mobile-menu">
     <nav class="flex flex-col space-y-6">
-        <a href="index.html" class="text-lg text-white/70 hover:text-white">Home</a>
-        <a href="sports.html" class="text-lg text-white/70 hover:text-white">Sports</a>
-        <a href="live-betting.html" class="text-lg text-white/70 hover:text-white">Live Betting</a>
-        <a href="casino.html" class="text-lg text-white/70 hover:text-white">Casino</a>
-        <a href="promotions.html" class="text-lg text-white/70 hover:text-white">Promotions</a>
-        <a href="bonuses.html" class="text-lg text-white/70 hover:text-white">Bonuses</a>
-        <a href="leaderboard.html" class="text-lg text-white/70 hover:text-white">Leaderboard</a>
-        <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Account</span>
-            <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="dashboard.html" class="text-sm text-white/50 hover:text-white">Dashboard</a>
-                <a href="profile.html" class="text-sm text-white/50 hover:text-white">Profile</a>
-                <a href="wallet.html" class="text-sm text-white/50 hover:text-white">Wallet</a>
-                <a href="deposit.html" class="text-sm text-white/50 hover:text-white">Deposit</a>
-                <a href="withdraw.html" class="text-sm text-white/50 hover:text-white">Withdraw</a>
-                <a href="transactions.html" class="text-sm text-white/50 hover:text-white">Transactions</a>
-                <a href="bet-history.html" class="text-sm text-white/50 hover:text-white">Bet History</a>
-                <a href="kyc.html" class="text-sm text-white/50 hover:text-white">KYC</a>
-                <a href="settings.html" class="text-sm text-white/50 hover:text-white">Settings</a>
-                <a href="signin.html" class="text-sm text-white/50 hover:text-white">Sign In</a>
-                <a href="signup.html" class="text-sm text-white/50 hover:text-white">Sign Up</a>
-            </div>
-        </div>
-        <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Virtual Games</span>
-            <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="virtual-football.html" class="text-sm text-white/50 hover:text-white">Virtual Football</a>
-                <a href="virtual-horse-racing.html" class="text-sm text-white/50 hover:text-white">Horse Racing</a>
-                <a href="virtual-car-racing.html" class="text-sm text-white/50 hover:text-white">Car Racing</a>
-                <a href="virtual-netball.html" class="text-sm text-white/50 hover:text-white">Netball</a>
-                <a href="adventure-games.html" class="text-sm text-white/50 hover:text-white">Adventure</a>
-                <a href="aviator.html" class="text-sm text-white/50 hover:text-white">Aviator</a>
-            </div>
-        </div>
-        <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Support</span>
-            <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="support.html" class="text-sm text-white/50 hover:text-white">Help Center</a>
-                <a href="messages.html" class="text-sm text-white/50 hover:text-white">Messages</a>
-                <a href="notifications.html" class="text-sm text-white/50 hover:text-white">Notifications</a>
-                <a href="faq.html" class="text-sm text-white/50 hover:text-white">FAQ</a>
-                <a href="contact.html" class="text-sm text-white/50 hover:text-white">Contact</a>
-                <a href="responsible-gambling.html" class="text-sm text-white/50 hover:text-white">Responsible</a>
-                <a href="self-exclusion.html" class="text-sm text-white/50 hover:text-white">Self-Exclusion</a>
-            </div>
-        </div>
-        <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Information</span>
-            <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="about.html" class="text-sm text-white/50 hover:text-white">About</a>
-                <a href="vip.html" class="text-sm text-white/50 hover:text-white">VIP</a>
-                <a href="referrals.html" class="text-sm text-white/50 hover:text-white">Referrals</a>
-                <a href="privacy.html" class="text-sm text-white/50 hover:text-white">Privacy</a>
-                <a href="terms.html" class="text-sm text-white/50 hover:text-white">Terms</a>
-                <a href="cookies.html" class="text-sm text-white/50 hover:text-white">Cookies</a>
-            </div>
-        </div>
+        <a href="dashboard.html" class="text-lg text-white/70 hover:text-white">Dashboard</a>
+        <a href="wallet.html" class="text-lg text-white/70 hover:text-white">Wallet</a>
+        <a href="deposit.html" class="text-lg text-white/70 hover:text-white">Deposit</a>
+        <a href="withdraw.html" class="text-lg text-white/70 hover:text-white">Withdraw</a>
+        <a href="transactions.html" class="text-lg text-white/70 hover:text-white">Transactions</a>
+        <a href="bet-history.html" class="text-lg text-white/70 hover:text-white">Bet History</a>
+        <a href="profile.html" class="text-lg text-white/70 hover:text-white">Profile</a>
+        <a href="kyc.html" class="text-lg text-white/70 hover:text-white">KYC</a>
+        <a href="settings.html" class="text-lg text-white/70 hover:text-white">Settings</a>
     </nav>
 </div>
 
-<!-- ==========================================
-     WALLET CONTENT
-     ========================================== -->
-<div class="page-background pt-20 pb-12 px-4">
-    <div class="max-w-3xl mx-auto relative z-10">
-        
-        <div class="text-center mb-8">
-            <h1 class="text-4xl font-bold">My <span class="text-gradient">Wallet</span></h1>
-            <p class="text-sm text-white/40 mt-2">Manage your funds and view transactions.</p>
+<!-- MAIN CONTENT -->
+<div class="dashboard-bg min-h-screen">
+    <div class="content-wrapper py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+
+        <!-- Header -->
+        <div class="mb-6">
+            <h1 class="text-3xl font-bold">💰 My Wallet</h1>
+            <p class="text-sm text-white/40 mt-1">Full balance breakdown and transaction history</p>
         </div>
-        
-        <!-- Balance Card -->
-        <div class="balance-card mb-8">
-            <p class="text-xs text-white/50 uppercase tracking-wider">Total Balance</p>
-            <h2 class="text-4xl md:text-5xl font-extrabold mt-2 mb-6">$1,245.80</h2>
-            <div class="flex justify-center gap-4">
-                <a href="deposit.html" class="btn-primary">Deposit</a>
-                <a href="withdraw.html" class="btn-secondary">Withdraw</a>
+
+        <!-- Balance Hero -->
+        <div class="balance-hero mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                <div>
+                    <div class="text-xs uppercase tracking-wider text-white/40 font-semibold mb-2">Total Balance</div>
+                    <div class="text-5xl font-black" id="totalBalance">—</div>
+                    <div class="text-sm text-white/40 mt-2" id="currencyLabel">Loading…</div>
+                </div>
+                <div class="flex flex-wrap gap-3 md:justify-end">
+                    <a href="deposit.html" class="btn-primary">↓ Deposit</a>
+                    <a href="withdraw.html" class="btn-secondary">↑ Withdraw</a>
+                </div>
             </div>
         </div>
-        
-        <!-- Recent Transactions -->
+
+        <!-- Breakdown cards -->
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+            <div class="stat-card glass">
+                <div class="text-xs text-white/40">Available to Bet</div>
+                <div class="text-2xl font-bold mt-1 text-green-400" id="availableBalance">—</div>
+                <div class="text-xs text-white/30 mt-2">Spendable now</div>
+            </div>
+            <div class="stat-card glass">
+                <div class="text-xs text-white/40">Locked in Bets</div>
+                <div class="text-2xl font-bold mt-1 text-yellow-400" id="lockedBalance">—</div>
+                <div class="text-xs text-white/30 mt-2">Pending wagers</div>
+            </div>
+            <div class="stat-card glass col-span-2 md:col-span-1">
+                <div class="text-xs text-white/40">Bonus Balance</div>
+                <div class="text-2xl font-bold mt-1 text-purple-400" id="bonusBalance">—</div>
+                <div class="text-xs text-white/30 mt-2">Wager to unlock</div>
+            </div>
+        </div>
+
+        <!-- Summary row -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <div class="stat-card glass">
+                <div class="flex items-center gap-2 text-xs text-white/40 mb-1">
+                    <span>↙</span><span>Total In</span>
+                </div>
+                <div class="text-xl font-bold text-green-400" id="totalIn">—</div>
+            </div>
+            <div class="stat-card glass">
+                <div class="flex items-center gap-2 text-xs text-white/40 mb-1">
+                    <span>↗</span><span>Total Out</span>
+                </div>
+                <div class="text-xl font-bold text-red-400" id="totalOut">—</div>
+            </div>
+            <div class="stat-card glass">
+                <div class="flex items-center gap-2 text-xs text-white/40 mb-1">
+                    <span>≋</span><span>Net Flow</span>
+                </div>
+                <div class="text-xl font-bold" id="netFlow">—</div>
+            </div>
+        </div>
+
+        <!-- Transactions -->
         <div class="glass rounded-2xl p-6">
-            <div class="flex items-center justify-between mb-4">
-                <h3 class="text-lg font-bold">Recent Transactions</h3>
-                <a href="transactions.html" class="text-sm text-blue-400 hover:text-blue-300">View All →</a>
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+                <h2 class="text-lg font-bold">📊 Transaction History</h2>
+                <div class="flex flex-wrap gap-2" id="filterBar">
+                    <button class="filter-btn active" data-filter="">All</button>
+                    <button class="filter-btn" data-filter="DEPOSIT">Deposits</button>
+                    <button class="filter-btn" data-filter="WITHDRAWAL">Withdrawals</button>
+                    <button class="filter-btn" data-filter="BET_PLACED">Bets</button>
+                    <button class="filter-btn" data-filter="BET_WON">Wins</button>
+                    <button class="filter-btn" data-filter="BONUS_CREDIT">Bonuses</button>
+                </div>
             </div>
-            <div class="space-y-1">
-                <div class="transaction-item">
-                    <div>
-                        <div class="font-medium text-sm">Deposit</div>
-                        <div class="text-xs text-white/30">Today, 14:30</div>
-                    </div>
-                    <span class="text-green-400 font-semibold">+$200.00</span>
-                </div>
-                <div class="transaction-item">
-                    <div>
-                        <div class="font-medium text-sm">Bet - Arsenal vs Chelsea</div>
-                        <div class="text-xs text-white/30">Today, 13:15</div>
-                    </div>
-                    <span class="text-red-400 font-semibold">-$25.00</span>
-                </div>
-                <div class="transaction-item">
-                    <div>
-                        <div class="font-medium text-sm">Won - Barcelona vs Real Madrid</div>
-                        <div class="text-xs text-white/30">Today, 11:45</div>
-                    </div>
-                    <span class="text-green-400 font-semibold">+$87.50</span>
-                </div>
-                <div class="transaction-item">
-                    <div>
-                        <div class="font-medium text-sm">Withdrawal</div>
-                        <div class="text-xs text-white/30">Yesterday, 20:10</div>
-                    </div>
-                    <span class="text-red-400 font-semibold">-$150.00</span>
-                </div>
-                <div class="transaction-item">
-                    <div>
-                        <div class="font-medium text-sm">Bonus Credit</div>
-                        <div class="text-xs text-white/30">Yesterday, 15:00</div>
-                    </div>
-                    <span class="text-green-400 font-semibold">+$50.00</span>
-                </div>
+
+            <div id="txnList">
+                <div class="text-sm text-white/30 text-center py-10">Loading transactions…</div>
+            </div>
+
+            <!-- Pagination -->
+            <div id="pagination" class="hidden mt-4 flex items-center justify-between text-sm">
+                <button id="prevBtn" class="btn-secondary py-2 px-4 text-xs">← Previous</button>
+                <span class="text-white/40 text-xs" id="pageInfo">Page 1</span>
+                <button id="nextBtn" class="btn-secondary py-2 px-4 text-xs">Next →</button>
             </div>
         </div>
-        
+
     </div>
 </div>
 
-<!-- ==========================================
-     FOOTER
-     ========================================== -->
+<!-- FOOTER -->
 <footer class="bg-[#0a0a12] border-t border-white/5 py-12">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div class="col-span-2 md:col-span-1">
-                <div class="text-lg font-bold mb-3">
-                    <span class="text-gradient">CephasGM</span>
-                    <span class="text-white font-light">|</span>
-                    <span class="text-white font-semibold">GameZone</span>
-                </div>
-                <p class="text-sm text-white/30 leading-relaxed">
-                    Premium online betting platform for sports, casino, and virtual games.
-                </p>
-            </div>
-            <div>
-                <h4 class="text-sm font-semibold text-white/40 mb-3">Quick Links</h4>
-                <ul class="space-y-2">
-                    <li><a href="sports.html" class="footer-link">Sports</a></li>
-                    <li><a href="live-betting.html" class="footer-link">Live Betting</a></li>
-                    <li><a href="casino.html" class="footer-link">Casino</a></li>
-                    <li><a href="promotions.html" class="footer-link">Promotions</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-sm font-semibold text-white/40 mb-3">Support</h4>
-                <ul class="space-y-2">
-                    <li><a href="support.html" class="footer-link">Help Center</a></li>
-                    <li><a href="contact.html" class="footer-link">Contact</a></li>
-                    <li><a href="faq.html" class="footer-link">FAQ</a></li>
-                    <li><a href="responsible-gambling.html" class="footer-link">Responsible Gambling</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-sm font-semibold text-white/40 mb-3">Legal</h4>
-                <ul class="space-y-2">
-                    <li><a href="terms.html" class="footer-link">Terms</a></li>
-                    <li><a href="privacy.html" class="footer-link">Privacy</a></li>
-                    <li><a href="cookies.html" class="footer-link">Cookies</a></li>
-                    <li><a href="kyc.html" class="footer-link">KYC</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="mt-8 pt-6 border-t border-white/5 flex flex-col md:flex-row items-center justify-between text-xs text-white/20">
-            <p>Copyright © 2025 Cephas GM | Innovating for Tomorrow</p>
-            <p class="mt-2 md:mt-0">18+ | Play Responsibly</p>
-        </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs text-white/20">
+        <p>Copyright © 2026 Cephas GM | Innovating for Tomorrow</p>
+        <p class="mt-2">18+ | Play Responsibly</p>
     </div>
 </footer>
 
-<!-- ==========================================
-     JAVASCRIPT
-     ========================================== -->
 <script>
-(function() {
+document.addEventListener('DOMContentLoaded', function () {
     'use strict';
-    
-    // Mobile menu
-    const mobileToggle = document.getElementById('mobileToggle');
-    const mobileMenu = document.getElementById('mobileMenu');
-    let mobileOpen = false;
-    
-    mobileToggle.addEventListener('click', () => {
+
+    /* ------------------------------------------------------------
+       AUTH GUARD
+       ------------------------------------------------------------ */
+    if (!window.CephasGM || !CephasGM.api) {
+        console.error('CephasGM.api not loaded');
+        return;
+    }
+    if (!CephasGM.api.isLoggedIn()) {
+        window.location.href = 'signin.html';
+        return;
+    }
+
+    /* ------------------------------------------------------------
+       STATE
+       ------------------------------------------------------------ */
+    var state = {
+        page: 1,
+        limit: 15,
+        filter: '',
+        totalPages: 1,
+    };
+
+    /* ------------------------------------------------------------
+       USER BADGE
+       ------------------------------------------------------------ */
+    var cachedUser = CephasGM.api.getUser();
+
+    function paintUserBadge(user) {
+        if (!user) return;
+        var name = user.fullName || user.username || 'Player';
+        var contact = user.email || user.phone || '';
+        var initial = name.charAt(0).toUpperCase();
+
+        document.getElementById('userAvatar').textContent = initial;
+        document.getElementById('userName').textContent = name;
+        document.getElementById('userContact').textContent = contact;
+        document.getElementById('userBar').style.display = 'flex';
+    }
+
+    if (cachedUser) paintUserBadge(cachedUser);
+
+    document.getElementById('inlineSignOut').addEventListener('click', function () {
+        var btn = this;
+        btn.disabled = true;
+        btn.textContent = 'Signing out…';
+        CephasGM.api.logout().catch(function () {}).then(function () {
+            CephasGM.api.clearTokens();
+            window.location.href = 'signin.html';
+        });
+    });
+
+    /* ------------------------------------------------------------
+       HELPERS
+       ------------------------------------------------------------ */
+    function fmt(n) {
+        var num = parseFloat(n || 0);
+        return num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function escapeHtml(s) {
+        return String(s || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
+    function txnIcon(type, amount) {
+        var isIn = parseFloat(amount) >= 0;
+        var icons = {
+            DEPOSIT: '↓',
+            WITHDRAWAL: '↑',
+            BET_PLACED: '🎯',
+            BET_WON: '🏆',
+            BET_REFUND: '↩️',
+            BONUS_CREDIT: '🎁',
+            BONUS_WAGER: '🎲',
+            REFERRAL_COMMISSION: '👥',
+            ADJUSTMENT: '⚙️',
+            FEE: '💸',
+        };
+        return icons[type] || (isIn ? '↓' : '↑');
+    }
+
+    /* ------------------------------------------------------------
+       LOAD WALLET BALANCE
+       ------------------------------------------------------------ */
+    function loadWallet() {
+        CephasGM.api.wallet()
+            .then(function (res) {
+                if (!res.success || !res.data) return;
+                var w = res.data;
+
+                document.getElementById('totalBalance').textContent = fmt(w.balance) + ' ' + w.currency;
+                document.getElementById('currencyLabel').textContent = 'Primary wallet · ' + w.currency;
+                document.getElementById('availableBalance').textContent = fmt(w.availableBalance);
+                document.getElementById('lockedBalance').textContent = fmt(w.lockedBalance);
+                document.getElementById('bonusBalance').textContent = fmt(w.bonusBalance);
+            })
+            .catch(function (err) {
+                console.error('Wallet load failed:', err);
+                document.getElementById('totalBalance').textContent = 'Error';
+            });
+    }
+
+    /* ------------------------------------------------------------
+       LOAD SUMMARY
+       ------------------------------------------------------------ */
+    function loadSummary() {
+        CephasGM.api.get('/transactions/summary')
+            .then(function (res) {
+                if (!res.success || !res.data) return;
+                var s = res.data;
+
+                document.getElementById('totalIn').textContent = '+' + fmt(s.totalIn);
+                document.getElementById('totalOut').textContent = '-' + fmt(s.totalOut);
+
+                var net = parseFloat(s.net);
+                var netEl = document.getElementById('netFlow');
+                netEl.textContent = (net >= 0 ? '+' : '') + fmt(net);
+                netEl.style.color = net >= 0 ? '#4dffa8' : '#ff8098';
+            })
+            .catch(function (err) {
+                console.error('Summary load failed:', err);
+            });
+    }
+
+    /* ------------------------------------------------------------
+       LOAD TRANSACTIONS
+       ------------------------------------------------------------ */
+    function loadTransactions() {
+        var url = '/transactions?page=' + state.page + '&limit=' + state.limit;
+        if (state.filter) url += '&type=' + state.filter;
+
+        document.getElementById('txnList').innerHTML =
+            '<div class="text-sm text-white/30 text-center py-10">Loading…</div>';
+
+        CephasGM.api.get(url)
+            .then(function (res) {
+                var items = res.data || [];
+                var meta = (res.meta && res.meta.pagination) || {};
+
+                state.totalPages = meta.totalPages || 1;
+
+                if (items.length === 0) {
+                    document.getElementById('txnList').innerHTML =
+                        '<div class="text-center py-12">' +
+                        '<div class="text-4xl mb-3">📭</div>' +
+                        '<div class="text-white/40 text-sm">No ' + (state.filter ? state.filter.toLowerCase().replace('_',' ') : '') + ' transactions yet</div>' +
+                        '</div>';
+                    document.getElementById('pagination').classList.add('hidden');
+                    return;
+                }
+
+                document.getElementById('txnList').innerHTML = items.map(function (t) {
+                    var amt = parseFloat(t.amount);
+                    var isIn = amt >= 0;
+                    var sign = isIn ? '+' : '';
+                    var amountClass = isIn ? 'text-green-400' : 'text-red-400';
+                    var iconClass = isIn ? 'txn-in' : 'txn-out';
+                    var icon = txnIcon(t.type, t.amount);
+                    var date = new Date(t.createdAt).toLocaleString('en-GB', {
+                        day: '2-digit', month: 'short', year: 'numeric',
+                        hour: '2-digit', minute: '2-digit'
+                    });
+
+                    return '' +
+                        '<div class="txn-row">' +
+                            '<div class="flex items-center gap-3 min-w-0 flex-1">' +
+                                '<div class="txn-icon ' + iconClass + '">' + icon + '</div>' +
+                                '<div class="min-w-0 flex-1">' +
+                                    '<div class="font-semibold text-sm truncate">' + escapeHtml(t.description || t.type) + '</div>' +
+                                    '<div class="text-xs text-white/35 flex items-center gap-2 flex-wrap">' +
+                                        '<span>' + escapeHtml(date) + '</span>' +
+                                        '<span class="hidden sm:inline text-white/20">•</span>' +
+                                        '<span class="hidden sm:inline font-mono text-[10px]">' + escapeHtml(t.reference) + '</span>' +
+                                    '</div>' +
+                                '</div>' +
+                            '</div>' +
+                            '<div class="text-right flex-shrink-0 ml-3">' +
+                                '<div class="' + amountClass + ' font-bold text-sm">' + sign + fmt(amt) + ' ' + escapeHtml(t.currency) + '</div>' +
+                                '<div class="text-[10px] text-white/30 mt-0.5">' + escapeHtml(t.status) + '</div>' +
+                            '</div>' +
+                        '</div>';
+                }).join('');
+
+                /* Pagination */
+                var pg = document.getElementById('pagination');
+                pg.classList.remove('hidden');
+                document.getElementById('pageInfo').textContent =
+                    'Page ' + state.page + ' of ' + state.totalPages +
+                    ' · ' + (meta.total || 0) + ' total';
+
+                document.getElementById('prevBtn').disabled = state.page <= 1;
+                document.getElementById('nextBtn').disabled = state.page >= state.totalPages;
+
+                document.getElementById('prevBtn').style.opacity = state.page <= 1 ? '0.4' : '1';
+                document.getElementById('nextBtn').style.opacity = state.page >= state.totalPages ? '0.4' : '1';
+            })
+            .catch(function (err) {
+                console.error('Transactions load failed:', err);
+                document.getElementById('txnList').innerHTML =
+                    '<div class="text-sm text-red-400 text-center py-10">Could not load transactions</div>';
+            });
+    }
+
+    /* ------------------------------------------------------------
+       FILTERS
+       ------------------------------------------------------------ */
+    document.querySelectorAll('.filter-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            document.querySelectorAll('.filter-btn').forEach(function (b) {
+                b.classList.remove('active');
+            });
+            this.classList.add('active');
+
+            state.filter = this.dataset.filter || '';
+            state.page = 1;
+            loadTransactions();
+        });
+    });
+
+    /* ------------------------------------------------------------
+       PAGINATION
+       ------------------------------------------------------------ */
+    document.getElementById('prevBtn').addEventListener('click', function () {
+        if (state.page > 1) {
+            state.page--;
+            loadTransactions();
+            document.getElementById('txnList').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    });
+
+    document.getElementById('nextBtn').addEventListener('click', function () {
+        if (state.page < state.totalPages) {
+            state.page++;
+            loadTransactions();
+            document.getElementById('txnList').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    });
+
+    /* ------------------------------------------------------------
+       MOBILE MENU
+       ------------------------------------------------------------ */
+    var mobileToggle = document.getElementById('mobileToggle');
+    var mobileMenu = document.getElementById('mobileMenu');
+    var mobileOpen = false;
+
+    mobileToggle.addEventListener('click', function () {
         mobileOpen = !mobileOpen;
-        mobileMenu.classList.toggle('active');
+        mobileMenu.classList.toggle('active', mobileOpen);
         document.body.style.overflow = mobileOpen ? 'hidden' : '';
     });
-    mobileMenu.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
+    mobileMenu.querySelectorAll('a').forEach(function (a) {
+        a.addEventListener('click', function () {
             mobileMenu.classList.remove('active');
             document.body.style.overflow = '';
             mobileOpen = false;
         });
     });
-    
-    // PWA
+
+    /* ------------------------------------------------------------
+       BOOT
+       ------------------------------------------------------------ */
+    loadWallet();
+    loadSummary();
+    loadTransactions();
+
     if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/sw.js')
-                .then(reg => console.log('SW registered'))
-                .catch(err => console.log('SW registration failed'));
+        window.addEventListener('load', function () {
+            navigator.serviceWorker.register('sw.js').catch(function () {});
         });
     }
-})();
+});
 </script>
 
 </body>
