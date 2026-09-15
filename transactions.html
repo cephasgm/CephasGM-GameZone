@@ -4,110 +4,98 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#0a0a12">
-    <meta name="description" content="Transaction History – CephasGM GameZone">
     <title>Transactions | CephasGM GameZone</title>
 
-    <!-- PWA -->
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
     <script src="https://cdn.tailwindcss.com"></script>
-    
+    <script src="js/api.js"></script>
+    <script src="js/auth-ui.js"></script>
+
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+
         body {
             font-family: 'Inter', sans-serif;
             background: #0a0a12;
             color: #ffffff;
             overflow-x: hidden;
         }
-        
+
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #0a0a12; }
-        ::-webkit-scrollbar-thumb { 
+        ::-webkit-scrollbar-thumb {
             background: linear-gradient(180deg, #0055ff, #542bff);
             border-radius: 10px;
         }
-        
+
         .glass {
             background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.06);
         }
-        
+
         .glass-light {
             background: rgba(255, 255, 255, 0.04);
             backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
-        
+
         .btn-primary {
             background: linear-gradient(135deg, #0055ff, #542bff);
             color: white;
-            padding: 10px 24px;
+            padding: 10px 20px;
             border-radius: 50px;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 13px;
             border: none;
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 4px 20px rgba(0, 85, 255, 0.25);
+            font-family: inherit;
         }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(0, 85, 255, 0.4);
-        }
-        
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0, 85, 255, 0.4); }
+
         .btn-secondary {
             background: rgba(255, 255, 255, 0.06);
             color: white;
-            padding: 10px 24px;
+            padding: 10px 20px;
             border-radius: 50px;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 13px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             cursor: pointer;
             transition: all 0.3s ease;
+            font-family: inherit;
         }
-        
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-2px);
-        }
-        
+        .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-2px); }
+        .btn-secondary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
         .navbar {
-            position: fixed;
+            position: sticky;
             top: 0;
-            left: 0;
-            right: 0;
             z-index: 1000;
             padding: 16px 0;
             background: rgba(10, 10, 18, 0.92);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
-        
+
         .text-gradient {
             background: linear-gradient(135deg, #0055ff, #542bff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        
+
         .mobile-menu {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            inset: 0;
             background: rgba(10, 10, 18, 0.98);
             backdrop-filter: blur(20px);
             z-index: 999;
@@ -115,62 +103,110 @@
             padding: 80px 24px 24px;
             overflow-y: auto;
         }
-        
-        .mobile-menu.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        .footer-link {
-            color: rgba(255, 255, 255, 0.4);
-            transition: all 0.3s ease;
-            text-decoration: none;
-            font-size: 14px;
-        }
-        
-        .footer-link:hover {
-            color: #ffffff;
-        }
-        
-        .page-background {
-            min-height: 100vh;
+        .mobile-menu.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .dashboard-bg {
             background-image: url('https://static.vecteezy.com/system/resources/thumbnails/070/574/368/small/assorted-sports-equipment-on-black-backdrop-symbolizing-athleticism-competition-and-diverse-sporting-activities-photo.jpeg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
             position: relative;
         }
-        
-        .page-background::before {
+        .dashboard-bg::before {
             content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(10,10,18,0.92), rgba(10,10,18,0.78), rgba(10,10,18,0.92));
+            z-index: 0;
+        }
+        .content-wrapper { position: relative; z-index: 1; }
+
+        .stat-card {
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 18px;
+        }
+
+        .input-field {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 10px 14px;
+            color: white;
             width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, 
-                rgba(10, 10, 18, 0.9) 0%, 
-                rgba(10, 10, 18, 0.7) 50%,
-                rgba(10, 10, 18, 0.9) 100%
-            );
-            z-index: -1;
+            font-size: 13px;
+            font-weight: 600;
+            transition: border-color 0.3s;
+            font-family: inherit;
         }
-        
-        .dropdown {
-            position: relative;
+        .input-field:focus { outline: none; border-color: #0055ff; background: rgba(0,85,255,0.06); }
+
+        .filter-chip {
+            padding: 7px 14px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all .2s;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.04);
+            color: rgba(255,255,255,0.6);
+            font-family: inherit;
+            white-space: nowrap;
+        }
+        .filter-chip:hover { background: rgba(255,255,255,0.08); color: #fff; }
+        .filter-chip.active {
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            border-color: transparent;
+            color: white;
+        }
+
+        .txn-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            border-radius: 14px;
+            transition: background .2s;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        .txn-row:hover { background: rgba(255,255,255,0.03); }
+        .txn-row:last-child { border-bottom: none; }
+
+        .txn-icon {
+            width: 42px; height: 42px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px; flex-shrink: 0;
+        }
+        .txn-in  { background: rgba(0, 224, 122, 0.12); }
+        .txn-out { background: rgba(255, 77, 109, 0.12); }
+
+        .status-pill {
             display: inline-block;
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
         }
+        .status-completed { background: rgba(0,224,122,0.15); color: #6bffb0; }
+        .status-pending   { background: rgba(255,204,0,0.15); color: #ffd93d; }
+        .status-failed    { background: rgba(255,0,68,0.15); color: #ff8098; }
+        .status-other     { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.6); }
+
+        .footer-link { color: rgba(255,255,255,0.4); text-decoration: none; font-size: 14px; transition: 0.3s; }
+        .footer-link:hover { color: #fff; }
+
+        .dropdown { position: relative; display: inline-block; }
         .dropdown-menu {
             display: none;
             position: absolute;
-            top: 100%;
-            left: 0;
-            background: rgba(10, 10, 18, 0.95);
+            top: 100%; left: 0;
+            background: rgba(10,10,18,0.95);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255,255,255,0.05);
             border-radius: 12px;
@@ -178,9 +214,7 @@
             padding: 8px 0;
             z-index: 1001;
         }
-        .dropdown:hover .dropdown-menu {
-            display: block;
-        }
+        .dropdown:hover .dropdown-menu { display: block; }
         .dropdown-menu a {
             display: block;
             padding: 8px 16px;
@@ -188,468 +222,594 @@
             font-size: 13px;
             transition: 0.2s;
         }
-        .dropdown-menu a:hover {
-            background: rgba(255,255,255,0.05);
-            color: white;
+        .dropdown-menu a:hover { background: rgba(255,255,255,0.05); color: white; }
+
+        #userBar {
+            position: fixed;
+            top: 84px; right: 16px;
+            z-index: 999;
+            background: rgba(10,10,18,0.92);
+            backdrop-filter: blur(18px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 999px;
+            padding: 8px 8px 8px 14px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            gap: 10px;
         }
-        
-        .input-field, .select-field {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 14px 18px;
-            color: white;
-            width: 100%;
-            font-size: 15px;
-            transition: border-color 0.3s;
+        #userBar .avatar {
+            width: 30px; height: 30px; border-radius: 50%;
+            background: linear-gradient(135deg,#0055ff,#542bff);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 12px; flex-shrink: 0;
         }
-        .input-field:focus, .select-field:focus {
-            outline: none;
-            border-color: #0055ff;
+        #userBar .info { display: flex; flex-direction: column; line-height: 1.1; max-width: 140px; }
+        #userBar .name { font-weight: 700; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        #userBar .contact { font-size: 10px; color: rgba(255,255,255,0.5); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        #inlineSignOut {
+            padding: 6px 14px; border-radius: 999px;
+            background: rgba(255,0,68,0.15);
+            border: 1px solid rgba(255,0,68,0.3);
+            color: #ff8098; font-size: 11px; font-weight: 700;
+            cursor: pointer; font-family: inherit; white-space: nowrap;
         }
-        .select-field {
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='white' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 1rem center;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th {
-            text-align: left;
-            padding: 12px 16px;
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: rgba(255,255,255,0.5);
-            border-bottom: 1px solid rgba(255,255,255,0.06);
-        }
-        td {
-            padding: 12px 16px;
-            font-size: 14px;
-            border-bottom: 1px solid rgba(255,255,255,0.04);
-            color: rgba(255,255,255,0.8);
-        }
-        .type-badge {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-        .type-deposit { background: rgba(0,255,100,0.1); color: #00ff64; }
-        .type-withdrawal { background: rgba(255,0,68,0.1); color: #ff0044; }
-        .type-bet { background: rgba(0,85,255,0.1); color: #0055ff; }
-        .type-win { background: rgba(255,215,0,0.1); color: #ffd700; }
-        .type-bonus { background: rgba(147,51,234,0.1); color: #9333ea; }
-        
+
         @media (max-width: 640px) {
-            table, thead, tbody, th, td, tr { display: block; }
-            thead tr { display: none; }
-            td { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; }
-            td::before { content: attr(data-label); font-weight: 600; color: rgba(255,255,255,0.4); font-size: 12px; }
+            #userBar { top: 76px; right: 8px; padding: 6px; }
+            #userBar .info { display: none; }
         }
     </style>
 </head>
-<body>
+<body data-requires-auth>
 
-<!-- ==========================================
-     NAVBAR
-     ========================================== -->
-<nav class="navbar" id="navbar">
+<div id="userBar">
+    <div class="avatar" id="userAvatar">U</div>
+    <div class="info">
+        <span class="name" id="userName">Loading…</span>
+        <span class="contact" id="userContact"></span>
+    </div>
+    <button id="inlineSignOut">Sign Out</button>
+</div>
+
+<nav class="navbar">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between">
-            
-            <a href="index.html" class="flex items-center space-x-2" title="Go to Homepage">
+            <a href="index.html" class="flex items-center space-x-2">
                 <span class="text-xl font-bold">
                     <span class="text-gradient">CephasGM</span>
                     <span class="text-white font-light">|</span>
                     <span class="text-white font-semibold">GameZone</span>
                 </span>
             </a>
-            
-           <div class="hidden lg:flex items-center space-x-1">
-    <div class="dropdown">
-        <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Info ▾</span>
-        <div class="dropdown-menu">
-            <a href="about.html">About Us</a>
-            <a href="vip.html">VIP Club</a>
-            <a href="referrals.html">Referrals</a>
-            <a href="privacy.html">Privacy Policy</a>
-            <a href="terms.html">Terms & Conditions</a>
-            <a href="cookies.html">Cookie Policy</a>
+
+            <div class="hidden lg:flex items-center space-x-1">
+                <a href="dashboard.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Dashboard</a>
+                <a href="wallet.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Wallet</a>
+                <a href="deposit.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Deposit</a>
+                <a href="withdraw.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Withdraw</a>
+                <a href="transactions.html" class="px-3 py-2 text-sm text-white font-semibold rounded-lg bg-white/5">Transactions</a>
+            </div>
+
+            <button id="mobileToggle" class="lg:hidden p-2 text-white/40 hover:text-white transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
         </div>
     </div>
-
-    <div class="dropdown">
-        <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Account ▾</span>
-        <div class="dropdown-menu">
-            <a href="dashboard.html">Dashboard</a>
-            <a href="profile.html">Profile</a>
-            <a href="wallet.html">Wallet</a>
-            <a href="deposit.html">Deposit</a>
-            <a href="withdraw.html">Withdraw</a>
-            <a href="transactions.html">Transactions</a>
-            <a href="bet-history.html">Bet History</a>
-            <a href="bonuses.html">Bonuses</a>
-            <a href="kyc.html">KYC Verification</a>
-            <a href="settings.html">Settings</a>
-            <a href="signin.html">Sign In</a>
-            <a href="signup.html">Sign Up</a>
-        </div>
-    </div>
-
-    <a href="promotions.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Promotions</a>
-    <a href="sports.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Sports</a>
-    <a href="casino.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Casino</a>
-    <a href="live-betting.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 flex items-center space-x-1">
-        <span class="live-dot"></span><span>Live</span>
-    </a>
-
-    <div class="dropdown">
-        <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Virtual ▾</span>
-        <div class="dropdown-menu">
-            <a href="virtual-football.html">Virtual Football</a>
-            <a href="virtual-horse-racing.html">Virtual Horse Racing</a>
-            <a href="virtual-car-racing.html">Virtual Car Racing</a>
-            <a href="virtual-netball.html">Virtual Netball</a>
-            <a href="adventure-games.html">Adventure Games</a>
-            <a href="aviator.html">Aviator</a>
-        </div>
-    </div>
-
-    <div class="dropdown">
-        <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Support ▾</span>
-        <div class="dropdown-menu">
-            <a href="support.html">Help Center</a>
-            <a href="messages.html">Messages</a>
-            <a href="notifications.html">Notifications</a>
-            <a href="faq.html">FAQ</a>
-            <a href="contact.html">Contact Us</a>
-            <a href="responsible-gambling.html">Responsible Gambling</a>
-            <a href="self-exclusion.html">Self-Exclusion</a>
-        </div>
-    </div>
-</div>
-
-<div class="flex items-center space-x-3">
-    <button id="mobileToggle" class="lg:hidden p-2 text-white/40 hover:text-white transition-colors">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-        </svg>
-    </button>
-</div>
-</div>
-</div>
 </nav>
 
-<!-- Mobile Menu -->
 <div id="mobileMenu" class="mobile-menu">
     <nav class="flex flex-col space-y-6">
-        <a href="index.html" class="text-lg text-white/70 hover:text-white">Home</a>
-        <a href="sports.html" class="text-lg text-white/70 hover:text-white">Sports</a>
-        <a href="live-betting.html" class="text-lg text-white/70 hover:text-white">Live Betting</a>
-        <a href="casino.html" class="text-lg text-white/70 hover:text-white">Casino</a>
-        <a href="promotions.html" class="text-lg text-white/70 hover:text-white">Promotions</a>
-        <a href="bonuses.html" class="text-lg text-white/70 hover:text-white">Bonuses</a>
-        <a href="leaderboard.html" class="text-lg text-white/70 hover:text-white">Leaderboard</a>
-        <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Account</span>
-            <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="dashboard.html" class="text-sm text-white/50 hover:text-white">Dashboard</a>
-                <a href="profile.html" class="text-sm text-white/50 hover:text-white">Profile</a>
-                <a href="wallet.html" class="text-sm text-white/50 hover:text-white">Wallet</a>
-                <a href="deposit.html" class="text-sm text-white/50 hover:text-white">Deposit</a>
-                <a href="withdraw.html" class="text-sm text-white/50 hover:text-white">Withdraw</a>
-                <a href="transactions.html" class="text-sm text-white/50 hover:text-white">Transactions</a>
-                <a href="bet-history.html" class="text-sm text-white/50 hover:text-white">Bet History</a>
-                <a href="kyc.html" class="text-sm text-white/50 hover:text-white">KYC</a>
-                <a href="settings.html" class="text-sm text-white/50 hover:text-white">Settings</a>
-                <a href="signin.html" class="text-sm text-white/50 hover:text-white">Sign In</a>
-                <a href="signup.html" class="text-sm text-white/50 hover:text-white">Sign Up</a>
-            </div>
-        </div>
-        <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Virtual Games</span>
-            <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="virtual-football.html" class="text-sm text-white/50 hover:text-white">Virtual Football</a>
-                <a href="virtual-horse-racing.html" class="text-sm text-white/50 hover:text-white">Horse Racing</a>
-                <a href="virtual-car-racing.html" class="text-sm text-white/50 hover:text-white">Car Racing</a>
-                <a href="virtual-netball.html" class="text-sm text-white/50 hover:text-white">Netball</a>
-                <a href="adventure-games.html" class="text-sm text-white/50 hover:text-white">Adventure</a>
-                <a href="aviator.html" class="text-sm text-white/50 hover:text-white">Aviator</a>
-            </div>
-        </div>
-        <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Support</span>
-            <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="support.html" class="text-sm text-white/50 hover:text-white">Help Center</a>
-                <a href="messages.html" class="text-sm text-white/50 hover:text-white">Messages</a>
-                <a href="notifications.html" class="text-sm text-white/50 hover:text-white">Notifications</a>
-                <a href="faq.html" class="text-sm text-white/50 hover:text-white">FAQ</a>
-                <a href="contact.html" class="text-sm text-white/50 hover:text-white">Contact</a>
-                <a href="responsible-gambling.html" class="text-sm text-white/50 hover:text-white">Responsible</a>
-                <a href="self-exclusion.html" class="text-sm text-white/50 hover:text-white">Self-Exclusion</a>
-            </div>
-        </div>
-        <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Information</span>
-            <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="about.html" class="text-sm text-white/50 hover:text-white">About</a>
-                <a href="vip.html" class="text-sm text-white/50 hover:text-white">VIP</a>
-                <a href="referrals.html" class="text-sm text-white/50 hover:text-white">Referrals</a>
-                <a href="privacy.html" class="text-sm text-white/50 hover:text-white">Privacy</a>
-                <a href="terms.html" class="text-sm text-white/50 hover:text-white">Terms</a>
-                <a href="cookies.html" class="text-sm text-white/50 hover:text-white">Cookies</a>
-            </div>
-        </div>
+        <a href="dashboard.html" class="text-lg text-white/70 hover:text-white">Dashboard</a>
+        <a href="wallet.html" class="text-lg text-white/70 hover:text-white">Wallet</a>
+        <a href="deposit.html" class="text-lg text-white/70 hover:text-white">Deposit</a>
+        <a href="withdraw.html" class="text-lg text-white/70 hover:text-white">Withdraw</a>
+        <a href="transactions.html" class="text-lg text-white/70 hover:text-white">Transactions</a>
     </nav>
 </div>
 
-<!-- ==========================================
-     TRANSACTIONS CONTENT
-     ========================================== -->
-<div class="page-background pt-20 pb-12 px-4">
-    <div class="max-w-5xl mx-auto relative z-10">
-        
-        <div class="text-center mb-8">
-            <h1 class="text-4xl font-bold">Transaction <span class="text-gradient">History</span></h1>
-            <p class="text-sm text-white/40 mt-2">View and filter all your account transactions.</p>
+<div class="dashboard-bg min-h-screen">
+    <div class="content-wrapper py-8 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+
+        <!-- Header -->
+        <div class="mb-6">
+            <h1 class="text-3xl font-bold">📊 Transactions</h1>
+            <p class="text-sm text-white/40 mt-1">Complete history of your wallet activity</p>
         </div>
-        
+
+        <!-- Summary cards -->
+        <div class="grid grid-cols-3 gap-3 mb-6" id="summaryCards">
+            <div class="stat-card">
+                <div class="text-xs text-white/40">Total In</div>
+                <div class="text-xl sm:text-2xl font-bold mt-1 text-green-400" id="sumIn">—</div>
+            </div>
+            <div class="stat-card">
+                <div class="text-xs text-white/40">Total Out</div>
+                <div class="text-xl sm:text-2xl font-bold mt-1 text-red-400" id="sumOut">—</div>
+            </div>
+            <div class="stat-card">
+                <div class="text-xs text-white/40">Net Flow</div>
+                <div class="text-xl sm:text-2xl font-bold mt-1" id="sumNet">—</div>
+            </div>
+        </div>
+
         <!-- Filters -->
-        <div class="glass rounded-2xl p-6 mb-8">
-            <div class="grid md:grid-cols-4 gap-4">
-                <div>
-                    <label class="text-xs text-white/40 mb-1.5 block">Type</label>
-                    <select id="filterType" class="select-field text-sm py-2.5 px-3">
-                        <option value="all">All Types</option>
-                        <option value="Deposit">Deposit</option>
-                        <option value="Withdrawal">Withdrawal</option>
-                        <option value="Bet">Bet</option>
-                        <option value="Win">Win</option>
-                        <option value="Bonus">Bonus</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="text-xs text-white/40 mb-1.5 block">From</label>
-                    <input type="date" id="filterFrom" class="input-field text-sm py-2.5 px-3">
-                </div>
-                <div>
-                    <label class="text-xs text-white/40 mb-1.5 block">To</label>
-                    <input type="date" id="filterTo" class="input-field text-sm py-2.5 px-3">
-                </div>
-                <div>
-                    <label class="text-xs text-white/40 mb-1.5 block">Search</label>
-                    <input type="text" id="filterSearch" placeholder="Description..." class="input-field text-sm py-2.5 px-3">
+        <div class="glass rounded-2xl p-5 mb-6">
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+                <h3 class="font-bold text-sm">🔍 Filter</h3>
+                <button id="resetFilters" class="text-xs text-white/40 hover:text-white/80 transition-colors">Reset all</button>
+            </div>
+
+            <!-- Type chips -->
+            <div class="mb-4">
+                <div class="text-[10px] uppercase tracking-wider text-white/35 font-bold mb-2">Type</div>
+                <div class="flex flex-wrap gap-2" id="typeFilters">
+                    <button class="filter-chip active" data-type="">All</button>
+                    <button class="filter-chip" data-type="DEPOSIT">Deposits</button>
+                    <button class="filter-chip" data-type="WITHDRAWAL">Withdrawals</button>
+                    <button class="filter-chip" data-type="BET_PLACED">Bets Placed</button>
+                    <button class="filter-chip" data-type="BET_WON">Wins</button>
+                    <button class="filter-chip" data-type="BONUS_CREDIT">Bonuses</button>
+                    <button class="filter-chip" data-type="REFERRAL_COMMISSION">Referrals</button>
+                    <button class="filter-chip" data-type="ADJUSTMENT">Adjustments</button>
                 </div>
             </div>
-            <button id="resetFilters" class="btn-secondary text-xs mt-4 px-4 py-2">Reset Filters</button>
-        </div>
-        
-        <!-- Transactions Table -->
-        <div class="glass rounded-2xl p-4 md:p-6 overflow-x-auto">
-            <table id="transactionsTable">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Description</th>
-                        <th>Type</th>
-                        <th>Amount</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Data will be populated by JS -->
-                </tbody>
-            </table>
-            <div id="noResults" class="hidden text-center py-10 text-white/30">
-                <p>No transactions match your filters.</p>
+
+            <!-- Status chips -->
+            <div class="mb-4">
+                <div class="text-[10px] uppercase tracking-wider text-white/35 font-bold mb-2">Status</div>
+                <div class="flex flex-wrap gap-2" id="statusFilters">
+                    <button class="filter-chip active" data-status="">Any</button>
+                    <button class="filter-chip" data-status="COMPLETED">Completed</button>
+                    <button class="filter-chip" data-status="PENDING">Pending</button>
+                    <button class="filter-chip" data-status="FAILED">Failed</button>
+                </div>
+            </div>
+
+            <!-- Date range -->
+            <div>
+                <div class="text-[10px] uppercase tracking-wider text-white/35 font-bold mb-2">Date Range</div>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div>
+                        <label class="block text-[10px] text-white/40 mb-1">From</label>
+                        <input type="date" id="dateFrom" class="input-field">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-white/40 mb-1">To</label>
+                        <input type="date" id="dateTo" class="input-field">
+                    </div>
+                    <div class="flex items-end gap-2">
+                        <button class="filter-chip" data-range="today">Today</button>
+                        <button class="filter-chip" data-range="7d">7d</button>
+                        <button class="filter-chip" data-range="30d">30d</button>
+                        <button class="filter-chip" data-range="all">All</button>
+                    </div>
+                </div>
             </div>
         </div>
-        
+
+        <!-- Transactions list -->
+        <div class="glass rounded-2xl p-5">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-bold">Activity</h2>
+                <span class="text-xs text-white/40" id="resultCount">—</span>
+            </div>
+
+            <div id="txnList">
+                <div class="text-sm text-white/30 text-center py-12">Loading transactions…</div>
+            </div>
+
+            <!-- Pagination -->
+            <div id="pagination" class="hidden mt-4 flex items-center justify-between">
+                <button id="prevBtn" class="btn-secondary">← Previous</button>
+                <span class="text-white/40 text-xs" id="pageInfo">Page 1</span>
+                <button id="nextBtn" class="btn-secondary">Next →</button>
+            </div>
+        </div>
+
     </div>
 </div>
 
-<!-- ==========================================
-     FOOTER
-     ========================================== -->
-<footer class="bg-[#0a0a12] border-t border-white/5 py-12">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div class="col-span-2 md:col-span-1">
-                <div class="text-lg font-bold mb-3">
-                    <span class="text-gradient">CephasGM</span>
-                    <span class="text-white font-light">|</span>
-                    <span class="text-white font-semibold">GameZone</span>
-                </div>
-                <p class="text-sm text-white/30 leading-relaxed">
-                    Premium online betting platform for sports, casino, and virtual games.
-                </p>
-            </div>
-            <div>
-                <h4 class="text-sm font-semibold text-white/40 mb-3">Quick Links</h4>
-                <ul class="space-y-2">
-                    <li><a href="sports.html" class="footer-link">Sports</a></li>
-                    <li><a href="live-betting.html" class="footer-link">Live Betting</a></li>
-                    <li><a href="casino.html" class="footer-link">Casino</a></li>
-                    <li><a href="promotions.html" class="footer-link">Promotions</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-sm font-semibold text-white/40 mb-3">Support</h4>
-                <ul class="space-y-2">
-                    <li><a href="support.html" class="footer-link">Help Center</a></li>
-                    <li><a href="contact.html" class="footer-link">Contact</a></li>
-                    <li><a href="faq.html" class="footer-link">FAQ</a></li>
-                    <li><a href="responsible-gambling.html" class="footer-link">Responsible Gambling</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-sm font-semibold text-white/40 mb-3">Legal</h4>
-                <ul class="space-y-2">
-                    <li><a href="terms.html" class="footer-link">Terms</a></li>
-                    <li><a href="privacy.html" class="footer-link">Privacy</a></li>
-                    <li><a href="cookies.html" class="footer-link">Cookies</a></li>
-                    <li><a href="kyc.html" class="footer-link">KYC</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="mt-8 pt-6 border-t border-white/5 flex flex-col md:flex-row items-center justify-between text-xs text-white/20">
-            <p>Copyright © 2025 Cephas GM | Innovating for Tomorrow</p>
-            <p class="mt-2 md:mt-0">18+ | Play Responsibly</p>
-        </div>
+<footer class="bg-[#0a0a12] border-t border-white/5 py-12 mt-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs text-white/20">
+        <p>Copyright © 2026 Cephas GM | Innovating for Tomorrow</p>
+        <p class="mt-2">18+ | Play Responsibly</p>
     </div>
 </footer>
 
-<!-- ==========================================
-     JAVASCRIPT
-     ========================================== -->
 <script>
-(function() {
+document.addEventListener('DOMContentLoaded', function () {
     'use strict';
-    
-    // Mobile menu
-    const mobileToggle = document.getElementById('mobileToggle');
-    const mobileMenu = document.getElementById('mobileMenu');
-    let mobileOpen = false;
-    
-    mobileToggle.addEventListener('click', () => {
+
+    /* ------------------------------------------------------------
+       AUTH GUARD
+       ------------------------------------------------------------ */
+    if (!window.CephasGM || !CephasGM.api) return;
+    if (!CephasGM.api.isLoggedIn()) {
+        window.location.href = 'signin.html';
+        return;
+    }
+
+    /* ------------------------------------------------------------
+       STATE
+       ------------------------------------------------------------ */
+    var state = {
+        page: 1,
+        limit: 20,
+        type: '',
+        status: '',
+        from: '',
+        to: '',
+        totalPages: 1,
+        currency: 'TZS',
+    };
+
+    /* ------------------------------------------------------------
+       USER BADGE
+       ------------------------------------------------------------ */
+    var cachedUser = CephasGM.api.getUser();
+
+    function paintUserBadge(user) {
+        if (!user) return;
+        var name = user.fullName || user.username || 'Player';
+        var contact = user.email || user.phone || '';
+        var initial = name.charAt(0).toUpperCase();
+        document.getElementById('userAvatar').textContent = initial;
+        document.getElementById('userName').textContent = name;
+        document.getElementById('userContact').textContent = contact;
+        document.getElementById('userBar').style.display = 'flex';
+    }
+
+    if (cachedUser) paintUserBadge(cachedUser);
+
+    document.getElementById('inlineSignOut').addEventListener('click', function () {
+        var btn = this;
+        btn.disabled = true;
+        btn.textContent = 'Signing out…';
+        CephasGM.api.logout().catch(function () {}).then(function () {
+            CephasGM.api.clearTokens();
+            window.location.href = 'signin.html';
+        });
+    });
+
+    /* ------------------------------------------------------------
+       HELPERS
+       ------------------------------------------------------------ */
+    function fmt(n) {
+        return parseFloat(n || 0).toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+        });
+    }
+
+    function escapeHtml(s) {
+        return String(s || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
+    function txnIcon(type, amount) {
+        var isIn = parseFloat(amount) >= 0;
+        var icons = {
+            DEPOSIT: '↓', WITHDRAWAL: '↑', BET_PLACED: '🎯', BET_WON: '🏆',
+            BET_REFUND: '↩️', BONUS_CREDIT: '🎁', BONUS_WAGER: '🎲',
+            REFERRAL_COMMISSION: '👥', ADJUSTMENT: '⚙️', FEE: '💸',
+        };
+        return icons[type] || (isIn ? '↓' : '↑');
+    }
+
+    function statusClass(status) {
+        var map = {
+            COMPLETED: 'status-completed',
+            PENDING: 'status-pending',
+            FAILED: 'status-failed',
+            CANCELLED: 'status-other',
+            REVERSED: 'status-other',
+        };
+        return map[status] || 'status-other';
+    }
+
+    function buildQuery() {
+        var q = '?page=' + state.page + '&limit=' + state.limit;
+        if (state.type) q += '&type=' + state.type;
+        if (state.status) q += '&status=' + state.status;
+        if (state.from) q += '&from=' + state.from;
+        if (state.to) q += '&to=' + state.to;
+        return q;
+    }
+
+    /* ------------------------------------------------------------
+       LOAD SUMMARY (respecting date range)
+       ------------------------------------------------------------ */
+    function loadSummary() {
+        var q = '';
+        var parts = [];
+        if (state.from) parts.push('from=' + state.from);
+        if (state.to) parts.push('to=' + state.to);
+        if (parts.length) q = '?' + parts.join('&');
+
+        CephasGM.api.get('/transactions/summary' + q)
+            .then(function (res) {
+                if (!res.success || !res.data) return;
+                var s = res.data;
+                document.getElementById('sumIn').textContent = '+' + fmt(s.totalIn);
+                document.getElementById('sumOut').textContent = '-' + fmt(s.totalOut);
+                var net = parseFloat(s.net);
+                var netEl = document.getElementById('sumNet');
+                netEl.textContent = (net >= 0 ? '+' : '') + fmt(net);
+                netEl.style.color = net >= 0 ? '#6bffb0' : '#ff8098';
+            })
+            .catch(function () {});
+    }
+
+    /* ------------------------------------------------------------
+       LOAD TRANSACTIONS
+       ------------------------------------------------------------ */
+    function loadTransactions() {
+        document.getElementById('txnList').innerHTML =
+            '<div class="text-sm text-white/30 text-center py-12">Loading…</div>';
+
+        CephasGM.api.get('/transactions' + buildQuery())
+            .then(function (res) {
+                var items = res.data || [];
+                var meta = (res.meta && res.meta.pagination) || {};
+                state.totalPages = meta.totalPages || 1;
+
+                document.getElementById('resultCount').textContent =
+                    (meta.total || 0) + ' result' + ((meta.total || 0) !== 1 ? 's' : '');
+
+                if (items.length === 0) {
+                    document.getElementById('txnList').innerHTML =
+                        '<div class="text-center py-16">' +
+                            '<div class="text-5xl mb-3">📭</div>' +
+                            '<div class="text-white/50 text-sm">No transactions match your filters</div>' +
+                            '<button class="mt-4 text-xs text-blue-400 hover:text-blue-300" id="clearEmpty">Clear filters</button>' +
+                        '</div>';
+                    document.getElementById('pagination').classList.add('hidden');
+                    var clearBtn = document.getElementById('clearEmpty');
+                    if (clearBtn) clearBtn.addEventListener('click', resetFilters);
+                    return;
+                }
+
+                document.getElementById('txnList').innerHTML = items.map(function (t) {
+                    var amt = parseFloat(t.amount);
+                    var isIn = amt >= 0;
+                    var sign = isIn ? '+' : '';
+                    var amountClass = isIn ? 'text-green-400' : 'text-red-400';
+                    var iconClass = isIn ? 'txn-in' : 'txn-out';
+                    var icon = txnIcon(t.type, t.amount);
+                    var pill = '<span class="status-pill ' + statusClass(t.status) + '">' + escapeHtml(t.status) + '</span>';
+                    var date = new Date(t.createdAt).toLocaleString('en-GB', {
+                        day: '2-digit', month: 'short', year: 'numeric',
+                        hour: '2-digit', minute: '2-digit'
+                    });
+
+                    var balanceLine = '';
+                    if (t.balanceBefore && t.balanceAfter) {
+                        balanceLine =
+                            '<div class="text-[10px] text-white/30 mt-1 font-mono">' +
+                            fmt(t.balanceBefore) + ' → ' + fmt(t.balanceAfter) + ' ' + escapeHtml(t.currency) +
+                            '</div>';
+                    }
+
+                    return '' +
+                        '<div class="txn-row">' +
+                            '<div class="flex items-center gap-3 min-w-0 flex-1">' +
+                                '<div class="txn-icon ' + iconClass + '">' + icon + '</div>' +
+                                '<div class="min-w-0 flex-1">' +
+                                    '<div class="font-semibold text-sm truncate">' + escapeHtml(t.description || t.type) + '</div>' +
+                                    '<div class="text-[11px] text-white/35 flex items-center gap-2 flex-wrap mt-0.5">' +
+                                        '<span>' + escapeHtml(date) + '</span>' +
+                                        '<span class="text-white/20">•</span>' +
+                                        '<span class="font-mono text-[10px]">' + escapeHtml(t.reference) + '</span>' +
+                                    '</div>' +
+                                '</div>' +
+                            '</div>' +
+                            '<div class="text-right flex-shrink-0 ml-3">' +
+                                '<div class="' + amountClass + ' font-bold text-sm">' + sign + fmt(amt) + ' ' + escapeHtml(t.currency) + '</div>' +
+                                '<div class="mt-1">' + pill + '</div>' +
+                                balanceLine +
+                            '</div>' +
+                        '</div>';
+                }).join('');
+
+                /* Pagination */
+                var pg = document.getElementById('pagination');
+                pg.classList.remove('hidden');
+                document.getElementById('pageInfo').textContent =
+                    'Page ' + state.page + ' of ' + state.totalPages +
+                    ' · ' + (meta.total || 0) + ' total';
+
+                document.getElementById('prevBtn').disabled = state.page <= 1;
+                document.getElementById('nextBtn').disabled = state.page >= state.totalPages;
+            })
+            .catch(function (err) {
+                console.error('Load failed:', err);
+                document.getElementById('txnList').innerHTML =
+                    '<div class="text-sm text-red-400 text-center py-12">Could not load transactions</div>';
+            });
+    }
+
+    /* ------------------------------------------------------------
+       FILTERS — TYPE
+       ------------------------------------------------------------ */
+    document.querySelectorAll('#typeFilters .filter-chip').forEach(function (chip) {
+        chip.addEventListener('click', function () {
+            document.querySelectorAll('#typeFilters .filter-chip').forEach(function (c) {
+                c.classList.remove('active');
+            });
+            this.classList.add('active');
+            state.type = this.dataset.type || '';
+            state.page = 1;
+            loadTransactions();
+        });
+    });
+
+    /* ------------------------------------------------------------
+       FILTERS — STATUS
+       ------------------------------------------------------------ */
+    document.querySelectorAll('#statusFilters .filter-chip').forEach(function (chip) {
+        chip.addEventListener('click', function () {
+            document.querySelectorAll('#statusFilters .filter-chip').forEach(function (c) {
+                c.classList.remove('active');
+            });
+            this.classList.add('active');
+            state.status = this.dataset.status || '';
+            state.page = 1;
+            loadTransactions();
+        });
+    });
+
+    /* ------------------------------------------------------------
+       FILTERS — DATE
+       ------------------------------------------------------------ */
+    document.getElementById('dateFrom').addEventListener('change', function () {
+        state.from = this.value ? new Date(this.value).toISOString() : '';
+        state.page = 1;
+        loadSummary();
+        loadTransactions();
+    });
+
+    document.getElementById('dateTo').addEventListener('change', function () {
+        if (this.value) {
+            var d = new Date(this.value);
+            d.setHours(23, 59, 59, 999);
+            state.to = d.toISOString();
+        } else {
+            state.to = '';
+        }
+        state.page = 1;
+        loadSummary();
+        loadTransactions();
+    });
+
+    /* ------------------------------------------------------------
+       QUICK DATE RANGE CHIPS
+       ------------------------------------------------------------ */
+    document.querySelectorAll('[data-range]').forEach(function (chip) {
+        chip.addEventListener('click', function () {
+            var range = this.dataset.range;
+            var now = new Date();
+            var from = null;
+            var to = new Date();
+
+            if (range === 'today') {
+                from = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            } else if (range === '7d') {
+                from = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+            } else if (range === '30d') {
+                from = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+            }
+
+            if (from) {
+                state.from = from.toISOString();
+                state.to = to.toISOString();
+                document.getElementById('dateFrom').value = from.toISOString().slice(0, 10);
+                document.getElementById('dateTo').value = to.toISOString().slice(0, 10);
+            } else {
+                state.from = '';
+                state.to = '';
+                document.getElementById('dateFrom').value = '';
+                document.getElementById('dateTo').value = '';
+            }
+
+            /* Visual feedback */
+            document.querySelectorAll('[data-range]').forEach(function (c) {
+                c.classList.remove('active');
+            });
+            this.classList.add('active');
+
+            state.page = 1;
+            loadSummary();
+            loadTransactions();
+        });
+    });
+
+    /* ------------------------------------------------------------
+       PAGINATION
+       ------------------------------------------------------------ */
+    document.getElementById('prevBtn').addEventListener('click', function () {
+        if (state.page > 1) {
+            state.page--;
+            loadTransactions();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    });
+
+    document.getElementById('nextBtn').addEventListener('click', function () {
+        if (state.page < state.totalPages) {
+            state.page++;
+            loadTransactions();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    });
+
+    /* ------------------------------------------------------------
+       RESET
+       ------------------------------------------------------------ */
+    function resetFilters() {
+        state.type = '';
+        state.status = '';
+        state.from = '';
+        state.to = '';
+        state.page = 1;
+
+        document.querySelectorAll('#typeFilters .filter-chip').forEach(function (c) {
+            c.classList.toggle('active', c.dataset.type === '');
+        });
+        document.querySelectorAll('#statusFilters .filter-chip').forEach(function (c) {
+            c.classList.toggle('active', c.dataset.status === '');
+        });
+        document.querySelectorAll('[data-range]').forEach(function (c) {
+            c.classList.remove('active');
+        });
+
+        document.getElementById('dateFrom').value = '';
+        document.getElementById('dateTo').value = '';
+
+        loadSummary();
+        loadTransactions();
+    }
+
+    document.getElementById('resetFilters').addEventListener('click', resetFilters);
+
+    /* ------------------------------------------------------------
+       MOBILE MENU
+       ------------------------------------------------------------ */
+    var mobileToggle = document.getElementById('mobileToggle');
+    var mobileMenu = document.getElementById('mobileMenu');
+    var mobileOpen = false;
+
+    mobileToggle.addEventListener('click', function () {
         mobileOpen = !mobileOpen;
-        mobileMenu.classList.toggle('active');
+        mobileMenu.classList.toggle('active', mobileOpen);
         document.body.style.overflow = mobileOpen ? 'hidden' : '';
     });
-    mobileMenu.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
+    mobileMenu.querySelectorAll('a').forEach(function (a) {
+        a.addEventListener('click', function () {
             mobileMenu.classList.remove('active');
             document.body.style.overflow = '';
             mobileOpen = false;
         });
     });
-    
-    // Mock data
-    const transactions = [
-        { date: '2025-01-20', description: 'Deposit via M‑PESA', type: 'Deposit', amount: '+$200.00', status: 'Completed' },
-        { date: '2025-01-20', description: 'Bet on Arsenal vs Chelsea', type: 'Bet', amount: '-$25.00', status: 'Settled' },
-        { date: '2025-01-19', description: 'Won – Barcelona vs Real Madrid', type: 'Win', amount: '+$87.50', status: 'Credited' },
-        { date: '2025-01-19', description: 'Withdrawal to Bank', type: 'Withdrawal', amount: '-$150.00', status: 'Processing' },
-        { date: '2025-01-18', description: 'Bonus Credit – Welcome Offer', type: 'Bonus', amount: '+$50.00', status: 'Active' },
-        { date: '2025-01-17', description: 'Deposit via Visa', type: 'Deposit', amount: '+$500.00', status: 'Completed' },
-        { date: '2025-01-16', description: 'Bet on Lakers vs Celtics', type: 'Bet', amount: '-$30.00', status: 'Settled' },
-        { date: '2025-01-15', description: 'Withdrawal to Skrill', type: 'Withdrawal', amount: '-$75.00', status: 'Completed' },
-        { date: '2025-01-14', description: 'Deposit via Cryptocurrency', type: 'Deposit', amount: '+$300.00', status: 'Completed' },
-        { date: '2025-01-13', description: 'Win – Chiefs vs 49ers', type: 'Win', amount: '+$45.60', status: 'Credited' }
-    ];
-    
-    function getTypeClass(type) {
-        switch(type) {
-            case 'Deposit': return 'type-deposit';
-            case 'Withdrawal': return 'type-withdrawal';
-            case 'Bet': return 'type-bet';
-            case 'Win': return 'type-win';
-            case 'Bonus': return 'type-bonus';
-            default: return '';
-        }
-    }
-    
-    function renderTable(data) {
-        const tbody = document.querySelector('#transactionsTable tbody');
-        const noResults = document.getElementById('noResults');
-        tbody.innerHTML = '';
-        
-        if (data.length === 0) {
-            noResults.classList.remove('hidden');
-        } else {
-            noResults.classList.add('hidden');
-            data.forEach(tx => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td data-label="Date">${tx.date}</td>
-                    <td data-label="Description">${tx.description}</td>
-                    <td data-label="Type"><span class="type-badge ${getTypeClass(tx.type)}">${tx.type}</span></td>
-                    <td data-label="Amount" class="${tx.amount.startsWith('+') ? 'text-green-400' : 'text-red-400'} font-semibold">${tx.amount}</td>
-                    <td data-label="Status">${tx.status}</td>
-                `;
-                tbody.appendChild(row);
-            });
-        }
-    }
-    
-    function applyFilters() {
-        const typeFilter = document.getElementById('filterType').value;
-        const from = document.getElementById('filterFrom').value;
-        const to = document.getElementById('filterTo').value;
-        const search = document.getElementById('filterSearch').value.toLowerCase();
-        
-        let filtered = [...transactions];
-        
-        if (typeFilter !== 'all') {
-            filtered = filtered.filter(tx => tx.type === typeFilter);
-        }
-        if (from) {
-            filtered = filtered.filter(tx => tx.date >= from);
-        }
-        if (to) {
-            filtered = filtered.filter(tx => tx.date <= to);
-        }
-        if (search) {
-            filtered = filtered.filter(tx => tx.description.toLowerCase().includes(search));
-        }
-        
-        renderTable(filtered);
-    }
-    
-    // Filter event listeners
-    document.getElementById('filterType').addEventListener('change', applyFilters);
-    document.getElementById('filterFrom').addEventListener('change', applyFilters);
-    document.getElementById('filterTo').addEventListener('change', applyFilters);
-    document.getElementById('filterSearch').addEventListener('input', applyFilters);
-    
-    document.getElementById('resetFilters').addEventListener('click', () => {
-        document.getElementById('filterType').value = 'all';
-        document.getElementById('filterFrom').value = '';
-        document.getElementById('filterTo').value = '';
-        document.getElementById('filterSearch').value = '';
-        renderTable(transactions);
-    });
-    
-    // Initial render
-    renderTable(transactions);
-    
-    // PWA
+
+    /* ------------------------------------------------------------
+       BOOT
+       ------------------------------------------------------------ */
+    loadSummary();
+    loadTransactions();
+
     if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/sw.js')
-                .then(reg => console.log('SW registered'))
-                .catch(err => console.log('SW registration failed'));
+        window.addEventListener('load', function () {
+            navigator.serviceWorker.register('sw.js').catch(function () {});
         });
     }
-})();
+});
 </script>
 
 </body>
