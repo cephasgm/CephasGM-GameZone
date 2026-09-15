@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
@@ -12,7 +12,7 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="js/api.js"></script>
+    <script src="js/api.js"></script>`n    <script src="js/auth-ui.js"></script>
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -259,14 +259,14 @@
                 <div>
                     <label class="block text-xs text-white/40 mb-1.5 ml-1">Country Code</label>
                     <select id="countryCode" class="country-select" required>
-                        <option value="+255" selected>🇹🇿 Tanzania (+255)</option>
-                        <option value="+254">🇰🇪 Kenya (+254)</option>
-                        <option value="+256">🇺🇬 Uganda (+256)</option>
-                        <option value="+250">🇷🇼 Rwanda (+250)</option>
-                        <option value="+234">🇳🇬 Nigeria (+234)</option>
-                        <option value="+27">🇿🇦 South Africa (+27)</option>
-                        <option value="+44">🇬🇧 United Kingdom (+44)</option>
-                        <option value="+1">🇺🇸 United States (+1)</option>
+                        <option value="+255" selected>ðŸ‡¹ðŸ‡¿ Tanzania (+255)</option>
+                        <option value="+254">ðŸ‡°ðŸ‡ª Kenya (+254)</option>
+                        <option value="+256">ðŸ‡ºðŸ‡¬ Uganda (+256)</option>
+                        <option value="+250">ðŸ‡·ðŸ‡¼ Rwanda (+250)</option>
+                        <option value="+234">ðŸ‡³ðŸ‡¬ Nigeria (+234)</option>
+                        <option value="+27">ðŸ‡¿ðŸ‡¦ South Africa (+27)</option>
+                        <option value="+44">ðŸ‡¬ðŸ‡§ United Kingdom (+44)</option>
+                        <option value="+1">ðŸ‡ºðŸ‡¸ United States (+1)</option>
                     </select>
                 </div>
                 <div>
@@ -302,7 +302,7 @@
 <div id="verifyModal" class="modal-overlay">
     <div class="glass rounded-3xl p-8 max-w-md w-full border border-white/10">
         <div class="text-center mb-6">
-            <div class="text-4xl mb-2">📧</div>
+            <div class="text-4xl mb-2">ðŸ“§</div>
             <h2 class="text-2xl font-bold mb-2">Verify Your Account</h2>
             <p class="text-sm text-white/50">We sent a 6-digit code to</p>
             <p id="verifyDestination" class="text-sm text-blue-400 font-semibold mt-1">...</p>
@@ -323,7 +323,7 @@
 
 <footer class="bg-[#0a0a12] border-t border-white/5 py-12 mt-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs text-white/20">
-        <p>Copyright © 2025 Cephas GM | Innovating for Tomorrow</p>
+        <p>Copyright Â© 2025 Cephas GM | Innovating for Tomorrow</p>
         <p class="mt-2">18+ | Play Responsibly</p>
     </div>
 </footer>
@@ -403,7 +403,7 @@
         }
 
         submitBtn.disabled = true;
-        submitBtn.textContent = 'Creating account…';
+        submitBtn.textContent = 'Creating accountâ€¦';
 
         try {
             const res = await CephasGM.api.post('/auth/register', {
@@ -466,7 +466,7 @@
         const phone = countryCode + cleaned;
 
         submitBtn.disabled = true;
-        submitBtn.textContent = 'Creating account…';
+        submitBtn.textContent = 'Creating accountâ€¦';
 
         try {
             const res = await CephasGM.api.post('/auth/register', {
@@ -512,18 +512,18 @@
         const submitBtn = this.querySelector('button[type="submit"]');
         const originalText = submitBtn.textContent;
         submitBtn.disabled = true;
-        submitBtn.textContent = 'Verifying…';
+        submitBtn.textContent = 'Verifyingâ€¦';
 
         try {
             const body = pendingEmail
                 ? { email: pendingEmail, otp }
                 : { email: pendingEmail, otp }; // backend currently requires email
 
-            // For phone verification, we'll try email field — backend can be extended later
+            // For phone verification, we'll try email field â€” backend can be extended later
             const res = await CephasGM.api.post('/auth/verify-email', body);
 
             if (res.success) {
-                toast('✅ Account verified! Redirecting…', 'success');
+                toast('âœ… Account verified! Redirectingâ€¦', 'success');
                 document.getElementById('verifyModal').classList.remove('active');
                 setTimeout(() => {
                     window.location.href = 'signin.html';
@@ -551,7 +551,7 @@
         }
 
         this.disabled = true;
-        this.textContent = 'Sending…';
+        this.textContent = 'Sendingâ€¦';
 
         try {
             const res = await CephasGM.api.post('/auth/resend-verification', { email: pendingEmail });
