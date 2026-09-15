@@ -6,49 +6,41 @@
     <meta name="theme-color" content="#0a0a12">
     <meta name="description" content="Sign in to CephasGM GameZone - Your premium sports betting account">
     <title>Sign In | CephasGM GameZone</title>
-    
-    <!-- PWA -->
+
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="js/api.js"></script>
-    
+
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+
         body {
             font-family: 'Inter', sans-serif;
             background: #0a0a12;
             color: #ffffff;
             overflow-x: hidden;
         }
-        
+
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #0a0a12; }
-        ::-webkit-scrollbar-thumb { 
+        ::-webkit-scrollbar-thumb {
             background: linear-gradient(180deg, #0055ff, #542bff);
             border-radius: 10px;
         }
-        
+
         .glass {
             background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.06);
         }
-        
-        .glass-light {
-            background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        
+
         .btn-primary {
             background: linear-gradient(135deg, #0055ff, #542bff);
             color: white;
@@ -61,55 +53,38 @@
             transition: all 0.3s ease;
             box-shadow: 0 4px 20px rgba(0, 85, 255, 0.25);
         }
-        
-        .btn-primary:hover {
+
+        .btn-primary:hover:not(:disabled) {
             transform: translateY(-2px);
             box-shadow: 0 8px 30px rgba(0, 85, 255, 0.4);
         }
-        
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.06);
-            color: white;
-            padding: 12px 32px;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 14px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            cursor: pointer;
-            transition: all 0.3s ease;
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
         }
-        
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-2px);
-        }
-        
+
         .navbar {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
+            top: 0; left: 0; right: 0;
             z-index: 1000;
             padding: 16px 0;
-            transition: all 0.3s ease;
             background: rgba(10, 10, 18, 0.92);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
-        
+
         .text-gradient {
             background: linear-gradient(135deg, #0055ff, #542bff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        
+
         .mobile-menu {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(10, 10, 18, 0.98);
             backdrop-filter: blur(20px);
             z-index: 999;
@@ -117,28 +92,17 @@
             padding: 80px 24px 24px;
             overflow-y: auto;
         }
-        
-        .mobile-menu.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
+        .mobile-menu.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
         .footer-link {
             color: rgba(255, 255, 255, 0.4);
             transition: all 0.3s ease;
             text-decoration: none;
             font-size: 14px;
         }
-        
-        .footer-link:hover {
-            color: #ffffff;
-        }
-        
+        .footer-link:hover { color: #ffffff; }
+
         .page-background {
             min-height: 100vh;
             background-image: url('https://static.vecteezy.com/system/resources/thumbnails/070/574/368/small/assorted-sports-equipment-on-black-backdrop-symbolizing-athleticism-competition-and-diverse-sporting-activities-photo.jpeg');
@@ -147,32 +111,23 @@
             background-attachment: fixed;
             position: relative;
         }
-        
         .page-background::before {
             content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, 
-                rgba(10, 10, 18, 0.9) 0%, 
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(135deg,
+                rgba(10, 10, 18, 0.9) 0%,
                 rgba(10, 10, 18, 0.7) 50%,
-                rgba(10, 10, 18, 0.9) 100%
-            );
+                rgba(10, 10, 18, 0.9) 100%);
             z-index: -1;
         }
-        
-        /* Dropdown menu */
-        .dropdown {
-            position: relative;
-            display: inline-block;
-        }
+
+        .dropdown { position: relative; display: inline-block; }
         .dropdown-menu {
             display: none;
             position: absolute;
-            top: 100%;
-            left: 0;
+            top: 100%; left: 0;
             background: rgba(10, 10, 18, 0.95);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255,255,255,0.05);
@@ -181,9 +136,7 @@
             padding: 8px 0;
             z-index: 1001;
         }
-        .dropdown:hover .dropdown-menu {
-            display: block;
-        }
+        .dropdown:hover .dropdown-menu { display: block; }
         .dropdown-menu a {
             display: block;
             padding: 8px 16px;
@@ -191,11 +144,8 @@
             font-size: 13px;
             transition: 0.2s;
         }
-        .dropdown-menu a:hover {
-            background: rgba(255,255,255,0.05);
-            color: white;
-        }
-        
+        .dropdown-menu a:hover { background: rgba(255,255,255,0.05); color: white; }
+
         .input-field {
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -206,12 +156,8 @@
             font-size: 15px;
             transition: border-color 0.3s;
         }
-        .input-field:focus {
-            outline: none;
-            border-color: #0055ff;
-        }
-        
-        /* Tab buttons */
+        .input-field:focus { outline: none; border-color: #0055ff; }
+
         .tab-btn {
             padding: 8px 20px;
             border-radius: 20px;
@@ -221,15 +167,14 @@
             transition: all 0.3s;
             border: 1px solid rgba(255,255,255,0.1);
             background: transparent;
-            color: white/60;
+            color: rgba(255,255,255,0.6);
         }
         .tab-btn.active {
             background: linear-gradient(135deg, #0055ff, #542bff);
             border-color: transparent;
             color: white;
         }
-        
-        /* Country select scrollable */
+
         .country-select {
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -240,29 +185,20 @@
             font-size: 15px;
             transition: border-color 0.3s;
             -webkit-appearance: none;
-            -moz-appearance: none;
             appearance: none;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='white' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: right 1rem center;
         }
-        /* Make country dropdown options readable on all browsers */
-        .country-select option {
-            background: #0a0a12;
-            color: #ffffff;
-        }
+        .country-select option { background: #0a0a12; color: #ffffff; }
     </style>
 </head>
 <body>
 
-<!-- ==========================================
-     NAVBAR (full site links)
-     ========================================== -->
+<!-- NAVBAR -->
 <nav class="navbar" id="navbar">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between">
-            
-            <!-- Logo -->
             <a href="index.html" class="flex items-center space-x-2" title="Go to Homepage">
                 <span class="text-xl font-bold">
                     <span class="text-gradient">CephasGM</span>
@@ -270,8 +206,7 @@
                     <span class="text-white font-semibold">GameZone</span>
                 </span>
             </a>
-            
-            <!-- Desktop Nav -->
+
             <div class="hidden lg:flex items-center space-x-1">
                 <div class="dropdown">
                     <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Info ▾</span>
@@ -280,11 +215,10 @@
                         <a href="vip.html">VIP Club</a>
                         <a href="referrals.html">Referrals</a>
                         <a href="privacy.html">Privacy Policy</a>
-                        <a href="terms.html">Terms & Conditions</a>
+                        <a href="terms.html">Terms &amp; Conditions</a>
                         <a href="cookies.html">Cookie Policy</a>
                     </div>
                 </div>
-
                 <div class="dropdown">
                     <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Account ▾</span>
                     <div class="dropdown-menu">
@@ -302,15 +236,10 @@
                         <a href="signup.html">Sign Up</a>
                     </div>
                 </div>
-
                 <a href="promotions.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Promotions</a>
                 <a href="sports.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Sports</a>
                 <a href="casino.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Casino</a>
-
-                <a href="live-betting.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 flex items-center space-x-1">
-                    <span class="live-dot"></span><span>Live</span>
-                </a>
-
+                <a href="live-betting.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Live</a>
                 <div class="dropdown">
                     <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Virtual ▾</span>
                     <div class="dropdown-menu">
@@ -318,21 +247,16 @@
                         <a href="virtual-horse-racing.html">Virtual Horse Racing</a>
                         <a href="virtual-car-racing.html">Virtual Car Racing</a>
                         <a href="virtual-netball.html">Virtual Netball</a>
-                        <a href="adventure-games.html">Adventure Games</a>
                         <a href="aviator.html">Aviator</a>
                     </div>
                 </div>
-
                 <div class="dropdown">
                     <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Support ▾</span>
                     <div class="dropdown-menu">
                         <a href="support.html">Help Center</a>
-                        <a href="messages.html">Messages</a>
-                        <a href="notifications.html">Notifications</a>
                         <a href="faq.html">FAQ</a>
                         <a href="contact.html">Contact Us</a>
                         <a href="responsible-gambling.html">Responsible Gambling</a>
-                        <a href="self-exclusion.html">Self-Exclusion</a>
                     </div>
                 </div>
             </div>
@@ -351,89 +275,31 @@
 <!-- Mobile Menu -->
 <div id="mobileMenu" class="mobile-menu">
     <nav class="flex flex-col space-y-6">
-        <a href="index.html" class="text-lg text-white/70 hover:text-white transition-colors">Home</a>
-        <a href="sports.html" class="text-lg text-white/70 hover:text-white transition-colors">Sports</a>
-        <a href="live-betting.html" class="text-lg text-white/70 hover:text-white transition-colors">Live Betting</a>
-        <a href="casino.html" class="text-lg text-white/70 hover:text-white transition-colors">Casino</a>
-        <a href="promotions.html" class="text-lg text-white/70 hover:text-white transition-colors">Promotions</a>
-        <a href="bonuses.html" class="text-lg text-white/70 hover:text-white transition-colors">Bonuses</a>
-        <a href="leaderboard.html" class="text-lg text-white/70 hover:text-white transition-colors">Leaderboard</a>
-        
-        <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Account</span>
-            <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="dashboard.html" class="text-sm text-white/50 hover:text-white">Dashboard</a>
-                <a href="profile.html" class="text-sm text-white/50 hover:text-white">Profile</a>
-                <a href="wallet.html" class="text-sm text-white/50 hover:text-white">Wallet</a>
-                <a href="deposit.html" class="text-sm text-white/50 hover:text-white">Deposit</a>
-                <a href="withdraw.html" class="text-sm text-white/50 hover:text-white">Withdraw</a>
-                <a href="transactions.html" class="text-sm text-white/50 hover:text-white">Transactions</a>
-                <a href="bet-history.html" class="text-sm text-white/50 hover:text-white">Bet History</a>
-                <a href="kyc.html" class="text-sm text-white/50 hover:text-white">KYC</a>
-                <a href="settings.html" class="text-sm text-white/50 hover:text-white">Settings</a>
-                <a href="signin.html" class="text-sm text-white/50 hover:text-white">Sign In</a>
-                <a href="signup.html" class="text-sm text-white/50 hover:text-white">Sign Up</a>
-            </div>
-        </div>
-        
-        <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Virtual Games</span>
-            <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="virtual-football.html" class="text-sm text-white/50 hover:text-white">Virtual Football</a>
-                <a href="virtual-horse-racing.html" class="text-sm text-white/50 hover:text-white">Horse Racing</a>
-                <a href="virtual-car-racing.html" class="text-sm text-white/50 hover:text-white">Car Racing</a>
-                <a href="virtual-netball.html" class="text-sm text-white/50 hover:text-white">Netball</a>
-                <a href="adventure-games.html" class="text-sm text-white/50 hover:text-white">Adventure</a>
-                <a href="aviator.html" class="text-sm text-white/50 hover:text-white">Aviator</a>
-            </div>
-        </div>
-        
-        <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Support</span>
-            <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="support.html" class="text-sm text-white/50 hover:text-white">Help Center</a>
-                <a href="messages.html" class="text-sm text-white/50 hover:text-white">Messages</a>
-                <a href="notifications.html" class="text-sm text-white/50 hover:text-white">Notifications</a>
-                <a href="faq.html" class="text-sm text-white/50 hover:text-white">FAQ</a>
-                <a href="contact.html" class="text-sm text-white/50 hover:text-white">Contact</a>
-                <a href="responsible-gambling.html" class="text-sm text-white/50 hover:text-white">Responsible</a>
-                <a href="self-exclusion.html" class="text-sm text-white/50 hover:text-white">Self-Exclusion</a>
-            </div>
-        </div>
-        
-        <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Information</span>
-            <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="about.html" class="text-sm text-white/50 hover:text-white">About</a>
-                <a href="vip.html" class="text-sm text-white/50 hover:text-white">VIP</a>
-                <a href="referrals.html" class="text-sm text-white/50 hover:text-white">Referrals</a>
-                <a href="privacy.html" class="text-sm text-white/50 hover:text-white">Privacy</a>
-                <a href="terms.html" class="text-sm text-white/50 hover:text-white">Terms</a>
-                <a href="cookies.html" class="text-sm text-white/50 hover:text-white">Cookies</a>
-            </div>
-        </div>
+        <a href="index.html" class="text-lg text-white/70 hover:text-white">Home</a>
+        <a href="sports.html" class="text-lg text-white/70 hover:text-white">Sports</a>
+        <a href="live-betting.html" class="text-lg text-white/70 hover:text-white">Live Betting</a>
+        <a href="casino.html" class="text-lg text-white/70 hover:text-white">Casino</a>
+        <a href="promotions.html" class="text-lg text-white/70 hover:text-white">Promotions</a>
+        <a href="aviator.html" class="text-lg text-white/70 hover:text-white">Aviator</a>
     </nav>
 </div>
 
-<!-- ==========================================
-     MAIN CONTENT - Sign In Form (Email / Phone)
-     ========================================== -->
+<!-- MAIN CONTENT -->
 <div class="page-background flex items-center justify-center pt-20 pb-12 px-4">
     <div class="w-full max-w-md z-10">
         <div class="glass rounded-3xl p-8 md:p-10 border border-white/10 shadow-2xl">
-            <!-- Header -->
             <div class="text-center mb-8">
                 <h1 class="text-3xl font-bold text-white mb-2">Welcome Back</h1>
                 <p class="text-sm text-white/40">Sign in to your CephasGM GameZone account</p>
             </div>
-            
+
             <!-- Tab Switcher -->
             <div class="flex justify-center mb-6 space-x-2">
                 <button id="tabEmail" class="tab-btn active">Email</button>
                 <button id="tabPhone" class="tab-btn">Phone</button>
             </div>
-            
-            <!-- Form: Email Login -->
+
+            <!-- Email Login Form -->
             <form id="emailForm" class="space-y-5">
                 <div>
                     <label class="block text-xs text-white/40 mb-1.5 ml-1">Email</label>
@@ -452,64 +318,20 @@
                 </div>
                 <button type="submit" class="btn-primary w-full text-center py-3 text-base">Sign In</button>
             </form>
-            
-            <!-- Form: Phone Login (hidden by default) -->
+
+            <!-- Phone Login Form (hidden by default) -->
             <form id="phoneForm" class="space-y-5 hidden">
                 <div>
                     <label class="block text-xs text-white/40 mb-1.5 ml-1">Country Code</label>
                     <select id="countryCode" class="country-select" required>
-                        <option value="+93">🇦🇫 Afghanistan (+93)</option>
-                        <option value="+355">🇦🇱 Albania (+355)</option>
-                        <option value="+213">🇩🇿 Algeria (+213)</option>
-                        <option value="+54">🇦🇷 Argentina (+54)</option>
-                        <option value="+61">🇦🇺 Australia (+61)</option>
-                        <option value="+43">🇦🇹 Austria (+43)</option>
-                        <option value="+973">🇧🇭 Bahrain (+973)</option>
-                        <option value="+880">🇧🇩 Bangladesh (+880)</option>
-                        <option value="+32">🇧🇪 Belgium (+32)</option>
-                        <option value="+55">🇧🇷 Brazil (+55)</option>
-                        <option value="+1">🇨🇦 Canada (+1)</option>
-                        <option value="+86">🇨🇳 China (+86)</option>
-                        <option value="+20">🇪🇬 Egypt (+20)</option>
-                        <option value="+251">🇪🇹 Ethiopia (+251)</option>
-                        <option value="+33">🇫🇷 France (+33)</option>
-                        <option value="+49">🇩🇪 Germany (+49)</option>
-                        <option value="+233">🇬🇭 Ghana (+233)</option>
-                        <option value="+91">🇮🇳 India (+91)</option>
-                        <option value="+62">🇮🇩 Indonesia (+62)</option>
-                        <option value="+353">🇮🇪 Ireland (+353)</option>
-                        <option value="+39">🇮🇹 Italy (+39)</option>
-                        <option value="+81">🇯🇵 Japan (+81)</option>
+                        <option value="+255" selected>🇹🇿 Tanzania (+255)</option>
                         <option value="+254">🇰🇪 Kenya (+254)</option>
-                        <option value="+60">🇲🇾 Malaysia (+60)</option>
-                        <option value="+52">🇲🇽 Mexico (+52)</option>
-                        <option value="+212">🇲🇦 Morocco (+212)</option>
-                        <option value="+31">🇳🇱 Netherlands (+31)</option>
-                        <option value="+64">🇳🇿 New Zealand (+64)</option>
-                        <option value="+234">🇳🇬 Nigeria (+234)</option>
-                        <option value="+47">🇳🇴 Norway (+47)</option>
-                        <option value="+92">🇵🇰 Pakistan (+92)</option>
-                        <option value="+63">🇵🇭 Philippines (+63)</option>
-                        <option value="+48">🇵🇱 Poland (+48)</option>
-                        <option value="+351">🇵🇹 Portugal (+351)</option>
-                        <option value="+974">🇶🇦 Qatar (+974)</option>
-                        <option value="+40">🇷🇴 Romania (+40)</option>
-                        <option value="+966">🇸🇦 Saudi Arabia (+966)</option>
-                        <option value="+27">🇿🇦 South Africa (+27)</option>
-                        <option value="+82">🇰🇷 South Korea (+82)</option>
-                        <option value="+34">🇪🇸 Spain (+34)</option>
-                        <option value="+46">🇸🇪 Sweden (+46)</option>
-                        <option value="+41">🇨🇭 Switzerland (+41)</option>
-                        <option value="+255">🇹🇿 Tanzania (+255)</option>
-                        <option value="+66">🇹🇭 Thailand (+66)</option>
-                        <option value="+90">🇹🇷 Turkey (+90)</option>
                         <option value="+256">🇺🇬 Uganda (+256)</option>
-                        <option value="+971">🇦🇪 United Arab Emirates (+971)</option>
+                        <option value="+250">🇷🇼 Rwanda (+250)</option>
+                        <option value="+234">🇳🇬 Nigeria (+234)</option>
+                        <option value="+27">🇿🇦 South Africa (+27)</option>
                         <option value="+44">🇬🇧 United Kingdom (+44)</option>
                         <option value="+1">🇺🇸 United States (+1)</option>
-                        <option value="+84">🇻🇳 Vietnam (+84)</option>
-                        <option value="+260">🇿🇲 Zambia (+260)</option>
-                        <option value="+263">🇿🇼 Zimbabwe (+263)</option>
                     </select>
                 </div>
                 <div>
@@ -529,37 +351,16 @@
                 </div>
                 <button type="submit" class="btn-primary w-full text-center py-3 text-base">Sign In</button>
             </form>
-            
-            <!-- Divider -->
-            <div class="relative my-6">
-                <div class="absolute inset-0 flex items-center">
-                    <div class="w-full border-t border-white/10"></div>
-                </div>
-                <div class="relative flex justify-center text-xs">
-                    <span class="px-4 bg-[#0a0a12] text-white/30">or continue with</span>
-                </div>
-            </div>
-            
-            <!-- Social login (Google only) -->
-            <div class="flex justify-center">
-                <button class="flex items-center justify-center space-x-2 py-2.5 px-8 rounded-xl bg-white/5 border border-white/10 text-sm text-white/70 hover:bg-white/10 transition-colors">
-                    <svg class="w-5 h-5" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-                    <span>Google</span>
-                </button>
-            </div>
-            
-            <!-- Sign up link -->
+
             <p class="mt-6 text-center text-sm text-white/40">
-                Don't have an account? 
+                Don't have an account?
                 <a href="signup.html" class="text-blue-400 hover:text-blue-300 font-medium transition-colors">Create one</a>
             </p>
         </div>
     </div>
 </div>
 
-<!-- ==========================================
-     FOOTER
-     ========================================== -->
+<!-- FOOTER -->
 <footer class="bg-[#0a0a12] border-t border-white/5 py-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
@@ -608,124 +409,170 @@
     </div>
 </footer>
 
-<!-- ==========================================
-     JAVASCRIPT
-     ========================================== -->
+<!-- JAVASCRIPT -->
 <script>
 (function() {
     'use strict';
-    
-    // Mobile menu toggle
+
+    /* ------------------------------------------------------------
+       Redirect if already logged in
+       ------------------------------------------------------------ */
+    if (CephasGM && CephasGM.auth) {
+        CephasGM.auth.redirectIfLoggedIn('dashboard.html');
+    }
+
+    /* ------------------------------------------------------------
+       Mobile menu
+       ------------------------------------------------------------ */
     const mobileToggle = document.getElementById('mobileToggle');
     const mobileMenu = document.getElementById('mobileMenu');
     let mobileOpen = false;
-    
-    mobileToggle.addEventListener('click', () => {
-        mobileOpen = !mobileOpen;
-        mobileMenu.classList.toggle('active', mobileOpen);
-        document.body.style.overflow = mobileOpen ? 'hidden' : '';
-    });
-    
-    mobileMenu.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
-            mobileMenu.classList.remove('active');
-            document.body.style.overflow = '';
-            mobileOpen = false;
+
+    if (mobileToggle) {
+        mobileToggle.addEventListener('click', () => {
+            mobileOpen = !mobileOpen;
+            mobileMenu.classList.toggle('active', mobileOpen);
+            document.body.style.overflow = mobileOpen ? 'hidden' : '';
         });
-    });
-    
-    // Tab switching
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+                document.body.style.overflow = '';
+                mobileOpen = false;
+            });
+        });
+    }
+
+    /* ------------------------------------------------------------
+       Tab switching
+       ------------------------------------------------------------ */
     const tabEmail = document.getElementById('tabEmail');
     const tabPhone = document.getElementById('tabPhone');
     const emailForm = document.getElementById('emailForm');
     const phoneForm = document.getElementById('phoneForm');
-    
+
     tabEmail.addEventListener('click', function() {
         tabEmail.classList.add('active');
         tabPhone.classList.remove('active');
         emailForm.classList.remove('hidden');
         phoneForm.classList.add('hidden');
     });
-    
+
     tabPhone.addEventListener('click', function() {
         tabPhone.classList.add('active');
         tabEmail.classList.remove('active');
         phoneForm.classList.remove('hidden');
         emailForm.classList.add('hidden');
     });
-    
-    // ============================================================
-    // DEMO CREDENTIALS — any email + any password works in demo mode
-    // Change DEMO_MODE to false when you wire up a real backend.
-    // ============================================================
-    const DEMO_MODE = true;
-    
-    // Email sign in
-    document.getElementById('emailForm').addEventListener('submit', function(e) {
+
+    /* ------------------------------------------------------------
+       Toast helper — uses CephasGM.toast from api.js
+       ------------------------------------------------------------ */
+    function toast(msg, type) {
+        if (CephasGM && CephasGM.toast) {
+            CephasGM.toast(msg, type);
+        } else {
+            alert(msg);
+        }
+    }
+
+    /* ------------------------------------------------------------
+       EMAIL SIGN IN
+       ------------------------------------------------------------ */
+    emailForm.addEventListener('submit', async function(e) {
         e.preventDefault();
+
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+
         const email = document.getElementById('email').value.trim();
         const password = document.getElementById('passwordEmail').value;
-        
+
         if (!email || !password) {
-            showToast('❌ Please fill in all fields.');
+            toast('Please enter email and password', 'error');
             return;
         }
-        
-        if (!DEMO_MODE) {
-            // Real backend would go here (fetch to your API, etc.)
-            showToast('❌ Invalid credentials.');
-            return;
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Signing in…';
+
+        try {
+            const res = await CephasGM.api.login(email, password);
+
+            if (res.success) {
+                toast('Welcome back!', 'success');
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 600);
+            } else {
+                toast(res.message || 'Login failed', 'error');
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+            }
+        } catch (err) {
+            const msg = err.message || (err.json && err.json.message) || 'Login failed. Check your credentials.';
+            toast(msg, 'error');
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
         }
-        
-        console.log('Sign in with email:', email);
-        showToast('✅ Signing in...');
-        // RELATIVE PATH — same folder as this file
-        setTimeout(() => { window.location.href = 'dashboard.html'; }, 800);
     });
-    
-    // Phone sign in
-    document.getElementById('phoneForm').addEventListener('submit', function(e) {
+
+    /* ------------------------------------------------------------
+       PHONE SIGN IN
+       ------------------------------------------------------------ */
+    phoneForm.addEventListener('submit', async function(e) {
         e.preventDefault();
+
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+
         const countryCode = document.getElementById('countryCode').value;
         const mobile = document.getElementById('mobileNumber').value.trim();
         const password = document.getElementById('passwordPhone').value;
-        
+
         if (!countryCode || !mobile || !password) {
-            showToast('❌ Please fill in all fields.');
+            toast('Please fill in all fields', 'error');
             return;
         }
-        
-        if (!DEMO_MODE) {
-            showToast('❌ Invalid credentials.');
-            return;
+
+        // Build full phone: countryCode + number without leading zero
+        const cleaned = mobile.replace(/^0+/, '').replace(/\D/g, '');
+        const phone = countryCode + cleaned;
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Signing in…';
+
+        try {
+            const res = await CephasGM.api.post('/auth/login', { phone: phone, password: password });
+
+            if (res.success) {
+                CephasGM.api.setTokens(res.data.accessToken, res.data.refreshToken);
+                CephasGM.api.setUser(res.data.user);
+                toast('Welcome back!', 'success');
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 600);
+            } else {
+                toast(res.message || 'Login failed', 'error');
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+            }
+        } catch (err) {
+            const msg = err.message || (err.json && err.json.message) || 'Login failed. Check your credentials.';
+            toast(msg, 'error');
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
         }
-        
-        console.log('Sign in with phone:', countryCode + mobile);
-        showToast('✅ Signing in...');
-        // RELATIVE PATH — same folder as this file
-        setTimeout(() => { window.location.href = 'dashboard.html'; }, 800);
     });
-    
-    // Simple toast helper
-    function showToast(message) {
-        const toast = document.createElement('div');
-        toast.className = 'fixed bottom-6 right-6 z-50 glass rounded-2xl px-6 py-3 border border-green-500/30';
-        toast.innerHTML = `<span class="text-sm">${message}</span>`;
-        document.body.appendChild(toast);
-        setTimeout(() => {
-            toast.style.transition = 'opacity .3s, transform .3s';
-            toast.style.opacity = '0';
-            toast.style.transform = 'translateY(20px)';
-            setTimeout(() => toast.remove(), 300);
-        }, 1800);
-    }
-    
-    // PWA
+
+    /* ------------------------------------------------------------
+       Service Worker
+       ------------------------------------------------------------ */
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/sw.js')
-                .then(reg => console.log('SW registered'))
-                .catch(err => console.log('SW registration failed'));
+            navigator.serviceWorker.register('sw.js')
+                .then(() => console.log('SW registered'))
+                .catch(() => console.log('SW registration failed'));
         });
     }
 })();
