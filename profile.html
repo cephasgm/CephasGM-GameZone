@@ -4,110 +4,87 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#0a0a12">
-    <meta name="description" content="Your Profile – CephasGM GameZone">
     <title>Profile | CephasGM GameZone</title>
-    
-    <!-- PWA -->
+
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
     <script src="https://cdn.tailwindcss.com"></script>
-    
+    <script src="js/api.js"></script>
+    <script src="js/auth-ui.js"></script>
+
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+
         body {
             font-family: 'Inter', sans-serif;
             background: #0a0a12;
             color: #ffffff;
             overflow-x: hidden;
         }
-        
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #0a0a12; }
-        ::-webkit-scrollbar-thumb { 
-            background: linear-gradient(180deg, #0055ff, #542bff);
-            border-radius: 10px;
-        }
-        
+
         .glass {
             background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.06);
         }
-        
-        .glass-light {
-            background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        
+
         .btn-primary {
             background: linear-gradient(135deg, #0055ff, #542bff);
             color: white;
-            padding: 10px 24px;
+            padding: 12px 24px;
             border-radius: 50px;
-            font-weight: 600;
+            font-weight: 700;
             font-size: 14px;
             border: none;
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 4px 20px rgba(0, 85, 255, 0.25);
+            font-family: inherit;
         }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(0, 85, 255, 0.4);
-        }
-        
+        .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0, 85, 255, 0.4); }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
         .btn-secondary {
             background: rgba(255, 255, 255, 0.06);
             color: white;
-            padding: 10px 24px;
+            padding: 12px 24px;
             border-radius: 50px;
             font-weight: 600;
             font-size: 14px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             cursor: pointer;
             transition: all 0.3s ease;
+            font-family: inherit;
+            text-decoration: none;
+            display: inline-block;
         }
-        
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-2px);
-        }
-        
+        .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-2px); }
+
         .navbar {
-            position: fixed;
+            position: sticky;
             top: 0;
-            left: 0;
-            right: 0;
             z-index: 1000;
             padding: 16px 0;
             background: rgba(10, 10, 18, 0.92);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
-        
+
         .text-gradient {
             background: linear-gradient(135deg, #0055ff, #542bff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        
+
         .mobile-menu {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            inset: 0;
             background: rgba(10, 10, 18, 0.98);
             backdrop-filter: blur(20px);
             z-index: 999;
@@ -115,62 +92,93 @@
             padding: 80px 24px 24px;
             overflow-y: auto;
         }
-        
-        .mobile-menu.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        .footer-link {
-            color: rgba(255, 255, 255, 0.4);
-            transition: all 0.3s ease;
-            text-decoration: none;
-            font-size: 14px;
-        }
-        
-        .footer-link:hover {
-            color: #ffffff;
-        }
-        
-        .page-background {
-            min-height: 100vh;
+        .mobile-menu.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .dashboard-bg {
             background-image: url('https://static.vecteezy.com/system/resources/thumbnails/070/574/368/small/assorted-sports-equipment-on-black-backdrop-symbolizing-athleticism-competition-and-diverse-sporting-activities-photo.jpeg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
             position: relative;
         }
-        
-        .page-background::before {
+        .dashboard-bg::before {
             content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(10,10,18,0.92), rgba(10,10,18,0.78), rgba(10,10,18,0.92));
+            z-index: 0;
+        }
+        .content-wrapper { position: relative; z-index: 1; }
+
+        .input-field {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 12px 16px;
+            color: white;
             width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, 
-                rgba(10, 10, 18, 0.9) 0%, 
-                rgba(10, 10, 18, 0.7) 50%,
-                rgba(10, 10, 18, 0.9) 100%
-            );
-            z-index: -1;
+            font-size: 14px;
+            font-weight: 500;
+            transition: border-color 0.3s;
+            font-family: inherit;
         }
-        
-        .dropdown {
-            position: relative;
-            display: inline-block;
+        .input-field:focus { outline: none; border-color: #0055ff; background: rgba(0,85,255,0.06); }
+        .input-field:disabled { opacity: 0.5; cursor: not-allowed; }
+        .input-field::placeholder { color: rgba(255,255,255,0.22); font-weight: 400; }
+
+        label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.4); font-weight: 700; display: block; margin-bottom: 6px; }
+
+        .avatar-large {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 42px;
+            font-weight: 900;
+            color: white;
+            box-shadow: 0 12px 32px rgba(0, 85, 255, 0.35);
+            flex-shrink: 0;
         }
+
+        .stat-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: rgba(255,255,255,0.7);
+        }
+
+        .badge-verified { background: rgba(0,224,122,0.15); color: #6bffb0; border-color: rgba(0,224,122,0.3); }
+        .badge-pending  { background: rgba(255,204,0,0.15); color: #ffd93d; border-color: rgba(255,204,0,0.3); }
+        .badge-failed   { background: rgba(255,0,68,0.15); color: #ff8098; border-color: rgba(255,0,68,0.3); }
+
+        .field-row { margin-bottom: 16px; }
+
+        .section-divider {
+            margin: 24px 0;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .footer-link { color: rgba(255,255,255,0.4); text-decoration: none; font-size: 14px; transition: 0.3s; }
+        .footer-link:hover { color: #fff; }
+
+        .dropdown { position: relative; display: inline-block; }
         .dropdown-menu {
             display: none;
             position: absolute;
-            top: 100%;
-            left: 0;
-            background: rgba(10, 10, 18, 0.95);
+            top: 100%; left: 0;
+            background: rgba(10,10,18,0.95);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255,255,255,0.05);
             border-radius: 12px;
@@ -178,374 +186,503 @@
             padding: 8px 0;
             z-index: 1001;
         }
-        .dropdown:hover .dropdown-menu {
-            display: block;
-        }
-        .dropdown-menu a {
-            display: block;
-            padding: 8px 16px;
-            color: rgba(255,255,255,0.6);
-            font-size: 13px;
-            transition: 0.2s;
-        }
-        .dropdown-menu a:hover {
-            background: rgba(255,255,255,0.05);
-            color: white;
-        }
-        
-        .input-field {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 14px 18px;
-            color: white;
-            width: 100%;
-            font-size: 15px;
-            transition: border-color 0.3s;
-        }
-        .input-field:focus {
-            outline: none;
-            border-color: #0055ff;
-        }
-        
-        .avatar-large {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #0055ff, #542bff);
-            display: flex;
+        .dropdown:hover .dropdown-menu { display: block; }
+        .dropdown-menu a { display: block; padding: 8px 16px; color: rgba(255,255,255,0.6); font-size: 13px; transition: 0.2s; }
+        .dropdown-menu a:hover { background: rgba(255,255,255,0.05); color: white; }
+
+        #userBar {
+            position: fixed;
+            top: 84px; right: 16px;
+            z-index: 999;
+            background: rgba(10,10,18,0.92);
+            backdrop-filter: blur(18px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 999px;
+            padding: 8px 8px 8px 14px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            display: none;
             align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            font-weight: 700;
-            margin: 0 auto;
+            gap: 10px;
+        }
+        #userBar .avatar {
+            width: 30px; height: 30px; border-radius: 50%;
+            background: linear-gradient(135deg,#0055ff,#542bff);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 12px; flex-shrink: 0;
+        }
+        #userBar .info { display: flex; flex-direction: column; line-height: 1.1; max-width: 140px; }
+        #userBar .name { font-weight: 700; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        #userBar .contact { font-size: 10px; color: rgba(255,255,255,0.5); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        #inlineSignOut {
+            padding: 6px 14px; border-radius: 999px;
+            background: rgba(255,0,68,0.15);
+            border: 1px solid rgba(255,0,68,0.3);
+            color: #ff8098; font-size: 11px; font-weight: 700;
+            cursor: pointer; font-family: inherit; white-space: nowrap;
+        }
+
+        @media (max-width: 640px) {
+            #userBar { top: 76px; right: 8px; padding: 6px; }
+            #userBar .info { display: none; }
         }
     </style>
 </head>
-<body>
+<body data-requires-auth>
 
-<!-- ==========================================
-     NAVBAR
-     ========================================== -->
-<nav class="navbar" id="navbar">
+<div id="userBar">
+    <div class="avatar" id="userAvatar">U</div>
+    <div class="info">
+        <span class="name" id="userName">Loading…</span>
+        <span class="contact" id="userContact"></span>
+    </div>
+    <button id="inlineSignOut">Sign Out</button>
+</div>
+
+<nav class="navbar">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between">
-            
-            <a href="index.html" class="flex items-center space-x-2" title="Go to Homepage">
+            <a href="index.html" class="flex items-center space-x-2">
                 <span class="text-xl font-bold">
                     <span class="text-gradient">CephasGM</span>
                     <span class="text-white font-light">|</span>
                     <span class="text-white font-semibold">GameZone</span>
                 </span>
             </a>
-            
+
             <div class="hidden lg:flex items-center space-x-1">
-    <!-- Info dropdown -->
-    <div class="dropdown">
-        <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Info ▾</span>
-        <div class="dropdown-menu">
-            <a href="about.html">About Us</a>
-            <a href="vip.html">VIP Club</a>
-            <a href="referrals.html">Referrals</a>
-            <a href="privacy.html">Privacy Policy</a>
-            <a href="terms.html">Terms & Conditions</a>
-            <a href="cookies.html">Cookie Policy</a>
+                <a href="dashboard.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Dashboard</a>
+                <a href="wallet.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Wallet</a>
+                <a href="profile.html" class="px-3 py-2 text-sm text-white font-semibold rounded-lg bg-white/5">Profile</a>
+                <a href="settings.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Settings</a>
+                <a href="kyc.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">KYC</a>
+            </div>
+
+            <button id="mobileToggle" class="lg:hidden p-2 text-white/40 hover:text-white transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
         </div>
     </div>
-
-    <!-- Account dropdown -->
-    <div class="dropdown">
-        <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Account ▾</span>
-        <div class="dropdown-menu">
-            <a href="dashboard.html">Dashboard</a>
-            <a href="profile.html">Profile</a>
-            <a href="wallet.html">Wallet</a>
-            <a href="deposit.html">Deposit</a>
-            <a href="withdraw.html">Withdraw</a>
-            <a href="transactions.html">Transactions</a>
-            <a href="bet-history.html">Bet History</a>
-            <a href="bonuses.html">Bonuses</a>
-            <a href="kyc.html">KYC Verification</a>
-            <a href="settings.html">Settings</a>
-            <a href="signin.html">Sign In</a>
-            <a href="signup.html">Sign Up</a>
-        </div>
-    </div>
-
-    <!-- Promotions link -->
-    <a href="promotions.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Promotions</a>
-
-    <!-- Sports link -->
-    <a href="sports.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Sports</a>
-
-    <!-- Casino link -->
-    <a href="casino.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Casino</a>
-
-    <!-- Live link -->
-    <a href="live-betting.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 flex items-center space-x-1">
-        <span class="live-dot"></span><span>Live</span>
-    </a>
-
-    <!-- Virtual dropdown -->
-    <div class="dropdown">
-        <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Virtual ▾</span>
-        <div class="dropdown-menu">
-            <a href="virtual-football.html">Virtual Football</a>
-            <a href="virtual-horse-racing.html">Virtual Horse Racing</a>
-            <a href="virtual-car-racing.html">Virtual Car Racing</a>
-            <a href="virtual-netball.html">Virtual Netball</a>
-            <a href="adventure-games.html">Adventure Games</a>
-            <a href="aviator.html">Aviator</a>
-        </div>
-    </div>
-
-    <!-- Support dropdown -->
-    <div class="dropdown">
-        <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Support ▾</span>
-        <div class="dropdown-menu">
-            <a href="support.html">Help Center</a>
-            <a href="messages.html">Messages</a>
-            <a href="notifications.html">Notifications</a>
-            <a href="faq.html">FAQ</a>
-            <a href="contact.html">Contact Us</a>
-            <a href="responsible-gambling.html">Responsible Gambling</a>
-            <a href="self-exclusion.html">Self-Exclusion</a>
-        </div>
-    </div>
-</div>
-
-<div class="flex items-center space-x-3">
-    <button id="mobileToggle" class="lg:hidden p-2 text-white/40 hover:text-white transition-colors">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-        </svg>
-    </button>
-</div>
-</div>
-</div>
 </nav>
 
-<!-- Mobile Menu -->
 <div id="mobileMenu" class="mobile-menu">
     <nav class="flex flex-col space-y-6">
-        <a href="index.html" class="text-lg text-white/70 hover:text-white">Home</a>
-        <a href="sports.html" class="text-lg text-white/70 hover:text-white">Sports</a>
-        <a href="live-betting.html" class="text-lg text-white/70 hover:text-white">Live Betting</a>
-        <a href="casino.html" class="text-lg text-white/70 hover:text-white">Casino</a>
-        <a href="promotions.html" class="text-lg text-white/70 hover:text-white">Promotions</a>
-        <a href="bonuses.html" class="text-lg text-white/70 hover:text-white">Bonuses</a>
-        <a href="leaderboard.html" class="text-lg text-white/70 hover:text-white">Leaderboard</a>
-        <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Account</span>
-            <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="dashboard.html" class="text-sm text-white/50 hover:text-white">Dashboard</a>
-                <a href="profile.html" class="text-sm text-white/50 hover:text-white">Profile</a>
-                <a href="wallet.html" class="text-sm text-white/50 hover:text-white">Wallet</a>
-                <a href="deposit.html" class="text-sm text-white/50 hover:text-white">Deposit</a>
-                <a href="withdraw.html" class="text-sm text-white/50 hover:text-white">Withdraw</a>
-                <a href="transactions.html" class="text-sm text-white/50 hover:text-white">Transactions</a>
-                <a href="bet-history.html" class="text-sm text-white/50 hover:text-white">Bet History</a>
-                <a href="kyc.html" class="text-sm text-white/50 hover:text-white">KYC</a>
-                <a href="settings.html" class="text-sm text-white/50 hover:text-white">Settings</a>
-                <a href="signin.html" class="text-sm text-white/50 hover:text-white">Sign In</a>
-                <a href="signup.html" class="text-sm text-white/50 hover:text-white">Sign Up</a>
-            </div>
-        </div>
-        <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Virtual Games</span>
-            <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="virtual-football.html" class="text-sm text-white/50 hover:text-white">Virtual Football</a>
-                <a href="virtual-horse-racing.html" class="text-sm text-white/50 hover:text-white">Horse Racing</a>
-                <a href="virtual-car-racing.html" class="text-sm text-white/50 hover:text-white">Car Racing</a>
-                <a href="virtual-netball.html" class="text-sm text-white/50 hover:text-white">Netball</a>
-                <a href="adventure-games.html" class="text-sm text-white/50 hover:text-white">Adventure</a>
-                <a href="aviator.html" class="text-sm text-white/50 hover:text-white">Aviator</a>
-            </div>
-        </div>
-        <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Support</span>
-            <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="support.html" class="text-sm text-white/50 hover:text-white">Help Center</a>
-                <a href="messages.html" class="text-sm text-white/50 hover:text-white">Messages</a>
-                <a href="notifications.html" class="text-sm text-white/50 hover:text-white">Notifications</a>
-                <a href="faq.html" class="text-sm text-white/50 hover:text-white">FAQ</a>
-                <a href="contact.html" class="text-sm text-white/50 hover:text-white">Contact</a>
-                <a href="responsible-gambling.html" class="text-sm text-white/50 hover:text-white">Responsible</a>
-                <a href="self-exclusion.html" class="text-sm text-white/50 hover:text-white">Self-Exclusion</a>
-            </div>
-        </div>
-        <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Information</span>
-            <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="about.html" class="text-sm text-white/50 hover:text-white">About</a>
-                <a href="vip.html" class="text-sm text-white/50 hover:text-white">VIP</a>
-                <a href="referrals.html" class="text-sm text-white/50 hover:text-white">Referrals</a>
-                <a href="privacy.html" class="text-sm text-white/50 hover:text-white">Privacy</a>
-                <a href="terms.html" class="text-sm text-white/50 hover:text-white">Terms</a>
-                <a href="cookies.html" class="text-sm text-white/50 hover:text-white">Cookies</a>
-            </div>
-        </div>
+        <a href="dashboard.html" class="text-lg text-white/70 hover:text-white">Dashboard</a>
+        <a href="wallet.html" class="text-lg text-white/70 hover:text-white">Wallet</a>
+        <a href="profile.html" class="text-lg text-white/70 hover:text-white">Profile</a>
+        <a href="settings.html" class="text-lg text-white/70 hover:text-white">Settings</a>
+        <a href="kyc.html" class="text-lg text-white/70 hover:text-white">KYC</a>
     </nav>
 </div>
 
-<!-- ==========================================
-     PROFILE CONTENT
-     ========================================== -->
-<div class="page-background pt-20 pb-12 px-4">
-    <div class="max-w-3xl mx-auto relative z-10">
-        
-        <div class="text-center mb-10">
-            <h1 class="text-4xl font-bold">My <span class="text-gradient">Profile</span></h1>
-            <p class="text-sm text-white/40 mt-2">Manage your personal information and account details.</p>
+<div class="dashboard-bg min-h-screen">
+    <div class="content-wrapper py-8 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
+
+        <div class="mb-6">
+            <h1 class="text-3xl font-bold">👤 My Profile</h1>
+            <p class="text-sm text-white/40 mt-1">Manage your personal information</p>
         </div>
-        
-        <div class="glass rounded-2xl p-6 md:p-8">
-            
-            <!-- Avatar & Name -->
-            <div class="text-center mb-8">
-                <div class="avatar-large mb-4">CGM</div>
-                <h2 class="text-2xl font-bold">Cephas GM</h2>
-                <p class="text-sm text-white/40">Member since January 2025</p>
+
+        <!-- Header card -->
+        <div class="glass rounded-3xl p-6 sm:p-8 mb-6">
+            <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6">
+                <div class="avatar-large" id="avatarBig">U</div>
+                <div class="flex-1 text-center sm:text-left">
+                    <h2 class="text-2xl font-bold" id="profileName">Loading…</h2>
+                    <p class="text-sm text-white/40 mt-1" id="profileContact">—</p>
+
+                    <div class="flex flex-wrap gap-2 mt-4 justify-center sm:justify-start">
+                        <span class="stat-pill badge-verified" id="pillEmail">✉️ Email</span>
+                        <span class="stat-pill" id="pillPhone">📱 Phone</span>
+                        <span class="stat-pill badge-pending" id="pillKyc">⏳ KYC</span>
+                        <span class="stat-pill" id="pillVip">⭐ VIP</span>
+                    </div>
+                </div>
+                <div class="text-center sm:text-right">
+                    <div class="text-[10px] uppercase tracking-wider text-white/40 font-bold">Referral Code</div>
+                    <div class="text-lg font-mono font-black text-gradient mt-1" id="profileRef">—</div>
+                    <button id="copyRef" class="text-[10px] text-blue-400 hover:text-blue-300 mt-2">Copy</button>
+                </div>
             </div>
-            
-            <!-- Profile Form -->
-            <form id="profileForm" class="space-y-6">
-                <!-- Personal Info -->
-                <div class="grid md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs text-white/40 mb-1.5 ml-1">First Name</label>
-                        <input type="text" id="firstName" value="Cephas" class="input-field" required>
+        </div>
+
+        <!-- Edit form -->
+        <div class="glass rounded-3xl p-6 sm:p-8">
+            <h3 class="text-lg font-bold mb-6">Edit Information</h3>
+
+            <form id="profileForm">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="field-row">
+                        <label>Full Name</label>
+                        <input type="text" id="fullName" class="input-field" placeholder="John Doe">
                     </div>
-                    <div>
-                        <label class="block text-xs text-white/40 mb-1.5 ml-1">Last Name</label>
-                        <input type="text" id="lastName" value="GM" class="input-field" required>
+                    <div class="field-row">
+                        <label>Username</label>
+                        <input type="text" id="username" class="input-field" placeholder="johndoe">
+                    </div>
+                    <div class="field-row">
+                        <label>Email</label>
+                        <input type="email" id="emailDisplay" class="input-field" disabled>
+                    </div>
+                    <div class="field-row">
+                        <label>Phone</label>
+                        <input type="tel" id="phoneDisplay" class="input-field" disabled>
+                    </div>
+                    <div class="field-row">
+                        <label>Date of Birth</label>
+                        <input type="date" id="dateOfBirth" class="input-field">
+                    </div>
+                    <div class="field-row">
+                        <label>Country</label>
+                        <select id="country" class="input-field">
+                            <option value="">Select country</option>
+                            <option value="TZ">Tanzania</option>
+                            <option value="KE">Kenya</option>
+                            <option value="UG">Uganda</option>
+                            <option value="RW">Rwanda</option>
+                            <option value="NG">Nigeria</option>
+                            <option value="ZA">South Africa</option>
+                            <option value="GB">United Kingdom</option>
+                            <option value="US">United States</option>
+                        </select>
+                    </div>
+                    <div class="field-row">
+                        <label>City</label>
+                        <input type="text" id="city" class="input-field" placeholder="Dar es Salaam">
+                    </div>
+                    <div class="field-row">
+                        <label>Language</label>
+                        <select id="language" class="input-field">
+                            <option value="en">English</option>
+                            <option value="sw">Kiswahili</option>
+                            <option value="fr">Français</option>
+                        </select>
+                    </div>
+                    <div class="field-row sm:col-span-2">
+                        <label>Address</label>
+                        <input type="text" id="address" class="input-field" placeholder="123 Main Street">
                     </div>
                 </div>
-                <div>
-                    <label class="block text-xs text-white/40 mb-1.5 ml-1">Email Address</label>
-                    <input type="email" id="email" value="abc@example.com" class="input-field" disabled>
-                    <p class="text-xs text-white/30 mt-1 ml-1">Email can be changed in <a href="settings.html" class="text-blue-400">Settings</a>.</p>
+
+                <div class="section-divider"></div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div class="field-row">
+                        <label>Currency</label>
+                        <select id="currency" class="input-field">
+                            <option value="TZS">TZS — Tanzanian Shilling</option>
+                            <option value="KES">KES — Kenyan Shilling</option>
+                            <option value="UGX">UGX — Ugandan Shilling</option>
+                            <option value="NGN">NGN — Nigerian Naira</option>
+                            <option value="USD">USD — US Dollar</option>
+                        </select>
+                    </div>
+                    <div class="field-row">
+                        <label>Member Since</label>
+                        <input type="text" id="memberSince" class="input-field" disabled>
+                    </div>
                 </div>
-                <div>
-                    <label class="block text-xs text-white/40 mb-1.5 ml-1">Phone Number</label>
-                    <input type="tel" id="phone" value="+255123456789" class="input-field" required>
+
+                <div class="section-divider"></div>
+
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <button type="submit" class="btn-primary flex-1" id="saveBtn">Save Changes</button>
+                    <button type="button" class="btn-secondary flex-1" id="cancelBtn">Cancel</button>
                 </div>
-                <div>
-                    <label class="block text-xs text-white/40 mb-1.5 ml-1">Date of Birth</label>
-                    <input type="date" id="dob" value="1990-01-15" class="input-field" required>
-                </div>
-                
-                <!-- Save button -->
-                <button type="submit" class="btn-primary w-full py-3 text-base">
-                    Save Changes
-                </button>
             </form>
-            
-            <!-- Success message -->
-            <div id="saveSuccess" class="hidden mt-4 text-center text-green-400 font-semibold">
-                ✅ Profile updated successfully!
-            </div>
-            
         </div>
-        
+
+        <!-- Danger zone -->
+        <div class="glass rounded-3xl p-6 sm:p-8 mt-6 border border-red-500/20">
+            <h3 class="text-lg font-bold mb-2 text-red-400">⚠️ Danger Zone</h3>
+            <p class="text-xs text-white/40 mb-4">Deactivating your account is permanent. All data will be archived.</p>
+            <button id="deactivateBtn" class="btn-secondary" style="border-color: rgba(255,0,68,0.3); color: #ff8098;">Deactivate Account</button>
+        </div>
+
     </div>
 </div>
 
-<!-- ==========================================
-     FOOTER
-     ========================================== -->
-<footer class="bg-[#0a0a12] border-t border-white/5 py-12">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div class="col-span-2 md:col-span-1">
-                <div class="text-lg font-bold mb-3">
-                    <span class="text-gradient">CephasGM</span>
-                    <span class="text-white font-light">|</span>
-                    <span class="text-white font-semibold">GameZone</span>
-                </div>
-                <p class="text-sm text-white/30 leading-relaxed">
-                    Premium online betting platform for sports, casino, and virtual games.
-                </p>
-            </div>
-            <div>
-                <h4 class="text-sm font-semibold text-white/40 mb-3">Quick Links</h4>
-                <ul class="space-y-2">
-                    <li><a href="sports.html" class="footer-link">Sports</a></li>
-                    <li><a href="live-betting.html" class="footer-link">Live Betting</a></li>
-                    <li><a href="casino.html" class="footer-link">Casino</a></li>
-                    <li><a href="promotions.html" class="footer-link">Promotions</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-sm font-semibold text-white/40 mb-3">Support</h4>
-                <ul class="space-y-2">
-                    <li><a href="support.html" class="footer-link">Help Center</a></li>
-                    <li><a href="contact.html" class="footer-link">Contact</a></li>
-                    <li><a href="faq.html" class="footer-link">FAQ</a></li>
-                    <li><a href="responsible-gambling.html" class="footer-link">Responsible Gambling</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-sm font-semibold text-white/40 mb-3">Legal</h4>
-                <ul class="space-y-2">
-                    <li><a href="terms.html" class="footer-link">Terms</a></li>
-                    <li><a href="privacy.html" class="footer-link">Privacy</a></li>
-                    <li><a href="cookies.html" class="footer-link">Cookies</a></li>
-                    <li><a href="kyc.html" class="footer-link">KYC</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="mt-8 pt-6 border-t border-white/5 flex flex-col md:flex-row items-center justify-between text-xs text-white/20">
-            <p>Copyright © 2025 Cephas GM | Innovating for Tomorrow</p>
-            <p class="mt-2 md:mt-0">18+ | Play Responsibly</p>
-        </div>
+<footer class="bg-[#0a0a12] border-t border-white/5 py-12 mt-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs text-white/20">
+        <p>Copyright © 2026 Cephas GM | Innovating for Tomorrow</p>
+        <p class="mt-2">18+ | Play Responsibly</p>
     </div>
 </footer>
 
-<!-- ==========================================
-     JAVASCRIPT
-     ========================================== -->
 <script>
-(function() {
+document.addEventListener('DOMContentLoaded', function () {
     'use strict';
-    
-    // Mobile menu
-    const mobileToggle = document.getElementById('mobileToggle');
-    const mobileMenu = document.getElementById('mobileMenu');
-    let mobileOpen = false;
-    
-    mobileToggle.addEventListener('click', () => {
+
+    /* ------------------------------------------------------------
+       AUTH GUARD
+       ------------------------------------------------------------ */
+    if (!window.CephasGM || !CephasGM.api) return;
+    if (!CephasGM.api.isLoggedIn()) {
+        window.location.href = 'signin.html';
+        return;
+    }
+
+    /* ------------------------------------------------------------
+       STATE
+       ------------------------------------------------------------ */
+    var state = { user: null, originalData: {} };
+
+    /* ------------------------------------------------------------
+       USER BADGE
+       ------------------------------------------------------------ */
+    function paintUserBadge(user) {
+        if (!user) return;
+        var name = user.fullName || user.username || 'Player';
+        var contact = user.email || user.phone || '';
+        var initial = name.charAt(0).toUpperCase();
+
+        document.getElementById('userAvatar').textContent = initial;
+        document.getElementById('userName').textContent = name;
+        document.getElementById('userContact').textContent = contact;
+        document.getElementById('userBar').style.display = 'flex';
+
+        document.getElementById('avatarBig').textContent = initial;
+        document.getElementById('profileName').textContent = name;
+        document.getElementById('profileContact').textContent = contact;
+        document.getElementById('profileRef').textContent = user.referralCode || '—';
+    }
+
+    var cachedUser = CephasGM.api.getUser();
+    if (cachedUser) paintUserBadge(cachedUser);
+
+    document.getElementById('inlineSignOut').addEventListener('click', function () {
+        var btn = this;
+        btn.disabled = true;
+        btn.textContent = 'Signing out…';
+        CephasGM.api.logout().catch(function () {}).then(function () {
+            CephasGM.api.clearTokens();
+            window.location.href = 'signin.html';
+        });
+    });
+
+    /* ------------------------------------------------------------
+       HELPERS
+       ------------------------------------------------------------ */
+    function escapeHtml(s) {
+        return String(s || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
+    function fillForm(user) {
+        document.getElementById('fullName').value = user.fullName || '';
+        document.getElementById('username').value = user.username || '';
+        document.getElementById('emailDisplay').value = user.email || '';
+        document.getElementById('phoneDisplay').value = user.phone || '';
+        document.getElementById('dateOfBirth').value = user.dateOfBirth ? new Date(user.dateOfBirth).toISOString().slice(0, 10) : '';
+        document.getElementById('country').value = user.country || '';
+        document.getElementById('city').value = user.city || '';
+        document.getElementById('language').value = user.language || 'en';
+        document.getElementById('address').value = user.address || '';
+        document.getElementById('currency').value = user.currency || 'TZS';
+        document.getElementById('memberSince').value = user.createdAt ? new Date(user.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : '—';
+    }
+
+    function captureOriginal() {
+        state.originalData = {
+            fullName: document.getElementById('fullName').value,
+            username: document.getElementById('username').value,
+            dateOfBirth: document.getElementById('dateOfBirth').value,
+            country: document.getElementById('country').value,
+            city: document.getElementById('city').value,
+            language: document.getElementById('language').value,
+            address: document.getElementById('address').value,
+            currency: document.getElementById('currency').value,
+        };
+    }
+
+    /* ------------------------------------------------------------
+       STATUS PILLS
+       ------------------------------------------------------------ */
+    function paintStatusPills(user) {
+        var emailPill = document.getElementById('pillEmail');
+        emailPill.textContent = user.emailVerified ? '✉️ Verified' : '✉️ Unverified';
+        emailPill.className = 'stat-pill ' + (user.emailVerified ? 'badge-verified' : 'badge-pending');
+
+        var phonePill = document.getElementById('pillPhone');
+        phonePill.textContent = user.phoneVerified ? '📱 Verified' : '📱 Unverified';
+        phonePill.className = 'stat-pill ' + (user.phoneVerified ? 'badge-verified' : 'badge-pending');
+
+        var kycPill = document.getElementById('pillKyc');
+        var kycMap = {
+            NOT_SUBMITTED: ['⏳ Not Submitted', 'badge-pending'],
+            PENDING: ['⏳ KYC Pending', 'badge-pending'],
+            APPROVED: ['✓ KYC Approved', 'badge-verified'],
+            REJECTED: ['✕ KYC Rejected', 'badge-failed'],
+        };
+        var kv = kycMap[user.kycStatus] || ['—', ''];
+        kycPill.textContent = kv[0];
+        kycPill.className = 'stat-pill ' + kv[1];
+
+        var vipPill = document.getElementById('pillVip');
+        vipPill.textContent = '⭐ ' + (user.vipTier || 'BRONZE');
+        vipPill.className = 'stat-pill';
+    }
+
+    /* ------------------------------------------------------------
+       LOAD PROFILE
+       ------------------------------------------------------------ */
+    CephasGM.api.get('/users/me')
+        .then(function (res) {
+            if (!res.success || !res.data) return;
+            state.user = res.data;
+            paintUserBadge(res.data);
+            fillForm(res.data);
+            captureOriginal();
+            paintStatusPills(res.data);
+        })
+        .catch(function (err) {
+            console.error('Profile load failed:', err);
+        });
+
+    /* ------------------------------------------------------------
+       COPY REFERRAL CODE
+       ------------------------------------------------------------ */
+    document.getElementById('copyRef').addEventListener('click', function () {
+        var code = document.getElementById('profileRef').textContent;
+        if (!code || code === '—') return;
+        navigator.clipboard.writeText(code).then(function () {
+            var btn = document.getElementById('copyRef');
+            var orig = btn.textContent;
+            btn.textContent = 'Copied!';
+            setTimeout(function () { btn.textContent = orig; }, 1500);
+        });
+    });
+
+    /* ------------------------------------------------------------
+       SAVE CHANGES
+       ------------------------------------------------------------ */
+    document.getElementById('profileForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        var btn = document.getElementById('saveBtn');
+        var orig = btn.textContent;
+        btn.disabled = true;
+        btn.textContent = 'Saving…';
+
+        var body = {};
+        var fullName = document.getElementById('fullName').value.trim();
+        var username = document.getElementById('username').value.trim();
+        var dateOfBirth = document.getElementById('dateOfBirth').value;
+        var country = document.getElementById('country').value;
+        var city = document.getElementById('city').value.trim();
+        var language = document.getElementById('language').value;
+        var address = document.getElementById('address').value.trim();
+        var currency = document.getElementById('currency').value;
+
+        if (fullName && fullName !== state.originalData.fullName) body.fullName = fullName;
+        if (username && username !== state.originalData.username) body.username = username;
+        if (dateOfBirth && dateOfBirth !== state.originalData.dateOfBirth) body.dateOfBirth = new Date(dateOfBirth).toISOString();
+        if (country && country !== state.originalData.country) body.country = country;
+        if (city !== state.originalData.city) body.city = city;
+        if (language && language !== state.originalData.language) body.language = language;
+        if (address !== state.originalData.address) body.address = address;
+
+        /* Profile fields + settings separately */
+        var profilePromise = Object.keys(body).length > 0
+            ? CephasGM.api.patch('/users/me', body)
+            : Promise.resolve({ success: true });
+
+        var settingsBody = {};
+        if (currency !== state.originalData.currency) settingsBody.currency = currency;
+        if (language && language !== state.originalData.language) settingsBody.language = language;
+
+        var settingsPromise = Object.keys(settingsBody).length > 0
+            ? CephasGM.api.patch('/users/me/settings', settingsBody)
+            : Promise.resolve({ success: true });
+
+        Promise.all([profilePromise, settingsPromise])
+            .then(function () {
+                CephasGM.toast('Profile updated successfully', 'success');
+                captureOriginal();
+                /* Refresh user cache */
+                return CephasGM.api.me();
+            })
+            .then(function (res) {
+                if (res && res.success && res.data) {
+                    paintUserBadge(res.data);
+                    paintStatusPills(res.data);
+                }
+            })
+            .catch(function (err) {
+                var msg = err.message || (err.json && err.json.message) || 'Could not save changes';
+                CephasGM.toast(msg, 'error');
+            })
+            .then(function () {
+                btn.disabled = false;
+                btn.textContent = orig;
+            });
+    });
+
+    /* ------------------------------------------------------------
+       CANCEL — reset form
+       ------------------------------------------------------------ */
+    document.getElementById('cancelBtn').addEventListener('click', function () {
+        if (state.user) fillForm(state.user);
+        CephasGM.toast('Changes discarded', 'warning');
+    });
+
+    /* ------------------------------------------------------------
+       DEACTIVATE
+       ------------------------------------------------------------ */
+    document.getElementById('deactivateBtn').addEventListener('click', function () {
+        if (!confirm('Are you sure you want to deactivate your account? This cannot be undone.')) return;
+
+        var btn = this;
+        btn.disabled = true;
+        btn.textContent = 'Deactivating…';
+
+        CephasGM.api.delete('/users/me')
+            .then(function () {
+                CephasGM.toast('Account deactivated', 'success');
+                CephasGM.api.clearTokens();
+                setTimeout(function () {
+                    window.location.href = 'signin.html';
+                }, 1200);
+            })
+            .catch(function (err) {
+                var msg = err.message || (err.json && err.json.message) || 'Could not deactivate';
+                CephasGM.toast(msg, 'error');
+                btn.disabled = false;
+                btn.textContent = 'Deactivate Account';
+            });
+    });
+
+    /* ------------------------------------------------------------
+       MOBILE MENU
+       ------------------------------------------------------------ */
+    var mobileToggle = document.getElementById('mobileToggle');
+    var mobileMenu = document.getElementById('mobileMenu');
+    var mobileOpen = false;
+
+    mobileToggle.addEventListener('click', function () {
         mobileOpen = !mobileOpen;
-        mobileMenu.classList.toggle('active');
+        mobileMenu.classList.toggle('active', mobileOpen);
         document.body.style.overflow = mobileOpen ? 'hidden' : '';
     });
-    mobileMenu.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
+    mobileMenu.querySelectorAll('a').forEach(function (a) {
+        a.addEventListener('click', function () {
             mobileMenu.classList.remove('active');
             document.body.style.overflow = '';
             mobileOpen = false;
         });
     });
-    
-    // Profile form
-    document.getElementById('profileForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        // Mock save
-        document.getElementById('saveSuccess').classList.remove('hidden');
-        setTimeout(() => {
-            document.getElementById('saveSuccess').classList.add('hidden');
-        }, 3000);
-    });
-    
-    // PWA
+
     if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/sw.js')
-                .then(reg => console.log('SW registered'))
-                .catch(err => console.log('SW registration failed'));
+        window.addEventListener('load', function () {
+            navigator.serviceWorker.register('sw.js').catch(function () {});
         });
     }
-})();
+});
 </script>
 
 </body>
