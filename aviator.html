@@ -7,16 +7,15 @@
     <meta name="description" content="Aviator – The ultimate crash game on CephasGM GameZone">
     <title>Aviator | CephasGM GameZone</title>
 
+    <!-- PWA -->
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="js/api.js"></script>
-    <script src="js/auth-ui.js"></script>
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -42,6 +41,7 @@
             border: 1px solid rgba(255, 255, 255, 0.06);
         }
 
+        /* ---------- Buttons ---------- */
         .btn-primary {
             background: linear-gradient(135deg, #0055ff, #542bff);
             color: white;
@@ -73,17 +73,12 @@
             transition: all 0.25s ease;
             box-shadow: 0 4px 22px rgba(255, 154, 10, 0.32);
             letter-spacing: .01em;
-            animation: cashPulse 1.2s ease-in-out infinite;
         }
         .btn-danger:hover:not(:disabled) {
-            transform: translateY(-2px) scale(1.02);
+            transform: translateY(-2px);
             box-shadow: 0 8px 34px rgba(255, 154, 10, 0.5);
         }
-        .btn-danger:disabled { opacity: .55; cursor: not-allowed; animation: none; transform: none; }
-        @keyframes cashPulse {
-            0%, 100% { box-shadow: 0 4px 22px rgba(255, 154, 10, 0.32); }
-            50% { box-shadow: 0 4px 32px rgba(255, 154, 10, 0.6); }
-        }
+        .btn-danger:disabled { opacity: .55; cursor: not-allowed; transform: none; }
 
         .btn-primary.btn-cancel {
             background: linear-gradient(135deg, #2a2a3a, #1b1b26);
@@ -91,6 +86,7 @@
             color: #ff8098;
         }
 
+        /* ---------- Navbar ---------- */
         .navbar {
             position: fixed;
             top: 0; left: 0; right: 0;
@@ -149,6 +145,7 @@
             z-index: -1;
         }
 
+        /* ---------- Dropdowns ---------- */
         .dropdown { position: relative; display: inline-block; }
         .dropdown-menu {
             display: none;
@@ -184,8 +181,16 @@
             50% { opacity: .35; transform: scale(.7); }
         }
 
-        .game-card { padding: 12px; border-radius: 26px; }
-        @media (min-width: 640px) { .game-card { padding: 18px; } }
+        /* ============================================
+           AVIATOR GAME CARD
+           ============================================ */
+        .game-card {
+            padding: 12px;
+            border-radius: 26px;
+        }
+        @media (min-width: 640px) {
+            .game-card { padding: 18px; }
+        }
 
         .live-pill {
             display: inline-flex;
@@ -202,6 +207,7 @@
             white-space: nowrap;
         }
 
+        /* History strip */
         .history-strip {
             display: flex;
             align-items: center;
@@ -231,6 +237,7 @@
         .history-item.mid  { background: rgba(0, 224, 122, .14); color: #4dffa8; }
         .history-item.high { background: rgba(255, 204, 0, .15); color: #ffd93d; }
 
+        /* Canvas wrapper */
         .canvas-wrap {
             position: relative;
             width: 100%;
@@ -249,9 +256,14 @@
             width: 100%;
             height: 340px;
         }
-        @media (min-width: 640px) { #gameCanvas { height: 400px; } }
-        @media (max-width: 420px) { #gameCanvas { height: 240px; } }
+        @media (min-width: 640px) {
+            #gameCanvas { height: 400px; }
+        }
+        @media (max-width: 420px) {
+            #gameCanvas { height: 240px; }
+        }
 
+        /* Mute / Sound toggle button */
         .sound-btn {
             position: absolute;
             top: 12px;
@@ -279,6 +291,7 @@
         .sound-btn.muted { color: #ff5f7a; border-color: rgba(255,95,122,0.35); }
         .sound-btn svg { width: 18px; height: 18px; }
 
+        /* Waiting progress bar */
         .wait-bar {
             position: absolute;
             top: 0; left: 0; right: 0;
@@ -298,6 +311,7 @@
             box-shadow: 0 0 12px rgba(0, 255, 136, .45);
         }
 
+        /* Overlay: multiplier + status */
         .game-overlay {
             position: absolute;
             inset: 0;
@@ -354,6 +368,7 @@
             animation: shake .45s ease;
         }
 
+        /* ---------- Bet panel ---------- */
         .input-field {
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -372,7 +387,6 @@
             background: rgba(0, 85, 255, 0.06);
         }
         .input-field::placeholder { color: rgba(255,255,255,0.22); font-weight: 400; }
-        .input-field:disabled { opacity: 0.55; cursor: not-allowed; }
 
         .chip {
             padding: 6px 13px;
@@ -388,6 +402,7 @@
         .chip:hover { background: rgba(255,255,255,0.11); color: #fff; }
         .chip:active { transform: scale(.94); }
 
+        /* ---------- Toasts ---------- */
         .toast {
             position: fixed;
             left: 50%;
@@ -409,60 +424,17 @@
         .toast.show { opacity: 1; transform: translate(-50%, 0) scale(1); }
         .toast-ok  { background: rgba(0,255,136,0.12); color: #7dffbe; box-shadow: 0 10px 36px rgba(0,255,136,0.16); }
         .toast-err { background: rgba(255,0,68,0.13); color: #ff97ab; box-shadow: 0 10px 36px rgba(255,0,68,0.18); }
-
-        /* User badge */
-        #userBar {
-            position: fixed;
-            top: 84px; right: 16px;
-            z-index: 999;
-            background: rgba(10,10,18,0.92);
-            backdrop-filter: blur(18px);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 999px;
-            padding: 8px 8px 8px 14px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-            display: none;
-            align-items: center;
-            gap: 10px;
-        }
-        #userBar .avatar {
-            width: 30px; height: 30px; border-radius: 50%;
-            background: linear-gradient(135deg,#0055ff,#542bff);
-            display: flex; align-items: center; justify-content: center;
-            font-weight: 800; font-size: 12px; flex-shrink: 0;
-        }
-        #userBar .info { display: flex; flex-direction: column; line-height: 1.1; max-width: 140px; }
-        #userBar .name { font-weight: 700; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        #userBar .contact { font-size: 10px; color: rgba(255,255,255,0.5); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        #inlineSignOut {
-            padding: 6px 14px; border-radius: 999px;
-            background: rgba(255,0,68,0.15);
-            border: 1px solid rgba(255,0,68,0.3);
-            color: #ff8098; font-size: 11px; font-weight: 700;
-            cursor: pointer; font-family: inherit; white-space: nowrap;
-        }
-        @media (max-width: 640px) {
-            #userBar { top: 76px; right: 8px; padding: 6px; }
-            #userBar .info { display: none; }
-        }
     </style>
 </head>
-<body data-requires-auth>
+<body>
 
-<!-- User badge (top-right) -->
-<div id="userBar">
-    <div class="avatar" id="userAvatar">U</div>
-    <div class="info">
-        <span class="name" id="userName">Loading…</span>
-        <span class="contact" id="userContact"></span>
-    </div>
-    <button id="inlineSignOut">Sign Out</button>
-</div>
-
-<!-- NAVBAR -->
+<!-- ==========================================
+     NAVBAR
+     ========================================== -->
 <nav class="navbar" id="navbar">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between">
+
             <a href="index.html" class="flex items-center space-x-2" title="Go to Homepage">
                 <span class="text-xl font-bold">
                     <span class="text-gradient">CephasGM</span>
@@ -470,6 +442,7 @@
                     <span class="text-white font-semibold">GameZone</span>
                 </span>
             </a>
+
             <div class="hidden lg:flex items-center space-x-1">
                 <div class="dropdown">
                     <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Info ▾</span>
@@ -482,21 +455,33 @@
                         <a href="cookies.html">Cookie Policy</a>
                     </div>
                 </div>
+
                 <div class="dropdown">
                     <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Account ▾</span>
                     <div class="dropdown-menu">
                         <a href="dashboard.html">Dashboard</a>
+                        <a href="profile.html">Profile</a>
                         <a href="wallet.html">Wallet</a>
                         <a href="deposit.html">Deposit</a>
                         <a href="withdraw.html">Withdraw</a>
                         <a href="transactions.html">Transactions</a>
                         <a href="bet-history.html">Bet History</a>
+                        <a href="bonuses.html">Bonuses</a>
                         <a href="kyc.html">KYC Verification</a>
                         <a href="settings.html">Settings</a>
+                        <a href="signin.html">Sign In</a>
+                        <a href="signup.html">Sign Up</a>
                     </div>
                 </div>
+
+                <a href="promotions.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Promotions</a>
                 <a href="sports.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Sports</a>
                 <a href="casino.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Casino</a>
+
+                <a href="live-betting.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 flex items-center space-x-1">
+                    <span class="live-dot"></span><span>Live</span>
+                </a>
+
                 <div class="dropdown">
                     <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Virtual ▾</span>
                     <div class="dropdown-menu">
@@ -504,14 +489,26 @@
                         <a href="virtual-horse-racing.html">Virtual Horse Racing</a>
                         <a href="virtual-car-racing.html">Virtual Car Racing</a>
                         <a href="virtual-netball.html">Virtual Netball</a>
+                        <a href="adventure-games.html">Adventure Games</a>
                         <a href="aviator.html">Aviator</a>
                     </div>
                 </div>
+
+                <div class="dropdown">
+                    <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Support ▾</span>
+                    <div class="dropdown-menu">
+                        <a href="support.html">Help Center</a>
+                        <a href="messages.html">Messages</a>
+                        <a href="notifications.html">Notifications</a>
+                        <a href="faq.html">FAQ</a>
+                        <a href="contact.html">Contact Us</a>
+                        <a href="responsible-gambling.html">Responsible Gambling</a>
+                        <a href="self-exclusion.html">Self-Exclusion</a>
+                    </div>
+                </div>
             </div>
-            <div class="flex items-center gap-3">
-                <a href="wallet.html" class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-bold">
-                    💰 <span id="navBalance">—</span>
-                </a>
+
+            <div class="flex items-center space-x-3">
                 <button id="mobileToggle" class="lg:hidden p-2 text-white/40 hover:text-white transition-colors">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
@@ -522,21 +519,72 @@
     </div>
 </nav>
 
+<!-- Mobile Menu -->
 <div id="mobileMenu" class="mobile-menu">
     <nav class="flex flex-col space-y-6">
         <a href="index.html" class="text-lg text-white/70 hover:text-white">Home</a>
-        <a href="dashboard.html" class="text-lg text-white/70 hover:text-white">Dashboard</a>
-        <a href="wallet.html" class="text-lg text-white/70 hover:text-white">Wallet</a>
-        <a href="deposit.html" class="text-lg text-white/70 hover:text-white">Deposit</a>
-        <a href="aviator.html" class="text-lg text-white/70 hover:text-white">Aviator</a>
-        <a href="virtual-football.html" class="text-lg text-white/70 hover:text-white">Virtual Football</a>
-        <a href="virtual-horse-racing.html" class="text-lg text-white/70 hover:text-white">Horse Racing</a>
-        <a href="virtual-car-racing.html" class="text-lg text-white/70 hover:text-white">Car Racing</a>
-        <a href="virtual-netball.html" class="text-lg text-white/70 hover:text-white">Netball</a>
+        <a href="sports.html" class="text-lg text-white/70 hover:text-white">Sports</a>
+        <a href="live-betting.html" class="text-lg text-white/70 hover:text-white">Live Betting</a>
+        <a href="casino.html" class="text-lg text-white/70 hover:text-white">Casino</a>
+        <a href="promotions.html" class="text-lg text-white/70 hover:text-white">Promotions</a>
+        <a href="bonuses.html" class="text-lg text-white/70 hover:text-white">Bonuses</a>
+        <a href="leaderboard.html" class="text-lg text-white/70 hover:text-white">Leaderboard</a>
+        <div class="border-t border-white/10 pt-4">
+            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Account</span>
+            <div class="grid grid-cols-2 gap-2 mt-2">
+                <a href="dashboard.html" class="text-sm text-white/50 hover:text-white">Dashboard</a>
+                <a href="profile.html" class="text-sm text-white/50 hover:text-white">Profile</a>
+                <a href="wallet.html" class="text-sm text-white/50 hover:text-white">Wallet</a>
+                <a href="deposit.html" class="text-sm text-white/50 hover:text-white">Deposit</a>
+                <a href="withdraw.html" class="text-sm text-white/50 hover:text-white">Withdraw</a>
+                <a href="transactions.html" class="text-sm text-white/50 hover:text-white">Transactions</a>
+                <a href="bet-history.html" class="text-sm text-white/50 hover:text-white">Bet History</a>
+                <a href="kyc.html" class="text-sm text-white/50 hover:text-white">KYC</a>
+                <a href="settings.html" class="text-sm text-white/50 hover:text-white">Settings</a>
+                <a href="signin.html" class="text-sm text-white/50 hover:text-white">Sign In</a>
+                <a href="signup.html" class="text-sm text-white/50 hover:text-white">Sign Up</a>
+            </div>
+        </div>
+        <div class="border-t border-white/10 pt-4">
+            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Virtual Games</span>
+            <div class="grid grid-cols-2 gap-2 mt-2">
+                <a href="virtual-football.html" class="text-sm text-white/50 hover:text-white">Virtual Football</a>
+                <a href="virtual-horse-racing.html" class="text-sm text-white/50 hover:text-white">Horse Racing</a>
+                <a href="virtual-car-racing.html" class="text-sm text-white/50 hover:text-white">Car Racing</a>
+                <a href="virtual-netball.html" class="text-sm text-white/50 hover:text-white">Netball</a>
+                <a href="adventure-games.html" class="text-sm text-white/50 hover:text-white">Adventure</a>
+                <a href="aviator.html" class="text-sm text-white/50 hover:text-white">Aviator</a>
+            </div>
+        </div>
+        <div class="border-t border-white/10 pt-4">
+            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Support</span>
+            <div class="grid grid-cols-2 gap-2 mt-2">
+                <a href="support.html" class="text-sm text-white/50 hover:text-white">Help Center</a>
+                <a href="messages.html" class="text-sm text-white/50 hover:text-white">Messages</a>
+                <a href="notifications.html" class="text-sm text-white/50 hover:text-white">Notifications</a>
+                <a href="faq.html" class="text-sm text-white/50 hover:text-white">FAQ</a>
+                <a href="contact.html" class="text-sm text-white/50 hover:text-white">Contact</a>
+                <a href="responsible-gambling.html" class="text-sm text-white/50 hover:text-white">Responsible</a>
+                <a href="self-exclusion.html" class="text-sm text-white/50 hover:text-white">Self-Exclusion</a>
+            </div>
+        </div>
+        <div class="border-t border-white/10 pt-4">
+            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Information</span>
+            <div class="grid grid-cols-2 gap-2 mt-2">
+                <a href="about.html" class="text-sm text-white/50 hover:text-white">About</a>
+                <a href="vip.html" class="text-sm text-white/50 hover:text-white">VIP</a>
+                <a href="referrals.html" class="text-sm text-white/50 hover:text-white">Referrals</a>
+                <a href="privacy.html" class="text-sm text-white/50 hover:text-white">Privacy</a>
+                <a href="terms.html" class="text-sm text-white/50 hover:text-white">Terms</a>
+                <a href="cookies.html" class="text-sm text-white/50 hover:text-white">Cookies</a>
+            </div>
+        </div>
     </nav>
 </div>
 
-<!-- MAIN -->
+<!-- ==========================================
+     AVIATOR GAME CONTENT
+     ========================================== -->
 <div class="page-background pt-20 sm:pt-24 pb-12 px-3 sm:px-4">
     <div class="max-w-6xl mx-auto relative z-10">
 
@@ -551,7 +599,7 @@
 
         <div class="grid lg:grid-cols-3 gap-5">
 
-            <!-- GAME AREA -->
+            <!-- ============ GAME AREA ============ -->
             <div class="lg:col-span-2">
                 <div class="glass game-card">
 
@@ -559,7 +607,7 @@
                         <div class="flex items-center gap-2 shrink-0">
                             <span class="live-pill"><span class="live-dot"></span>LIVE</span>
                             <span class="text-[11px] text-white/25 hidden sm:inline font-medium">
-                                Round #<span id="roundId">—</span>
+                                Round #<span id="roundId">1024</span>
                             </span>
                         </div>
                         <div id="historyContainer" class="history-strip"></div>
@@ -568,12 +616,15 @@
                     <div class="canvas-wrap is-waiting" id="canvasWrap">
                         <div class="wait-bar"><div id="waitBar"></div></div>
 
+                        <!-- SOUND TOGGLE BUTTON -->
                         <button id="soundToggle" class="sound-btn" title="Toggle sound" aria-label="Toggle sound">
+                            <!-- Speaker ON icon -->
                             <svg id="soundOnIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
                                 <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
                                 <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
                             </svg>
+                            <!-- Speaker OFF icon (hidden by default) -->
                             <svg id="soundOffIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
                                 <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
                                 <line x1="23" y1="9" x2="17" y2="15"/>
@@ -585,14 +636,14 @@
 
                         <div class="game-overlay">
                             <div id="multiplierDisplay" class="multiplier-display">1.00x</div>
-                            <div id="statusText" class="status-text">Connecting…</div>
+                            <div id="statusText" class="status-text">Place your bet</div>
                         </div>
                     </div>
 
                 </div>
             </div>
 
-            <!-- BET PANEL -->
+            <!-- ============ BETTING PANEL ============ -->
             <div>
                 <div class="glass rounded-3xl p-5 lg:sticky lg:top-24">
                     <h3 class="text-base font-bold mb-5 flex items-center gap-2">
@@ -603,12 +654,12 @@
                     <div class="space-y-4">
 
                         <div>
-                            <label class="text-[11px] uppercase tracking-wider text-white/40 ml-1">Bet Amount (<span id="currLabel">TZS</span>)</label>
-                            <input type="number" id="stakeInput" class="input-field mt-1.5" value="1000" min="500" step="100">
+                            <label class="text-[11px] uppercase tracking-wider text-white/40 ml-1">Bet Amount ($)</label>
+                            <input type="number" id="stakeInput" class="input-field mt-1.5" value="10.00" min="0.10" step="0.10">
                             <div class="flex gap-2 mt-2.5">
-                                <button type="button" class="chip" data-add="500">+500</button>
-                                <button type="button" class="chip" data-add="1000">+1K</button>
-                                <button type="button" class="chip" data-add="5000">+5K</button>
+                                <button type="button" class="chip" data-add="5">+5</button>
+                                <button type="button" class="chip" data-add="10">+10</button>
+                                <button type="button" class="chip" data-add="50">+50</button>
                                 <button type="button" class="chip" data-reset="1">Reset</button>
                             </div>
                         </div>
@@ -625,10 +676,6 @@
 
                         <div id="betStatus" class="text-xs text-center text-white/40 min-h-[16px]"></div>
 
-                        <div class="pt-2 border-t border-white/5 text-[10px] text-white/35 leading-relaxed">
-                            Bets are locked at takeoff. Cash out any time before the round ends. Auto cash-out secures your winnings automatically.
-                        </div>
-
                     </div>
                 </div>
             </div>
@@ -637,29 +684,75 @@
     </div>
 </div>
 
-<!-- FOOTER -->
+<!-- ==========================================
+     FOOTER
+     ========================================== -->
 <footer class="bg-[#0a0a12] border-t border-white/5 py-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center text-xs text-white/20">
-            <p>Copyright © 2026 Cephas GM | Innovating for Tomorrow</p>
-            <p class="mt-2">18+ | Play Responsibly</p>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div class="col-span-2 md:col-span-1">
+                <div class="text-lg font-bold mb-3">
+                    <span class="text-gradient">CephasGM</span>
+                    <span class="text-white font-light">|</span>
+                    <span class="text-white font-semibold">GameZone</span>
+                </div>
+                <p class="text-sm text-white/30 leading-relaxed">
+                    Premium online betting platform for sports, casino, and virtual games.
+                </p>
+            </div>
+            <div>
+                <h4 class="text-sm font-semibold text-white/40 mb-3">Quick Links</h4>
+                <ul class="space-y-2">
+                    <li><a href="sports.html" class="footer-link">Sports</a></li>
+                    <li><a href="live-betting.html" class="footer-link">Live Betting</a></li>
+                    <li><a href="casino.html" class="footer-link">Casino</a></li>
+                    <li><a href="promotions.html" class="footer-link">Promotions</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-sm font-semibold text-white/40 mb-3">Support</h4>
+                <ul class="space-y-2">
+                    <li><a href="support.html" class="footer-link">Help Center</a></li>
+                    <li><a href="contact.html" class="footer-link">Contact</a></li>
+                    <li><a href="faq.html" class="footer-link">FAQ</a></li>
+                    <li><a href="responsible-gambling.html" class="footer-link">Responsible Gambling</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-sm font-semibold text-white/40 mb-3">Legal</h4>
+                <ul class="space-y-2">
+                    <li><a href="terms.html" class="footer-link">Terms</a></li>
+                    <li><a href="privacy.html" class="footer-link">Privacy</a></li>
+                    <li><a href="cookies.html" class="footer-link">Cookies</a></li>
+                    <li><a href="kyc.html" class="footer-link">KYC</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="mt-8 pt-6 border-t border-white/5 flex flex-col md:flex-row items-center justify-between text-xs text-white/20">
+            <p>Copyright © 2025 Cephas GM | Innovating for Tomorrow</p>
+            <p class="mt-2 md:mt-0">18+ | Play Responsibly</p>
         </div>
     </div>
 </footer>
 
 <!-- ==========================================
-     SOUND ENGINE (unchanged)
+     SOUND ENGINE (Web Audio API – fully synthesized)
      ========================================== -->
 <script>
 const SoundEngine = (function () {
     'use strict';
+
     let ctx = null;
     let masterGain = null;
     let enabled = true;
     let unlocked = false;
-    let engine = null;
+    let engine = null;          // persistent flight-engine nodes
+    let lastTickSecond = -1;
     let lastMilestone = 0;
 
+    /* --------------------------------------------------------------
+       INIT / UNLOCK
+       -------------------------------------------------------------- */
     function init() {
         if (ctx) return;
         try {
@@ -669,15 +762,24 @@ const SoundEngine = (function () {
             masterGain = ctx.createGain();
             masterGain.gain.value = enabled ? 0.5 : 0;
             masterGain.connect(ctx.destination);
-        } catch (e) {}
+        } catch (e) {
+            console.warn('Audio init failed', e);
+        }
     }
+
     function unlock() {
         init();
         if (!ctx) return;
-        if (ctx.state === 'suspended') ctx.resume().catch(() => {});
+        if (ctx.state === 'suspended') {
+            ctx.resume().catch(() => {});
+        }
         unlocked = true;
     }
-    function isReady() { return enabled && ctx && unlocked && ctx.state === 'running'; }
+
+    function isReady() {
+        return enabled && ctx && unlocked && ctx.state === 'running';
+    }
+
     function setEnabled(v) {
         enabled = !!v;
         if (masterGain && ctx) {
@@ -686,6 +788,10 @@ const SoundEngine = (function () {
             masterGain.gain.setTargetAtTime(enabled ? 0.5 : 0.0001, t, 0.04);
         }
     }
+
+    /* --------------------------------------------------------------
+       HELPERS
+       -------------------------------------------------------------- */
     function makeNoise(duration) {
         const len = Math.floor(ctx.sampleRate * duration);
         const buf = ctx.createBuffer(1, len, ctx.sampleRate);
@@ -693,70 +799,87 @@ const SoundEngine = (function () {
         for (let i = 0; i < len; i++) data[i] = Math.random() * 2 - 1;
         return buf;
     }
+
+    /* --------------------------------------------------------------
+       SHORT SFX
+       -------------------------------------------------------------- */
     function playBet() {
         if (!isReady()) return;
         const t = ctx.currentTime;
-        const o = ctx.createOscillator();
-        const g = ctx.createGain();
-        o.type = 'sine';
-        o.frequency.setValueAtTime(880, t);
-        o.frequency.exponentialRampToValueAtTime(1500, t + 0.07);
+        const osc = ctx.createOscillator();
+        const g   = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(880, t);
+        osc.frequency.exponentialRampToValueAtTime(1500, t + 0.07);
         g.gain.setValueAtTime(0, t);
         g.gain.linearRampToValueAtTime(0.24, t + 0.008);
         g.gain.exponentialRampToValueAtTime(0.001, t + 0.14);
-        o.connect(g).connect(masterGain);
-        o.start(t); o.stop(t + 0.16);
+        osc.connect(g).connect(masterGain);
+        osc.start(t);
+        osc.stop(t + 0.16);
     }
+
     function playCancel() {
         if (!isReady()) return;
         const t = ctx.currentTime;
-        const o = ctx.createOscillator();
-        const g = ctx.createGain();
-        o.type = 'sine';
-        o.frequency.setValueAtTime(700, t);
-        o.frequency.exponentialRampToValueAtTime(320, t + 0.12);
+        const osc = ctx.createOscillator();
+        const g   = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(700, t);
+        osc.frequency.exponentialRampToValueAtTime(320, t + 0.12);
         g.gain.setValueAtTime(0, t);
         g.gain.linearRampToValueAtTime(0.2, t + 0.008);
         g.gain.exponentialRampToValueAtTime(0.001, t + 0.17);
-        o.connect(g).connect(masterGain);
-        o.start(t); o.stop(t + 0.18);
+        osc.connect(g).connect(masterGain);
+        osc.start(t);
+        osc.stop(t + 0.18);
     }
+
     function playTick() {
         if (!isReady()) return;
         const t = ctx.currentTime;
-        const o = ctx.createOscillator();
-        const g = ctx.createGain();
-        o.type = 'triangle';
-        o.frequency.setValueAtTime(1300, t);
+        const osc = ctx.createOscillator();
+        const g   = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(1300, t);
         g.gain.setValueAtTime(0, t);
         g.gain.linearRampToValueAtTime(0.07, t + 0.004);
         g.gain.exponentialRampToValueAtTime(0.001, t + 0.06);
-        o.connect(g).connect(masterGain);
-        o.start(t); o.stop(t + 0.07);
+        osc.connect(g).connect(masterGain);
+        osc.start(t);
+        osc.stop(t + 0.07);
     }
+
     function playCountdownBeep(isFinal) {
         if (!isReady()) return;
         const t = ctx.currentTime;
-        const o = ctx.createOscillator();
-        const g = ctx.createGain();
-        o.type = 'sine';
-        o.frequency.value = isFinal ? 1320 : 780;
+        const osc = ctx.createOscillator();
+        const g   = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.value = isFinal ? 1320 : 780;
         const dur = isFinal ? 0.22 : 0.11;
         g.gain.setValueAtTime(0, t);
         g.gain.linearRampToValueAtTime(0.14, t + 0.01);
         g.gain.exponentialRampToValueAtTime(0.001, t + dur);
-        o.connect(g).connect(masterGain);
-        o.start(t); o.stop(t + dur + 0.02);
+        osc.connect(g).connect(masterGain);
+        osc.start(t);
+        osc.stop(t + dur + 0.02);
     }
+
+    /* --------------------------------------------------------------
+       TAKEOFF WHOOSH
+       -------------------------------------------------------------- */
     function playTakeoff() {
         if (!isReady()) return;
         const t = ctx.currentTime;
-        const o = ctx.createOscillator();
-        const g = ctx.createGain();
+
+        // Sweeping saw
+        const osc = ctx.createOscillator();
+        const g   = ctx.createGain();
         const flt = ctx.createBiquadFilter();
-        o.type = 'sawtooth';
-        o.frequency.setValueAtTime(90, t);
-        o.frequency.exponentialRampToValueAtTime(620, t + 0.5);
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(90, t);
+        osc.frequency.exponentialRampToValueAtTime(620, t + 0.5);
         flt.type = 'lowpass';
         flt.frequency.setValueAtTime(220, t);
         flt.frequency.exponentialRampToValueAtTime(2800, t + 0.5);
@@ -765,8 +888,11 @@ const SoundEngine = (function () {
         g.gain.linearRampToValueAtTime(0.16, t + 0.05);
         g.gain.setValueAtTime(0.16, t + 0.42);
         g.gain.exponentialRampToValueAtTime(0.001, t + 0.72);
-        o.connect(flt).connect(g).connect(masterGain);
-        o.start(t); o.stop(t + 0.78);
+        osc.connect(flt).connect(g).connect(masterGain);
+        osc.start(t);
+        osc.stop(t + 0.78);
+
+        // Noise whoosh
         const noise = ctx.createBufferSource();
         noise.buffer = makeNoise(0.7);
         const nf = ctx.createBiquadFilter();
@@ -779,46 +905,68 @@ const SoundEngine = (function () {
         ng.gain.linearRampToValueAtTime(0.13, t + 0.06);
         ng.gain.exponentialRampToValueAtTime(0.001, t + 0.62);
         noise.connect(nf).connect(ng).connect(masterGain);
-        noise.start(t); noise.stop(t + 0.68);
+        noise.start(t);
+        noise.stop(t + 0.68);
     }
+
+    /* --------------------------------------------------------------
+       PERSISTENT FLIGHT ENGINE
+       -------------------------------------------------------------- */
     function startEngine() {
         if (!isReady()) return;
         stopEngine();
         const t = ctx.currentTime;
+
         engine = {
-            osc1: ctx.createOscillator(), osc2: ctx.createOscillator(), osc3: ctx.createOscillator(),
-            gain: ctx.createGain(), filter: ctx.createBiquadFilter()
+            osc1: ctx.createOscillator(),
+            osc2: ctx.createOscillator(),
+            osc3: ctx.createOscillator(),
+            gain: ctx.createGain(),
+            filter: ctx.createBiquadFilter()
         };
+
         engine.osc1.type = 'sawtooth';
         engine.osc2.type = 'sawtooth';
         engine.osc3.type = 'triangle';
+
         engine.osc1.frequency.value = 72;
         engine.osc2.frequency.value = 72.6;
         engine.osc3.frequency.value = 145;
+
         engine.filter.type = 'lowpass';
         engine.filter.frequency.value = 420;
         engine.filter.Q.value = 5;
+
         engine.gain.gain.setValueAtTime(0.0001, t);
         engine.gain.gain.linearRampToValueAtTime(0.075, t + 0.35);
+
         engine.osc1.connect(engine.filter);
         engine.osc2.connect(engine.filter);
         engine.osc3.connect(engine.filter);
         engine.filter.connect(engine.gain).connect(masterGain);
+
         engine.osc1.start(t);
         engine.osc2.start(t);
         engine.osc3.start(t);
     }
-    function updateEngine(multiplier) {
+
+    function updateEngine(multiplier, dt) {
         if (!engine || !ctx) return;
         const t = ctx.currentTime;
         const m = Math.min(multiplier, 40);
-        const base = 72 + m * 15;
+
+        const base   = 72 + m * 15;
         const cutoff = Math.min(420 + m * 220, 7000);
+
         engine.osc1.frequency.setTargetAtTime(base, t, 0.08);
         engine.osc2.frequency.setTargetAtTime(base * 1.007, t, 0.08);
         engine.osc3.frequency.setTargetAtTime(base * 2, t, 0.08);
         engine.filter.frequency.setTargetAtTime(cutoff, t, 0.1);
-        engine.gain.gain.setTargetAtTime(0.075 + Math.min(m * 0.0035, 0.06), t, 0.12);
+        engine.gain.gain.setTargetAtTime(
+            0.075 + Math.min(m * 0.0035, 0.06), t, 0.12
+        );
+
+        /* Milestone ticks – rising pitch each threshold */
         const milestones = [1.5, 2, 3, 5, 10, 20, 50, 100];
         for (let i = 0; i < milestones.length; i++) {
             const ms = milestones[i];
@@ -828,23 +976,27 @@ const SoundEngine = (function () {
             }
         }
     }
+
     function playMilestoneTick(ms) {
         if (!isReady()) return;
         const t = ctx.currentTime;
-        const o = ctx.createOscillator();
-        const g = ctx.createGain();
-        o.type = 'sine';
-        o.frequency.value = 900 + Math.log10(ms + 1) * 500;
+        const osc = ctx.createOscillator();
+        const g   = ctx.createGain();
+        osc.type = 'sine';
+        const freq = 900 + Math.log10(ms + 1) * 500;
+        osc.frequency.value = freq;
         g.gain.setValueAtTime(0, t);
         g.gain.linearRampToValueAtTime(0.09, t + 0.006);
         g.gain.exponentialRampToValueAtTime(0.001, t + 0.1);
-        o.connect(g).connect(masterGain);
-        o.start(t); o.stop(t + 0.12);
+        osc.connect(g).connect(masterGain);
+        osc.start(t);
+        osc.stop(t + 0.12);
     }
+
     function stopEngine() {
         if (!engine || !ctx) { engine = null; return; }
-        const t = ctx.currentTime;
-        const e = engine;
+        const t  = ctx.currentTime;
+        const e  = engine;
         engine = null;
         try {
             e.gain.gain.cancelScheduledValues(t);
@@ -856,21 +1008,30 @@ const SoundEngine = (function () {
             try { e.osc3.stop(); } catch (err) {}
         }, 320);
     }
+
+    /* --------------------------------------------------------------
+       CASH OUT (success chime)
+       -------------------------------------------------------------- */
     function playCashout() {
         if (!isReady()) return;
         const t = ctx.currentTime;
-        [880, 1174.66, 1567.98].forEach((f, i) => {
-            const o = ctx.createOscillator();
-            const g = ctx.createGain();
-            o.type = 'sine';
-            o.frequency.value = f;
-            const s = t + i * 0.075;
-            g.gain.setValueAtTime(0, s);
-            g.gain.linearRampToValueAtTime(0.22, s + 0.01);
-            g.gain.exponentialRampToValueAtTime(0.001, s + 0.5);
-            o.connect(g).connect(masterGain);
-            o.start(s); o.stop(s + 0.55);
+
+        const notes = [880, 1174.66, 1567.98];    // A5 – D6 – G6
+        notes.forEach((f, i) => {
+            const osc = ctx.createOscillator();
+            const g   = ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.value = f;
+            const start = t + i * 0.075;
+            g.gain.setValueAtTime(0, start);
+            g.gain.linearRampToValueAtTime(0.22, start + 0.01);
+            g.gain.exponentialRampToValueAtTime(0.001, start + 0.5);
+            osc.connect(g).connect(masterGain);
+            osc.start(start);
+            osc.stop(start + 0.55);
         });
+
+        // Shimmer sparkle
         const sh = ctx.createOscillator();
         const sg = ctx.createGain();
         sh.type = 'triangle';
@@ -879,13 +1040,20 @@ const SoundEngine = (function () {
         sg.gain.setValueAtTime(0.07, t);
         sg.gain.exponentialRampToValueAtTime(0.001, t + 0.42);
         sh.connect(sg).connect(masterGain);
-        sh.start(t); sh.stop(t + 0.46);
+        sh.start(t);
+        sh.stop(t + 0.46);
     }
+
+    /* --------------------------------------------------------------
+       CRASH (explosion + thud + metallic clang)
+       -------------------------------------------------------------- */
     function playCrash() {
         if (!isReady()) return;
         const t = ctx.currentTime;
+
+        // Low thud
         const sub = ctx.createOscillator();
-        const sg = ctx.createGain();
+        const sg  = ctx.createGain();
         sub.type = 'sine';
         sub.frequency.setValueAtTime(190, t);
         sub.frequency.exponentialRampToValueAtTime(38, t + 0.55);
@@ -893,7 +1061,10 @@ const SoundEngine = (function () {
         sg.gain.linearRampToValueAtTime(0.42, t + 0.012);
         sg.gain.exponentialRampToValueAtTime(0.001, t + 0.65);
         sub.connect(sg).connect(masterGain);
-        sub.start(t); sub.stop(t + 0.7);
+        sub.start(t);
+        sub.stop(t + 0.7);
+
+        // Noise explosion
         const noise = ctx.createBufferSource();
         noise.buffer = makeNoise(0.9);
         const nf = ctx.createBiquadFilter();
@@ -904,51 +1075,63 @@ const SoundEngine = (function () {
         ng.gain.setValueAtTime(0.32, t);
         ng.gain.exponentialRampToValueAtTime(0.001, t + 0.75);
         noise.connect(nf).connect(ng).connect(masterGain);
-        noise.start(t); noise.stop(t + 0.8);
+        noise.start(t);
+        noise.stop(t + 0.8);
+
+        // Metallic clang partials
         [220, 330, 440, 660].forEach(f => {
-            const o = ctx.createOscillator();
+            const o  = ctx.createOscillator();
             const og = ctx.createGain();
             o.type = 'square';
             o.frequency.value = f;
             og.gain.setValueAtTime(0.05, t);
             og.gain.exponentialRampToValueAtTime(0.001, t + 0.3);
             o.connect(og).connect(masterGain);
-            o.start(t); o.stop(t + 0.34);
+            o.start(t);
+            o.stop(t + 0.34);
         });
     }
-    function resetRound() { lastMilestone = 0; }
+
+    /* --------------------------------------------------------------
+       RESET (per round)
+       -------------------------------------------------------------- */
+    function resetRound() {
+        lastMilestone = 0;
+    }
 
     return {
-        unlock, setEnabled, isEnabled: () => enabled,
-        playBet, playCancel, playTick, playCountdownBeep,
-        playTakeoff, startEngine, updateEngine, stopEngine,
-        playCashout, playCrash, resetRound
+        unlock,
+        setEnabled,
+        isEnabled: () => enabled,
+        playBet,
+        playCancel,
+        playTick,
+        playCountdownBeep,
+        playTakeoff,
+        startEngine,
+        updateEngine,
+        stopEngine,
+        playCashout,
+        playCrash,
+        resetRound
     };
 })();
 </script>
 
 <!-- ==========================================
-     GAME ENGINE — Backend-Synced
+     GAME ENGINE
      ========================================== -->
 <script>
 (function () {
     'use strict';
 
     /* ============================================================
-       AUTH CHECK
-       ============================================================ */
-    if (!window.CephasGM || !CephasGM.api) return;
-    if (!CephasGM.api.isLoggedIn()) {
-        window.location.href = 'signin.html';
-        return;
-    }
-
-    /* ============================================================
        MOBILE MENU
        ============================================================ */
     const mobileToggle = document.getElementById('mobileToggle');
-    const mobileMenu = document.getElementById('mobileMenu');
+    const mobileMenu   = document.getElementById('mobileMenu');
     let mobileOpen = false;
+
     mobileToggle.addEventListener('click', () => {
         mobileOpen = !mobileOpen;
         mobileMenu.classList.toggle('active', mobileOpen);
@@ -961,7 +1144,7 @@ const SoundEngine = (function () {
     }));
 
     /* ============================================================
-       AUDIO UNLOCK
+       AUDIO UNLOCK ON FIRST USER GESTURE
        ============================================================ */
     let audioUnlocked = false;
     function unlockAudioOnce() {
@@ -976,106 +1159,62 @@ const SoundEngine = (function () {
     window.addEventListener('keydown', unlockAudioOnce);
     window.addEventListener('touchstart', unlockAudioOnce, { passive: true });
 
-    const soundToggle = document.getElementById('soundToggle');
-    const soundOnIcon = document.getElementById('soundOnIcon');
-    const soundOffIcon = document.getElementById('soundOffIcon');
+    /* ============================================================
+       SOUND TOGGLE BUTTON
+       ============================================================ */
+    const soundToggle   = document.getElementById('soundToggle');
+    const soundOnIcon   = document.getElementById('soundOnIcon');
+    const soundOffIcon  = document.getElementById('soundOffIcon');
+
+    // Start unmuted; user gesture will unlock the AudioContext
     SoundEngine.setEnabled(true);
+    soundToggle.classList.toggle('muted', false);
+    soundOnIcon.style.display  = '';
+    soundOffIcon.style.display = 'none';
+
     soundToggle.addEventListener('click', (e) => {
         e.stopPropagation();
         unlockAudioOnce();
         const nowEnabled = !SoundEngine.isEnabled();
         SoundEngine.setEnabled(nowEnabled);
         soundToggle.classList.toggle('muted', !nowEnabled);
-        soundOnIcon.style.display = nowEnabled ? '' : 'none';
+        soundOnIcon.style.display  = nowEnabled ? '' : 'none';
         soundOffIcon.style.display = nowEnabled ? 'none' : '';
     });
 
     /* ============================================================
-       DOM
+       DOM REFERENCES
        ============================================================ */
-    const canvas = document.getElementById('gameCanvas');
-    const ctx = canvas.getContext('2d');
-    const multiplierDisplay = document.getElementById('multiplierDisplay');
-    const statusText = document.getElementById('statusText');
-    const placeBetBtn = document.getElementById('placeBetBtn');
-    const cashoutBtn = document.getElementById('cashoutBtn');
-    const stakeInput = document.getElementById('stakeInput');
-    const autoCashoutInput = document.getElementById('autoCashoutInput');
-    const betStatus = document.getElementById('betStatus');
-    const historyContainer = document.getElementById('historyContainer');
-    const waitBar = document.getElementById('waitBar');
-    const canvasWrap = document.getElementById('canvasWrap');
-    const roundIdEl = document.getElementById('roundId');
-    const navBalance = document.getElementById('navBalance');
-    const currLabel = document.getElementById('currLabel');
-
-    /* ============================================================
-       USER BADGE
-       ============================================================ */
-    function paintUserBadge(user) {
-        if (!user) return;
-        const name = user.fullName || user.username || 'Player';
-        const contact = user.email || user.phone || '';
-        const initial = name.charAt(0).toUpperCase();
-        document.getElementById('userAvatar').textContent = initial;
-        document.getElementById('userName').textContent = name;
-        document.getElementById('userContact').textContent = contact;
-        document.getElementById('userBar').style.display = 'flex';
-    }
-    const cachedUser = CephasGM.api.getUser();
-    if (cachedUser) paintUserBadge(cachedUser);
-
-    document.getElementById('inlineSignOut').addEventListener('click', function () {
-        const btn = this;
-        btn.disabled = true;
-        btn.textContent = 'Signing out…';
-        CephasGM.api.logout().catch(() => {}).then(() => {
-            CephasGM.api.clearTokens();
-            window.location.href = 'signin.html';
-        });
-    });
-
-    /* ============================================================
-       GAME STATE
-       ============================================================ */
-    const GAME_TYPE = 'AVIATOR';
-    const GROWTH_RATE = 0.18;
-    const BETTING_MS = 15000;
-    const ACTIVE_MS = 30000;
-
-    const gameState = {
-        phase: null,              // BETTING_OPEN | IN_PROGRESS | COMPLETED
-        roundId: null,
-        roundNumber: null,
-        roundStartedAt: 0,
-        crashPoint: null,
-        myBet: null,              // { reference, stake, auto, cashedOut }
-        balance: 0,
-        currency: 'TZS',
-        history: [],
-    };
-
-    let lastCountdownSecond = -1;
-    let lastFlightTickAt = 0;
-    let lastFrame = performance.now();
-    let gridShift = 0;
-    let particles = [];
-    let crashTime = 0;
+    const canvas             = document.getElementById('gameCanvas');
+    const ctx                = canvas.getContext('2d');
+    const multiplierDisplay  = document.getElementById('multiplierDisplay');
+    const statusText         = document.getElementById('statusText');
+    const placeBetBtn        = document.getElementById('placeBetBtn');
+    const cashoutBtn         = document.getElementById('cashoutBtn');
+    const stakeInput         = document.getElementById('stakeInput');
+    const autoCashoutInput   = document.getElementById('autoCashoutInput');
+    const betStatus          = document.getElementById('betStatus');
+    const historyContainer   = document.getElementById('historyContainer');
+    const waitBar            = document.getElementById('waitBar');
+    const canvasWrap         = document.getElementById('canvasWrap');
+    const roundIdEl          = document.getElementById('roundId');
 
     /* ============================================================
        CANVAS SETUP
        ============================================================ */
     let W = 0, H = 0;
+
     function resizeCanvas() {
         const rect = canvas.getBoundingClientRect();
         if (!rect.width || !rect.height) return;
         const dpr = Math.min(window.devicePixelRatio || 1, 2);
         W = rect.width;
         H = rect.height;
-        canvas.width = Math.round(W * dpr);
+        canvas.width  = Math.round(W * dpr);
         canvas.height = Math.round(H * dpr);
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
+
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
     window.addEventListener('orientationchange', () => setTimeout(resizeCanvas, 120));
@@ -1093,11 +1232,17 @@ const SoundEngine = (function () {
             b: small ? 30 : 46
         };
     }
-    function multToP(m) { return 1 - Math.exp(-(Math.max(m, 1) - 1) / 3.2); }
+
+    function multToP(m) {
+        return 1 - Math.exp(-(Math.max(m, 1) - 1) / 3.2);
+    }
+
     function pathPoint(p) {
         const pad = getPad();
-        const x0 = pad.l, x1 = W - pad.r;
-        const y0 = H - pad.b, y1 = pad.t;
+        const x0 = pad.l;
+        const x1 = W - pad.r;
+        const y0 = H - pad.b;
+        const y1 = pad.t;
         const cp = Math.max(0, p);
         return {
             x: x0 + (x1 - x0) * cp,
@@ -1106,213 +1251,127 @@ const SoundEngine = (function () {
     }
 
     /* ============================================================
-       HELPERS
+       GAME STATE
        ============================================================ */
-    function fmt(n) {
-        return parseFloat(n || 0).toLocaleString('en-US', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        });
-    }
+    const WAIT_MS        = 6000;
+    const CRASH_HOLD_MS  = 2600;
+    const GROWTH_RATE    = 0.18;
 
-    function toast(message, type) {
-        const el = document.createElement('div');
-        el.className = 'toast ' + (type === 'error' ? 'toast-err' : 'toast-ok');
-        el.textContent = message;
-        document.body.appendChild(el);
-        requestAnimationFrame(() => el.classList.add('show'));
-        setTimeout(() => {
-            el.classList.remove('show');
-            setTimeout(() => el.remove(), 400);
-        }, 2400);
-    }
+    let state        = 'waiting';
+    let stateStart   = performance.now();
+    let roundStart   = 0;
+    let crashTime    = 0;
+    let multiplier   = 1;
+    let crashPoint   = 2;
+    let bet          = null;
+    let gridShift    = 0;
+    let roundCounter = 1024;
+    let lastFrame    = performance.now();
+    let lastCountdownSecond = -1;
+    let lastFlightTickAt    = 0;
 
-    function currentMultiplier() {
-        if (!gameState.roundStartedAt) return 1;
-        const t = (Date.now() - gameState.roundStartedAt) / 1000;
-        const m = Math.exp(GROWTH_RATE * t);
-        return m > 5000 ? 5000 : m;
+    let particles = [];
+    const history = [];
+
+    /* ============================================================
+       CRASH POINT
+       ============================================================ */
+    function generateCrashPoint() {
+        const r = Math.random();
+        if (r < 0.04) return 1.00;
+        const raw = 0.96 / (1 - r);
+        return Math.min(Math.max(raw, 1.01), 60);
     }
 
     /* ============================================================
-       BALANCE
+       STATE TRANSITIONS
        ============================================================ */
-    function loadBalance() {
-        return CephasGM.api.wallet().then(res => {
-            if (res.success && res.data) {
-                gameState.balance = parseFloat(res.data.balance || 0);
-                gameState.currency = res.data.currency || 'TZS';
-                navBalance.textContent = fmt(gameState.balance) + ' ' + gameState.currency;
-                currLabel.textContent = gameState.currency;
-            }
-        }).catch(() => {});
+    function startWaiting(now) {
+        state      = 'waiting';
+        stateStart = now;
+        multiplier = 1;
+        bet        = null;
+        crashPoint = generateCrashPoint();
+
+        roundCounter++;
+        roundIdEl.textContent = roundCounter;
+
+        particles = [];
+        lastCountdownSecond = -1;
+        SoundEngine.resetRound();
+
+        multiplierDisplay.classList.remove('crashed');
+        multiplierDisplay.textContent = '1.00x';
+        statusText.classList.remove('crash');
+        statusText.textContent = 'Place your bet';
+
+        betStatus.textContent = '';
+        betStatus.className = 'text-xs text-center text-white/40 min-h-[16px]';
+
+        canvasWrap.classList.add('is-waiting');
+        updateButtons();
+    }
+
+    function startFlight(now) {
+        state       = 'flying';
+        stateStart  = now;
+        roundStart  = now;
+        multiplier  = 1;
+        lastFlightTickAt = now;
+
+        canvasWrap.classList.remove('is-waiting');
+        statusText.textContent = 'Flying…';
+        statusText.classList.remove('crash');
+        multiplierDisplay.classList.remove('crashed');
+        multiplierDisplay.textContent = '1.00x';
+
+        if (bet) {
+            betStatus.textContent = 'In flight — cash out anytime!';
+            betStatus.className = 'text-xs text-center text-white/50 min-h-[16px]';
+        }
+
+        // SOUND: takeoff + engine
+        SoundEngine.playTakeoff();
+        SoundEngine.startEngine();
+
+        updateButtons();
+    }
+
+    function crash(now) {
+        state      = 'crashed';
+        stateStart = now;
+        crashTime  = now;
+
+        // SOUND: crash + stop engine
+        SoundEngine.stopEngine();
+        SoundEngine.playCrash();
+
+        multiplierDisplay.classList.add('crashed');
+        multiplierDisplay.textContent = crashPoint.toFixed(2) + 'x';
+        statusText.textContent = 'FLEW AWAY!';
+        statusText.classList.add('crash');
+
+        history.unshift(crashPoint);
+        if (history.length > 14) history.pop();
+        renderHistory();
+
+        if (bet && !bet.cashedOut) {
+            betStatus.textContent = 'Crashed at ' + crashPoint.toFixed(2) + 'x — bet lost';
+            betStatus.className = 'text-xs text-center text-red-400 min-h-[16px]';
+            toast('💥 Flew away at ' + crashPoint.toFixed(2) + 'x', 'error');
+        }
+
+        updateButtons();
     }
 
     /* ============================================================
-       HISTORY
+       BET ACTIONS
        ============================================================ */
-    function loadHistory() {
-        CephasGM.api.get('/games/' + GAME_TYPE + '/history?limit=14')
-            .then(res => {
-                if (res.success && Array.isArray(res.data)) {
-                    gameState.history = res.data
-                        .map(r => (r.result && r.result.crashPoint != null) ? r.result.crashPoint : null)
-                        .filter(v => v !== null);
-                    renderHistory();
-                }
-            })
-            .catch(() => {});
-    }
-    function renderHistory() {
-        let html = '';
-        for (let i = 0; i < gameState.history.length; i++) {
-            const v = gameState.history[i];
-            const cls = v < 2 ? 'low' : (v < 10 ? 'mid' : 'high');
-            html += '<span class="history-item ' + cls + '">' + v.toFixed(2) + 'x</span>';
-        }
-        historyContainer.innerHTML = html;
-    }
-
-    /* ============================================================
-       PHASE CHANGE HANDLER
-       ============================================================ */
-    function onPhaseChange(oldPhase, newPhase, round) {
-        if (newPhase === 'BETTING_OPEN') {
-            canvasWrap.classList.add('is-waiting');
-            multiplierDisplay.classList.remove('crashed');
-            multiplierDisplay.textContent = '1.00x';
-            statusText.classList.remove('crash');
-            statusText.textContent = 'Place your bet';
-            betStatus.textContent = '';
-            betStatus.className = 'text-xs text-center text-white/40 min-h-[16px]';
-            lastCountdownSecond = -1;
-            SoundEngine.resetRound();
-            updateButtons();
-        }
-        else if (newPhase === 'IN_PROGRESS') {
-            canvasWrap.classList.remove('is-waiting');
-            statusText.textContent = 'Flying…';
-            statusText.classList.remove('crash');
-            multiplierDisplay.classList.remove('crashed');
-            particles = [];
-            SoundEngine.playTakeoff();
-            SoundEngine.startEngine();
-            lastFlightTickAt = performance.now();
-            if (gameState.myBet && !gameState.myBet.cashedOut) {
-                betStatus.textContent = 'In flight — cash out anytime!';
-                betStatus.className = 'text-xs text-center text-white/50 min-h-[16px]';
-            }
-            updateButtons();
-        }
-        else if (newPhase === 'COMPLETED') {
-            const cp = (round.result && round.result.crashPoint != null)
-                ? round.result.crashPoint
-                : 1.0;
-            gameState.crashPoint = cp;
-            crashTime = performance.now();
-
-            SoundEngine.stopEngine();
-            SoundEngine.playCrash();
-
-            multiplierDisplay.classList.add('crashed');
-            multiplierDisplay.textContent = cp.toFixed(2) + 'x';
-            statusText.textContent = 'FLEW AWAY!';
-            statusText.classList.add('crash');
-
-            if (gameState.myBet && !gameState.myBet.cashedOut) {
-                betStatus.textContent = 'Crashed at ' + cp.toFixed(2) + 'x — bet lost';
-                betStatus.className = 'text-xs text-center text-red-400 min-h-[16px]';
-                toast('💥 Flew away at ' + cp.toFixed(2) + 'x', 'error');
-            }
-            updateButtons();
-
-            /* Refresh balance to reflect settlement */
-            setTimeout(loadBalance, 900);
-        }
-    }
-
-    /* ============================================================
-       ROUND UPDATE (called from poll)
-       ============================================================ */
-    function handleRoundUpdate(round) {
-        if (!round || !round.roundNumber) return;
-
-        const isSameRound = gameState.roundId === round.id;
-
-        if (!isSameRound) {
-            /* New round: settle any leftover bet state */
-            gameState.roundId = round.id;
-            gameState.roundNumber = round.roundNumber;
-            gameState.crashPoint = null;
-            roundIdEl.textContent = round.roundNumber;
-            gameState.myBet = null;
-            particles = [];
-            loadHistory();
-        }
-
-        if (round.startedAt) {
-            gameState.roundStartedAt = new Date(round.startedAt).getTime();
-        }
-
-        const newPhase = round.status;
-        if (newPhase !== gameState.phase) {
-            onPhaseChange(gameState.phase, newPhase, round);
-            gameState.phase = newPhase;
-        }
-    }
-
-    /* ============================================================
-       POLL
-       ============================================================ */
-    function pollRound() {
-        CephasGM.api.get('/games/' + GAME_TYPE + '/current')
-            .then(res => {
-                if (res.success && res.data && res.data.roundNumber) {
-                    handleRoundUpdate(res.data);
-                }
-            })
-            .catch(err => {
-                console.debug('Poll failed:', err);
-            });
-    }
-
-    /* ============================================================
-       BUTTONS
-       ============================================================ */
-    function updateButtons() {
-        if (gameState.phase === 'BETTING_OPEN') {
-            placeBetBtn.classList.remove('hidden');
-            cashoutBtn.classList.add('hidden');
-            placeBetBtn.disabled = false;
-            if (gameState.myBet) {
-                placeBetBtn.textContent = 'Cancel Bet';
-                placeBetBtn.classList.add('btn-cancel');
-            } else {
-                placeBetBtn.textContent = 'Place Bet';
-                placeBetBtn.classList.remove('btn-cancel');
-            }
-        } else if (gameState.phase === 'IN_PROGRESS') {
-            placeBetBtn.classList.add('hidden');
-            placeBetBtn.classList.remove('btn-cancel');
-            if (gameState.myBet && !gameState.myBet.cashedOut) {
-                cashoutBtn.classList.remove('hidden');
-                cashoutBtn.disabled = false;
-            } else {
-                cashoutBtn.classList.add('hidden');
-            }
-        } else {
-            placeBetBtn.classList.add('hidden');
-            placeBetBtn.classList.remove('btn-cancel');
-            cashoutBtn.classList.add('hidden');
-        }
-    }
-
     function handlePlaceBet() {
-        if (gameState.phase !== 'BETTING_OPEN') return;
+        if (state !== 'waiting') return;
 
-        /* Cancel */
-        if (gameState.myBet) {
-            gameState.myBet = null;
+        if (bet) {
+            bet = null;
             betStatus.textContent = 'Bet cancelled';
             betStatus.className = 'text-xs text-center text-white/40 min-h-[16px]';
             SoundEngine.playCancel();
@@ -1321,146 +1380,147 @@ const SoundEngine = (function () {
         }
 
         const amount = parseFloat(stakeInput.value);
-        if (!amount || amount <= 0) {
-            toast('Enter a valid stake', 'error'); return;
-        }
-        if (amount < 500) {
-            toast('Minimum stake is 500', 'error'); return;
-        }
-        if (amount > gameState.balance) {
-            toast('Insufficient balance', 'error'); return;
+        if (!amount || amount <= 0 || isNaN(amount)) {
+            toast('Enter a valid bet amount', 'error');
+            return;
         }
 
         const auto = parseFloat(autoCashoutInput.value);
-        const autoTarget = (auto && auto > 1) ? auto : 0;
+        bet = {
+            amount: amount,
+            auto: (auto && auto > 1) ? auto : 0,
+            cashedOut: false
+        };
 
-        placeBetBtn.disabled = true;
-        placeBetBtn.textContent = 'Placing…';
-
-        CephasGM.api.post('/bets', {
-            type: 'VIRTUAL',
-            stake: amount,
-            gameType: GAME_TYPE,
-            roundId: gameState.roundId,
-            selections: [{
-                eventId: gameState.roundId,
-                eventName: 'Aviator Round #' + gameState.roundNumber,
-                market: 'MULTIPLIER',
-                selection: 'CASH_OUT',
-                odds: 1.0
-            }]
-        })
-        .then(res => {
-            if (res.success && res.data) {
-                gameState.myBet = {
-                    reference: res.data.reference,
-                    stake: parseFloat(res.data.stake),
-                    auto: autoTarget,
-                    cashedOut: false
-                };
-                betStatus.textContent = 'Bet placed — waiting for takeoff…';
-                betStatus.className = 'text-xs text-center text-white/50 min-h-[16px]';
-                SoundEngine.playBet();
-                toast('✅ Bet placed', 'success');
-                loadBalance();
-                updateButtons();
-            } else {
-                placeBetBtn.disabled = false;
-                placeBetBtn.textContent = 'Place Bet';
-                toast(res.message || 'Bet failed', 'error');
-            }
-        })
-        .catch(err => {
-            placeBetBtn.disabled = false;
-            placeBetBtn.textContent = 'Place Bet';
-            const msg = err.message || (err.json && err.json.message) || 'Bet failed';
-            toast(msg, 'error');
-        });
+        betStatus.textContent = 'Bet placed — waiting for takeoff…';
+        betStatus.className = 'text-xs text-center text-white/50 min-h-[16px]';
+        SoundEngine.playBet();
+        updateButtons();
     }
 
-    function handleCashout() {
-        if (!gameState.myBet || gameState.myBet.cashedOut) return;
-        if (gameState.phase !== 'IN_PROGRESS') return;
+    function cashOut(atMultiplier) {
+        if (!bet || bet.cashedOut || state !== 'flying') return;
 
-        const m = currentMultiplier();
-        gameState.myBet.cashedOut = true;
+        const m = atMultiplier || multiplier;
+        bet.cashedOut = true;
 
-        cashoutBtn.disabled = true;
-        cashoutBtn.textContent = 'Cashing out…';
+        const winnings = bet.amount * m;
+        betStatus.textContent = 'Cashed out at ' + m.toFixed(2) + 'x — +$' + winnings.toFixed(2);
+        betStatus.className = 'text-xs text-center text-green-400 min-h-[16px] font-semibold';
 
-        CephasGM.api.post('/bets/' + gameState.myBet.reference + '/cashout')
-            .then(res => {
-                if (res.success && res.data) {
-                    const payout = res.data.cashoutAmount || res.data.actualWin || '?';
-                    betStatus.textContent = '🎉 Cashed out at ' + m.toFixed(2) + 'x — +' + payout + ' ' + gameState.currency;
-                    betStatus.className = 'text-xs text-center text-green-400 min-h-[16px] font-semibold';
-                    SoundEngine.playCashout();
-                    toast('✅ Cashed out!', 'success');
-                    loadBalance();
-                } else {
-                    gameState.myBet.cashedOut = false;
-                    cashoutBtn.disabled = false;
-                    toast(res.message || 'Cashout failed', 'error');
-                }
-            })
-            .catch(err => {
-                gameState.myBet.cashedOut = false;
+        // SOUND: cash-out chime; keep engine running until crash
+        SoundEngine.playCashout();
+
+        toast('✅ Cashed out at ' + m.toFixed(2) + 'x — Won $' + winnings.toFixed(2), 'success');
+        updateButtons();
+    }
+
+    function updateButtons() {
+        if (state === 'waiting') {
+            placeBetBtn.classList.remove('hidden');
+            cashoutBtn.classList.add('hidden');
+            placeBetBtn.disabled = false;
+
+            if (bet) {
+                placeBetBtn.textContent = 'Cancel Bet';
+                placeBetBtn.classList.add('btn-cancel');
+            } else {
+                placeBetBtn.textContent = 'Place Bet';
+                placeBetBtn.classList.remove('btn-cancel');
+            }
+        } else if (state === 'flying') {
+            placeBetBtn.classList.add('hidden');
+            placeBetBtn.classList.remove('btn-cancel');
+
+            if (bet && !bet.cashedOut) {
+                cashoutBtn.classList.remove('hidden');
                 cashoutBtn.disabled = false;
-                const msg = err.message || (err.json && err.json.message) || 'Cashout failed';
-                toast(msg, 'error');
-            });
+                cashoutBtn.textContent = 'Cash Out $' + (bet.amount * multiplier).toFixed(2);
+            } else {
+                cashoutBtn.classList.add('hidden');
+            }
+        } else {
+            placeBetBtn.classList.add('hidden');
+            cashoutBtn.classList.add('hidden');
+            placeBetBtn.classList.remove('btn-cancel');
+        }
     }
 
     placeBetBtn.addEventListener('click', handlePlaceBet);
-    cashoutBtn.addEventListener('click', handleCashout);
+    cashoutBtn.addEventListener('click', () => cashOut());
 
     document.querySelectorAll('.chip').forEach(chip => {
         chip.addEventListener('click', () => {
             unlockAudioOnce();
             if (chip.dataset.reset) {
-                stakeInput.value = '1000';
+                stakeInput.value = '10.00';
                 return;
             }
             const add = parseFloat(chip.dataset.add) || 0;
             const cur = parseFloat(stakeInput.value) || 0;
-            stakeInput.value = cur + add;
+            stakeInput.value = (cur + add).toFixed(2);
         });
     });
 
     /* ============================================================
        TICK
        ============================================================ */
-    function tick(now) {
-        if (gameState.phase === 'BETTING_OPEN') {
-            const elapsedMs = Date.now() - gameState.roundStartedAt;
-            const remaining = Math.max(0, BETTING_MS - elapsedMs);
-            const frac = remaining / BETTING_MS;
+    function tick(now, dt) {
+        if (state === 'waiting') {
+            const remaining = WAIT_MS - (now - stateStart);
+
+            if (remaining <= 0) {
+                waitBar.style.transform = 'scaleX(0)';
+                startFlight(now);
+                return;
+            }
+
+            const frac = Math.max(0, remaining / WAIT_MS);
             waitBar.style.transform = 'scaleX(' + frac + ')';
+            statusText.textContent = 'Next round in ' + (remaining / 1000).toFixed(1) + 's';
+
+            // SOUND: countdown ticks each second
             const sec = Math.ceil(remaining / 1000);
-            statusText.textContent = 'Next round in ' + sec + 's';
             if (sec !== lastCountdownSecond && sec >= 0 && sec <= 6) {
                 lastCountdownSecond = sec;
-                SoundEngine.playCountdownBeep(sec === 0);
+                const isFinal = (sec === 0);
+                SoundEngine.playCountdownBeep(isFinal);
             }
         }
-        else if (gameState.phase === 'IN_PROGRESS') {
-            const m = currentMultiplier();
-            multiplierDisplay.textContent = m.toFixed(2) + 'x';
-            SoundEngine.updateEngine(m);
+        else if (state === 'flying') {
+            const t = (now - roundStart) / 1000;
+            multiplier = Math.exp(GROWTH_RATE * t);
+            if (multiplier > 5000) multiplier = 5000;
 
+            multiplierDisplay.textContent = multiplier.toFixed(2) + 'x';
+
+            // SOUND: engine pitch follows multiplier
+            SoundEngine.updateEngine(multiplier, dt);
+
+            // SOUND: fast flight tick every ~120ms
             if (now - lastFlightTickAt > 120) {
                 lastFlightTickAt = now;
                 SoundEngine.playTick();
             }
 
-            /* Auto cashout */
-            if (gameState.myBet && !gameState.myBet.cashedOut && gameState.myBet.auto && m >= gameState.myBet.auto) {
-                handleCashout();
+            // Auto cash-out
+            if (bet && !bet.cashedOut && bet.auto && multiplier >= bet.auto) {
+                cashOut(bet.auto);
             }
 
-            /* Update cashout label */
-            if (gameState.myBet && !gameState.myBet.cashedOut) {
-                cashoutBtn.textContent = 'CASH OUT ' + fmt(gameState.myBet.stake * m) + ' ' + gameState.currency;
+            if (bet && !bet.cashedOut) {
+                cashoutBtn.textContent = 'Cash Out $' + (bet.amount * multiplier).toFixed(2);
+            }
+
+            if (multiplier >= crashPoint) {
+                multiplier = crashPoint;
+                multiplierDisplay.textContent = crashPoint.toFixed(2) + 'x';
+                crash(now);
+            }
+        }
+        else if (state === 'crashed') {
+            if (now - stateStart > CRASH_HOLD_MS) {
+                startWaiting(now);
             }
         }
     }
@@ -1470,22 +1530,24 @@ const SoundEngine = (function () {
        ============================================================ */
     function render(now, dt) {
         ctx.clearRect(0, 0, W, H);
+
         drawBackground(now, dt);
 
-        let planePos = null, planeAngle = 0, planeAlpha = 1, planeColor = '#00ff88';
+        let planePos   = null;
+        let planeAngle = 0;
+        let planeAlpha = 1;
+        let planeColor = '#00ff88';
 
-        const flying = gameState.phase === 'IN_PROGRESS';
-        const crashed = gameState.phase === 'COMPLETED';
-        const m = crashed ? (gameState.crashPoint || 1) : (flying ? currentMultiplier() : 1);
-
-        if (flying || crashed) {
-            const p = multToP(m);
-            const curveP = Math.min(p, 1);
-            let planeP = p;
+        if (state === 'flying' || state === 'crashed') {
+            const crashed = (state === 'crashed');
+            const m       = crashed ? crashPoint : multiplier;
+            const p       = multToP(m);
+            const curveP  = Math.min(p, 1);
+            let planeP    = p;
 
             if (crashed) {
                 const ct = Math.min((now - crashTime) / 900, 1);
-                planeP = p + ct * 0.55;
+                planeP    = p + ct * 0.55;
                 planeAlpha = 1 - ct;
                 planeColor = '#ff2d55';
             }
@@ -1493,18 +1555,19 @@ const SoundEngine = (function () {
             drawCurve(curveP, crashed);
 
             if (planeAlpha > 0.01) {
-                const pt = pathPoint(Math.min(planeP, 1.55));
+                const pt  = pathPoint(Math.min(planeP, 1.55));
                 const pt0 = pathPoint(Math.max(0, Math.min(planeP, 1.55) - 0.03));
                 planeAngle = Math.atan2(pt.y - pt0.y, pt.x - pt0.x);
                 planeAngle = Math.max(-1.45, Math.min(0.25, planeAngle));
                 planePos = pt;
             }
 
-            if (flying) spawnTrail(pathPoint(curveP));
+            if (!crashed) spawnTrail(pathPoint(curveP));
+
         } else {
-            const pt = pathPoint(0);
+            const pt  = pathPoint(0);
             const bob = Math.sin(now / 380) * 3;
-            planePos = { x: pt.x + 8, y: pt.y - 14 + bob };
+            planePos   = { x: pt.x + 8, y: pt.y - 14 + bob };
             planeAngle = -0.14;
         }
 
@@ -1518,39 +1581,42 @@ const SoundEngine = (function () {
     }
 
     function drawBackground(now, dt) {
-        const pad = getPad();
+        const pad   = getPad();
         const baseY = H - pad.b;
 
-        if (gameState.phase === 'IN_PROGRESS') {
-            gridShift += dt * 0.055 * (1 + Math.min(currentMultiplier(), 20) * 0.12);
+        if (state === 'flying') {
+            gridShift += dt * 0.055 * (1 + Math.min(multiplier, 20) * 0.12);
         }
 
-        const gs = 46;
+        const gs  = 46;
         const off = gridShift % gs;
+
         ctx.save();
         ctx.strokeStyle = 'rgba(255,255,255,0.032)';
         ctx.lineWidth = 1;
         ctx.beginPath();
         for (let x = -off; x <= W + gs; x += gs) {
-            ctx.moveTo(x, 0); ctx.lineTo(x, baseY);
+            ctx.moveTo(x, 0);
+            ctx.lineTo(x, baseY);
         }
         for (let y = baseY; y >= -gs; y -= gs) {
-            ctx.moveTo(0, y); ctx.lineTo(W, y);
+            ctx.moveTo(0, y);
+            ctx.lineTo(W, y);
         }
         ctx.stroke();
         ctx.restore();
 
         const glow = ctx.createLinearGradient(0, baseY - 60, 0, baseY + 40);
-        glow.addColorStop(0, 'rgba(0, 85, 255, 0)');
+        glow.addColorStop(0,    'rgba(0, 85, 255, 0)');
         glow.addColorStop(0.55, 'rgba(0, 85, 255, 0.10)');
-        glow.addColorStop(1, 'rgba(0, 85, 255, 0)');
+        glow.addColorStop(1,    'rgba(0, 85, 255, 0)');
         ctx.fillStyle = glow;
         ctx.fillRect(0, baseY - 60, W, 100);
 
         const line = ctx.createLinearGradient(0, 0, W, 0);
-        line.addColorStop(0, 'rgba(0,255,136,0)');
+        line.addColorStop(0,   'rgba(0,255,136,0)');
         line.addColorStop(0.5, 'rgba(0,255,136,0.30)');
-        line.addColorStop(1, 'rgba(0,255,136,0)');
+        line.addColorStop(1,   'rgba(0,255,136,0)');
         ctx.strokeStyle = line;
         ctx.lineWidth = 1.4;
         ctx.beginPath();
@@ -1561,22 +1627,27 @@ const SoundEngine = (function () {
 
     function drawCurve(p, crashed) {
         if (p <= 0.0005) return;
-        const pad = getPad();
+
+        const pad   = getPad();
         const baseY = H - pad.b;
-        const col = crashed ? '255,45,85' : '0,255,136';
+        const col   = crashed ? '255,45,85' : '0,255,136';
+
         const steps = 72;
-        const pts = [];
-        for (let i = 0; i <= steps; i++) pts.push(pathPoint(p * i / steps));
+        const pts   = [];
+        for (let i = 0; i <= steps; i++) {
+            pts.push(pathPoint(p * i / steps));
+        }
 
         ctx.beginPath();
         ctx.moveTo(pts[0].x, baseY + 24);
         for (let i = 0; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
         ctx.lineTo(pts[pts.length - 1].x, baseY + 24);
         ctx.closePath();
+
         const fillGrad = ctx.createLinearGradient(0, pad.t, 0, baseY);
-        fillGrad.addColorStop(0, 'rgba(' + col + ',0.34)');
+        fillGrad.addColorStop(0,   'rgba(' + col + ',0.34)');
         fillGrad.addColorStop(0.6, 'rgba(' + col + ',0.12)');
-        fillGrad.addColorStop(1, 'rgba(' + col + ',0)');
+        fillGrad.addColorStop(1,   'rgba(' + col + ',0)');
         ctx.fillStyle = fillGrad;
         ctx.fill();
 
@@ -1585,11 +1656,11 @@ const SoundEngine = (function () {
             i ? ctx.lineTo(pts[i].x, pts[i].y) : ctx.moveTo(pts[i].x, pts[i].y);
         }
         ctx.lineJoin = 'round';
-        ctx.lineCap = 'round';
+        ctx.lineCap  = 'round';
         ctx.strokeStyle = 'rgb(' + col + ')';
-        ctx.lineWidth = W < 560 ? 3 : 3.6;
+        ctx.lineWidth   = W < 560 ? 3 : 3.6;
         ctx.shadowColor = 'rgba(' + col + ',0.85)';
-        ctx.shadowBlur = 18;
+        ctx.shadowBlur  = 18;
         ctx.stroke();
         ctx.shadowBlur = 0;
 
@@ -1641,9 +1712,10 @@ const SoundEngine = (function () {
         ctx.lineTo(-8, 16);
         ctx.lineTo(2, 5);
         ctx.closePath();
+
         ctx.shadowColor = color;
-        ctx.shadowBlur = 20;
-        ctx.fillStyle = color;
+        ctx.shadowBlur  = 20;
+        ctx.fillStyle   = color;
         ctx.fill();
 
         ctx.shadowBlur = 0;
@@ -1660,6 +1732,7 @@ const SoundEngine = (function () {
         ctx.arc(6, 0, 2.6, 0, Math.PI * 2);
         ctx.fillStyle = 'rgba(0,0,0,0.45)';
         ctx.fill();
+
         ctx.restore();
     }
 
@@ -1676,6 +1749,7 @@ const SoundEngine = (function () {
             });
         }
     }
+
     function updateParticles(dt) {
         const k = Math.min(dt / 16.67, 3);
         for (let i = particles.length - 1; i >= 0; i--) {
@@ -1686,6 +1760,7 @@ const SoundEngine = (function () {
             if (p.life <= 0) particles.splice(i, 1);
         }
     }
+
     function drawParticles() {
         for (let i = 0; i < particles.length; i++) {
             const p = particles[i];
@@ -1696,13 +1771,38 @@ const SoundEngine = (function () {
         }
     }
 
+    function renderHistory() {
+        let html = '';
+        for (let i = 0; i < history.length; i++) {
+            const v = history[i];
+            const cls = v < 2 ? 'low' : (v < 10 ? 'mid' : 'high');
+            html += '<span class="history-item ' + cls + '">' + v.toFixed(2) + 'x</span>';
+        }
+        historyContainer.innerHTML = html;
+    }
+
+    /* ============================================================
+       TOASTS
+       ============================================================ */
+    function toast(message, type) {
+        const el = document.createElement('div');
+        el.className = 'toast ' + (type === 'error' ? 'toast-err' : 'toast-ok');
+        el.textContent = message;
+        document.body.appendChild(el);
+        requestAnimationFrame(() => el.classList.add('show'));
+        setTimeout(() => {
+            el.classList.remove('show');
+            setTimeout(() => el.remove(), 400);
+        }, 2400);
+    }
+
     /* ============================================================
        MAIN LOOP
        ============================================================ */
     function loop(now) {
         const dt = Math.min(now - lastFrame, 80);
         lastFrame = now;
-        tick(now);
+        tick(now, dt);
         render(now, dt);
         requestAnimationFrame(loop);
     }
@@ -1710,15 +1810,18 @@ const SoundEngine = (function () {
     /* ============================================================
        BOOT
        ============================================================ */
-    loadBalance();
-    loadHistory();
-    pollRound();
-    setInterval(pollRound, 2000);
+    renderHistory();
+    startWaiting(performance.now());
     requestAnimationFrame(loop);
 
+    /* ============================================================
+       PWA
+       ============================================================ */
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-            navigator.serviceWorker.register('sw.js').catch(() => {});
+            navigator.serviceWorker.register('/sw.js')
+                .then(() => console.log('SW registered'))
+                .catch(() => console.log('SW registration failed'));
         });
     }
 })();
