@@ -10,7 +10,7 @@
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-status-bar-style" content="black-translucent">
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -123,7 +123,6 @@
 
         .page-content { flex: 1; display: flex; flex-direction: column; }
 
-        /* ---------- NAV LINK ---------- */
         .nav-link {
             padding: 8px 14px;
             font-size: 14px;
@@ -147,7 +146,6 @@
         }
         @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.4;transform:scale(0.8);} }
 
-        /* ---------- HERO ---------- */
         .hero-section {
             padding: 32px 0 24px;
             position: relative;
@@ -155,7 +153,6 @@
             border-bottom: 1px solid rgba(255,255,255,0.04);
         }
 
-        /* ---------- LIVE TICKER ---------- */
         .ticker-wrap {
             background: rgba(10,10,18,0.7);
             border-top: 1px solid rgba(255,255,255,0.05);
@@ -184,7 +181,6 @@
         }
         .ticker-item strong { color: #6bffb0; }
 
-        /* ---------- SECTIONS ---------- */
         .section { padding: 30px 0; }
         .section + .section { border-top: 1px solid rgba(255,255,255,0.05); }
         .section-header {
@@ -200,7 +196,7 @@
         .section-link { font-size: 13px; color: #60a5fa; transition: 0.2s; text-decoration: none; font-weight: 600; }
         .section-link:hover { color: #93c5fd; }
 
-        /* ---------- AVIATOR FEATURE CARD ---------- */
+        /* Aviator feature */
         .aviator-feature {
             position: relative;
             border-radius: 22px;
@@ -289,7 +285,7 @@
             clip-path: polygon(0 100%, 0 90%, 40% 40%, 60% 20%, 100% 0, 100% 100%);
         }
 
-        /* ---------- LIVE MATCHES ---------- */
+        /* Live matches */
         .live-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
         @media (min-width: 768px) { .live-grid { grid-template-columns: repeat(3, 1fr); } }
 
@@ -325,7 +321,7 @@
         }
         .odds-btn-small:hover { background: #0055ff; border-color: #0055ff; transform: scale(1.05); }
 
-        /* ---------- FEATURED GAMES ---------- */
+        /* Featured games */
         .games-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
         @media (min-width: 768px) { .games-grid { grid-template-columns: repeat(4, 1fr); } }
 
@@ -354,7 +350,7 @@
         .gt-horse    { background: linear-gradient(135deg, rgba(255,154,10,0.22), rgba(200,110,0,0.10)); }
         .gt-casino   { background: linear-gradient(135deg, rgba(168,85,247,0.22), rgba(120,50,200,0.10)); }
 
-        /* ---------- PROMOTIONS ---------- */
+        /* Promotions */
         .promo-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
         @media (min-width: 768px) { .promo-grid { grid-template-columns: repeat(3, 1fr); } }
 
@@ -388,7 +384,7 @@
         .promo-card .promo-badge.b-green  { background: rgba(107,255,176,0.2); color: #6bffb0; }
         .promo-card .promo-badge.b-yellow { background: rgba(255,217,61,0.2); color: #ffd93d; }
 
-        /* ---------- POPULAR SPORTS ---------- */
+        /* Sports */
         .sports-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
         @media (min-width: 768px) { .sports-grid { grid-template-columns: repeat(6, 1fr); } }
 
@@ -415,34 +411,7 @@
             font-size: 13px;
         }
 
-        /* ---------- HOW IT WORKS ---------- */
-        .steps-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
-        @media (min-width: 768px) { .steps-grid { grid-template-columns: repeat(3, 1fr); } }
-
-        .step-card {
-            background: rgba(10,10,18,0.55);
-            backdrop-filter: blur(14px);
-            border: 1px solid rgba(255,255,255,0.06);
-            border-radius: 16px;
-            padding: 20px;
-            text-align: center;
-        }
-        .step-num {
-            width: 40px; height: 40px;
-            border-radius: 12px;
-            background: linear-gradient(135deg, #0055ff, #542bff);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 900;
-            font-size: 15px;
-            margin-bottom: 12px;
-            box-shadow: 0 6px 20px rgba(0,85,255,0.3);
-        }
-        .step-card h4 { font-size: 15px; font-weight: 800; margin-bottom: 6px; }
-        .step-card p  { font-size: 12px; color: rgba(255,255,255,0.55); line-height: 1.55; }
-
-        /* ---------- TRUST ---------- */
+        /* Trust */
         .trust-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
         @media (min-width: 768px) { .trust-grid { grid-template-columns: repeat(4, 1fr); } }
         .trust-item {
@@ -458,30 +427,7 @@
         .trust-item .ti-title { font-size: 13px; font-weight: 700; }
         .trust-item .ti-sub   { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 2px; }
 
-        /* ---------- BOTTOM CTA ---------- */
-        .bottom-cta {
-            margin: 30px 0 24px;
-            padding: 34px 24px;
-            border-radius: 24px;
-            background: linear-gradient(135deg, rgba(0,85,255,0.25), rgba(84,43,255,0.18));
-            border: 1px solid rgba(0,85,255,0.35);
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        .bottom-cta::before {
-            content: '';
-            position: absolute;
-            top: -50%; right: -20%;
-            width: 320px; height: 320px;
-            background: radial-gradient(circle, rgba(0,85,255,0.28), transparent 70%);
-            pointer-events: none;
-        }
-        .bottom-cta h3 { font-size: 1.7rem; font-weight: 900; margin-bottom: 6px; letter-spacing: -0.01em; }
-        .bottom-cta p  { font-size: 14px; color: rgba(255,255,255,0.65); margin-bottom: 18px; }
-        .bottom-cta .cta-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
-
-        /* ---------- FOOTER ---------- */
+        /* Footer */
         .site-footer {
             flex-shrink: 0;
             border-top: 1px solid rgba(255,255,255,0.06);
@@ -489,7 +435,6 @@
             backdrop-filter: blur(20px);
         }
 
-        /* ---------- USER CHIPS ---------- */
         .wallet-chip {
             display: inline-flex;
             align-items: center;
@@ -538,7 +483,6 @@
             border: 2px solid #0a0a12;
         }
 
-        /* User avatar pill */
         .user-pill {
             display: inline-flex;
             align-items: center;
@@ -595,8 +539,6 @@
         @media (max-width: 640px) {
             .hero-section { padding: 22px 0 16px; }
             .section { padding: 22px 0; }
-            .bottom-cta { padding: 24px 18px; margin: 20px 0 16px; }
-            .bottom-cta h3 { font-size: 1.35rem; }
             .section-title { font-size: 1.2rem; }
             .aviator-feature h3 { font-size: 1.4rem; }
         }
@@ -605,13 +547,13 @@
 <body>
 
 <!-- ==========================================
-     NAVBAR (minimal, auth-aware)
+     NAVBAR
      ========================================== -->
 <nav class="navbar" id="navbar">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between gap-3">
 
-            <!-- Logo (home link on every page) -->
+            <!-- Logo -->
             <a href="index.html" class="flex items-center space-x-2 shrink-0" title="CephasGM GameZone — Home">
                 <span class="text-xl font-bold">
                     <span class="text-gradient">CephasGM</span>
@@ -621,7 +563,7 @@
             </a>
 
             <!-- ============================================
-                 GUEST NAV (public browsing only)
+                 GUEST NAV (public browsing)
                  ============================================ -->
             <div id="guestNav" class="hidden lg:flex items-center gap-0.5">
                 <a href="sports.html" class="nav-link">Sports</a>
@@ -633,15 +575,9 @@
             </div>
 
             <!-- ============================================
-                 USER NAV (only when signed in)
+                 USER NAV (only when signed in) — minimal
                  ============================================ -->
             <div id="userNav" class="hidden lg:flex items-center gap-0.5">
-                <a href="sports.html" class="nav-link">Sports</a>
-                <a href="live-betting.html" class="nav-link">
-                    <span class="live-dot"></span><span>Live</span>
-                </a>
-                <a href="casino.html" class="nav-link">Casino</a>
-                <a href="aviator.html" class="nav-link">Aviator</a>
                 <a href="bet-history.html" class="nav-link">My Bets</a>
                 <a href="bonuses.html" class="nav-link">Bonuses</a>
 
@@ -652,7 +588,7 @@
                 </a>
 
                 <!-- Notifications -->
-                <a href="notifications.html" class="icon-btn" title="Notifications">
+                <a href="notifications.html" class="icon-btn ml-1" title="Notifications">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
                         <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
@@ -707,7 +643,8 @@
 <!-- Mobile Menu -->
 <div id="mobileMenu" class="mobile-menu">
     <nav class="flex flex-col space-y-5">
-        <!-- Public section -->
+
+        <!-- Betting (public) -->
         <div>
             <span class="text-xs font-semibold text-white/30 uppercase tracking-widest">Betting</span>
             <div class="mt-2 space-y-1">
@@ -748,7 +685,7 @@
             </div>
         </div>
 
-        <!-- Auth links (only when guest) -->
+        <!-- Auth (only for guests) -->
         <div id="mobileAuthSection" class="border-t border-white/10 pt-4">
             <div class="flex gap-2">
                 <a href="signin.html" class="btn-secondary flex-1 text-xs py-2.5">Sign In</a>
@@ -774,7 +711,7 @@
      ========================================== -->
 <div class="page-content">
 
-    <!-- ============ HERO ============ -->
+    <!-- HERO -->
     <section class="hero-section">
         <div class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
@@ -791,7 +728,7 @@
                         Premium sports betting, live casino &amp; virtual games. Real-time odds, instant payouts, world-class experience.
                     </p>
 
-                    <!-- Auth CTAs (only show when guest) -->
+                    <!-- Auth CTAs — guests only -->
                     <div id="heroAuthCtas" class="flex flex-wrap gap-3 mb-5">
                         <a href="signup.html" class="btn-primary text-sm py-3 px-7">Create Account →</a>
                         <a href="signin.html" class="btn-secondary text-sm py-3 px-7">Sign In</a>
@@ -804,7 +741,7 @@
                     </div>
                 </div>
 
-                <!-- Welcome bonus card (guest only) -->
+                <!-- Welcome bonus — guests only -->
                 <div id="heroBonusCard" class="w-full md:w-auto shrink-0">
                     <div class="glass-light rounded-2xl p-5 max-w-sm">
                         <div class="text-[10px] uppercase tracking-widest text-white/40 font-bold mb-2">🎁 Welcome Bonus</div>
@@ -817,7 +754,7 @@
         </div>
     </section>
 
-    <!-- ============ LIVE TICKER ============ -->
+    <!-- LIVE TICKER -->
     <div class="ticker-wrap">
         <div class="ticker-track">
             <span class="ticker-item">🎉 <strong>John D.</strong> won 25,400 TZS on Aviator</span>
@@ -835,7 +772,7 @@
         </div>
     </div>
 
-    <!-- ============ AVIATOR FEATURE CARD (eye-catcher, requires auth) ============ -->
+    <!-- AVIATOR FEATURE -->
     <section class="section">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
             <a href="aviator.html" class="aviator-feature" data-requires-auth-link>
@@ -857,7 +794,7 @@
         </div>
     </section>
 
-    <!-- ============ LIVE MATCHES ============ -->
+    <!-- LIVE MATCHES -->
     <section class="section live-section">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
             <div class="section-header">
@@ -967,7 +904,7 @@
         </div>
     </section>
 
-    <!-- ============ FEATURED GAMES ============ -->
+    <!-- FEATURED GAMES -->
     <section class="section">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
             <div class="section-header">
@@ -1015,7 +952,7 @@
         </div>
     </section>
 
-    <!-- ============ PROMOTIONS ============ -->
+    <!-- PROMOTIONS -->
     <section class="section">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
             <div class="section-header">
@@ -1049,7 +986,7 @@
         </div>
     </section>
 
-    <!-- ============ POPULAR SPORTS ============ -->
+    <!-- POPULAR SPORTS -->
     <section class="section">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
             <div class="section-header">
@@ -1089,37 +1026,7 @@
         </div>
     </section>
 
-    <!-- ============ HOW IT WORKS ============ -->
-    <section class="section">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-            <div class="section-header">
-                <div>
-                    <h2 class="section-title">🚀 How It Works</h2>
-                    <p class="section-sub">Start betting in under 2 minutes</p>
-                </div>
-            </div>
-
-            <div class="steps-grid">
-                <div class="step-card">
-                    <div class="step-num">1</div>
-                    <h4>Create Account</h4>
-                    <p>Sign up with your email or phone. Verify in 30 seconds and get a 100% welcome bonus on your first deposit.</p>
-                </div>
-                <div class="step-card">
-                    <div class="step-num">2</div>
-                    <h4>Deposit Funds</h4>
-                    <p>Add money instantly via M-Pesa, Tigo Pesa, Airtel Money, or card. Minimum deposit is only 1,000 TZS.</p>
-                </div>
-                <div class="step-card">
-                    <div class="step-num">3</div>
-                    <h4>Place &amp; Win</h4>
-                    <p>Bet on live sports, casino, or virtual games. Cash out any time. Withdraw to mobile money in minutes.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ============ TRUST ============ -->
+    <!-- TRUST -->
     <section class="section">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
             <div class="section-header">
@@ -1162,22 +1069,10 @@
         </div>
     </section>
 
-    <!-- ============ BOTTOM CTA (guest only) ============ -->
-    <div id="bottomCtaWrap" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div class="bottom-cta">
-            <h3>Ready to win big? 🏆</h3>
-            <p>Join 50,000+ players winning daily. Get up to 50,000 TZS welcome bonus.</p>
-            <div class="cta-actions">
-                <a href="signup.html" class="btn-primary py-3 px-8 text-sm">Create Free Account →</a>
-                <a href="promotions.html" class="btn-secondary py-3 px-8 text-sm">View Promotions</a>
-            </div>
-        </div>
-    </div>
-
 </div>
 
 <!-- ==========================================
-     FOOTER (holds all regulatory + info links)
+     FOOTER
      ========================================== -->
 <footer class="site-footer">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -1251,15 +1146,13 @@
 </footer>
 
 <!-- ==========================================
-     JAVASCRIPT — auth-aware UI + privacy enforcement
+     JAVASCRIPT
      ========================================== -->
 <script>
 (function() {
     'use strict';
 
-    /* ------------------------------------------------------------
-       MOBILE MENU
-       ------------------------------------------------------------ */
+    /* MOBILE MENU */
     var mobileToggle = document.getElementById('mobileToggle');
     var mobileMenu = document.getElementById('mobileMenu');
     var mobileOpen = false;
@@ -1277,9 +1170,7 @@
         });
     });
 
-    /* ------------------------------------------------------------
-       AUTH-AWARE UI
-       ------------------------------------------------------------ */
+    /* AUTH-AWARE UI */
     var isLoggedIn = false;
     var currentUser = null;
 
@@ -1295,27 +1186,22 @@
     var mobileAccountSection = document.getElementById('mobileAccountSection');
     var heroAuthCtas = document.getElementById('heroAuthCtas');
     var heroBonusCard = document.getElementById('heroBonusCard');
-    var bottomCtaWrap = document.getElementById('bottomCtaWrap');
 
     if (isLoggedIn && currentUser) {
-        /* Signed-in view */
         guestNav.classList.add('hidden');
         userNav.classList.remove('hidden');
         mobileWalletChip.classList.remove('hidden');
         mobileAuthSection.classList.add('hidden');
         mobileAccountSection.classList.remove('hidden');
 
-        /* Hide guest-only marketing CTAs */
         if (heroAuthCtas) heroAuthCtas.classList.add('hidden');
-        if (bottomCtaWrap) bottomCtaWrap.classList.add('hidden');
+        if (heroBonusCard) heroBonusCard.classList.add('hidden');
 
-        /* Paint user info */
         var name = currentUser.fullName || currentUser.username || 'Player';
         var initial = name.charAt(0).toUpperCase();
         document.getElementById('navAvatar').textContent = initial;
         document.getElementById('navName').textContent = name.split(' ')[0];
 
-        /* Fetch balance */
         CephasGM.api.wallet().then(function(res) {
             if (res.success && res.data) {
                 var bal = parseFloat(res.data.balance).toLocaleString('en-US', { maximumFractionDigits: 0 });
@@ -1324,7 +1210,6 @@
             }
         }).catch(function() {});
 
-        /* Fetch unread notifications */
         CephasGM.api.get('/notifications?limit=1&unreadOnly=true').then(function(res) {
             if (res.success && typeof res.unreadCount === 'number' && res.unreadCount > 0) {
                 var badge = document.getElementById('notifBadge');
@@ -1332,9 +1217,7 @@
                 badge.style.display = 'flex';
             }
         }).catch(function() {});
-
     } else {
-        /* Guest view */
         guestNav.classList.remove('hidden');
         userNav.classList.add('hidden');
         mobileWalletChip.classList.add('hidden');
@@ -1342,12 +1225,10 @@
         mobileAccountSection.classList.add('hidden');
 
         if (heroAuthCtas) heroAuthCtas.classList.remove('hidden');
-        if (bottomCtaWrap) bottomCtaWrap.classList.remove('hidden');
+        if (heroBonusCard) heroBonusCard.classList.remove('hidden');
     }
 
-    /* ------------------------------------------------------------
-       SIGN OUT
-       ------------------------------------------------------------ */
+    /* SIGN OUT */
     function doSignOut() {
         if (window.CephasGM && CephasGM.api) {
             CephasGM.api.logout().catch(function() {}).then(function() {
@@ -1376,11 +1257,7 @@
         });
     }
 
-    /* ------------------------------------------------------------
-       PRIVACY ENFORCEMENT
-       Any element with `data-requires-auth-link` redirects guests
-       to signin.html
-       ------------------------------------------------------------ */
+    /* PRIVACY ENFORCEMENT */
     document.querySelectorAll('[data-requires-auth-link]').forEach(function(el) {
         el.addEventListener('click', function(e) {
             if (!isLoggedIn) {
@@ -1390,16 +1267,13 @@
         });
     });
 
-    /* Odds buttons — require auth to place bet */
     document.querySelectorAll('[data-requires-auth-action]').forEach(function(el) {
         el.addEventListener('click', function(e) {
             e.preventDefault();
             if (!isLoggedIn) {
-                /* Redirect to signin */
                 window.location.href = 'signin.html?redirect=' + encodeURIComponent('live-betting.html');
                 return;
             }
-            /* Signed in — for now, show a toast (bet slip is on live-betting page) */
             var toast = document.createElement('div');
             toast.style.cssText = 'position:fixed;bottom:24px;right:24px;z-index:9999;' +
                 'background:rgba(0,224,122,0.15);color:#6bffb0;padding:12px 20px;' +
@@ -1416,7 +1290,6 @@
         });
     });
 
-    /* `data-requires-guest-link` — only for guests; if user is signed in, redirect to dashboard */
     document.querySelectorAll('[data-requires-guest-link]').forEach(function(el) {
         el.addEventListener('click', function(e) {
             if (isLoggedIn) {
@@ -1426,9 +1299,7 @@
         });
     });
 
-    /* ------------------------------------------------------------
-       AVIATOR PREVIEW MULTIPLIER (fake running number for landing)
-       ------------------------------------------------------------ */
+    /* AVIATOR PREVIEW MULTIPLIER */
     var previewEl = document.getElementById('aviatorPreviewMultiplier');
     if (previewEl) {
         var m = 1.00;
@@ -1442,9 +1313,7 @@
         }, 120);
     }
 
-    /* ------------------------------------------------------------
-       SERVICE WORKER
-       ------------------------------------------------------------ */
+    /* SERVICE WORKER */
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', function() {
             navigator.serviceWorker.register('sw.js')
