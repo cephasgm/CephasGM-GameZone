@@ -2,112 +2,136 @@
 <html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#0a0a12">
     <meta name="description" content="Responsible Gambling – CephasGM GameZone">
     <title>Responsible Gambling | CephasGM GameZone</title>
-    
-    <!-- PWA -->
+
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
     <script src="https://cdn.tailwindcss.com"></script>
-    
+    <script src="js/api.js"></script>
+
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+        html { height: 100%; scroll-behavior: smooth; }
+
         body {
             font-family: 'Inter', sans-serif;
-            background: #0a0a12;
             color: #ffffff;
+            min-height: 100vh;
             overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            background-color: #0a0a12;
+            background-image:
+                linear-gradient(180deg, rgba(10,10,18,0.92) 0%, rgba(10,10,18,0.82) 40%, rgba(10,10,18,0.92) 100%),
+                url('https://static.vecteezy.com/system/resources/thumbnails/070/574/368/small/assorted-sports-equipment-on-black-backdrop-symbolizing-athleticism-competition-and-diverse-sporting-activities-photo.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
         }
-        
+
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #0a0a12; }
-        ::-webkit-scrollbar-thumb { 
+        ::-webkit-scrollbar-thumb {
             background: linear-gradient(180deg, #0055ff, #542bff);
             border-radius: 10px;
         }
-        
+
         .glass {
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(10, 10, 18, 0.72);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
-        
-        .glass-light {
-            background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        
+
         .btn-primary {
             background: linear-gradient(135deg, #0055ff, #542bff);
             color: white;
-            padding: 10px 24px;
+            padding: 10px 22px;
             border-radius: 50px;
-            font-weight: 600;
-            font-size: 14px;
+            font-weight: 700;
+            font-size: 13px;
             border: none;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(0, 85, 255, 0.25);
+            box-shadow: 0 4px 20px rgba(0, 85, 255, 0.35);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-family: inherit;
+            white-space: nowrap;
         }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(0, 85, 255, 0.4);
-        }
-        
-        .btn-outline {
-            background: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0, 85, 255, 0.5); }
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.06);
             color: white;
-            padding: 10px 24px;
+            padding: 10px 22px;
             border-radius: 50px;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 13px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
             cursor: pointer;
             transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-family: inherit;
+            white-space: nowrap;
         }
-        
-        .btn-outline:hover {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(255, 255, 255, 0.4);
+        .btn-secondary:hover { background: rgba(255, 255, 255, 0.12); transform: translateY(-2px); }
+
+        .btn-help {
+            background: linear-gradient(135deg, #16a34a, #15803d);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 12px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 16px rgba(22,163,74,0.35);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: inherit;
+            white-space: nowrap;
         }
-        
+        .btn-help:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(22,163,74,0.55); }
+
         .navbar {
-            position: fixed;
+            position: sticky;
             top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            padding: 16px 0;
-            background: rgba(10, 10, 18, 0.92);
+            z-index: 100;
+            padding: 14px 0;
+            background: rgba(10, 10, 18, 0.75);
             backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
         }
-        
+
         .text-gradient {
             background: linear-gradient(135deg, #0055ff, #542bff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        
+
         .mobile-menu {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(10, 10, 18, 0.98);
             backdrop-filter: blur(20px);
             z-index: 999;
@@ -115,360 +139,929 @@
             padding: 80px 24px 24px;
             overflow-y: auto;
         }
-        
-        .mobile-menu.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        .footer-link {
-            color: rgba(255, 255, 255, 0.4);
-            transition: all 0.3s ease;
-            text-decoration: none;
+        .mobile-menu.active { display: block; animation: fadeIn .3s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .footer-link { color: rgba(255, 255, 255, 0.5); transition: all .3s ease; text-decoration: none; font-size: 13px; }
+        .footer-link:hover { color: #ffffff; }
+
+        .page-content { flex: 1; display: flex; flex-direction: column; }
+
+        .nav-link {
+            padding: 8px 14px;
             font-size: 14px;
+            color: rgba(255,255,255,0.65);
+            border-radius: 10px;
+            transition: all 0.2s;
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
-        
-        .footer-link:hover {
-            color: #ffffff;
-        }
-        
-        .page-background {
-            min-height: 100vh;
-            background-image: url('https://static.vecteezy.com/system/resources/thumbnails/070/574/368/small/assorted-sports-equipment-on-black-backdrop-symbolizing-athleticism-competition-and-diverse-sporting-activities-photo.jpeg');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            position: relative;
-        }
-        
-        .page-background::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, 
-                rgba(10, 10, 18, 0.9) 0%, 
-                rgba(10, 10, 18, 0.7) 50%,
-                rgba(10, 10, 18, 0.9) 100%
-            );
-            z-index: -1;
-        }
-        
-        .dropdown {
-            position: relative;
+        .nav-link:hover { background: rgba(255,255,255,0.06); color: #fff; }
+
+        .live-dot {
+            width: 7px; height: 7px; border-radius: 50%;
+            background: #ff0044;
+            box-shadow: 0 0 8px #ff0044;
+            animation: pulseDot 1.4s infinite;
             display: inline-block;
+            flex-shrink: 0;
         }
+        @keyframes pulseDot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: .35; transform: scale(.7); }
+        }
+
+        .wallet-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 14px;
+            border-radius: 999px;
+            background: rgba(0,224,122,0.12);
+            border: 1px solid rgba(0,224,122,0.28);
+            color: #6bffb0;
+            font-size: 12px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.2s;
+            font-variant-numeric: tabular-nums;
+        }
+        .wallet-chip:hover { background: rgba(0,224,122,0.2); }
+
+        .icon-btn {
+            width: 36px; height: 36px;
+            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: rgba(255,255,255,0.7);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            position: relative;
+        }
+        .icon-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+        .icon-badge {
+            position: absolute;
+            top: -4px; right: -4px;
+            min-width: 16px; height: 16px;
+            padding: 0 4px;
+            border-radius: 999px;
+            background: #ff0044;
+            color: #fff;
+            font-size: 9px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #0a0a12;
+        }
+
+        .user-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 12px 4px 4px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .user-pill:hover { background: rgba(255,255,255,0.1); }
+        .user-pill .up-avatar {
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 11px;
+        }
+        .user-pill .up-name { font-size: 12px; font-weight: 600; }
+
+        .dropdown { position: relative; display: inline-block; }
         .dropdown-menu {
             display: none;
             position: absolute;
-            top: 100%;
-            left: 0;
-            background: rgba(10, 10, 18, 0.95);
+            top: calc(100% + 8px);
+            right: 0;
+            background: rgba(10, 10, 18, 0.98);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.06);
             border-radius: 12px;
-            min-width: 200px;
+            min-width: 220px;
             padding: 8px 0;
             z-index: 1001;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.6);
         }
-        .dropdown:hover .dropdown-menu {
-            display: block;
-        }
+        .dropdown:hover .dropdown-menu { display: block; }
         .dropdown-menu a {
-            display: block;
-            padding: 8px 16px;
-            color: rgba(255,255,255,0.6);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 16px;
+            color: rgba(255,255,255,0.7);
             font-size: 13px;
             transition: 0.2s;
+            text-decoration: none;
         }
-        .dropdown-menu a:hover {
-            background: rgba(255,255,255,0.05);
-            color: white;
+        .dropdown-menu a:hover { background: rgba(255,255,255,0.05); color: white; }
+        .dropdown-menu .divider { height: 1px; background: rgba(255,255,255,0.06); margin: 6px 0; }
+
+        /* ============ PAGE ============ */
+        .page-header {
+            padding: 30px 0 26px;
+            text-align: center;
         }
-        
-        .section-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 12px;
-            color: #fff;
+        .page-title {
+            font-size: 2.2rem;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            margin-bottom: 10px;
         }
-        .section-text {
-            color: rgba(255,255,255,0.7);
-            line-height: 1.7;
+        .page-sub {
+            font-size: 14px;
+            color: rgba(255,255,255,0.55);
+            max-width: 560px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Emergency strip */
+        .help-strip {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 18px 22px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, rgba(22,163,74,0.18), rgba(21,128,61,0.10));
+            border: 1px solid rgba(22,163,74,0.35);
+            margin-bottom: 26px;
+            flex-wrap: wrap;
+        }
+        .help-strip .hs-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            min-width: 0;
+            flex: 1;
+        }
+        .help-strip .hs-icon {
+            font-size: 32px;
+            flex-shrink: 0;
+        }
+        .help-strip .hs-text {
+            min-width: 0;
+        }
+        .help-strip .hs-title {
             font-size: 15px;
-            margin-bottom: 16px;
+            font-weight: 800;
+            color: #6bffb0;
         }
-        
+        .help-strip .hs-sub {
+            font-size: 12px;
+            color: rgba(255,255,255,0.6);
+            margin-top: 3px;
+        }
+
+        /* Quick nav */
+        .quick-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            padding: 12px;
+            background: rgba(10,10,18,0.72);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 14px;
+            margin-bottom: 26px;
+            justify-content: center;
+        }
+        .quick-nav a {
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            color: rgba(255,255,255,0.6);
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .quick-nav a:hover {
+            background: rgba(0,85,255,0.15);
+            color: #fff;
+            border-color: rgba(0,85,255,0.4);
+        }
+
+        /* Section cards */
+        .section-card {
+            padding: 28px;
+            border-radius: 22px;
+            margin-bottom: 22px;
+            scroll-margin-top: 90px;
+        }
+        @media (max-width: 640px) {
+            .section-card { padding: 22px; }
+        }
+
+        .section-card h2 {
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin-bottom: 14px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-card h2 .sect-emoji { font-size: 22px; }
+        .section-card p {
+            color: rgba(255,255,255,0.7);
+            line-height: 1.75;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+        .section-card p:last-child { margin-bottom: 0; }
+        .section-card strong { color: #fff; }
+
+        .tip-list {
+            list-style: none;
+            padding-left: 0;
+            margin-bottom: 12px;
+        }
+        .tip-list li {
+            position: relative;
+            padding-left: 26px;
+            margin-bottom: 10px;
+            color: rgba(255,255,255,0.75);
+            line-height: 1.65;
+            font-size: 14px;
+        }
+        .tip-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0; top: 0;
+            color: #6bffb0;
+            font-weight: 900;
+            font-size: 14px;
+        }
+        .tip-list li strong { color: #fff; }
+
+        .warn-list li::before {
+            content: '⚠️';
+            font-size: 12px;
+        }
+
+        /* Tool grid */
+        .tool-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 14px;
+        }
+        @media (min-width: 640px) { .tool-grid { grid-template-columns: repeat(2, 1fr); } }
+
         .tool-card {
+            padding: 20px;
+            border-radius: 16px;
             background: rgba(255,255,255,0.03);
             border: 1px solid rgba(255,255,255,0.06);
-            border-radius: 16px;
-            padding: 20px;
-            transition: transform 0.3s;
+            transition: all 0.25s ease;
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
         }
         .tool-card:hover {
-            transform: translateY(-4px);
+            transform: translateY(-3px);
+            background: rgba(255,255,255,0.05);
+            border-color: rgba(0,85,255,0.35);
+        }
+        .tool-card .tc-icon {
+            width: 44px; height: 44px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(0,85,255,0.18), rgba(84,43,255,0.10));
+            border: 1px solid rgba(0,85,255,0.28);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+        .tool-card .tc-body { min-width: 0; flex: 1; }
+        .tool-card .tc-title {
+            font-size: 14px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+        .tool-card .tc-desc {
+            font-size: 12.5px;
+            color: rgba(255,255,255,0.6);
+            line-height: 1.55;
+        }
+        .tool-card .tc-desc a {
+            color: #93c5fd;
+            text-decoration: underline;
+            text-decoration-color: rgba(147,197,253,0.4);
+        }
+
+        /* Self-assessment quiz */
+        .quiz-card {
+            padding: 26px;
+            border-radius: 22px;
+            background: linear-gradient(135deg, rgba(0,85,255,0.10), rgba(84,43,255,0.06));
+            border: 1px solid rgba(0,85,255,0.28);
+            margin-bottom: 22px;
+        }
+        .quiz-card .q-title {
+            font-size: 1.2rem;
+            font-weight: 800;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .quiz-card .q-sub {
+            font-size: 12.5px;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 18px;
+            line-height: 1.55;
+        }
+        .q-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .q-item:last-of-type { border-bottom: none; }
+        .q-item .q-text {
+            font-size: 13.5px;
+            color: rgba(255,255,255,0.85);
+            line-height: 1.5;
+            flex: 1;
+        }
+        .q-item .q-toggle {
+            display: flex;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+        .q-btn {
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.04);
+            color: rgba(255,255,255,0.6);
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        .q-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+        .q-btn.yes.active {
+            background: rgba(255,0,68,0.2);
+            border-color: rgba(255,0,68,0.5);
+            color: #ff8098;
+        }
+        .q-btn.no.active {
+            background: rgba(0,224,122,0.2);
+            border-color: rgba(0,224,122,0.5);
+            color: #6bffb0;
+        }
+        .quiz-result {
+            margin-top: 18px;
+            padding: 16px 18px;
+            border-radius: 14px;
+            font-size: 13.5px;
+            line-height: 1.6;
+            display: none;
+            animation: slideIn .35s ease;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .quiz-result.low {
+            background: rgba(0,224,122,0.12);
+            border: 1px solid rgba(0,224,122,0.35);
+            color: #6bffb0;
+        }
+        .quiz-result.mid {
+            background: rgba(255,204,0,0.12);
+            border: 1px solid rgba(255,204,0,0.35);
+            color: #ffd93d;
+        }
+        .quiz-result.high {
+            background: rgba(255,0,68,0.12);
+            border: 1px solid rgba(255,0,68,0.4);
+            color: #ff8098;
+        }
+        .quiz-result strong { color: inherit; font-weight: 800; }
+
+        /* Help orgs */
+        .org-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+        @media (min-width: 640px) { .org-grid { grid-template-columns: repeat(2, 1fr); } }
+
+        .org-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.2s ease;
+        }
+        .org-card:hover {
+            background: rgba(255,255,255,0.06);
+            border-color: rgba(22,163,74,0.4);
+            transform: translateY(-2px);
+        }
+        .org-card .oc-icon {
+            width: 40px; height: 40px;
+            border-radius: 10px;
+            background: rgba(22,163,74,0.15);
+            border: 1px solid rgba(22,163,74,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+        .org-card .oc-info { min-width: 0; flex: 1; }
+        .org-card .oc-name {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: #fff;
+        }
+        .org-card .oc-url {
+            font-size: 11px;
+            color: rgba(255,255,255,0.5);
+            margin-top: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Commitments */
+        .commit-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+        @media (min-width: 640px) { .commit-list { grid-template-columns: repeat(3, 1fr); } }
+        .commit-item {
+            padding: 16px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            text-align: center;
+        }
+        .commit-item .ci-icon { font-size: 26px; }
+        .commit-item .ci-title {
+            font-size: 12.5px;
+            font-weight: 800;
+            color: #fff;
+            margin-top: 8px;
+        }
+        .commit-item .ci-sub {
+            font-size: 11px;
+            color: rgba(255,255,255,0.5);
+            margin-top: 3px;
+            line-height: 1.45;
+        }
+
+        /* Contact CTA */
+        .contact-cta {
+            margin-top: 26px;
+            padding: 26px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, rgba(0,85,255,0.14), rgba(84,43,255,0.10));
+            border: 1px solid rgba(0,85,255,0.28);
+            text-align: center;
+        }
+        .contact-cta h3 {
+            font-size: 1.15rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+        .contact-cta p {
+            font-size: 13px;
+            color: rgba(255,255,255,0.55);
+            margin-bottom: 16px;
+        }
+        .contact-cta .cta-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 640px) {
+            .page-title { font-size: 1.6rem; }
+            .help-strip { padding: 14px 16px; }
+            .help-strip .hs-icon { font-size: 26px; }
         }
     </style>
 </head>
 <body>
 
 <!-- ==========================================
-     NAVBAR
+     NAVBAR (auth-aware)
      ========================================== -->
 <nav class="navbar" id="navbar">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between">
-            
-            <a href="index.html" class="flex items-center space-x-2" title="Go to Homepage">
+        <div class="flex items-center justify-between gap-3">
+
+            <a href="index.html" class="flex items-center space-x-2 shrink-0" title="CephasGM GameZone — Home">
                 <span class="text-xl font-bold">
                     <span class="text-gradient">CephasGM</span>
                     <span class="text-white font-light">|</span>
                     <span class="text-white font-semibold">GameZone</span>
                 </span>
             </a>
-            
-           <div class="hidden lg:flex items-center space-x-1">
-    <!-- Info dropdown -->
-    <div class="dropdown">
-        <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Info ▾</span>
-        <div class="dropdown-menu">
-            <a href="about.html">About Us</a>
-            <a href="vip.html">VIP Club</a>
-            <a href="referrals.html">Referrals</a>
-            <a href="privacy.html">Privacy Policy</a>
-            <a href="terms.html">Terms & Conditions</a>
-            <a href="cookies.html">Cookie Policy</a>
+
+            <!-- Guest nav -->
+            <div id="guestNav" class="hidden lg:flex items-center gap-0.5">
+                <a href="sports.html" class="nav-link">Sports</a>
+                <a href="live-betting.html" class="nav-link">
+                    <span class="live-dot"></span><span>Live</span>
+                </a>
+                <a href="casino.html" class="nav-link">Casino</a>
+                <a href="aviator.html" class="nav-link">Aviator</a>
+            </div>
+
+            <!-- User nav -->
+            <div id="userNav" class="hidden lg:flex items-center gap-0.5">
+                <a href="bet-history.html" class="nav-link">My Bets</a>
+                <a href="bonuses.html" class="nav-link">Bonuses</a>
+                <a href="wallet.html" class="wallet-chip ml-2">
+                    <span>💰</span>
+                    <span id="navBalance">—</span>
+                </a>
+                <a href="notifications.html" class="icon-btn ml-1" title="Notifications">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
+                        <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
+                    </svg>
+                    <span id="notifBadge" class="icon-badge" style="display:none">0</span>
+                </a>
+                <div class="dropdown ml-1">
+                    <div class="user-pill">
+                        <span class="up-avatar" id="navAvatar">U</span>
+                        <span class="up-name hidden xl:inline" id="navName">Account</span>
+                        <span class="text-white/40 text-xs">▾</span>
+                    </div>
+                    <div class="dropdown-menu">
+                        <a href="dashboard.html">📊 Dashboard</a>
+                        <a href="profile.html">👤 Profile</a>
+                        <a href="wallet.html">💰 Wallet</a>
+                        <a href="deposit.html">➕ Deposit</a>
+                        <a href="withdraw.html">➖ Withdraw</a>
+                        <a href="transactions.html">📋 Transactions</a>
+                        <a href="bet-history.html">🎯 Bet History</a>
+                        <a href="bonuses.html">🎁 Bonuses</a>
+                        <a href="referrals.html">👥 Referrals</a>
+                        <a href="kyc.html">🪪 KYC Verification</a>
+                        <div class="divider"></div>
+                        <a href="settings.html">⚙️ Settings</a>
+                        <a href="support.html">🆘 Help Center</a>
+                        <div class="divider"></div>
+                        <a href="#" id="navSignOut" style="color:#ff8098">🚪 Sign Out</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-2 lg:hidden">
+                <a href="wallet.html" id="mobileWalletChip" class="hidden wallet-chip" style="padding:5px 10px;font-size:11px">
+                    <span>💰</span>
+                    <span id="mobileNavBalance">—</span>
+                </a>
+                <button id="mobileToggle" class="p-2 text-white/60 hover:text-white transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
         </div>
     </div>
-
-    <!-- Account dropdown -->
-    <div class="dropdown">
-        <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Account ▾</span>
-        <div class="dropdown-menu">
-            <a href="dashboard.html">Dashboard</a>
-            <a href="profile.html">Profile</a>
-            <a href="wallet.html">Wallet</a>
-            <a href="deposit.html">Deposit</a>
-            <a href="withdraw.html">Withdraw</a>
-            <a href="transactions.html">Transactions</a>
-            <a href="bet-history.html">Bet History</a>
-            <a href="bonuses.html">Bonuses</a>
-            <a href="kyc.html">KYC Verification</a>
-            <a href="settings.html">Settings</a>
-            <a href="signin.html">Sign In</a>
-            <a href="signup.html">Sign Up</a>
-        </div>
-    </div>
-
-    <!-- Promotions link -->
-    <a href="promotions.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Promotions</a>
-
-    <!-- Sports link -->
-    <a href="sports.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Sports</a>
-
-    <!-- Casino link -->
-    <a href="casino.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Casino</a>
-
-    <!-- Live link -->
-    <a href="live-betting.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 flex items-center space-x-1">
-        <span class="live-dot"></span><span>Live</span>
-    </a>
-
-    <!-- Virtual dropdown -->
-    <div class="dropdown">
-        <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Virtual ▾</span>
-        <div class="dropdown-menu">
-            <a href="virtual-football.html">Virtual Football</a>
-            <a href="virtual-horse-racing.html">Virtual Horse Racing</a>
-            <a href="virtual-car-racing.html">Virtual Car Racing</a>
-            <a href="virtual-netball.html">Virtual Netball</a>
-            <a href="adventure-games.html">Adventure Games</a>
-            <a href="aviator.html">Aviator</a>
-        </div>
-    </div>
-
-    <!-- Support dropdown -->
-    <div class="dropdown">
-        <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Support ▾</span>
-        <div class="dropdown-menu">
-            <a href="support.html">Help Center</a>
-            <a href="messages.html">Messages</a>
-            <a href="notifications.html">Notifications</a>
-            <a href="faq.html">FAQ</a>
-            <a href="contact.html">Contact Us</a>
-            <a href="responsible-gambling.html">Responsible Gambling</a>
-            <a href="self-exclusion.html">Self-Exclusion</a>
-        </div>
-    </div>
-</div>
-
-<div class="flex items-center space-x-3">
-    <button id="mobileToggle" class="lg:hidden p-2 text-white/40 hover:text-white transition-colors">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-        </svg>
-    </button>
-</div>
-</div>
-</div>
 </nav>
 
 <!-- Mobile Menu -->
 <div id="mobileMenu" class="mobile-menu">
-    <nav class="flex flex-col space-y-6">
-        <a href="index.html" class="text-lg text-white/70 hover:text-white">Home</a>
-        <a href="sports.html" class="text-lg text-white/70 hover:text-white">Sports</a>
-        <a href="live-betting.html" class="text-lg text-white/70 hover:text-white">Live Betting</a>
-        <a href="casino.html" class="text-lg text-white/70 hover:text-white">Casino</a>
-        <a href="promotions.html" class="text-lg text-white/70 hover:text-white">Promotions</a>
-        <a href="bonuses.html" class="text-lg text-white/70 hover:text-white">Bonuses</a>
-        <a href="leaderboard.html" class="text-lg text-white/70 hover:text-white">Leaderboard</a>
-        <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Account</span>
-            <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="dashboard.html" class="text-sm text-white/50 hover:text-white">Dashboard</a>
-                <a href="profile.html" class="text-sm text-white/50 hover:text-white">Profile</a>
-                <a href="wallet.html" class="text-sm text-white/50 hover:text-white">Wallet</a>
-                <a href="deposit.html" class="text-sm text-white/50 hover:text-white">Deposit</a>
-                <a href="withdraw.html" class="text-sm text-white/50 hover:text-white">Withdraw</a>
-                <a href="transactions.html" class="text-sm text-white/50 hover:text-white">Transactions</a>
-                <a href="bet-history.html" class="text-sm text-white/50 hover:text-white">Bet History</a>
-                <a href="kyc.html" class="text-sm text-white/50 hover:text-white">KYC</a>
-                <a href="settings.html" class="text-sm text-white/50 hover:text-white">Settings</a>
-                <a href="signin.html" class="text-sm text-white/50 hover:text-white">Sign In</a>
-                <a href="signup.html" class="text-sm text-white/50 hover:text-white">Sign Up</a>
+    <nav class="flex flex-col space-y-5">
+        <div>
+            <span class="text-xs font-semibold text-white/30 uppercase tracking-widest">Betting</span>
+            <div class="mt-2 space-y-1">
+                <a href="sports.html" class="block text-base text-white/80 hover:text-white py-2">Sports</a>
+                <a href="live-betting.html" class="block text-base text-white/80 hover:text-white py-2">Live Betting</a>
+                <a href="casino.html" class="block text-base text-white/80 hover:text-white py-2">Casino</a>
+                <a href="aviator.html" class="block text-base text-white/80 hover:text-white py-2">Aviator</a>
+                <a href="promotions.html" class="block text-base text-white/80 hover:text-white py-2">Promotions</a>
             </div>
         </div>
         <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Virtual Games</span>
+            <span class="text-xs font-semibold text-white/30 uppercase tracking-widest">Virtual Games</span>
             <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="virtual-football.html" class="text-sm text-white/50 hover:text-white">Virtual Football</a>
-                <a href="virtual-horse-racing.html" class="text-sm text-white/50 hover:text-white">Horse Racing</a>
-                <a href="virtual-car-racing.html" class="text-sm text-white/50 hover:text-white">Car Racing</a>
-                <a href="virtual-netball.html" class="text-sm text-white/50 hover:text-white">Netball</a>
-                <a href="adventure-games.html" class="text-sm text-white/50 hover:text-white">Adventure</a>
-                <a href="aviator.html" class="text-sm text-white/50 hover:text-white">Aviator</a>
+                <a href="virtual-football.html" class="text-sm text-white/60 hover:text-white">Virtual Football</a>
+                <a href="virtual-horse-racing.html" class="text-sm text-white/60 hover:text-white">Horse Racing</a>
+                <a href="virtual-car-racing.html" class="text-sm text-white/60 hover:text-white">Car Racing</a>
+                <a href="virtual-netball.html" class="text-sm text-white/60 hover:text-white">Netball</a>
+                <a href="adventure-games.html" class="text-sm text-white/60 hover:text-white">Adventure</a>
             </div>
         </div>
-        <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Support</span>
+        <div id="mobileAccountSection" class="border-t border-white/10 pt-4 hidden">
+            <span class="text-xs font-semibold text-white/30 uppercase tracking-widest">My Account</span>
             <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="support.html" class="text-sm text-white/50 hover:text-white">Help Center</a>
-                <a href="messages.html" class="text-sm text-white/50 hover:text-white">Messages</a>
-                <a href="notifications.html" class="text-sm text-white/50 hover:text-white">Notifications</a>
-                <a href="faq.html" class="text-sm text-white/50 hover:text-white">FAQ</a>
-                <a href="contact.html" class="text-sm text-white/50 hover:text-white">Contact</a>
-                <a href="responsible-gambling.html" class="text-sm text-white/50 hover:text-white">Responsible</a>
-                <a href="self-exclusion.html" class="text-sm text-white/50 hover:text-white">Self-Exclusion</a>
+                <a href="dashboard.html" class="text-sm text-white/60 hover:text-white">Dashboard</a>
+                <a href="wallet.html" class="text-sm text-white/60 hover:text-white">Wallet</a>
+                <a href="deposit.html" class="text-sm text-white/60 hover:text-white">Deposit</a>
+                <a href="withdraw.html" class="text-sm text-white/60 hover:text-white">Withdraw</a>
+                <a href="bet-history.html" class="text-sm text-white/60 hover:text-white">Bet History</a>
+                <a href="bonuses.html" class="text-sm text-white/60 hover:text-white">Bonuses</a>
+                <a href="profile.html" class="text-sm text-white/60 hover:text-white">Profile</a>
+                <a href="kyc.html" class="text-sm text-white/60 hover:text-white">KYC</a>
+                <a href="settings.html" class="text-sm text-white/60 hover:text-white">Settings</a>
+                <a href="#" id="mobileSignOut" class="text-sm text-red-400 hover:text-red-300">Sign Out</a>
             </div>
         </div>
-        <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Information</span>
-            <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="about.html" class="text-sm text-white/50 hover:text-white">About</a>
-                <a href="vip.html" class="text-sm text-white/50 hover:text-white">VIP</a>
-                <a href="referrals.html" class="text-sm text-white/50 hover:text-white">Referrals</a>
-                <a href="privacy.html" class="text-sm text-white/50 hover:text-white">Privacy</a>
-                <a href="terms.html" class="text-sm text-white/50 hover:text-white">Terms</a>
-                <a href="cookies.html" class="text-sm text-white/50 hover:text-white">Cookies</a>
+        <div id="mobileAuthSection" class="border-t border-white/10 pt-4">
+            <div class="flex gap-2">
+                <a href="signin.html" class="btn-secondary flex-1 text-xs py-2.5">Sign In</a>
+                <a href="signup.html" class="btn-primary flex-1 text-xs py-2.5">Sign Up</a>
             </div>
         </div>
     </nav>
 </div>
 
 <!-- ==========================================
-     RESPONSIBLE GAMBLING CONTENT
+     PAGE CONTENT
      ========================================== -->
-<div class="page-background pt-20 pb-12 px-4">
-    <div class="max-w-4xl mx-auto relative z-10">
-        
-        <div class="text-center mb-12">
-            <h1 class="text-4xl md:text-5xl font-bold mb-4">
-                Responsible <span class="text-gradient">Gambling</span>
+<div class="page-content pt-6 pb-12 px-4">
+    <div class="max-w-4xl mx-auto w-full">
+
+        <!-- Header -->
+        <div class="page-header">
+            <div class="text-[10px] uppercase tracking-widest text-white/40 font-bold mb-3">Player Protection</div>
+            <h1 class="page-title">
+                🛡️ Responsible <span class="text-gradient">Gambling</span>
             </h1>
-            <p class="text-lg text-white/50">Play safe. Stay in control.</p>
+            <p class="page-sub">
+                Betting should be fun — never a problem. Here are the tools, tips, and resources we provide so you can stay in control.
+            </p>
         </div>
-        
+
+        <!-- Emergency help strip -->
+        <div class="help-strip">
+            <div class="hs-left">
+                <div class="hs-icon">🆘</div>
+                <div class="hs-text">
+                    <div class="hs-title">Need to talk to someone right now?</div>
+                    <div class="hs-sub">Free, confidential support is available 24/7 from these organisations.</div>
+                </div>
+            </div>
+            <a href="#help" class="btn-help">View Help Resources →</a>
+        </div>
+
+        <!-- Quick nav -->
+        <div class="quick-nav">
+            <a href="#commitment">Our Commitment</a>
+            <a href="#tips">Staying in Control</a>
+            <a href="#quiz">Self-Check</a>
+            <a href="#tools">Player Tools</a>
+            <a href="#help">Get Help</a>
+            <a href="#contact">Contact</a>
+        </div>
+
         <!-- Our Commitment -->
-        <div class="glass rounded-2xl p-6 md:p-10 mb-8">
-            <h2 class="section-title">Our Commitment</h2>
-            <p class="section-text">At CephasGM GameZone, we want every player to enjoy betting as a form of entertainment. We are committed to providing a safe, fair, and transparent environment. We encourage all our users to gamble responsibly and to be aware of the risks associated with gambling.</p>
-        </div>
-        
-        <!-- Tips for Responsible Gambling -->
-        <div class="glass rounded-2xl p-6 md:p-10 mb-8">
-            <h2 class="section-title">Tips for Staying in Control</h2>
-            <ul class="list-disc list-inside text-white/70 space-y-2 mb-4">
-                <li>Set a budget before you start and stick to it.</li>
-                <li>Only gamble with money you can afford to lose.</li>
-                <li>Set time limits for your gambling sessions.</li>
-                <li>Never chase losses – they are part of the game.</li>
-                <li>Balance gambling with other hobbies and activities.</li>
-                <li>Avoid gambling when you are upset, stressed, or under the influence of alcohol.</li>
-                <li>Take regular breaks and review your activity.</li>
-            </ul>
-        </div>
-        
-        <!-- Tools -->
-        <div class="mb-8">
-            <h2 class="text-2xl font-bold mb-6 text-center">Our Player Protection Tools</h2>
-            <div class="grid sm:grid-cols-2 gap-6">
-                <div class="tool-card glass-light">
-                    <div class="text-2xl mb-3">💰</div>
-                    <h3 class="font-semibold text-lg mb-1">Deposit Limits</h3>
-                    <p class="text-sm text-white/60">Set daily, weekly, or monthly limits on how much you can deposit.</p>
+        <div class="glass section-card" id="commitment">
+            <h2><span class="sect-emoji">🤝</span> Our Commitment</h2>
+            <p>At CephasGM GameZone, we want every player to enjoy betting as a form of entertainment. We are committed to providing a safe, fair, and transparent environment.</p>
+            <p>We encourage all our users to gamble responsibly and to be aware of the risks associated with gambling. If betting ever stops being fun, we want you to have the tools and support to step away.</p>
+
+            <div class="commit-list" style="margin-top:18px;">
+                <div class="commit-item">
+                    <div class="ci-icon">🔞</div>
+                    <div class="ci-title">18+ Only</div>
+                    <div class="ci-sub">Verified age on every account</div>
                 </div>
-                <div class="tool-card glass-light">
-                    <div class="text-2xl mb-3">⏱️</div>
-                    <h3 class="font-semibold text-lg mb-1">Reality Checks</h3>
-                    <p class="text-sm text-white/60">Get pop‑up reminders showing how long you've been playing.</p>
+                <div class="commit-item">
+                    <div class="ci-icon">🔒</div>
+                    <div class="ci-title">Secure Funds</div>
+                    <div class="ci-sub">Segregated & protected</div>
                 </div>
-                <div class="tool-card glass-light">
-                    <div class="text-2xl mb-3">⏸️</div>
-                    <h3 class="font-semibold text-lg mb-1">Time‑Out</h3>
-                    <p class="text-sm text-white/60">Take a short break from betting for 24 hours up to 6 weeks.</p>
-                </div>
-                <div class="tool-card glass-light">
-                    <div class="text-2xl mb-3">🚫</div>
-                    <h3 class="font-semibold text-lg mb-1">Self‑Exclusion</h3>
-                    <p class="text-sm text-white/60">Block access to your account for 6 months or more. <a href="self-exclusion.html" class="text-blue-400 hover:underline">Learn more →</a></p>
+                <div class="commit-item">
+                    <div class="ci-icon">⚖️</div>
+                    <div class="ci-title">Fair Play</div>
+                    <div class="ci-sub">RNG-certified outcomes</div>
                 </div>
             </div>
         </div>
-        
-        <!-- Getting Help -->
-        <div class="glass rounded-2xl p-6 md:p-10 mb-8">
-            <h2 class="section-title">Need Help?</h2>
-            <p class="section-text">If you feel that gambling is becoming a problem for you or someone you know, please seek help. The following organisations provide free, confidential support:</p>
-            <ul class="list-disc list-inside text-white/70 space-y-2">
-                <li><strong>Gamblers Anonymous</strong> – <a href="https://www.gamblersanonymous.org" class="text-blue-400" target="_blank">www.gamblersanonymous.org</a></li>
-                <li><strong>BeGambleAware</strong> – <a href="https://www.begambleaware.org" class="text-blue-400" target="_blank">www.begambleaware.org</a></li>
-                <li><strong>GamCare</strong> – <a href="https://www.gamcare.org.uk" class="text-blue-400" target="_blank">www.gamcare.org.uk</a></li>
-                <li><strong>National Council on Problem Gambling</strong> – <a href="https://www.ncpgambling.org" class="text-blue-400" target="_blank">www.ncpgambling.org</a></li>
+
+        <!-- Tips -->
+        <div class="glass section-card" id="tips">
+            <h2><span class="sect-emoji">💡</span> Tips for Staying in Control</h2>
+            <p>Follow these simple guidelines to keep betting enjoyable and under control:</p>
+            <ul class="tip-list">
+                <li><strong>Set a budget</strong> before you start and stick to it — treat it like any other entertainment spend.</li>
+                <li><strong>Only gamble with money you can afford to lose</strong> — never borrow money or use funds meant for essentials.</li>
+                <li><strong>Set time limits</strong> for your sessions and take regular breaks.</li>
+                <li><strong>Never chase losses</strong> — they're part of the game. Walk away and come back another day.</li>
+                <li><strong>Balance gambling</strong> with other hobbies, family, and social time.</li>
+                <li><strong>Avoid gambling</strong> when upset, stressed, or under the influence of alcohol or drugs.</li>
+                <li><strong>Review your activity</strong> regularly in the dashboard and bet history.</li>
             </ul>
         </div>
-        
-        <!-- Quick Links -->
-        <div class="text-center space-x-4">
-            <a href="self-exclusion.html" class="btn-outline inline-block">Self‑Exclusion</a>
-            <a href="contact.html" class="btn-primary inline-block">Contact Support</a>
+
+        <!-- Self-assessment quiz -->
+        <div class="quiz-card" id="quiz">
+            <div class="q-title">🔍 Self-Check Questionnaire</div>
+            <div class="q-sub">Answer honestly — this stays on your device and is not sent anywhere. If you answer <strong>yes</strong> to 3 or more, consider taking a break.</div>
+
+            <div class="q-item" data-q="1">
+                <div class="q-text">Have you ever bet more than you could afford to lose?</div>
+                <div class="q-toggle">
+                    <button class="q-btn yes" data-answer="yes">Yes</button>
+                    <button class="q-btn no" data-answer="no">No</button>
+                </div>
+            </div>
+            <div class="q-item" data-q="2">
+                <div class="q-text">Do you find it difficult to stop or reduce your betting?</div>
+                <div class="q-toggle">
+                    <button class="q-btn yes" data-answer="yes">Yes</button>
+                    <button class="q-btn no" data-answer="no">No</button>
+                </div>
+            </div>
+            <div class="q-item" data-q="3">
+                <div class="q-text">Have you ever lied to family or friends about your gambling?</div>
+                <div class="q-toggle">
+                    <button class="q-btn yes" data-answer="yes">Yes</button>
+                    <button class="q-btn no" data-answer="no">No</button>
+                </div>
+            </div>
+            <div class="q-item" data-q="4">
+                <div class="q-text">Do you gamble to escape problems or relieve stress?</div>
+                <div class="q-toggle">
+                    <button class="q-btn yes" data-answer="yes">Yes</button>
+                    <button class="q-btn no" data-answer="no">No</button>
+                </div>
+            </div>
+            <div class="q-item" data-q="5">
+                <div class="q-text">Has gambling ever caused financial or relationship problems for you?</div>
+                <div class="q-toggle">
+                    <button class="q-btn yes" data-answer="yes">Yes</button>
+                    <button class="q-btn no" data-answer="no">No</button>
+                </div>
+            </div>
+
+            <div id="quizResult" class="quiz-result"></div>
         </div>
-        
+
+        <!-- Player protection tools -->
+        <div class="glass section-card" id="tools">
+            <h2><span class="sect-emoji">🛠️</span> Player Protection Tools</h2>
+            <p>We provide a full suite of controls you can activate any time. Every tool is free and works instantly from your account settings.</p>
+
+            <div class="tool-grid" style="margin-top:14px;">
+                <div class="tool-card">
+                    <div class="tc-icon">💰</div>
+                    <div class="tc-body">
+                        <div class="tc-title">Deposit Limits</div>
+                        <div class="tc-desc">Set daily, weekly, or monthly caps on how much you can deposit. Changes take effect immediately.</div>
+                    </div>
+                </div>
+                <div class="tool-card">
+                    <div class="tc-icon">⏱️</div>
+                    <div class="tc-body">
+                        <div class="tc-title">Reality Checks</div>
+                        <div class="tc-desc">Pop-up reminders showing how long you've been playing — set your preferred interval.</div>
+                    </div>
+                </div>
+                <div class="tool-card">
+                    <div class="tc-icon">⏸️</div>
+                    <div class="tc-body">
+                        <div class="tc-title">Time-Out</div>
+                        <div class="tc-desc">Take a short break from betting — from 24 hours up to 6 weeks. Your account stays safe.</div>
+                    </div>
+                </div>
+                <div class="tool-card">
+                    <div class="tc-icon">🚫</div>
+                    <div class="tc-body">
+                        <div class="tc-title">Self-Exclusion</div>
+                        <div class="tc-desc">Block access to your account for 6 months or longer. <a href="self-exclusion.html">Learn more →</a></div>
+                    </div>
+                </div>
+                <div class="tool-card">
+                    <div class="tc-icon">📊</div>
+                    <div class="tc-body">
+                        <div class="tc-title">Activity Statement</div>
+                        <div class="tc-desc">See your full betting history, deposits, and withdrawals in the dashboard.</div>
+                    </div>
+                </div>
+                <div class="tool-card">
+                    <div class="tc-icon">🔔</div>
+                    <div class="tc-body">
+                        <div class="tc-title">Notification Controls</div>
+                        <div class="tc-desc">Turn off promotional emails, SMS, and push notifications whenever you want.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Get Help -->
+        <div class="glass section-card" id="help">
+            <h2><span class="sect-emoji">🆘</span> Where to Get Help</h2>
+            <p>If you feel gambling is becoming a problem — for you or someone you know — please reach out. These organisations offer free, confidential, non-judgmental support:</p>
+
+            <div class="org-grid" style="margin-top:14px;">
+                <a href="https://www.begambleaware.org" target="_blank" rel="noopener" class="org-card">
+                    <div class="oc-icon">🇬🇧</div>
+                    <div class="oc-info">
+                        <div class="oc-name">BeGambleAware</div>
+                        <div class="oc-url">begambleaware.org</div>
+                    </div>
+                </a>
+                <a href="https://www.gamcare.org.uk" target="_blank" rel="noopener" class="org-card">
+                    <div class="oc-icon">🩺</div>
+                    <div class="oc-info">
+                        <div class="oc-name">GamCare</div>
+                        <div class="oc-url">gamcare.org.uk</div>
+                    </div>
+                </a>
+                <a href="https://www.gamblersanonymous.org" target="_blank" rel="noopener" class="org-card">
+                    <div class="oc-icon">🤝</div>
+                    <div class="oc-info">
+                        <div class="oc-name">Gamblers Anonymous</div>
+                        <div class="oc-url">gamblersanonymous.org</div>
+                    </div>
+                </a>
+                <a href="https://www.ncpgambling.org" target="_blank" rel="noopener" class="org-card">
+                    <div class="oc-icon">🌍</div>
+                    <div class="oc-info">
+                        <div class="oc-name">NCPG (US)</div>
+                        <div class="oc-url">ncpgambling.org</div>
+                    </div>
+                </a>
+                <a href="https://www.gamblingtherapy.org" target="_blank" rel="noopener" class="org-card">
+                    <div class="oc-icon">💬</div>
+                    <div class="oc-info">
+                        <div class="oc-name">Gambling Therapy</div>
+                        <div class="oc-url">gamblingtherapy.org</div>
+                    </div>
+                </a>
+                <a href="https://www.gordonmoody.org.uk" target="_blank" rel="noopener" class="org-card">
+                    <div class="oc-icon">🏥</div>
+                    <div class="oc-info">
+                        <div class="oc-name">Gordon Moody</div>
+                        <div class="oc-url">gordonmoody.org.uk</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Contact CTA -->
+        <div class="contact-cta" id="contact">
+            <h3>Want to speak with our team?</h3>
+            <p>Our support team is available 24/7 to help with limits, time-outs, or any concern.</p>
+            <div class="cta-actions">
+                <a href="self-exclusion.html" class="btn-primary">🛑 Self-Exclude Now</a>
+                <a href="support.html" class="btn-secondary">🆘 Contact Support</a>
+            </div>
+        </div>
+
+        <!-- Other legal links -->
+        <div class="text-center mt-8 text-xs text-white/40">
+            <a href="terms.html" class="hover:text-white/70 transition-colors">Terms</a>
+            <span class="mx-2">·</span>
+            <a href="privacy.html" class="hover:text-white/70 transition-colors">Privacy</a>
+            <span class="mx-2">·</span>
+            <a href="cookies.html" class="hover:text-white/70 transition-colors">Cookies</a>
+            <span class="mx-2">·</span>
+            <a href="self-exclusion.html" class="hover:text-white/70 transition-colors">Self-Exclusion</a>
+        </div>
+
     </div>
 </div>
 
 <!-- ==========================================
      FOOTER
      ========================================== -->
-<footer class="bg-[#0a0a12] border-t border-white/5 py-12">
+<footer class="bg-[#0a0a12] border-t border-white/5 py-12 mt-6">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div class="col-span-2 md:col-span-1">
@@ -477,16 +1070,22 @@
                     <span class="text-white font-light">|</span>
                     <span class="text-white font-semibold">GameZone</span>
                 </div>
-                <p class="text-sm text-white/30 leading-relaxed">
+                <p class="text-sm text-white/30 leading-relaxed mb-4">
                     Premium online betting platform for sports, casino, and virtual games.
                 </p>
+                <div class="flex items-center gap-2 text-[10px] uppercase tracking-widest font-bold text-white/25">
+                    <span>18+</span>
+                    <span class="w-1 h-1 rounded-full bg-white/20"></span>
+                    <span>Play Responsibly</span>
+                </div>
             </div>
             <div>
-                <h4 class="text-sm font-semibold text-white/40 mb-3">Quick Links</h4>
+                <h4 class="text-sm font-semibold text-white/40 mb-3">Betting</h4>
                 <ul class="space-y-2">
                     <li><a href="sports.html" class="footer-link">Sports</a></li>
                     <li><a href="live-betting.html" class="footer-link">Live Betting</a></li>
                     <li><a href="casino.html" class="footer-link">Casino</a></li>
+                    <li><a href="aviator.html" class="footer-link">Aviator</a></li>
                     <li><a href="promotions.html" class="footer-link">Promotions</a></li>
                 </ul>
             </div>
@@ -509,9 +1108,13 @@
                 </ul>
             </div>
         </div>
-        <div class="mt-8 pt-6 border-t border-white/5 flex flex-col md:flex-row items-center justify-between text-xs text-white/20">
+        <div class="mt-8 pt-6 border-t border-white/5 flex flex-col md:flex-row items-center justify-between text-xs text-white/25 gap-3">
             <p>Copyright © 2025 Cephas GM | Innovating for Tomorrow</p>
-            <p class="mt-2 md:mt-0">18+ | Play Responsibly</p>
+            <div class="flex items-center gap-4">
+                <span class="flex items-center gap-1">🔒 Secured by SSL</span>
+                <span class="w-1 h-1 rounded-full bg-white/20"></span>
+                <span>Licensed Operator</span>
+            </div>
         </div>
     </div>
 </footer>
@@ -522,33 +1125,176 @@
 <script>
 (function() {
     'use strict';
-    
-    // Mobile menu
-    const mobileToggle = document.getElementById('mobileToggle');
-    const mobileMenu = document.getElementById('mobileMenu');
-    let mobileOpen = false;
-    
-    mobileToggle.addEventListener('click', () => {
+
+    /* ------------------------------------------------------------
+       MOBILE MENU
+       ------------------------------------------------------------ */
+    var mobileToggle = document.getElementById('mobileToggle');
+    var mobileMenu = document.getElementById('mobileMenu');
+    var mobileOpen = false;
+
+    mobileToggle.addEventListener('click', function() {
         mobileOpen = !mobileOpen;
-        mobileMenu.classList.toggle('active');
+        mobileMenu.classList.toggle('active', mobileOpen);
         document.body.style.overflow = mobileOpen ? 'hidden' : '';
     });
-    mobileMenu.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
+    mobileMenu.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() {
             mobileMenu.classList.remove('active');
             document.body.style.overflow = '';
             mobileOpen = false;
         });
     });
-    
-    // PWA
+
+    /* ------------------------------------------------------------
+       AUTH-AWARE UI
+       ------------------------------------------------------------ */
+    var isLoggedIn = false;
+    var currentUser = null;
+
+    if (window.CephasGM && CephasGM.api) {
+        isLoggedIn = CephasGM.api.isLoggedIn();
+        currentUser = CephasGM.api.getUser();
+    }
+
+    var guestNav = document.getElementById('guestNav');
+    var userNav = document.getElementById('userNav');
+    var mobileWalletChip = document.getElementById('mobileWalletChip');
+    var mobileAuthSection = document.getElementById('mobileAuthSection');
+    var mobileAccountSection = document.getElementById('mobileAccountSection');
+
+    if (isLoggedIn && currentUser) {
+        guestNav.classList.add('hidden');
+        userNav.classList.remove('hidden');
+        mobileWalletChip.classList.remove('hidden');
+        mobileAuthSection.classList.add('hidden');
+        mobileAccountSection.classList.remove('hidden');
+
+        var name = currentUser.fullName || currentUser.username || 'Player';
+        document.getElementById('navAvatar').textContent = name.charAt(0).toUpperCase();
+        document.getElementById('navName').textContent = name.split(' ')[0];
+
+        CephasGM.api.wallet().then(function(res) {
+            if (res.success && res.data) {
+                var bal = parseFloat(res.data.balance).toLocaleString('en-US', { maximumFractionDigits: 0 });
+                document.getElementById('navBalance').textContent = bal + ' ' + res.data.currency;
+                document.getElementById('mobileNavBalance').textContent = bal;
+            }
+        }).catch(function() {});
+
+        CephasGM.api.get('/notifications?limit=1&unreadOnly=true').then(function(res) {
+            if (res.success && typeof res.unreadCount === 'number' && res.unreadCount > 0) {
+                var badge = document.getElementById('notifBadge');
+                badge.textContent = res.unreadCount > 9 ? '9+' : res.unreadCount;
+                badge.style.display = 'flex';
+            }
+        }).catch(function() {});
+    } else {
+        guestNav.classList.remove('hidden');
+        userNav.classList.add('hidden');
+        mobileWalletChip.classList.add('hidden');
+        mobileAuthSection.classList.remove('hidden');
+        mobileAccountSection.classList.add('hidden');
+    }
+
+    function doSignOut() {
+        if (window.CephasGM && CephasGM.api) {
+            CephasGM.api.logout().catch(function() {}).then(function() {
+                CephasGM.api.clearTokens();
+                window.location.href = 'signin.html';
+            });
+        } else {
+            window.location.href = 'signin.html';
+        }
+    }
+
+    var navSignOut = document.getElementById('navSignOut');
+    if (navSignOut) navSignOut.addEventListener('click', function(e) {
+        e.preventDefault();
+        this.textContent = 'Signing out…';
+        doSignOut();
+    });
+    var mobileSignOut = document.getElementById('mobileSignOut');
+    if (mobileSignOut) mobileSignOut.addEventListener('click', function(e) {
+        e.preventDefault();
+        doSignOut();
+    });
+
+    /* ------------------------------------------------------------
+       SMOOTH SCROLL FOR QUICK NAV
+       ------------------------------------------------------------ */
+    document.querySelectorAll('.quick-nav a[href^="#"], .btn-help[href^="#"]').forEach(function(a) {
+        a.addEventListener('click', function(e) {
+            var href = this.getAttribute('href');
+            if (!href || href === '#') return;
+            var target = document.querySelector(href);
+            if (target) {
+                e.preventDefault();
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                history.replaceState(null, '', href);
+            }
+        });
+    });
+
+    /* ------------------------------------------------------------
+       SELF-ASSESSMENT QUIZ
+       ------------------------------------------------------------ */
+    var answers = {};
+
+    document.querySelectorAll('.q-item').forEach(function(item) {
+        var qNum = item.dataset.q;
+        var yesBtn = item.querySelector('.q-btn.yes');
+        var noBtn = item.querySelector('.q-btn.no');
+
+        yesBtn.addEventListener('click', function() {
+            answers[qNum] = 'yes';
+            yesBtn.classList.add('active');
+            noBtn.classList.remove('active');
+            evaluateQuiz();
+        });
+        noBtn.addEventListener('click', function() {
+            answers[qNum] = 'no';
+            noBtn.classList.add('active');
+            yesBtn.classList.remove('active');
+            evaluateQuiz();
+        });
+    });
+
+    function evaluateQuiz() {
+        var total = Object.keys(answers).length;
+        if (total < 5) return;
+
+        var yesCount = Object.values(answers).filter(function(v) { return v === 'yes'; }).length;
+        var resultEl = document.getElementById('quizResult');
+        resultEl.style.display = 'block';
+        resultEl.className = 'quiz-result';
+
+        var html = '';
+
+        if (yesCount === 0) {
+            resultEl.classList.add('low');
+            html = '<strong>✅ Looking good.</strong> Your answers suggest your gambling is under control. Keep following the tips above and revisit this check-in from time to time.';
+        } else if (yesCount <= 2) {
+            resultEl.classList.add('mid');
+            html = '<strong>⚠️ Take note.</strong> You answered "yes" to ' + yesCount + ' question' + (yesCount !== 1 ? 's' : '') + '. Consider using our deposit limits or setting a fixed budget for each session.';
+        } else {
+            resultEl.classList.add('high');
+            html = '<strong>🛑 Please reach out.</strong> You answered "yes" to ' + yesCount + ' of 5 questions. We strongly encourage you to use our <a href="self-exclusion.html" style="color:inherit;text-decoration:underline;">self-exclusion</a> tool and to speak with one of the support organisations listed below.';
+        }
+
+        resultEl.innerHTML = html;
+        resultEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    /* ------------------------------------------------------------
+       SERVICE WORKER
+       ------------------------------------------------------------ */
     if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/sw.js')
-                .then(reg => console.log('SW registered'))
-                .catch(err => console.log('SW registration failed'));
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('sw.js').catch(function() {});
         });
     }
+
 })();
 </script>
 
