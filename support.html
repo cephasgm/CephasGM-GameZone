@@ -2,100 +2,90 @@
 <html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#0a0a12">
     <meta name="description" content="Support Center – Create and track support tickets on CephasGM GameZone">
     <title>Support | CephasGM GameZone</title>
-    
-    <!-- PWA -->
+
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
     <script src="https://cdn.tailwindcss.com"></script>
-    
+    <script src="js/api.js"></script>
+
     <style>
-        /* ==========================================================
-           BASE
-           ========================================================== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        /* Forces the browser to render native form controls (esp. the
-           <select> dropdown list) in dark mode — this is THE fix for
-           the invisible white-on-white option popup. */
+        html { height: 100%; }
+
         :root, select, input, textarea, button, option {
             color-scheme: dark;
         }
-        
+
         body {
             font-family: 'Inter', sans-serif;
-            background: #0a0a12;
             color: #ffffff;
-            overflow-x: hidden;
-        }
-        
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #0a0a12; }
-        ::-webkit-scrollbar-thumb { 
-            background: linear-gradient(180deg, #0055ff, #542bff);
-            border-radius: 10px;
-        }
-        
-        /* ==========================================================
-           PAGE BACKGROUND (image + readability overlay)
-           ========================================================== */
-        .page-background {
             min-height: 100vh;
-            background-image: url('https://static.vecteezy.com/system/resources/thumbnails/070/574/368/small/assorted-sports-equipment-on-black-backdrop-symbolizing-athleticism-competition-and-diverse-sporting-activities-photo.jpeg');
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            background-color: #0a0a12;
+            background-image:
+                linear-gradient(180deg, rgba(10,10,18,0.90) 0%, rgba(10,10,18,0.82) 40%, rgba(10,10,18,0.90) 100%),
+                url('https://static.vecteezy.com/system/resources/thumbnails/070/574/368/small/assorted-sports-equipment-on-black-backdrop-symbolizing-athleticism-competition-and-diverse-sporting-activities-photo.jpeg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
-            position: relative;
+            background-repeat: no-repeat;
         }
-        
-        .page-background::before {
-            content: '';
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: linear-gradient(135deg,
-                rgba(10, 10, 18, 0.92) 0%,
-                rgba(10, 10, 18, 0.78) 50%,
-                rgba(10, 10, 18, 0.92) 100%
-            );
-            z-index: -1;
-            pointer-events: none;
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a12; }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #0055ff, #542bff);
+            border-radius: 10px;
         }
-        
-        /* ==========================================================
-           BUTTONS
-           ========================================================== */
+
+        .glass {
+            background: rgba(10,10,18,0.72);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.35);
+        }
+
+        .glass-light {
+            background: rgba(10,10,18,0.65);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
         .btn-primary {
-            display: inline-block;
-            text-align: center;
             background: linear-gradient(135deg, #0055ff, #542bff);
             color: white;
             padding: 12px 28px;
             border-radius: 50px;
-            font-weight: 600;
+            font-weight: 700;
             font-size: 14px;
             border: none;
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 4px 20px rgba(0, 85, 255, 0.35);
             text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-family: inherit;
+            white-space: nowrap;
         }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(0, 85, 255, 0.55);
-        }
-        
+        .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,85,255,0.55); }
+        .btn-primary:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+
         .btn-secondary {
-            display: inline-block;
-            text-align: center;
             background: rgba(255, 255, 255, 0.06);
             backdrop-filter: blur(10px);
             color: white;
@@ -107,43 +97,46 @@
             cursor: pointer;
             transition: all 0.3s ease;
             text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-family: inherit;
+            white-space: nowrap;
         }
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.12);
-            transform: translateY(-2px);
-        }
-        
-        /* ==========================================================
-           NAVBAR
-           ========================================================== */
+        .btn-secondary:hover { background: rgba(255,255,255,0.12); transform: translateY(-2px); }
+
+        /* Navbar */
         .navbar {
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            z-index: 1000;
-            padding: 16px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 14px 0;
             background: rgba(10, 10, 18, 0.78);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
         }
-        
         .text-gradient {
             background: linear-gradient(135deg, #0055ff, #542bff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        
+
         .live-dot {
-            width: 8px; height: 8px; border-radius: 50%;
-            background: #ff0044; display: inline-block;
-            animation: pulse-dot 1.5s ease-in-out infinite;
+            width: 7px; height: 7px; border-radius: 50%;
+            background: #ff0044;
+            box-shadow: 0 0 8px #ff0044;
+            animation: pulseDot 1.4s infinite;
+            display: inline-block;
+            flex-shrink: 0;
         }
-        @keyframes pulse-dot {
+        @keyframes pulseDot {
             0%,100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.4; transform: scale(0.8); }
+            50% { opacity: 0.4; transform: scale(0.7); }
         }
-        
+
         .mobile-menu {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -154,64 +147,126 @@
             padding: 80px 24px 24px;
             overflow-y: auto;
         }
-        .mobile-menu.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
+        .mobile-menu.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
         .dropdown { position: relative; display: inline-block; }
         .dropdown-menu {
             display: none;
             position: absolute;
-            top: 100%; left: 0;
-            background: rgba(10, 10, 18, 0.96);
+            top: calc(100% + 8px);
+            right: 0;
+            background: rgba(10, 10, 18, 0.98);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255,255,255,0.06);
             border-radius: 12px;
-            min-width: 200px;
+            min-width: 220px;
             padding: 8px 0;
             z-index: 1001;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.6);
         }
         .dropdown:hover .dropdown-menu { display: block; }
         .dropdown-menu a {
-            display: block;
-            padding: 8px 16px;
-            color: rgba(255, 255, 255, 0.65);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 16px;
+            color: rgba(255,255,255,0.7);
             font-size: 13px;
             transition: 0.2s;
             text-decoration: none;
         }
-        .dropdown-menu a:hover {
-            background: rgba(255, 255, 255, 0.06);
-            color: white;
+        .dropdown-menu a:hover { background: rgba(255,255,255,0.05); color: #fff; }
+        .dropdown-menu .divider { height: 1px; background: rgba(255,255,255,0.06); margin: 6px 0; }
+
+        .nav-link {
+            padding: 8px 14px;
+            font-size: 14px;
+            color: rgba(255,255,255,0.65);
+            border-radius: 10px;
+            transition: all 0.2s;
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
-        
-        /* ==========================================================
-           GLASS PANELS (matched to background brightness)
-           ========================================================== */
-        .glass {
-            background: rgba(10, 10, 18, 0.72);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+        .nav-link:hover { background: rgba(255,255,255,0.06); color: #fff; }
+        .nav-link.active { background: rgba(0,85,255,0.15); color: #93c5fd; }
+
+        .wallet-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 14px;
+            border-radius: 999px;
+            background: rgba(0,224,122,0.12);
+            border: 1px solid rgba(0,224,122,0.28);
+            color: #6bffb0;
+            font-size: 12px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.2s;
+            font-variant-numeric: tabular-nums;
         }
-        
-        .glass-light {
-            background: rgba(10, 10, 18, 0.65);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+        .wallet-chip:hover { background: rgba(0,224,122,0.2); }
+
+        .icon-btn {
+            width: 36px; height: 36px;
+            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: rgba(255,255,255,0.7);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            position: relative;
         }
-        
-        /* ==========================================================
-           FORM FIELDS
-           ========================================================== */
+        .icon-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+        .icon-badge {
+            position: absolute;
+            top: -4px; right: -4px;
+            min-width: 16px; height: 16px;
+            padding: 0 4px;
+            border-radius: 999px;
+            background: #ff0044;
+            color: #fff;
+            font-size: 9px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #0a0a12;
+        }
+
+        .user-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 12px 4px 4px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .user-pill:hover { background: rgba(255,255,255,0.1); }
+        .user-pill .up-avatar {
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 11px;
+        }
+        .user-pill .up-name { font-size: 12px; font-weight: 600; }
+
+        /* Form fields */
         .input-field, .select-field, .textarea-field {
             background-color: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -224,25 +279,14 @@
             outline: none;
             transition: border-color 0.2s, background-color 0.2s, box-shadow 0.2s;
         }
-        
-        .input-field::placeholder,
-        .textarea-field::placeholder {
-            color: rgba(255, 255, 255, 0.35);
-        }
-        
+        .input-field::placeholder, .textarea-field::placeholder { color: rgba(255,255,255,0.35); }
         .input-field:focus, .select-field:focus, .textarea-field:focus {
             border-color: #0055ff;
             background-color: rgba(0, 85, 255, 0.06);
             box-shadow: 0 0 0 3px rgba(0, 85, 255, 0.2);
         }
-        
-        .textarea-field {
-            resize: vertical;
-            min-height: 120px;
-            line-height: 1.5;
-        }
-        
-        /* ---------- Select: custom arrow + dark option list ---------- */
+        .textarea-field { resize: vertical; min-height: 130px; line-height: 1.5; }
+
         .select-field {
             appearance: none;
             -webkit-appearance: none;
@@ -256,30 +300,17 @@
             padding-right: 44px;
             cursor: pointer;
         }
-        
-        /* THE white-popup fix: force dark option list */
-        .select-field option,
-        .select-field optgroup {
+        .select-field option, .select-field optgroup {
             background-color: #12121c;
             color: #ffffff;
             padding: 10px 14px;
-            font-size: 14px;
         }
-        .select-field option:checked,
-        .select-field option:hover,
-        .select-field option:focus {
+        .select-field option:checked {
             background-color: #0055ff;
             color: #ffffff;
         }
-        .select-field optgroup {
-            color: #6b7280;
-            font-style: normal;
-            font-weight: 600;
-        }
-        
-        /* ==========================================================
-           TABS
-           ========================================================== */
+
+        /* Tabs */
         .tab-btn {
             padding: 10px 24px;
             border-radius: 50px;
@@ -290,27 +321,23 @@
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
             transition: all 0.25s ease;
+            font-family: inherit;
         }
-        .tab-btn:hover {
-            color: #ffffff;
-            background: rgba(255, 255, 255, 0.1);
-        }
+        .tab-btn:hover { color: #fff; background: rgba(255,255,255,0.1); }
         .tab-btn.active {
             color: #ffffff;
             background: linear-gradient(135deg, #0055ff, #542bff);
             border-color: transparent;
             box-shadow: 0 4px 20px rgba(0, 85, 255, 0.4);
         }
-        
-        /* ==========================================================
-           TICKET CARDS
-           ========================================================== */
+
+        /* Ticket cards */
         .ticket-card {
             border-radius: 16px;
-            padding: 20px;
+            padding: 18px;
             margin-bottom: 12px;
+            cursor: pointer;
             transition: transform 0.25s, border-color 0.25s, background 0.25s;
         }
         .ticket-card:hover {
@@ -318,10 +345,7 @@
             border-color: rgba(0, 85, 255, 0.35);
             background: rgba(10, 10, 18, 0.78);
         }
-        
-        /* ==========================================================
-           STATUS BADGES
-           ========================================================== */
+
         .status-badge {
             display: inline-block;
             padding: 4px 12px;
@@ -347,17 +371,118 @@
             color: #facc15;
             border: 1px solid rgba(234, 179, 8, 0.35);
         }
-        
-        /* ==========================================================
-           FOOTER
-           ========================================================== */
-        .footer-link {
-            color: rgba(255, 255, 255, 0.45);
-            transition: color 0.3s ease;
-            text-decoration: none;
-            font-size: 14px;
+        .status-closed {
+            background: rgba(107, 114, 128, 0.15);
+            color: #9ca3af;
+            border: 1px solid rgba(107, 114, 128, 0.35);
         }
+
+        /* Quick help cards */
+        .help-card {
+            display: flex;
+            gap: 12px;
+            padding: 16px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            transition: all .25s;
+            text-decoration: none;
+            color: inherit;
+        }
+        .help-card:hover {
+            background: rgba(255,255,255,0.06);
+            border-color: rgba(0,85,255,0.3);
+            transform: translateY(-2px);
+        }
+        .help-icon {
+            width: 40px; height: 40px;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px;
+            background: rgba(0,85,255,0.12);
+            border: 1px solid rgba(0,85,255,0.22);
+            flex-shrink: 0;
+        }
+        .help-title { font-size: 14px; font-weight: 700; }
+        .help-sub { font-size: 11px; color: rgba(255,255,255,0.45); margin-top: 2px; }
+
+        /* Chat thread */
+        .chat-msg {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 14px;
+            max-width: 82%;
+        }
+        .chat-msg.me { margin-left: auto; flex-direction: row-reverse; }
+        .chat-msg .avatar {
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 12px;
+            flex-shrink: 0;
+        }
+        .chat-msg.staff .avatar { background: linear-gradient(135deg, #0055ff, #542bff); }
+        .chat-msg.me .avatar { background: rgba(255,255,255,0.1); }
+        .chat-bubble {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 14px;
+            padding: 10px 14px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        .chat-msg.staff .chat-bubble {
+            background: linear-gradient(135deg, rgba(0,85,255,0.14), rgba(84,43,255,0.10));
+            border-color: rgba(0,85,255,0.25);
+        }
+        .chat-meta { font-size: 10px; color: rgba(255,255,255,0.35); margin-top: 4px; }
+
+        /* Guest notice */
+        .guest-notice {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, rgba(255,204,0,0.12), rgba(255,153,0,0.08));
+            border: 1px solid rgba(255,204,0,0.3);
+            margin-bottom: 20px;
+        }
+        .guest-notice .gn-icon { font-size: 24px; }
+        .guest-notice .gn-text { flex: 1; min-width: 0; }
+        .guest-notice .gn-title { font-size: 13px; font-weight: 800; color: #ffd93d; }
+        .guest-notice .gn-sub { font-size: 11px; color: rgba(255,255,255,0.55); margin-top: 2px; }
+
+        /* Loading skeleton */
+        .skeleton {
+            background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 8px;
+            color: transparent !important;
+        }
+        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+        /* Empty state */
+        .empty-state { padding: 40px 20px; text-align: center; }
+        .empty-state .es-icon { font-size: 48px; margin-bottom: 10px; }
+        .empty-state .es-title { font-size: 15px; font-weight: 700; color: rgba(255,255,255,0.8); }
+        .empty-state .es-sub { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 4px; }
+
+        /* Footer */
+        .site-footer {
+            flex-shrink: 0;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            background: rgba(10, 10, 18, 0.78);
+            backdrop-filter: blur(20px);
+        }
+        .footer-link { color: rgba(255, 255, 255, 0.45); transition: color 0.3s ease; text-decoration: none; font-size: 13px; }
         .footer-link:hover { color: #ffffff; }
+
+        /* Mobile responsive */
+        @media (max-width: 640px) {
+            .dropdown-menu { right: 0; left: auto; }
+        }
     </style>
 </head>
 <body>
@@ -367,82 +492,72 @@
      ========================================== -->
 <nav class="navbar" id="navbar">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between">
-            
-            <a href="index.html" class="flex items-center space-x-2" title="Go to Homepage">
+        <div class="flex items-center justify-between gap-3">
+
+            <a href="index.html" class="flex items-center space-x-2 shrink-0" title="CephasGM GameZone — Home">
                 <span class="text-xl font-bold">
                     <span class="text-gradient">CephasGM</span>
                     <span class="text-white font-light">|</span>
                     <span class="text-white font-semibold">GameZone</span>
                 </span>
             </a>
-            
-            <div class="hidden lg:flex items-center space-x-1">
-                <div class="dropdown">
-                    <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Info ▾</span>
-                    <div class="dropdown-menu">
-                        <a href="about.html">About Us</a>
-                        <a href="vip.html">VIP Club</a>
-                        <a href="referrals.html">Referrals</a>
-                        <a href="privacy.html">Privacy Policy</a>
-                        <a href="terms.html">Terms & Conditions</a>
-                        <a href="cookies.html">Cookie Policy</a>
-                    </div>
-                </div>
 
-                <div class="dropdown">
-                    <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Account ▾</span>
-                    <div class="dropdown-menu">
-                        <a href="dashboard.html">Dashboard</a>
-                        <a href="profile.html">Profile</a>
-                        <a href="wallet.html">Wallet</a>
-                        <a href="deposit.html">Deposit</a>
-                        <a href="withdraw.html">Withdraw</a>
-                        <a href="transactions.html">Transactions</a>
-                        <a href="bet-history.html">Bet History</a>
-                        <a href="bonuses.html">Bonuses</a>
-                        <a href="kyc.html">KYC Verification</a>
-                        <a href="settings.html">Settings</a>
-                        <a href="signin.html">Sign In</a>
-                        <a href="signup.html">Sign Up</a>
-                    </div>
-                </div>
+            <!-- Guest nav -->
+            <div id="guestNav" class="hidden lg:flex items-center gap-0.5">
+                <a href="sports.html" class="nav-link">Sports</a>
+                <a href="live-betting.html" class="nav-link"><span class="live-dot"></span>Live</a>
+                <a href="casino.html" class="nav-link">Casino</a>
+                <a href="aviator.html" class="nav-link">Aviator</a>
+                <a href="support.html" class="nav-link active">Support</a>
+            </div>
 
-                <a href="promotions.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Promotions</a>
-                <a href="sports.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Sports</a>
-                <a href="casino.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Casino</a>
-                <a href="live-betting.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 flex items-center space-x-1">
-                    <span class="live-dot"></span><span>Live</span>
+            <!-- User nav -->
+            <div id="userNav" class="hidden lg:flex items-center gap-0.5">
+                <a href="bet-history.html" class="nav-link">My Bets</a>
+                <a href="bonuses.html" class="nav-link">Bonuses</a>
+                <a href="wallet.html" class="wallet-chip ml-2">
+                    <span>💰</span>
+                    <span id="navBalance">—</span>
                 </a>
-
-                <div class="dropdown">
-                    <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Virtual ▾</span>
-                    <div class="dropdown-menu">
-                        <a href="virtual-football.html">Virtual Football</a>
-                        <a href="virtual-horse-racing.html">Virtual Horse Racing</a>
-                        <a href="virtual-car-racing.html">Virtual Car Racing</a>
-                        <a href="virtual-netball.html">Virtual Netball</a>
-                        <a href="adventure-games.html">Adventure Games</a>
-                        <a href="aviator.html">Aviator</a>
+                <a href="notifications.html" class="icon-btn ml-1" title="Notifications">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
+                        <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
+                    </svg>
+                    <span id="notifBadge" class="icon-badge" style="display:none">0</span>
+                </a>
+                <div class="dropdown ml-1">
+                    <div class="user-pill">
+                        <span class="up-avatar" id="navAvatar">U</span>
+                        <span class="up-name hidden xl:inline" id="navName">Account</span>
+                        <span class="text-white/40 text-xs">▾</span>
                     </div>
-                </div>
-
-                <div class="dropdown">
-                    <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Support ▾</span>
                     <div class="dropdown-menu">
-                        <a href="support.html">Help Center</a>
-                        <a href="messages.html">Messages</a>
-                        <a href="notifications.html">Notifications</a>
-                        <a href="faq.html">FAQ</a>
-                        <a href="contact.html">Contact Us</a>
-                        <a href="responsible-gambling.html">Responsible Gambling</a>
-                        <a href="self-exclusion.html">Self-Exclusion</a>
+                        <a href="dashboard.html">📊 Dashboard</a>
+                        <a href="profile.html">👤 Profile</a>
+                        <a href="wallet.html">💰 Wallet</a>
+                        <a href="deposit.html">➕ Deposit</a>
+                        <a href="withdraw.html">➖ Withdraw</a>
+                        <a href="transactions.html">📋 Transactions</a>
+                        <a href="bet-history.html">🎯 Bet History</a>
+                        <a href="bonuses.html">🎁 Bonuses</a>
+                        <a href="referrals.html">👥 Referrals</a>
+                        <a href="kyc.html">🪪 KYC Verification</a>
+                        <div class="divider"></div>
+                        <a href="settings.html">⚙️ Settings</a>
+                        <a href="support.html">🆘 Help Center</a>
+                        <div class="divider"></div>
+                        <a href="#" id="navSignOut" style="color:#ff8098">🚪 Sign Out</a>
                     </div>
                 </div>
             </div>
 
-            <div class="flex items-center space-x-3">
-                <button id="mobileToggle" class="lg:hidden p-2 text-white/40 hover:text-white transition-colors">
+            <div class="flex items-center space-x-2 lg:hidden">
+                <a href="wallet.html" id="mobileWalletChip" class="hidden wallet-chip" style="padding:5px 10px;font-size:11px">
+                    <span>💰</span>
+                    <span id="mobileNavBalance">—</span>
+                </a>
+                <button id="mobileToggle" class="p-2 text-white/60 hover:text-white transition-colors">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                     </svg>
@@ -454,62 +569,36 @@
 
 <!-- Mobile Menu -->
 <div id="mobileMenu" class="mobile-menu">
-    <nav class="flex flex-col space-y-6">
-        <a href="index.html" class="text-lg text-white/70 hover:text-white">Home</a>
-        <a href="sports.html" class="text-lg text-white/70 hover:text-white">Sports</a>
-        <a href="live-betting.html" class="text-lg text-white/70 hover:text-white">Live Betting</a>
-        <a href="casino.html" class="text-lg text-white/70 hover:text-white">Casino</a>
-        <a href="promotions.html" class="text-lg text-white/70 hover:text-white">Promotions</a>
-        <a href="bonuses.html" class="text-lg text-white/70 hover:text-white">Bonuses</a>
-        <a href="leaderboard.html" class="text-lg text-white/70 hover:text-white">Leaderboard</a>
-        <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Account</span>
-            <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="dashboard.html" class="text-sm text-white/50 hover:text-white">Dashboard</a>
-                <a href="profile.html" class="text-sm text-white/50 hover:text-white">Profile</a>
-                <a href="wallet.html" class="text-sm text-white/50 hover:text-white">Wallet</a>
-                <a href="deposit.html" class="text-sm text-white/50 hover:text-white">Deposit</a>
-                <a href="withdraw.html" class="text-sm text-white/50 hover:text-white">Withdraw</a>
-                <a href="transactions.html" class="text-sm text-white/50 hover:text-white">Transactions</a>
-                <a href="bet-history.html" class="text-sm text-white/50 hover:text-white">Bet History</a>
-                <a href="kyc.html" class="text-sm text-white/50 hover:text-white">KYC</a>
-                <a href="settings.html" class="text-sm text-white/50 hover:text-white">Settings</a>
-                <a href="signin.html" class="text-sm text-white/50 hover:text-white">Sign In</a>
-                <a href="signup.html" class="text-sm text-white/50 hover:text-white">Sign Up</a>
+    <nav class="flex flex-col space-y-5">
+        <div>
+            <span class="text-xs font-semibold text-white/30 uppercase tracking-widest">Betting</span>
+            <div class="mt-2 space-y-1">
+                <a href="sports.html" class="block text-base text-white/80 hover:text-white py-2">Sports</a>
+                <a href="live-betting.html" class="block text-base text-white/80 hover:text-white py-2">Live Betting</a>
+                <a href="casino.html" class="block text-base text-white/80 hover:text-white py-2">Casino</a>
+                <a href="aviator.html" class="block text-base text-white/80 hover:text-white py-2">Aviator</a>
+                <a href="promotions.html" class="block text-base text-white/80 hover:text-white py-2">Promotions</a>
             </div>
         </div>
-        <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Virtual Games</span>
+        <div id="mobileAccountSection" class="border-t border-white/10 pt-4 hidden">
+            <span class="text-xs font-semibold text-white/30 uppercase tracking-widest">My Account</span>
             <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="virtual-football.html" class="text-sm text-white/50 hover:text-white">Virtual Football</a>
-                <a href="virtual-horse-racing.html" class="text-sm text-white/50 hover:text-white">Horse Racing</a>
-                <a href="virtual-car-racing.html" class="text-sm text-white/50 hover:text-white">Car Racing</a>
-                <a href="virtual-netball.html" class="text-sm text-white/50 hover:text-white">Netball</a>
-                <a href="adventure-games.html" class="text-sm text-white/50 hover:text-white">Adventure</a>
-                <a href="aviator.html" class="text-sm text-white/50 hover:text-white">Aviator</a>
+                <a href="dashboard.html" class="text-sm text-white/60 hover:text-white">Dashboard</a>
+                <a href="wallet.html" class="text-sm text-white/60 hover:text-white">Wallet</a>
+                <a href="deposit.html" class="text-sm text-white/60 hover:text-white">Deposit</a>
+                <a href="withdraw.html" class="text-sm text-white/60 hover:text-white">Withdraw</a>
+                <a href="bet-history.html" class="text-sm text-white/60 hover:text-white">Bet History</a>
+                <a href="bonuses.html" class="text-sm text-white/60 hover:text-white">Bonuses</a>
+                <a href="profile.html" class="text-sm text-white/60 hover:text-white">Profile</a>
+                <a href="kyc.html" class="text-sm text-white/60 hover:text-white">KYC</a>
+                <a href="settings.html" class="text-sm text-white/60 hover:text-white">Settings</a>
+                <a href="#" id="mobileSignOut" class="text-sm text-red-400 hover:text-red-300">Sign Out</a>
             </div>
         </div>
-        <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Support</span>
-            <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="support.html" class="text-sm text-white/50 hover:text-white">Help Center</a>
-                <a href="messages.html" class="text-sm text-white/50 hover:text-white">Messages</a>
-                <a href="notifications.html" class="text-sm text-white/50 hover:text-white">Notifications</a>
-                <a href="faq.html" class="text-sm text-white/50 hover:text-white">FAQ</a>
-                <a href="contact.html" class="text-sm text-white/50 hover:text-white">Contact</a>
-                <a href="responsible-gambling.html" class="text-sm text-white/50 hover:text-white">Responsible</a>
-                <a href="self-exclusion.html" class="text-sm text-white/50 hover:text-white">Self-Exclusion</a>
-            </div>
-        </div>
-        <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Information</span>
-            <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="about.html" class="text-sm text-white/50 hover:text-white">About</a>
-                <a href="vip.html" class="text-sm text-white/50 hover:text-white">VIP</a>
-                <a href="referrals.html" class="text-sm text-white/50 hover:text-white">Referrals</a>
-                <a href="privacy.html" class="text-sm text-white/50 hover:text-white">Privacy</a>
-                <a href="terms.html" class="text-sm text-white/50 hover:text-white">Terms</a>
-                <a href="cookies.html" class="text-sm text-white/50 hover:text-white">Cookies</a>
+        <div id="mobileAuthSection" class="border-t border-white/10 pt-4">
+            <div class="flex gap-2">
+                <a href="signin.html" class="btn-secondary flex-1 text-xs py-2.5">Sign In</a>
+                <a href="signup.html" class="btn-primary flex-1 text-xs py-2.5">Sign Up</a>
             </div>
         </div>
     </nav>
@@ -518,26 +607,75 @@
 <!-- ==========================================
      SUPPORT CONTENT
      ========================================== -->
-<div class="page-background pt-24 pb-12 px-4">
-    <div class="max-w-5xl mx-auto relative z-10">
-        
+<div class="py-6 sm:py-8 px-4 flex-1">
+    <div class="max-w-5xl mx-auto">
+
         <div class="text-center mb-8">
-            <h1 class="text-4xl font-bold text-white">Help <span class="text-gradient">Center</span></h1>
-            <p class="text-sm text-white/60 mt-2">Create a support ticket or check the status of existing ones.</p>
+            <h1 class="text-3xl sm:text-4xl font-bold">Help <span class="text-gradient">Center</span></h1>
+            <p class="text-sm text-white/60 mt-2">Answers, guides, and direct support from our team</p>
         </div>
-        
+
+        <!-- Guest notice -->
+        <div id="guestNotice" class="guest-notice" style="display:none">
+            <div class="gn-icon">🔒</div>
+            <div class="gn-text">
+                <div class="gn-title">Sign in to create tickets</div>
+                <div class="gn-sub">You can browse help topics as a guest — sign in to submit a ticket and track replies.</div>
+            </div>
+            <a href="signin.html?redirect=support.html" class="btn-primary text-xs py-2 px-4" style="flex-shrink:0;text-decoration:none;">Sign In →</a>
+        </div>
+
+        <!-- Quick help cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 mb-8">
+            <a href="faq.html" class="help-card">
+                <div class="help-icon">❓</div>
+                <div>
+                    <div class="help-title">FAQ</div>
+                    <div class="help-sub">Common questions</div>
+                </div>
+            </a>
+            <a href="responsible-gambling.html" class="help-card">
+                <div class="help-icon">🛡️</div>
+                <div>
+                    <div class="help-title">Responsible</div>
+                    <div class="help-sub">Play safely</div>
+                </div>
+            </a>
+            <a href="kyc.html" class="help-card">
+                <div class="help-icon">🪪</div>
+                <div>
+                    <div class="help-title">KYC Guide</div>
+                    <div class="help-sub">Verify identity</div>
+                </div>
+            </a>
+            <a href="contact.html" class="help-card">
+                <div class="help-icon">✉️</div>
+                <div>
+                    <div class="help-title">Contact</div>
+                    <div class="help-sub">Direct email</div>
+                </div>
+            </a>
+        </div>
+
         <!-- Tabs -->
-        <div class="flex justify-center mb-8 gap-2">
-            <button class="tab-btn active" id="tabCreate">Create Ticket</button>
-            <button class="tab-btn" id="tabMy">My Tickets</button>
+        <div class="flex justify-center mb-6 gap-2">
+            <button class="tab-btn active" id="tabCreate">✍️ Create Ticket</button>
+            <button class="tab-btn" id="tabMy">📋 My Tickets <span id="ticketCount"></span></button>
         </div>
-        
-        <!-- Create Ticket Form (default visible) -->
-        <div id="createForm" class="glass rounded-2xl p-6 md:p-8 max-w-2xl mx-auto">
-            <h3 class="text-xl font-bold mb-6 text-white">Submit a Request</h3>
+
+        <!-- ============ CREATE TICKET ============ -->
+        <div id="createView" class="glass rounded-2xl p-6 md:p-8 max-w-2xl mx-auto">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="help-icon">✍️</div>
+                <div>
+                    <h3 class="text-lg font-bold">Submit a Request</h3>
+                    <p class="text-xs text-white/45">We respond within 24 hours on average</p>
+                </div>
+            </div>
+
             <form id="ticketForm" class="space-y-5">
                 <div>
-                    <label class="block text-xs text-white/60 mb-1.5 ml-1">Category</label>
+                    <label class="block text-xs text-white/60 mb-1.5 ml-1 font-semibold uppercase tracking-wide">Category</label>
                     <select id="category" class="select-field" required>
                         <option value="">Select a category</option>
                         <option value="account">Account Issue</option>
@@ -549,81 +687,63 @@
                     </select>
                 </div>
                 <div>
-                    <label class="block text-xs text-white/60 mb-1.5 ml-1">Subject</label>
-                    <input type="text" id="subject" placeholder="Brief summary of your issue" class="input-field" required>
+                    <label class="block text-xs text-white/60 mb-1.5 ml-1 font-semibold uppercase tracking-wide">Subject</label>
+                    <input type="text" id="subject" placeholder="Brief summary of your issue" class="input-field" required maxlength="200">
                 </div>
                 <div>
-                    <label class="block text-xs text-white/60 mb-1.5 ml-1">Description</label>
-                    <textarea id="description" placeholder="Provide as much detail as possible..." class="textarea-field" required></textarea>
+                    <label class="block text-xs text-white/60 mb-1.5 ml-1 font-semibold uppercase tracking-wide">Description</label>
+                    <textarea id="description" placeholder="Provide as much detail as possible — what happened, when, and what you expected." class="textarea-field" required maxlength="5000"></textarea>
                 </div>
-                <button type="submit" class="btn-primary w-full py-3 text-base">Submit Ticket</button>
+                <div class="flex items-center gap-2 text-xs text-white/40">
+                    <span>📎</span>
+                    <span>Tip: include your transaction reference or bet ID if relevant</span>
+                </div>
+                <button type="submit" class="btn-primary w-full py-3 text-base" id="submitTicketBtn">Submit Ticket</button>
             </form>
-            <div id="ticketSuccess" class="hidden mt-6 text-center text-green-400 font-semibold">
-                ✅ Ticket submitted! Your ticket ID is #TKT-001. We'll respond within 24 hours.
-            </div>
         </div>
-        
-        <!-- My Tickets (hidden by default) -->
-        <div id="myTickets" class="hidden">
-            <div class="space-y-4">
-                <!-- Ticket 1 -->
-                <div class="ticket-card glass-light">
-                    <div class="flex justify-between items-start mb-2 gap-3">
-                        <div>
-                            <h4 class="font-semibold text-white">#TKT-101 — Withdrawal Delay</h4>
-                            <p class="text-xs text-white/50 mt-1">Created Jan 20, 2025</p>
-                        </div>
-                        <span class="status-badge status-open">Open</span>
-                    </div>
-                    <p class="text-sm text-white/75">My withdrawal of $150 has been pending for 48 hours. Requested to Skrill.</p>
-                    <p class="text-xs text-white/40 mt-2">1 reply from support</p>
-                </div>
-                
-                <!-- Ticket 2 -->
-                <div class="ticket-card glass-light">
-                    <div class="flex justify-between items-start mb-2 gap-3">
-                        <div>
-                            <h4 class="font-semibold text-white">#TKT-100 — Bonus Not Credited</h4>
-                            <p class="text-xs text-white/50 mt-1">Created Jan 18, 2025</p>
-                        </div>
-                        <span class="status-badge status-resolved">Resolved</span>
-                    </div>
-                    <p class="text-sm text-white/75">I claimed the welcome bonus but it wasn't added to my balance.</p>
-                    <p class="text-xs text-white/40 mt-2">3 replies • Last: Jan 19</p>
-                </div>
-                
-                <!-- Ticket 3 -->
-                <div class="ticket-card glass-light">
-                    <div class="flex justify-between items-start mb-2 gap-3">
-                        <div>
-                            <h4 class="font-semibold text-white">#TKT-099 — KYC Rejection</h4>
-                            <p class="text-xs text-white/50 mt-1">Created Jan 15, 2025</p>
-                        </div>
-                        <span class="status-badge status-pending">Pending</span>
-                    </div>
-                    <p class="text-sm text-white/75">My documents were rejected. Need clarification on what went wrong.</p>
-                    <p class="text-xs text-white/40 mt-2">2 replies • Last: Jan 17</p>
+
+        <!-- ============ MY TICKETS ============ -->
+        <div id="myTicketsView" class="hidden">
+            <div id="ticketsContainer">
+                <div class="glass rounded-2xl p-6 text-center">
+                    <div class="text-3xl mb-2">⏳</div>
+                    <div class="text-sm text-white/50">Loading your tickets…</div>
                 </div>
             </div>
         </div>
-        
-        <!-- Quick Links -->
-        <div class="mt-10 text-center">
-            <p class="text-sm text-white/60 mb-3">Need immediate help?</p>
-            <div class="flex justify-center gap-4">
-                <a href="faq.html" class="btn-secondary">FAQ</a>
-                <a href="contact.html" class="btn-primary">Contact Us</a>
+
+        <!-- ============ TICKET DETAIL (hidden) ============ -->
+        <div id="ticketDetailView" class="hidden">
+            <button id="backToTicketsBtn" class="btn-secondary text-xs mb-4">← Back to tickets</button>
+
+            <div class="glass rounded-2xl p-6">
+                <div class="flex justify-between items-start gap-3 mb-5 flex-wrap">
+                    <div>
+                        <div class="text-xs text-white/40 mb-1" id="detailRef">#TKT—</div>
+                        <h2 class="text-xl font-bold" id="detailSubject">—</h2>
+                        <div class="text-xs text-white/40 mt-1" id="detailMeta">—</div>
+                    </div>
+                    <span class="status-badge status-open" id="detailStatus">OPEN</span>
+                </div>
+
+                <div id="detailMessages" class="mb-5"></div>
+
+                <div id="replyWrap" class="hidden">
+                    <label class="block text-xs text-white/60 mb-1.5 ml-1 font-semibold uppercase tracking-wide">Reply</label>
+                    <textarea id="replyInput" class="textarea-field mb-3" placeholder="Type your reply…" style="min-height:100px"></textarea>
+                    <button id="sendReplyBtn" class="btn-primary py-2.5 px-6 text-sm">Send Reply</button>
+                </div>
             </div>
         </div>
-        
+
     </div>
 </div>
 
 <!-- ==========================================
      FOOTER
      ========================================== -->
-<footer class="bg-[#0a0a12] border-t border-white/5 py-12">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<footer class="site-footer">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div class="col-span-2 md:col-span-1">
                 <div class="text-lg font-bold mb-3">
@@ -631,17 +751,22 @@
                     <span class="text-white font-light">|</span>
                     <span class="text-white font-semibold">GameZone</span>
                 </div>
-                <p class="text-sm text-white/40 leading-relaxed">
+                <p class="text-sm text-white/40 leading-relaxed mb-4">
                     Premium online betting platform for sports, casino, and virtual games.
                 </p>
+                <div class="flex items-center gap-2 text-[10px] uppercase tracking-widest font-bold text-white/25">
+                    <span>18+</span>
+                    <span class="w-1 h-1 rounded-full bg-white/20"></span>
+                    <span>Play Responsibly</span>
+                </div>
             </div>
             <div>
-                <h4 class="text-sm font-semibold text-white/50 mb-3">Quick Links</h4>
+                <h4 class="text-sm font-semibold text-white/50 mb-3">Betting</h4>
                 <ul class="space-y-2">
                     <li><a href="sports.html" class="footer-link">Sports</a></li>
                     <li><a href="live-betting.html" class="footer-link">Live Betting</a></li>
                     <li><a href="casino.html" class="footer-link">Casino</a></li>
-                    <li><a href="promotions.html" class="footer-link">Promotions</a></li>
+                    <li><a href="aviator.html" class="footer-link">Aviator</a></li>
                 </ul>
             </div>
             <div>
@@ -663,9 +788,13 @@
                 </ul>
             </div>
         </div>
-        <div class="mt-8 pt-6 border-t border-white/5 flex flex-col md:flex-row items-center justify-between text-xs text-white/30">
+        <div class="mt-8 pt-6 border-t border-white/5 flex flex-col md:flex-row items-center justify-between text-xs text-white/25 gap-3">
             <p>Copyright © 2025 Cephas GM | Innovating for Tomorrow</p>
-            <p class="mt-2 md:mt-0">18+ | Play Responsibly</p>
+            <div class="flex items-center gap-4">
+                <span class="flex items-center gap-1">🔒 Secured by SSL</span>
+                <span class="w-1 h-1 rounded-full bg-white/20"></span>
+                <span>Licensed Operator</span>
+            </div>
         </div>
     </div>
 </footer>
@@ -676,73 +805,429 @@
 <script>
 (function() {
     'use strict';
-    
-    // Mobile menu
-    const mobileToggle = document.getElementById('mobileToggle');
-    const mobileMenu = document.getElementById('mobileMenu');
-    let mobileOpen = false;
-    
-    mobileToggle.addEventListener('click', () => {
+
+    /* ------------------------------------------------------------
+       MOBILE MENU
+       ------------------------------------------------------------ */
+    var mobileToggle = document.getElementById('mobileToggle');
+    var mobileMenu = document.getElementById('mobileMenu');
+    var mobileOpen = false;
+
+    mobileToggle.addEventListener('click', function() {
         mobileOpen = !mobileOpen;
-        mobileMenu.classList.toggle('active');
+        mobileMenu.classList.toggle('active', mobileOpen);
         document.body.style.overflow = mobileOpen ? 'hidden' : '';
     });
-    mobileMenu.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
+    mobileMenu.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() {
             mobileMenu.classList.remove('active');
             document.body.style.overflow = '';
             mobileOpen = false;
         });
     });
-    
-    // Tab switching
-    const tabCreate = document.getElementById('tabCreate');
-    const tabMy = document.getElementById('tabMy');
-    const createForm = document.getElementById('createForm');
-    const myTickets = document.getElementById('myTickets');
-    
-    tabCreate.addEventListener('click', () => {
-        tabCreate.classList.add('active');
-        tabMy.classList.remove('active');
-        createForm.classList.remove('hidden');
-        myTickets.classList.add('hidden');
-    });
-    
-    tabMy.addEventListener('click', () => {
-        tabMy.classList.add('active');
-        tabCreate.classList.remove('active');
-        myTickets.classList.remove('hidden');
-        createForm.classList.add('hidden');
-    });
-    
-    // Ticket form submission
-    document.getElementById('ticketForm').addEventListener('submit', function(e) {
+
+    /* ------------------------------------------------------------
+       AUTH-AWARE UI
+       ------------------------------------------------------------ */
+    var isLoggedIn = false;
+    var currentUser = null;
+
+    if (window.CephasGM && CephasGM.api) {
+        isLoggedIn = CephasGM.api.isLoggedIn();
+        currentUser = CephasGM.api.getUser();
+    }
+
+    var guestNav = document.getElementById('guestNav');
+    var userNav = document.getElementById('userNav');
+    var mobileWalletChip = document.getElementById('mobileWalletChip');
+    var mobileAuthSection = document.getElementById('mobileAuthSection');
+    var mobileAccountSection = document.getElementById('mobileAccountSection');
+    var guestNotice = document.getElementById('guestNotice');
+
+    if (isLoggedIn && currentUser) {
+        guestNav.classList.add('hidden');
+        userNav.classList.remove('hidden');
+        mobileWalletChip.classList.remove('hidden');
+        mobileAuthSection.classList.add('hidden');
+        mobileAccountSection.classList.remove('hidden');
+        if (guestNotice) guestNotice.style.display = 'none';
+
+        var name = currentUser.fullName || currentUser.username || 'Player';
+        document.getElementById('navAvatar').textContent = name.charAt(0).toUpperCase();
+        document.getElementById('navName').textContent = name.split(' ')[0];
+
+        CephasGM.api.wallet().then(function(res) {
+            if (res.success && res.data) {
+                var bal = parseFloat(res.data.balance).toLocaleString('en-US', { maximumFractionDigits: 0 });
+                document.getElementById('navBalance').textContent = bal + ' ' + res.data.currency;
+                document.getElementById('mobileNavBalance').textContent = bal;
+            }
+        }).catch(function() {});
+
+        CephasGM.api.get('/notifications?limit=1&unreadOnly=true').then(function(res) {
+            if (res.success && typeof res.unreadCount === 'number' && res.unreadCount > 0) {
+                var badge = document.getElementById('notifBadge');
+                badge.textContent = res.unreadCount > 9 ? '9+' : res.unreadCount;
+                badge.style.display = 'flex';
+            }
+        }).catch(function() {});
+    } else {
+        guestNav.classList.remove('hidden');
+        userNav.classList.add('hidden');
+        mobileWalletChip.classList.add('hidden');
+        mobileAuthSection.classList.remove('hidden');
+        mobileAccountSection.classList.add('hidden');
+        if (guestNotice) guestNotice.style.display = 'flex';
+    }
+
+    function doSignOut() {
+        if (window.CephasGM && CephasGM.api) {
+            CephasGM.api.logout().catch(function() {}).then(function() {
+                CephasGM.api.clearTokens();
+                window.location.href = 'signin.html';
+            });
+        } else {
+            window.location.href = 'signin.html';
+        }
+    }
+    var navSignOut = document.getElementById('navSignOut');
+    if (navSignOut) navSignOut.addEventListener('click', function(e) {
         e.preventDefault();
-        const category = document.getElementById('category').value;
-        const subject = document.getElementById('subject').value;
-        const description = document.getElementById('description').value;
-        
-        if (!category || !subject || !description) {
-            alert('Please fill in all fields.');
+        this.textContent = 'Signing out…';
+        doSignOut();
+    });
+    var mobileSignOut = document.getElementById('mobileSignOut');
+    if (mobileSignOut) mobileSignOut.addEventListener('click', function(e) {
+        e.preventDefault();
+        doSignOut();
+    });
+
+    /* ------------------------------------------------------------
+       TABS
+       ------------------------------------------------------------ */
+    var tabCreate = document.getElementById('tabCreate');
+    var tabMy = document.getElementById('tabMy');
+    var createView = document.getElementById('createView');
+    var myTicketsView = document.getElementById('myTicketsView');
+    var ticketDetailView = document.getElementById('ticketDetailView');
+
+    function showTab(which) {
+        tabCreate.classList.toggle('active', which === 'create');
+        tabMy.classList.toggle('active', which === 'my');
+        createView.classList.toggle('hidden', which !== 'create');
+        myTicketsView.classList.toggle('hidden', which !== 'my');
+        ticketDetailView.classList.add('hidden');
+        if (which === 'my') loadTickets();
+    }
+    tabCreate.addEventListener('click', function() { showTab('create'); });
+    tabMy.addEventListener('click', function() { showTab('my'); });
+
+    /* ------------------------------------------------------------
+       HELPERS
+       ------------------------------------------------------------ */
+    function escapeHtml(s) {
+        return String(s || '')
+            .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+
+    function toast(msg, type) {
+        if (window.CephasGM && CephasGM.toast) {
+            CephasGM.toast(msg, type);
             return;
         }
-        
-        document.getElementById('ticketForm').classList.add('hidden');
-        document.getElementById('ticketSuccess').classList.remove('hidden');
-        
-        setTimeout(() => {
-            document.getElementById('ticketForm').reset();
-            document.getElementById('ticketForm').classList.remove('hidden');
-            document.getElementById('ticketSuccess').classList.add('hidden');
-        }, 5000);
+        // fallback simple toast
+        var el = document.createElement('div');
+        el.style.cssText = 'position:fixed;bottom:24px;right:24px;z-index:9999;' +
+            'background:rgba(0,224,122,0.15);color:#6bffb0;padding:12px 20px;' +
+            'border-radius:14px;font-size:13px;font-weight:700;' +
+            'backdrop-filter:blur(18px);border:1px solid rgba(0,224,122,0.3);';
+        el.textContent = msg;
+        document.body.appendChild(el);
+        setTimeout(function() { el.remove(); }, 2400);
+    }
+
+    function statusClass(status) {
+        switch (String(status || '').toUpperCase()) {
+            case 'OPEN':     return 'status-open';
+            case 'PENDING':  return 'status-pending';
+            case 'RESOLVED': return 'status-resolved';
+            case 'CLOSED':   return 'status-closed';
+            default:         return 'status-open';
+        }
+    }
+
+    function fmtDate(d) {
+        try {
+            return new Date(d).toLocaleString('en-GB', {
+                day: '2-digit', month: 'short', year: 'numeric',
+                hour: '2-digit', minute: '2-digit'
+            });
+        } catch (e) { return '—'; }
+    }
+
+    /* ------------------------------------------------------------
+       SUBMIT TICKET
+       ------------------------------------------------------------ */
+    var ticketForm = document.getElementById('ticketForm');
+    var submitBtn = document.getElementById('submitTicketBtn');
+
+    ticketForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        if (!isLoggedIn) {
+            window.location.href = 'signin.html?redirect=support.html';
+            return;
+        }
+
+        var category = document.getElementById('category').value;
+        var subject = document.getElementById('subject').value.trim();
+        var message = document.getElementById('description').value.trim();
+
+        if (!category || !subject || !message) {
+            toast('Please fill in all fields', 'error');
+            return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Submitting…';
+
+        // Backend: POST /support
+        CephasGM.api.post('/support', {
+            subject: subject,
+            category: category,
+            priority: 'NORMAL',
+            message: message
+        })
+        .then(function(res) {
+            if (res.success && res.data) {
+                toast('✅ Ticket submitted! Reference: ' + (res.data.id || 'created'), 'success');
+                ticketForm.reset();
+                // Jump to my tickets view
+                setTimeout(function() {
+                    showTab('my');
+                    loadTickets();
+                }, 800);
+            } else {
+                throw { message: (res && res.message) || 'Could not create ticket' };
+            }
+        })
+        .catch(function(err) {
+            var msg = (err && (err.message || (err.json && err.json.message))) || 'Could not create ticket';
+            toast(msg, 'error');
+        })
+        .then(function() {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Submit Ticket';
+        });
     });
-    
-    // PWA
+
+    /* ------------------------------------------------------------
+       LOAD MY TICKETS
+       ------------------------------------------------------------ */
+    var ticketsContainer = document.getElementById('ticketsContainer');
+    var ticketCountEl = document.getElementById('ticketCount');
+
+    function loadTickets() {
+        if (!isLoggedIn) {
+            ticketsContainer.innerHTML =
+                '<div class="glass rounded-2xl">' +
+                    '<div class="empty-state">' +
+                        '<div class="es-icon">🔒</div>' +
+                        '<div class="es-title">Sign in to view your tickets</div>' +
+                        '<div class="es-sub">You need an account to create and track tickets</div>' +
+                        '<a href="signin.html?redirect=support.html" class="btn-primary text-xs py-2 px-5 mt-4" style="text-decoration:none;">Sign In →</a>' +
+                    '</div>' +
+                '</div>';
+            ticketCountEl.textContent = '';
+            return;
+        }
+
+        ticketsContainer.innerHTML =
+            '<div class="glass rounded-2xl p-6">' +
+                '<div class="skeleton" style="height:24px;width:40%;margin-bottom:16px;"></div>' +
+                '<div class="skeleton" style="height:16px;width:80%;margin-bottom:10px;"></div>' +
+                '<div class="skeleton" style="height:16px;width:60%;"></div>' +
+            '</div>';
+
+        CephasGM.api.get('/support?limit=50')
+            .then(function(res) {
+                var items = res.data || [];
+                ticketCountEl.textContent = items.length ? '(' + items.length + ')' : '';
+
+                if (items.length === 0) {
+                    ticketsContainer.innerHTML =
+                        '<div class="glass rounded-2xl">' +
+                            '<div class="empty-state">' +
+                                '<div class="es-icon">📭</div>' +
+                                '<div class="es-title">No tickets yet</div>' +
+                                '<div class="es-sub">Create your first support ticket above</div>' +
+                            '</div>' +
+                        '</div>';
+                    return;
+                }
+
+                ticketsContainer.innerHTML = items.map(function(t) {
+                    return '' +
+                        '<div class="ticket-card glass-light" data-ticket-id="' + escapeHtml(t.id) + '">' +
+                            '<div class="flex justify-between items-start mb-2 gap-3">' +
+                                '<div class="min-w-0">' +
+                                    '<h4 class="font-semibold text-white truncate">' + escapeHtml(t.subject || 'Untitled') + '</h4>' +
+                                    '<p class="text-xs text-white/45 mt-1">Created ' + fmtDate(t.createdAt) + '</p>' +
+                                '</div>' +
+                                '<span class="status-badge ' + statusClass(t.status) + '">' + escapeHtml(t.status || 'OPEN') + '</span>' +
+                            '</div>' +
+                            '<p class="text-xs text-white/40">' +
+                                'Ref: ' + escapeHtml((t.id || '').slice(0, 12)) +
+                                (t.category ? ' · ' + escapeHtml(t.category) : '') +
+                                (t.messageCount ? ' · ' + t.messageCount + ' message' + (t.messageCount > 1 ? 's' : '') : '') +
+                            '</p>' +
+                        '</div>';
+                }).join('');
+
+                // Wire up ticket click → detail
+                ticketsContainer.querySelectorAll('.ticket-card').forEach(function(card) {
+                    card.addEventListener('click', function() {
+                        openTicketDetail(card.dataset.ticketId);
+                    });
+                });
+            })
+            .catch(function(err) {
+                ticketsContainer.innerHTML =
+                    '<div class="glass rounded-2xl">' +
+                        '<div class="empty-state">' +
+                            '<div class="es-icon">⚠️</div>' +
+                            '<div class="es-title">Could not load tickets</div>' +
+                            '<div class="es-sub">' + escapeHtml((err && err.message) || 'Please try again') + '</div>' +
+                        '</div>' +
+                    '</div>';
+            });
+    }
+
+    /* ------------------------------------------------------------
+       OPEN TICKET DETAIL
+       ------------------------------------------------------------ */
+    function openTicketDetail(ticketId) {
+        createView.classList.add('hidden');
+        myTicketsView.classList.add('hidden');
+        ticketDetailView.classList.remove('hidden');
+
+        document.getElementById('detailRef').textContent = '#' + ticketId.slice(0, 12);
+        document.getElementById('detailSubject').textContent = 'Loading…';
+        document.getElementById('detailMeta').textContent = '';
+        document.getElementById('detailStatus').textContent = '…';
+        document.getElementById('detailStatus').className = 'status-badge status-open';
+        document.getElementById('detailMessages').innerHTML = '<div class="skeleton" style="height:60px;"></div>';
+        document.getElementById('replyWrap').classList.add('hidden');
+
+        CephasGM.api.get('/support/' + ticketId)
+            .then(function(res) {
+                if (!res.success || !res.data) throw new Error('Not found');
+                var t = res.data;
+
+                document.getElementById('detailSubject').textContent = t.subject || '—';
+                document.getElementById('detailMeta').textContent =
+                    'Created ' + fmtDate(t.createdAt) +
+                    (t.category ? ' · ' + t.category : '');
+                document.getElementById('detailStatus').textContent = t.status || 'OPEN';
+                document.getElementById('detailStatus').className = 'status-badge ' + statusClass(t.status);
+
+                // Render messages
+                var msgs = t.messages || [];
+                if (msgs.length === 0) {
+                    document.getElementById('detailMessages').innerHTML =
+                        '<div class="text-sm text-white/40 text-center py-6">No messages yet</div>';
+                } else {
+                    document.getElementById('detailMessages').innerHTML = msgs.map(function(m) {
+                        var isMe = !m.isStaff;
+                        return '' +
+                            '<div class="chat-msg ' + (isMe ? 'me' : 'staff') + '">' +
+                                '<div class="avatar">' + (m.isStaff ? 'S' : 'U') + '</div>' +
+                                '<div>' +
+                                    '<div class="chat-bubble">' + escapeHtml(m.message) + '</div>' +
+                                    '<div class="chat-meta">' + (m.isStaff ? 'Support' : 'You') + ' · ' + fmtDate(m.createdAt) + '</div>' +
+                                '</div>' +
+                            '</div>';
+                    }).join('');
+                }
+
+                // Show reply form only if ticket is open
+                if (String(t.status).toUpperCase() === 'OPEN' || String(t.status).toUpperCase() === 'PENDING') {
+                    document.getElementById('replyWrap').classList.remove('hidden');
+                }
+            })
+            .catch(function() {
+                document.getElementById('detailMessages').innerHTML =
+                    '<div class="text-sm text-red-400 text-center py-6">Could not load ticket</div>';
+            });
+    }
+
+    document.getElementById('backToTicketsBtn').addEventListener('click', function() {
+        ticketDetailView.classList.add('hidden');
+        myTicketsView.classList.remove('hidden');
+    });
+
+    /* ------------------------------------------------------------
+       SEND REPLY
+       ------------------------------------------------------------ */
+    var sendReplyBtn = document.getElementById('sendReplyBtn');
+    sendReplyBtn.addEventListener('click', function() {
+        var input = document.getElementById('replyInput');
+        var msg = input.value.trim();
+        if (!msg) { toast('Type a message first', 'error'); return; }
+
+        var ticketId = document.getElementById('detailRef').textContent.replace('#', '');
+        // Need actual full ID — store on element
+        // For simplicity, we know the ticket id from the last opened card; but
+        // we only have sliced ID in the ref. So we need to track it.
+        // We'll fix by storing on the element.
+        var realId = ticketDetailView.dataset.ticketId;
+        if (!realId) { toast('Could not identify ticket', 'error'); return; }
+
+        sendReplyBtn.disabled = true;
+        sendReplyBtn.textContent = 'Sending…';
+
+        CephasGM.api.post('/support/' + realId + '/reply', { message: msg })
+            .then(function(res) {
+                if (res.success) {
+                    toast('✅ Reply sent', 'success');
+                    input.value = '';
+                    openTicketDetail(realId);
+                } else {
+                    throw { message: (res && res.message) || 'Could not send reply' };
+                }
+            })
+            .catch(function(err) {
+                var msg2 = (err && (err.message || (err.json && err.json.message))) || 'Could not send reply';
+                toast(msg2, 'error');
+            })
+            .then(function() {
+                sendReplyBtn.disabled = false;
+                sendReplyBtn.textContent = 'Send Reply';
+            });
+    });
+
+    // Hook: store ticket id when opening
+    var _origOpenTicketDetail = openTicketDetail;
+    openTicketDetail = function(id) {
+        ticketDetailView.dataset.ticketId = id;
+        _origOpenTicketDetail(id);
+    };
+
+    // Rebind ticket card clicks (since we reassigned the function)
+    ticketsContainer.addEventListener('click', function(e) {
+        var card = e.target.closest('.ticket-card');
+        if (card && card.dataset.ticketId) {
+            openTicketDetail(card.dataset.ticketId);
+        }
+    });
+
+    /* ------------------------------------------------------------
+       SERVICE WORKER
+       ------------------------------------------------------------ */
     if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/sw.js')
-                .then(reg => console.log('SW registered'))
-                .catch(err => console.log('SW registration failed'));
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('sw.js').catch(function() {});
         });
     }
 })();
