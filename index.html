@@ -10,7 +10,7 @@
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-apple-web-app-status-bar-style" content="black-translucent">
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -435,107 +435,6 @@
             backdrop-filter: blur(20px);
         }
 
-        .wallet-chip {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 7px 14px;
-            border-radius: 999px;
-            background: rgba(0,224,122,0.12);
-            border: 1px solid rgba(0,224,122,0.28);
-            color: #6bffb0;
-            font-size: 12px;
-            font-weight: 700;
-            text-decoration: none;
-            transition: all 0.2s;
-            font-variant-numeric: tabular-nums;
-        }
-        .wallet-chip:hover { background: rgba(0,224,122,0.2); }
-
-        .icon-btn {
-            width: 36px; height: 36px;
-            border-radius: 10px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.08);
-            color: rgba(255,255,255,0.7);
-            cursor: pointer;
-            transition: all 0.2s;
-            text-decoration: none;
-            position: relative;
-        }
-        .icon-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
-        .icon-badge {
-            position: absolute;
-            top: -4px; right: -4px;
-            min-width: 16px; height: 16px;
-            padding: 0 4px;
-            border-radius: 999px;
-            background: #ff0044;
-            color: #fff;
-            font-size: 9px;
-            font-weight: 800;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid #0a0a12;
-        }
-
-        .user-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 4px 12px 4px 4px;
-            border-radius: 999px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.08);
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .user-pill:hover { background: rgba(255,255,255,0.1); }
-        .user-pill .up-avatar {
-            width: 28px; height: 28px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #0055ff, #542bff);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            font-size: 11px;
-        }
-        .user-pill .up-name { font-size: 12px; font-weight: 600; }
-
-        .dropdown { position: relative; display: inline-block; }
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            top: calc(100% + 8px);
-            right: 0;
-            background: rgba(10, 10, 18, 0.98);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.06);
-            border-radius: 12px;
-            min-width: 220px;
-            padding: 8px 0;
-            z-index: 1001;
-            box-shadow: 0 12px 40px rgba(0,0,0,0.6);
-        }
-        .dropdown:hover .dropdown-menu { display: block; }
-        .dropdown-menu a {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 9px 16px;
-            color: rgba(255,255,255,0.7);
-            font-size: 13px;
-            transition: 0.2s;
-            text-decoration: none;
-        }
-        .dropdown-menu a:hover { background: rgba(255,255,255,0.05); color: white; }
-        .dropdown-menu .divider { height: 1px; background: rgba(255,255,255,0.06); margin: 6px 0; }
-
         @media (max-width: 640px) {
             .hero-section { padding: 22px 0 16px; }
             .section { padding: 22px 0; }
@@ -547,7 +446,7 @@
 <body>
 
 <!-- ==========================================
-     NAVBAR
+     NAVBAR (minimal — same for guests & signed-in)
      ========================================== -->
 <nav class="navbar" id="navbar">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -562,10 +461,8 @@
                 </span>
             </a>
 
-            <!-- ============================================
-                 GUEST NAV (public browsing)
-                 ============================================ -->
-            <div id="guestNav" class="hidden lg:flex items-center gap-0.5">
+            <!-- Public nav — always visible -->
+            <div class="hidden lg:flex items-center gap-0.5">
                 <a href="sports.html" class="nav-link">Sports</a>
                 <a href="live-betting.html" class="nav-link">
                     <span class="live-dot"></span><span>Live</span>
@@ -574,61 +471,8 @@
                 <a href="aviator.html" class="nav-link">Aviator</a>
             </div>
 
-            <!-- ============================================
-                 USER NAV (only when signed in) — minimal
-                 ============================================ -->
-            <div id="userNav" class="hidden lg:flex items-center gap-0.5">
-                <a href="bet-history.html" class="nav-link">My Bets</a>
-                <a href="bonuses.html" class="nav-link">Bonuses</a>
-
-                <!-- Wallet chip -->
-                <a href="wallet.html" class="wallet-chip ml-2">
-                    <span>💰</span>
-                    <span id="navBalance">—</span>
-                </a>
-
-                <!-- Notifications -->
-                <a href="notifications.html" class="icon-btn ml-1" title="Notifications">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
-                        <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
-                    </svg>
-                    <span id="notifBadge" class="icon-badge" style="display:none">0</span>
-                </a>
-
-                <!-- Account dropdown -->
-                <div class="dropdown ml-1">
-                    <div class="user-pill">
-                        <span class="up-avatar" id="navAvatar">U</span>
-                        <span class="up-name hidden xl:inline" id="navName">Account</span>
-                        <span class="text-white/40 text-xs">▾</span>
-                    </div>
-                    <div class="dropdown-menu">
-                        <a href="dashboard.html">📊 Dashboard</a>
-                        <a href="profile.html">👤 Profile</a>
-                        <a href="wallet.html">💰 Wallet</a>
-                        <a href="deposit.html">➕ Deposit</a>
-                        <a href="withdraw.html">➖ Withdraw</a>
-                        <a href="transactions.html">📋 Transactions</a>
-                        <a href="bet-history.html">🎯 Bet History</a>
-                        <a href="bonuses.html">🎁 Bonuses</a>
-                        <a href="referrals.html">👥 Referrals</a>
-                        <a href="kyc.html">🪪 KYC Verification</a>
-                        <div class="divider"></div>
-                        <a href="settings.html">⚙️ Settings</a>
-                        <a href="support.html">🆘 Help Center</a>
-                        <div class="divider"></div>
-                        <a href="#" id="navSignOut" style="color:#ff8098">🚪 Sign Out</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Mobile: wallet chip + hamburger -->
-            <div class="flex items-center space-x-2 lg:hidden">
-                <a href="wallet.html" id="mobileWalletChip" class="hidden wallet-chip" style="padding:5px 10px; font-size:11px">
-                    <span>💰</span>
-                    <span id="mobileNavBalance">—</span>
-                </a>
+            <!-- Mobile hamburger -->
+            <div class="flex items-center lg:hidden">
                 <button id="mobileToggle" class="p-2 text-white/60 hover:text-white transition-colors">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
@@ -668,23 +512,6 @@
             </div>
         </div>
 
-        <!-- Account (only when signed in) -->
-        <div id="mobileAccountSection" class="border-t border-white/10 pt-4 hidden">
-            <span class="text-xs font-semibold text-white/30 uppercase tracking-widest">My Account</span>
-            <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="dashboard.html" class="text-sm text-white/60 hover:text-white">Dashboard</a>
-                <a href="wallet.html" class="text-sm text-white/60 hover:text-white">Wallet</a>
-                <a href="deposit.html" class="text-sm text-white/60 hover:text-white">Deposit</a>
-                <a href="withdraw.html" class="text-sm text-white/60 hover:text-white">Withdraw</a>
-                <a href="bet-history.html" class="text-sm text-white/60 hover:text-white">Bet History</a>
-                <a href="bonuses.html" class="text-sm text-white/60 hover:text-white">Bonuses</a>
-                <a href="profile.html" class="text-sm text-white/60 hover:text-white">Profile</a>
-                <a href="kyc.html" class="text-sm text-white/60 hover:text-white">KYC</a>
-                <a href="settings.html" class="text-sm text-white/60 hover:text-white">Settings</a>
-                <a href="#" id="mobileSignOut" class="text-sm text-red-400 hover:text-red-300">Sign Out</a>
-            </div>
-        </div>
-
         <!-- Auth (only for guests) -->
         <div id="mobileAuthSection" class="border-t border-white/10 pt-4">
             <div class="flex gap-2">
@@ -693,7 +520,7 @@
             </div>
         </div>
 
-        <!-- Support (footer-level) -->
+        <!-- Support -->
         <div class="border-t border-white/10 pt-4">
             <span class="text-xs font-semibold text-white/30 uppercase tracking-widest">Support</span>
             <div class="grid grid-cols-2 gap-2 mt-2">
@@ -1170,91 +997,24 @@
         });
     });
 
-    /* AUTH-AWARE UI */
+    /* AUTH-AWARE: only affects hero CTAs, hero bonus card, mobile auth section */
     var isLoggedIn = false;
-    var currentUser = null;
-
     if (window.CephasGM && CephasGM.api) {
         isLoggedIn = CephasGM.api.isLoggedIn();
-        currentUser = CephasGM.api.getUser();
     }
 
-    var guestNav = document.getElementById('guestNav');
-    var userNav = document.getElementById('userNav');
-    var mobileWalletChip = document.getElementById('mobileWalletChip');
     var mobileAuthSection = document.getElementById('mobileAuthSection');
-    var mobileAccountSection = document.getElementById('mobileAccountSection');
     var heroAuthCtas = document.getElementById('heroAuthCtas');
     var heroBonusCard = document.getElementById('heroBonusCard');
 
-    if (isLoggedIn && currentUser) {
-        guestNav.classList.add('hidden');
-        userNav.classList.remove('hidden');
-        mobileWalletChip.classList.remove('hidden');
-        mobileAuthSection.classList.add('hidden');
-        mobileAccountSection.classList.remove('hidden');
-
+    if (isLoggedIn) {
+        if (mobileAuthSection) mobileAuthSection.classList.add('hidden');
         if (heroAuthCtas) heroAuthCtas.classList.add('hidden');
         if (heroBonusCard) heroBonusCard.classList.add('hidden');
-
-        var name = currentUser.fullName || currentUser.username || 'Player';
-        var initial = name.charAt(0).toUpperCase();
-        document.getElementById('navAvatar').textContent = initial;
-        document.getElementById('navName').textContent = name.split(' ')[0];
-
-        CephasGM.api.wallet().then(function(res) {
-            if (res.success && res.data) {
-                var bal = parseFloat(res.data.balance).toLocaleString('en-US', { maximumFractionDigits: 0 });
-                document.getElementById('navBalance').textContent = bal + ' ' + res.data.currency;
-                document.getElementById('mobileNavBalance').textContent = bal;
-            }
-        }).catch(function() {});
-
-        CephasGM.api.get('/notifications?limit=1&unreadOnly=true').then(function(res) {
-            if (res.success && typeof res.unreadCount === 'number' && res.unreadCount > 0) {
-                var badge = document.getElementById('notifBadge');
-                badge.textContent = res.unreadCount > 9 ? '9+' : res.unreadCount;
-                badge.style.display = 'flex';
-            }
-        }).catch(function() {});
     } else {
-        guestNav.classList.remove('hidden');
-        userNav.classList.add('hidden');
-        mobileWalletChip.classList.add('hidden');
-        mobileAuthSection.classList.remove('hidden');
-        mobileAccountSection.classList.add('hidden');
-
+        if (mobileAuthSection) mobileAuthSection.classList.remove('hidden');
         if (heroAuthCtas) heroAuthCtas.classList.remove('hidden');
         if (heroBonusCard) heroBonusCard.classList.remove('hidden');
-    }
-
-    /* SIGN OUT */
-    function doSignOut() {
-        if (window.CephasGM && CephasGM.api) {
-            CephasGM.api.logout().catch(function() {}).then(function() {
-                CephasGM.api.clearTokens();
-                window.location.href = 'signin.html';
-            });
-        } else {
-            window.location.href = 'signin.html';
-        }
-    }
-
-    var navSignOut = document.getElementById('navSignOut');
-    if (navSignOut) {
-        navSignOut.addEventListener('click', function(e) {
-            e.preventDefault();
-            this.textContent = 'Signing out…';
-            doSignOut();
-        });
-    }
-
-    var mobileSignOut = document.getElementById('mobileSignOut');
-    if (mobileSignOut) {
-        mobileSignOut.addEventListener('click', function(e) {
-            e.preventDefault();
-            doSignOut();
-        });
     }
 
     /* PRIVACY ENFORCEMENT */
