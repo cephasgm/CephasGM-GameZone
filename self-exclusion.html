@@ -2,112 +2,136 @@
 <html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#0a0a12">
-    <meta name="description" content="Self‑Exclusion – Take a break from betting with CephasGM GameZone">
-    <title>Self‑Exclusion | CephasGM GameZone</title>
-    
-    <!-- PWA -->
+    <meta name="description" content="Self-Exclusion – Take a break from betting with CephasGM GameZone">
+    <title>Self-Exclusion | CephasGM GameZone</title>
+
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
     <script src="https://cdn.tailwindcss.com"></script>
-    
+    <script src="js/api.js"></script>
+
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+        html { height: 100%; scroll-behavior: smooth; }
+
         body {
             font-family: 'Inter', sans-serif;
-            background: #0a0a12;
             color: #ffffff;
+            min-height: 100vh;
             overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            background-color: #0a0a12;
+            background-image:
+                linear-gradient(180deg, rgba(10,10,18,0.92) 0%, rgba(10,10,18,0.82) 40%, rgba(10,10,18,0.92) 100%),
+                url('https://static.vecteezy.com/system/resources/thumbnails/070/574/368/small/assorted-sports-equipment-on-black-backdrop-symbolizing-athleticism-competition-and-diverse-sporting-activities-photo.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
         }
-        
+
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #0a0a12; }
-        ::-webkit-scrollbar-thumb { 
+        ::-webkit-scrollbar-thumb {
             background: linear-gradient(180deg, #0055ff, #542bff);
             border-radius: 10px;
         }
-        
+
         .glass {
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(10, 10, 18, 0.72);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
-        
-        .glass-light {
-            background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        
+
         .btn-primary {
             background: linear-gradient(135deg, #0055ff, #542bff);
             color: white;
-            padding: 10px 24px;
+            padding: 10px 22px;
             border-radius: 50px;
-            font-weight: 600;
-            font-size: 14px;
+            font-weight: 700;
+            font-size: 13px;
             border: none;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(0, 85, 255, 0.25);
+            box-shadow: 0 4px 20px rgba(0, 85, 255, 0.35);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-family: inherit;
+            white-space: nowrap;
         }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(0, 85, 255, 0.4);
+        .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0, 85, 255, 0.5); }
+        .btn-primary:disabled { opacity: 0.55; cursor: not-allowed; }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #dc2626, #991b1b);
+            color: white;
+            padding: 14px 24px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 20px rgba(220, 38, 38, 0.35);
+            width: 100%;
+            font-family: inherit;
+            letter-spacing: 0.02em;
         }
-        
+        .btn-danger:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(220, 38, 38, 0.55); }
+        .btn-danger:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+
         .btn-secondary {
             background: rgba(255, 255, 255, 0.06);
             color: white;
-            padding: 10px 24px;
+            padding: 10px 22px;
             border-radius: 50px;
             font-weight: 600;
-            font-size: 14px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 13px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
             cursor: pointer;
             transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-family: inherit;
+            white-space: nowrap;
         }
-        
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-2px);
-        }
-        
+        .btn-secondary:hover { background: rgba(255, 255, 255, 0.12); transform: translateY(-2px); }
+
         .navbar {
-            position: fixed;
+            position: sticky;
             top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            padding: 16px 0;
-            background: rgba(10, 10, 18, 0.92);
+            z-index: 100;
+            padding: 14px 0;
+            background: rgba(10, 10, 18, 0.75);
             backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
         }
-        
+
         .text-gradient {
             background: linear-gradient(135deg, #0055ff, #542bff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        
+
         .mobile-menu {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(10, 10, 18, 0.98);
             backdrop-filter: blur(20px);
             z-index: 999;
@@ -115,98 +139,288 @@
             padding: 80px 24px 24px;
             overflow-y: auto;
         }
-        
-        .mobile-menu.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        .footer-link {
-            color: rgba(255, 255, 255, 0.4);
-            transition: all 0.3s ease;
-            text-decoration: none;
+        .mobile-menu.active { display: block; animation: fadeIn .3s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .footer-link { color: rgba(255, 255, 255, 0.5); transition: all .3s ease; text-decoration: none; font-size: 13px; }
+        .footer-link:hover { color: #ffffff; }
+
+        .page-content { flex: 1; display: flex; flex-direction: column; }
+
+        .nav-link {
+            padding: 8px 14px;
             font-size: 14px;
+            color: rgba(255,255,255,0.65);
+            border-radius: 10px;
+            transition: all 0.2s;
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
-        
-        .footer-link:hover {
-            color: #ffffff;
-        }
-        
-        .page-background {
-            min-height: 100vh;
-            background-image: url('https://static.vecteezy.com/system/resources/thumbnails/070/574/368/small/assorted-sports-equipment-on-black-backdrop-symbolizing-athleticism-competition-and-diverse-sporting-activities-photo.jpeg');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            position: relative;
-        }
-        
-        .page-background::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, 
-                rgba(10, 10, 18, 0.9) 0%, 
-                rgba(10, 10, 18, 0.7) 50%,
-                rgba(10, 10, 18, 0.9) 100%
-            );
-            z-index: -1;
-        }
-        
-        .dropdown {
-            position: relative;
+        .nav-link:hover { background: rgba(255,255,255,0.06); color: #fff; }
+
+        .live-dot {
+            width: 7px; height: 7px; border-radius: 50%;
+            background: #ff0044;
+            box-shadow: 0 0 8px #ff0044;
+            animation: pulseDot 1.4s infinite;
             display: inline-block;
+            flex-shrink: 0;
         }
+        @keyframes pulseDot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: .35; transform: scale(.7); }
+        }
+
+        .wallet-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 14px;
+            border-radius: 999px;
+            background: rgba(0,224,122,0.12);
+            border: 1px solid rgba(0,224,122,0.28);
+            color: #6bffb0;
+            font-size: 12px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.2s;
+            font-variant-numeric: tabular-nums;
+        }
+        .wallet-chip:hover { background: rgba(0,224,122,0.2); }
+
+        .icon-btn {
+            width: 36px; height: 36px;
+            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: rgba(255,255,255,0.7);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            position: relative;
+        }
+        .icon-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+        .icon-badge {
+            position: absolute;
+            top: -4px; right: -4px;
+            min-width: 16px; height: 16px;
+            padding: 0 4px;
+            border-radius: 999px;
+            background: #ff0044;
+            color: #fff;
+            font-size: 9px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #0a0a12;
+        }
+
+        .user-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 12px 4px 4px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .user-pill:hover { background: rgba(255,255,255,0.1); }
+        .user-pill .up-avatar {
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 11px;
+        }
+        .user-pill .up-name { font-size: 12px; font-weight: 600; }
+
+        .dropdown { position: relative; display: inline-block; }
         .dropdown-menu {
             display: none;
             position: absolute;
-            top: 100%;
-            left: 0;
-            background: rgba(10, 10, 18, 0.95);
+            top: calc(100% + 8px);
+            right: 0;
+            background: rgba(10, 10, 18, 0.98);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.06);
             border-radius: 12px;
-            min-width: 200px;
+            min-width: 220px;
             padding: 8px 0;
             z-index: 1001;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.6);
         }
-        .dropdown:hover .dropdown-menu {
-            display: block;
-        }
+        .dropdown:hover .dropdown-menu { display: block; }
         .dropdown-menu a {
-            display: block;
-            padding: 8px 16px;
-            color: rgba(255,255,255,0.6);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 16px;
+            color: rgba(255,255,255,0.7);
             font-size: 13px;
             transition: 0.2s;
+            text-decoration: none;
         }
-        .dropdown-menu a:hover {
+        .dropdown-menu a:hover { background: rgba(255,255,255,0.05); color: white; }
+        .dropdown-menu .divider { height: 1px; background: rgba(255,255,255,0.06); margin: 6px 0; }
+
+        /* ============ PAGE ============ */
+        .page-header {
+            padding: 30px 0 24px;
+            text-align: center;
+        }
+        .page-title {
+            font-size: 2.2rem;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            margin-bottom: 10px;
+        }
+        .page-sub {
+            font-size: 14px;
+            color: rgba(255,255,255,0.55);
+            max-width: 560px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Step indicator */
+        .step-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 26px;
+        }
+        .step-dot {
+            width: 30px; height: 30px;
+            border-radius: 50%;
             background: rgba(255,255,255,0.05);
-            color: white;
+            border: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 12px;
+            color: rgba(255,255,255,0.35);
+            transition: all .3s ease;
         }
-        
-        .input-field, .select-field {
+        .step-dot.active {
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            border-color: transparent;
+            color: #fff;
+            box-shadow: 0 4px 14px rgba(0,85,255,0.4);
+        }
+        .step-dot.done {
+            background: rgba(0,224,122,0.15);
+            border-color: rgba(0,224,122,0.4);
+            color: #6bffb0;
+        }
+        .step-connector {
+            width: 32px;
+            height: 2px;
+            background: rgba(255,255,255,0.1);
+        }
+        .step-connector.done { background: rgba(0,224,122,0.5); }
+
+        /* Warning banner */
+        .warning-banner {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px 16px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, rgba(220,38,38,0.12), rgba(150,20,20,0.08));
+            border: 1px solid rgba(220,38,38,0.35);
+            margin-bottom: 20px;
+        }
+        .warning-banner .wb-icon { font-size: 22px; flex-shrink: 0; }
+        .warning-banner .wb-text { font-size: 13px; color: rgba(255,255,255,0.75); line-height: 1.55; }
+        .warning-banner .wb-text strong { color: #ff8098; }
+
+        /* Current user card */
+        .account-card {
+            padding: 16px;
+            border-radius: 14px;
+            background: rgba(0,85,255,0.08);
+            border: 1px solid rgba(0,85,255,0.25);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .account-card .ac-avatar {
+            width: 44px; height: 44px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+        .account-card .ac-info { flex: 1; min-width: 0; }
+        .account-card .ac-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: #fff;
+        }
+        .account-card .ac-email {
+            font-size: 11px;
+            color: rgba(255,255,255,0.5);
+            margin-top: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Form */
+        .form-row { margin-bottom: 20px; }
+        .form-label {
+            display: block;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: rgba(255,255,255,0.45);
+            font-weight: 700;
+            margin-bottom: 8px;
+            margin-left: 4px;
+        }
+
+        .input-field,
+        .select-field,
+        .textarea-field {
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 14px 18px;
-            color: white;
+            border-radius: 14px;
+            padding: 14px 16px;
+            color: #fff;
             width: 100%;
-            font-size: 15px;
-            transition: border-color 0.3s;
+            font-size: 14px;
+            font-weight: 500;
+            transition: border-color 0.25s, background 0.25s;
+            font-family: inherit;
         }
-        .input-field:focus, .select-field:focus {
+        .input-field:focus,
+        .select-field:focus,
+        .textarea-field:focus {
             outline: none;
-            border-color: #0055ff;
+            border-color: #dc2626;
+            background: rgba(220,38,38,0.05);
         }
+        .textarea-field { resize: vertical; min-height: 80px; line-height: 1.55; }
+
         .select-field {
             -webkit-appearance: none;
             -moz-appearance: none;
@@ -214,38 +428,176 @@
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='white' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: right 1rem center;
+            cursor: pointer;
         }
-        
-        .step-indicator {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 24px;
+        .select-field option { background: #0a0a12; color: #fff; }
+
+        /* Duration grid */
+        .duration-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
         }
-        .step {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            font-size: 14px;
+        @media (min-width: 640px) { .duration-grid { grid-template-columns: repeat(4, 1fr); } }
+
+        .duration-option {
+            padding: 14px 12px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+        .duration-option:hover {
+            background: rgba(220,38,38,0.08);
+            border-color: rgba(220,38,38,0.35);
+        }
+        .duration-option.selected {
+            background: linear-gradient(135deg, rgba(220,38,38,0.2), rgba(150,20,20,0.15));
+            border-color: rgba(220,38,38,0.6);
+            box-shadow: 0 4px 16px rgba(220,38,38,0.25);
+        }
+        .duration-option .do-emoji { font-size: 22px; }
+        .duration-option .do-title {
+            font-size: 13px;
+            font-weight: 800;
+            color: #fff;
+            margin-top: 6px;
+        }
+        .duration-option .do-sub {
+            font-size: 10px;
             color: rgba(255,255,255,0.4);
-            transition: all 0.3s;
+            margin-top: 2px;
         }
-        .step.active {
-            background: linear-gradient(135deg, #0055ff, #542bff);
-            border-color: transparent;
-            color: white;
+        .duration-option.selected .do-sub { color: rgba(255,255,255,0.75); }
+
+        /* Confirm checkbox */
+        .confirm-box {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px 16px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            cursor: pointer;
+            margin-bottom: 20px;
         }
-        .step-line {
-            width: 40px;
-            height: 2px;
-            background: rgba(255,255,255,0.1);
+        .confirm-box input[type="checkbox"] {
+            margin-top: 2px;
+            width: 18px; height: 18px;
+            accent-color: #dc2626;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        .confirm-box .cb-text {
+            font-size: 12.5px;
+            color: rgba(255,255,255,0.65);
+            line-height: 1.6;
+        }
+        .confirm-box .cb-text strong { color: #fff; }
+        .confirm-box .cb-text a {
+            color: #93c5fd;
+            text-decoration: underline;
+            text-decoration-color: rgba(147,197,253,0.4);
+        }
+
+        /* Success view */
+        .success-card {
+            text-align: center;
+            padding: 30px 20px;
+        }
+        .success-card .sc-icon {
+            width: 90px; height: 90px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(0,224,122,0.2), rgba(0,150,82,0.1));
+            border: 2px solid rgba(0,224,122,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 42px;
+            margin: 0 auto 20px;
+            animation: pulseGlow 2s ease-in-out infinite;
+        }
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(0,224,122,0.4); }
+            50% { box-shadow: 0 0 0 18px rgba(0,224,122,0); }
+        }
+        .success-card h3 {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #6bffb0;
+            margin-bottom: 8px;
+        }
+        .success-card p {
+            font-size: 13.5px;
+            color: rgba(255,255,255,0.6);
+            line-height: 1.65;
+            max-width: 440px;
+            margin: 0 auto 24px;
+        }
+
+        /* Support alternatives */
+        .support-alts {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 18px;
+            background: rgba(255,255,255,0.02);
+            border: 1px dashed rgba(255,255,255,0.1);
+        }
+        .support-alts h3 {
+            font-size: 15px;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+        .support-alts p {
+            font-size: 12.5px;
+            color: rgba(255,255,255,0.55);
+            margin-bottom: 14px;
+            line-height: 1.55;
+        }
+        .alt-links {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+        }
+        @media (min-width: 640px) { .alt-links { grid-template-columns: repeat(2, 1fr); } }
+
+        .alt-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 14px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.2s ease;
+        }
+        .alt-link:hover {
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(255,255,255,0.15);
+            transform: translateY(-2px);
+        }
+        .alt-link .al-icon { font-size: 20px; flex-shrink: 0; }
+        .alt-link .al-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #fff;
+        }
+        .alt-link .al-sub {
+            font-size: 11px;
+            color: rgba(255,255,255,0.45);
+            margin-top: 2px;
+        }
+
+        @media (max-width: 640px) {
+            .page-title { font-size: 1.6rem; }
+            .page-content { padding-top: 4px; }
         }
     </style>
 </head>
@@ -256,248 +608,294 @@
      ========================================== -->
 <nav class="navbar" id="navbar">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between">
-            
-            <a href="index.html" class="flex items-center space-x-2" title="Go to Homepage">
+        <div class="flex items-center justify-between gap-3">
+
+            <a href="index.html" class="flex items-center space-x-2 shrink-0" title="CephasGM GameZone — Home">
                 <span class="text-xl font-bold">
                     <span class="text-gradient">CephasGM</span>
                     <span class="text-white font-light">|</span>
                     <span class="text-white font-semibold">GameZone</span>
                 </span>
             </a>
-            
-            <div class="hidden lg:flex items-center space-x-1">
-    <!-- Info dropdown -->
-    <div class="dropdown">
-        <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Info ▾</span>
-        <div class="dropdown-menu">
-            <a href="about.html">About Us</a>
-            <a href="vip.html">VIP Club</a>
-            <a href="referrals.html">Referrals</a>
-            <a href="privacy.html">Privacy Policy</a>
-            <a href="terms.html">Terms & Conditions</a>
-            <a href="cookies.html">Cookie Policy</a>
+
+            <!-- Guest nav -->
+            <div id="guestNav" class="hidden lg:flex items-center gap-0.5">
+                <a href="sports.html" class="nav-link">Sports</a>
+                <a href="live-betting.html" class="nav-link">
+                    <span class="live-dot"></span><span>Live</span>
+                </a>
+                <a href="casino.html" class="nav-link">Casino</a>
+                <a href="aviator.html" class="nav-link">Aviator</a>
+            </div>
+
+            <!-- User nav -->
+            <div id="userNav" class="hidden lg:flex items-center gap-0.5">
+                <a href="bet-history.html" class="nav-link">My Bets</a>
+                <a href="bonuses.html" class="nav-link">Bonuses</a>
+                <a href="wallet.html" class="wallet-chip ml-2">
+                    <span>💰</span>
+                    <span id="navBalance">—</span>
+                </a>
+                <a href="notifications.html" class="icon-btn ml-1" title="Notifications">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
+                        <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
+                    </svg>
+                    <span id="notifBadge" class="icon-badge" style="display:none">0</span>
+                </a>
+                <div class="dropdown ml-1">
+                    <div class="user-pill">
+                        <span class="up-avatar" id="navAvatar">U</span>
+                        <span class="up-name hidden xl:inline" id="navName">Account</span>
+                        <span class="text-white/40 text-xs">▾</span>
+                    </div>
+                    <div class="dropdown-menu">
+                        <a href="dashboard.html">📊 Dashboard</a>
+                        <a href="profile.html">👤 Profile</a>
+                        <a href="wallet.html">💰 Wallet</a>
+                        <a href="deposit.html">➕ Deposit</a>
+                        <a href="withdraw.html">➖ Withdraw</a>
+                        <a href="transactions.html">📋 Transactions</a>
+                        <a href="bet-history.html">🎯 Bet History</a>
+                        <a href="bonuses.html">🎁 Bonuses</a>
+                        <a href="referrals.html">👥 Referrals</a>
+                        <a href="kyc.html">🪪 KYC Verification</a>
+                        <div class="divider"></div>
+                        <a href="settings.html">⚙️ Settings</a>
+                        <a href="support.html">🆘 Help Center</a>
+                        <div class="divider"></div>
+                        <a href="#" id="navSignOut" style="color:#ff8098">🚪 Sign Out</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-2 lg:hidden">
+                <a href="wallet.html" id="mobileWalletChip" class="hidden wallet-chip" style="padding:5px 10px;font-size:11px">
+                    <span>💰</span>
+                    <span id="mobileNavBalance">—</span>
+                </a>
+                <button id="mobileToggle" class="p-2 text-white/60 hover:text-white transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
         </div>
     </div>
-
-    <!-- Account dropdown -->
-    <div class="dropdown">
-        <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Account ▾</span>
-        <div class="dropdown-menu">
-            <a href="dashboard.html">Dashboard</a>
-            <a href="profile.html">Profile</a>
-            <a href="wallet.html">Wallet</a>
-            <a href="deposit.html">Deposit</a>
-            <a href="withdraw.html">Withdraw</a>
-            <a href="transactions.html">Transactions</a>
-            <a href="bet-history.html">Bet History</a>
-            <a href="bonuses.html">Bonuses</a>
-            <a href="kyc.html">KYC Verification</a>
-            <a href="settings.html">Settings</a>
-            <a href="signin.html">Sign In</a>
-            <a href="signup.html">Sign Up</a>
-        </div>
-    </div>
-
-    <!-- Promotions link -->
-    <a href="promotions.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Promotions</a>
-
-    <!-- Sports link -->
-    <a href="sports.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Sports</a>
-
-    <!-- Casino link -->
-    <a href="casino.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Casino</a>
-
-    <!-- Live link -->
-    <a href="live-betting.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 flex items-center space-x-1">
-        <span class="live-dot"></span><span>Live</span>
-    </a>
-
-    <!-- Virtual dropdown -->
-    <div class="dropdown">
-        <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Virtual ▾</span>
-        <div class="dropdown-menu">
-            <a href="virtual-football.html">Virtual Football</a>
-            <a href="virtual-horse-racing.html">Virtual Horse Racing</a>
-            <a href="virtual-car-racing.html">Virtual Car Racing</a>
-            <a href="virtual-netball.html">Virtual Netball</a>
-            <a href="adventure-games.html">Adventure Games</a>
-            <a href="aviator.html">Aviator</a>
-        </div>
-    </div>
-
-    <!-- Support dropdown -->
-    <div class="dropdown">
-        <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Support ▾</span>
-        <div class="dropdown-menu">
-            <a href="support.html">Help Center</a>
-            <a href="messages.html">Messages</a>
-            <a href="notifications.html">Notifications</a>
-            <a href="faq.html">FAQ</a>
-            <a href="contact.html">Contact Us</a>
-            <a href="responsible-gambling.html">Responsible Gambling</a>
-            <a href="self-exclusion.html">Self-Exclusion</a>
-        </div>
-    </div>
-</div>
-
-<div class="flex items-center space-x-3">
-    <button id="mobileToggle" class="lg:hidden p-2 text-white/40 hover:text-white transition-colors">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-        </svg>
-    </button>
-</div>
-</div>
-</div>
 </nav>
 
 <!-- Mobile Menu -->
 <div id="mobileMenu" class="mobile-menu">
-    <nav class="flex flex-col space-y-6">
-        <a href="index.html" class="text-lg text-white/70 hover:text-white">Home</a>
-        <a href="sports.html" class="text-lg text-white/70 hover:text-white">Sports</a>
-        <a href="live-betting.html" class="text-lg text-white/70 hover:text-white">Live Betting</a>
-        <a href="casino.html" class="text-lg text-white/70 hover:text-white">Casino</a>
-        <a href="promotions.html" class="text-lg text-white/70 hover:text-white">Promotions</a>
-        <a href="bonuses.html" class="text-lg text-white/70 hover:text-white">Bonuses</a>
-        <a href="leaderboard.html" class="text-lg text-white/70 hover:text-white">Leaderboard</a>
-        <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Account</span>
-            <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="dashboard.html" class="text-sm text-white/50 hover:text-white">Dashboard</a>
-                <a href="profile.html" class="text-sm text-white/50 hover:text-white">Profile</a>
-                <a href="wallet.html" class="text-sm text-white/50 hover:text-white">Wallet</a>
-                <a href="deposit.html" class="text-sm text-white/50 hover:text-white">Deposit</a>
-                <a href="withdraw.html" class="text-sm text-white/50 hover:text-white">Withdraw</a>
-                <a href="transactions.html" class="text-sm text-white/50 hover:text-white">Transactions</a>
-                <a href="bet-history.html" class="text-sm text-white/50 hover:text-white">Bet History</a>
-                <a href="kyc.html" class="text-sm text-white/50 hover:text-white">KYC</a>
-                <a href="settings.html" class="text-sm text-white/50 hover:text-white">Settings</a>
-                <a href="signin.html" class="text-sm text-white/50 hover:text-white">Sign In</a>
-                <a href="signup.html" class="text-sm text-white/50 hover:text-white">Sign Up</a>
+    <nav class="flex flex-col space-y-5">
+        <div>
+            <span class="text-xs font-semibold text-white/30 uppercase tracking-widest">Betting</span>
+            <div class="mt-2 space-y-1">
+                <a href="sports.html" class="block text-base text-white/80 hover:text-white py-2">Sports</a>
+                <a href="live-betting.html" class="block text-base text-white/80 hover:text-white py-2">Live Betting</a>
+                <a href="casino.html" class="block text-base text-white/80 hover:text-white py-2">Casino</a>
+                <a href="aviator.html" class="block text-base text-white/80 hover:text-white py-2">Aviator</a>
             </div>
         </div>
-        <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Virtual Games</span>
+        <div id="mobileAccountSection" class="border-t border-white/10 pt-4 hidden">
+            <span class="text-xs font-semibold text-white/30 uppercase tracking-widest">My Account</span>
             <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="virtual-football.html" class="text-sm text-white/50 hover:text-white">Virtual Football</a>
-                <a href="virtual-horse-racing.html" class="text-sm text-white/50 hover:text-white">Horse Racing</a>
-                <a href="virtual-car-racing.html" class="text-sm text-white/50 hover:text-white">Car Racing</a>
-                <a href="virtual-netball.html" class="text-sm text-white/50 hover:text-white">Netball</a>
-                <a href="adventure-games.html" class="text-sm text-white/50 hover:text-white">Adventure</a>
-                <a href="aviator.html" class="text-sm text-white/50 hover:text-white">Aviator</a>
+                <a href="dashboard.html" class="text-sm text-white/60 hover:text-white">Dashboard</a>
+                <a href="wallet.html" class="text-sm text-white/60 hover:text-white">Wallet</a>
+                <a href="deposit.html" class="text-sm text-white/60 hover:text-white">Deposit</a>
+                <a href="withdraw.html" class="text-sm text-white/60 hover:text-white">Withdraw</a>
+                <a href="bet-history.html" class="text-sm text-white/60 hover:text-white">Bet History</a>
+                <a href="bonuses.html" class="text-sm text-white/60 hover:text-white">Bonuses</a>
+                <a href="profile.html" class="text-sm text-white/60 hover:text-white">Profile</a>
+                <a href="kyc.html" class="text-sm text-white/60 hover:text-white">KYC</a>
+                <a href="settings.html" class="text-sm text-white/60 hover:text-white">Settings</a>
+                <a href="#" id="mobileSignOut" class="text-sm text-red-400 hover:text-red-300">Sign Out</a>
             </div>
         </div>
-        <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Support</span>
-            <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="support.html" class="text-sm text-white/50 hover:text-white">Help Center</a>
-                <a href="messages.html" class="text-sm text-white/50 hover:text-white">Messages</a>
-                <a href="notifications.html" class="text-sm text-white/50 hover:text-white">Notifications</a>
-                <a href="faq.html" class="text-sm text-white/50 hover:text-white">FAQ</a>
-                <a href="contact.html" class="text-sm text-white/50 hover:text-white">Contact</a>
-                <a href="responsible-gambling.html" class="text-sm text-white/50 hover:text-white">Responsible</a>
-                <a href="self-exclusion.html" class="text-sm text-white/50 hover:text-white">Self-Exclusion</a>
-            </div>
-        </div>
-        <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Information</span>
-            <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="about.html" class="text-sm text-white/50 hover:text-white">About</a>
-                <a href="vip.html" class="text-sm text-white/50 hover:text-white">VIP</a>
-                <a href="referrals.html" class="text-sm text-white/50 hover:text-white">Referrals</a>
-                <a href="privacy.html" class="text-sm text-white/50 hover:text-white">Privacy</a>
-                <a href="terms.html" class="text-sm text-white/50 hover:text-white">Terms</a>
-                <a href="cookies.html" class="text-sm text-white/50 hover:text-white">Cookies</a>
+        <div id="mobileAuthSection" class="border-t border-white/10 pt-4">
+            <div class="flex gap-2">
+                <a href="signin.html" class="btn-secondary flex-1 text-xs py-2.5">Sign In</a>
+                <a href="signup.html" class="btn-primary flex-1 text-xs py-2.5">Sign Up</a>
             </div>
         </div>
     </nav>
 </div>
 
 <!-- ==========================================
-     SELF‑EXCLUSION CONTENT
+     PAGE CONTENT
      ========================================== -->
-<div class="page-background pt-20 pb-12 px-4">
-    <div class="max-w-2xl mx-auto relative z-10">
-        
-        <div class="text-center mb-10">
-            <h1 class="text-4xl md:text-5xl font-bold mb-4">
-                Self‑<span class="text-gradient">Exclusion</span>
+<div class="page-content pt-6 pb-12 px-4">
+    <div class="max-w-2xl mx-auto w-full">
+
+        <!-- Header -->
+        <div class="page-header">
+            <div class="text-[10px] uppercase tracking-widest text-white/40 font-bold mb-3">Responsible Gaming</div>
+            <h1 class="page-title">
+                🛑 Self-<span class="text-gradient">Exclusion</span>
             </h1>
-            <p class="text-lg text-white/50">Take a break whenever you need it. We're here to support you.</p>
+            <p class="page-sub">
+                Take a break from betting. Self-exclusion locks your account for a chosen period so you can step away with confidence.
+            </p>
         </div>
-        
-        <!-- Information -->
-        <div class="glass rounded-2xl p-6 md:p-8 mb-8">
-            <div class="text-center mb-6">
-                <div class="text-4xl mb-3">🛑</div>
-                <h2 class="text-xl font-bold">How It Works</h2>
-                <p class="text-sm text-white/50 mt-2">Self‑exclusion prevents you from accessing your account for a chosen period. Once active, you will not be able to log in, place bets, or receive promotional messages until the period expires.</p>
-            </div>
-            
-            <div class="flex justify-center mb-6">
-                <div class="step-indicator">
-                    <div class="step active">1</div>
-                    <div class="step-line"></div>
-                    <div class="step">2</div>
-                    <div class="step-line"></div>
-                    <div class="step">3</div>
+
+        <!-- The form card -->
+        <div class="glass rounded-3xl p-6 sm:p-8">
+
+            <!-- Warning banner -->
+            <div class="warning-banner">
+                <div class="wb-icon">⚠️</div>
+                <div class="wb-text">
+                    <strong>Please read carefully.</strong> Self-exclusion is <strong>irreversible</strong> for the period you select. During this time you will not be able to log in, place bets, or deposit funds.
                 </div>
             </div>
-            
-            <!-- Self‑Exclusion Form -->
-            <form id="exclusionForm" class="space-y-5">
-                <div>
-                    <label class="block text-xs text-white/40 mb-1.5 ml-1">Select Duration</label>
-                    <select id="duration" class="select-field" required>
-                        <option value="">Choose a period...</option>
-                        <option value="6months">6 Months</option>
-                        <option value="1year">1 Year</option>
-                        <option value="2years">2 Years</option>
-                        <option value="permanent">Permanent (indefinite)</option>
-                    </select>
+
+            <!-- Step indicator -->
+            <div class="step-bar">
+                <div class="step-dot active" id="stepDot1">1</div>
+                <div class="step-connector" id="stepConn1"></div>
+                <div class="step-dot" id="stepDot2">2</div>
+                <div class="step-connector" id="stepConn2"></div>
+                <div class="step-dot" id="stepDot3">3</div>
+            </div>
+
+            <!-- Current account -->
+            <div id="accountSection" class="account-card hidden">
+                <div class="ac-avatar" id="acAvatar">U</div>
+                <div class="ac-info">
+                    <div class="ac-name" id="acName">Loading…</div>
+                    <div class="ac-email" id="acEmail">—</div>
                 </div>
-                
-                <div>
-                    <label class="block text-xs text-white/40 mb-1.5 ml-1">Reason (optional)</label>
-                    <textarea id="reason" rows="3" placeholder="Tell us why you want to take a break..." class="input-field"></textarea>
+            </div>
+
+            <!-- Not signed in -->
+            <div id="guestBlock" class="hidden">
+                <div class="warning-banner" style="background: linear-gradient(135deg, rgba(0,85,255,0.12), rgba(84,43,255,0.08)); border-color: rgba(0,85,255,0.35);">
+                    <div class="wb-icon">🔒</div>
+                    <div class="wb-text">
+                        <strong style="color:#93c5fd;">Sign in required.</strong> Self-exclusion applies to a specific account. Please sign in to your account first — you'll be brought right back here.
+                    </div>
                 </div>
-                
-                <div class="flex items-start space-x-2">
-                    <input type="checkbox" id="confirm" class="mt-1 rounded bg-white/10 border-white/20 text-blue-500 focus:ring-0" required>
-                    <label for="confirm" class="text-xs text-white/50 leading-relaxed">
-                        I understand that self‑exclusion is irreversible for the chosen period and that I will not be able to access my account. Any remaining balance will be refunded according to our <a href="terms.html" class="text-blue-400 hover:underline">Terms</a>.
+                <a href="signin.html?redirect=self-exclusion.html" class="btn-primary w-full py-3" style="margin-top:8px;text-decoration:none;">Sign In to Continue →</a>
+            </div>
+
+            <!-- Form -->
+            <div id="formWrapper">
+                <form id="exclusionForm" novalidate>
+
+                    <!-- Duration grid -->
+                    <div class="form-row">
+                        <label class="form-label">Step 1 — Choose Duration</label>
+                        <div class="duration-grid" id="durationGrid">
+                            <div class="duration-option" data-value="6months">
+                                <div class="do-emoji">⏸️</div>
+                                <div class="do-title">6 Months</div>
+                                <div class="do-sub">Short break</div>
+                            </div>
+                            <div class="duration-option" data-value="1year">
+                                <div class="do-emoji">⏳</div>
+                                <div class="do-title">1 Year</div>
+                                <div class="do-sub">Extended pause</div>
+                            </div>
+                            <div class="duration-option" data-value="2years">
+                                <div class="do-emoji">🗓️</div>
+                                <div class="do-title">2 Years</div>
+                                <div class="do-sub">Long-term</div>
+                            </div>
+                            <div class="duration-option" data-value="permanent">
+                                <div class="do-emoji">🚫</div>
+                                <div class="do-title">Permanent</div>
+                                <div class="do-sub">Indefinite</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reason -->
+                    <div class="form-row">
+                        <label class="form-label" for="reasonInput">Step 2 — Reason (optional)</label>
+                        <textarea id="reasonInput" class="textarea-field" rows="3"
+                                  placeholder="Tell us why you'd like to take a break. This helps us support you better."
+                                  maxlength="500"></textarea>
+                        <div class="text-right mt-1 text-[10px] text-white/30">
+                            <span id="reasonCount">0</span>/500
+                        </div>
+                    </div>
+
+                    <!-- Confirm -->
+                    <label class="confirm-box" for="confirmCheckbox">
+                        <input type="checkbox" id="confirmCheckbox">
+                        <span class="cb-text">
+                            I understand this is <strong>irreversible</strong> and my account will be locked for the chosen period. I've read the <a href="terms.html" target="_blank">Terms</a> and agree to the balance refund policy.
+                        </span>
                     </label>
-                </div>
-                
-                <button type="submit" class="btn-primary w-full py-3 text-base">
-                    Activate Self‑Exclusion
-                </button>
-            </form>
-            
-            <!-- Success Message (hidden) -->
-            <div id="successMsg" class="hidden text-center py-6">
-                <div class="text-4xl mb-3">✅</div>
-                <h3 class="text-xl font-bold text-green-400">Request Submitted</h3>
-                <p class="text-sm text-white/50 mt-2">Your self‑exclusion will take effect immediately. You will be logged out and unable to access your account for the selected period. A confirmation email has been sent.</p>
-                <button onclick="window.location.href='/index.html'" class="btn-secondary mt-4 inline-block">Return to Homepage</button>
+
+                    <!-- Error -->
+                    <div id="errorBox" class="text-xs text-red-400 text-center mb-3 hidden"></div>
+
+                    <!-- Submit -->
+                    <button type="submit" id="submitBtn" class="btn-danger" disabled>
+                        🛑 Activate Self-Exclusion
+                    </button>
+
+                    <p class="text-center text-[11px] text-white/35 mt-3">
+                        A confirmation email will be sent to your registered address.
+                    </p>
+                </form>
+            </div>
+
+            <!-- Success view -->
+            <div id="successWrapper" class="success-card hidden">
+                <div class="sc-icon">✅</div>
+                <h3>Request Submitted</h3>
+                <p id="successMessage">
+                    Your self-exclusion has been registered. We've logged you out and you won't be able to access your account during the selected period. A confirmation has been sent to your email.
+                </p>
+                <a href="index.html" class="btn-secondary">Return to Homepage</a>
+            </div>
+
+        </div>
+
+        <!-- Support alternatives -->
+        <div class="support-alts">
+            <h3>Need help instead?</h3>
+            <p>If you're struggling with gambling, these resources can support you. You're not alone.</p>
+            <div class="alt-links">
+                <a href="responsible-gambling.html" class="alt-link">
+                    <span class="al-icon">🛡️</span>
+                    <div>
+                        <div class="al-title">Responsible Gambling</div>
+                        <div class="al-sub">Tips and guidelines</div>
+                    </div>
+                </a>
+                <a href="support.html" class="alt-link">
+                    <span class="al-icon">🆘</span>
+                    <div>
+                        <div class="al-title">Support Center</div>
+                        <div class="al-sub">Talk to our team</div>
+                    </div>
+                </a>
+                <a href="contact.html" class="alt-link">
+                    <span class="al-icon">✉️</span>
+                    <div>
+                        <div class="al-title">Contact Us</div>
+                        <div class="al-sub">Email support</div>
+                    </div>
+                </a>
+                <a href="faq.html" class="alt-link">
+                    <span class="al-icon">❓</span>
+                    <div>
+                        <div class="al-title">FAQ</div>
+                        <div class="al-sub">Common questions</div>
+                    </div>
+                </a>
             </div>
         </div>
-        
-        <!-- Help Links -->
-        <div class="text-center">
-            <p class="text-sm text-white/40 mb-3">Need help instead? Reach out to our support team.</p>
-            <a href="contact.html" class="btn-secondary inline-block">Contact Support</a>
-        </div>
-        
+
     </div>
 </div>
 
 <!-- ==========================================
      FOOTER
      ========================================== -->
-<footer class="bg-[#0a0a12] border-t border-white/5 py-12">
+<footer class="bg-[#0a0a12] border-t border-white/5 py-12 mt-6">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div class="col-span-2 md:col-span-1">
@@ -506,16 +904,22 @@
                     <span class="text-white font-light">|</span>
                     <span class="text-white font-semibold">GameZone</span>
                 </div>
-                <p class="text-sm text-white/30 leading-relaxed">
+                <p class="text-sm text-white/30 leading-relaxed mb-4">
                     Premium online betting platform for sports, casino, and virtual games.
                 </p>
+                <div class="flex items-center gap-2 text-[10px] uppercase tracking-widest font-bold text-white/25">
+                    <span>18+</span>
+                    <span class="w-1 h-1 rounded-full bg-white/20"></span>
+                    <span>Play Responsibly</span>
+                </div>
             </div>
             <div>
-                <h4 class="text-sm font-semibold text-white/40 mb-3">Quick Links</h4>
+                <h4 class="text-sm font-semibold text-white/40 mb-3">Betting</h4>
                 <ul class="space-y-2">
                     <li><a href="sports.html" class="footer-link">Sports</a></li>
                     <li><a href="live-betting.html" class="footer-link">Live Betting</a></li>
                     <li><a href="casino.html" class="footer-link">Casino</a></li>
+                    <li><a href="aviator.html" class="footer-link">Aviator</a></li>
                     <li><a href="promotions.html" class="footer-link">Promotions</a></li>
                 </ul>
             </div>
@@ -538,9 +942,13 @@
                 </ul>
             </div>
         </div>
-        <div class="mt-8 pt-6 border-t border-white/5 flex flex-col md:flex-row items-center justify-between text-xs text-white/20">
+        <div class="mt-8 pt-6 border-t border-white/5 flex flex-col md:flex-row items-center justify-between text-xs text-white/25 gap-3">
             <p>Copyright © 2025 Cephas GM | Innovating for Tomorrow</p>
-            <p class="mt-2 md:mt-0">18+ | Play Responsibly</p>
+            <div class="flex items-center gap-4">
+                <span class="flex items-center gap-1">🔒 Secured by SSL</span>
+                <span class="w-1 h-1 rounded-full bg-white/20"></span>
+                <span>Licensed Operator</span>
+            </div>
         </div>
     </div>
 </footer>
@@ -551,54 +959,264 @@
 <script>
 (function() {
     'use strict';
-    
-    // Mobile menu
-    const mobileToggle = document.getElementById('mobileToggle');
-    const mobileMenu = document.getElementById('mobileMenu');
-    let mobileOpen = false;
-    
-    mobileToggle.addEventListener('click', () => {
+
+    /* ------------------------------------------------------------
+       MOBILE MENU
+       ------------------------------------------------------------ */
+    var mobileToggle = document.getElementById('mobileToggle');
+    var mobileMenu = document.getElementById('mobileMenu');
+    var mobileOpen = false;
+
+    mobileToggle.addEventListener('click', function() {
         mobileOpen = !mobileOpen;
-        mobileMenu.classList.toggle('active');
+        mobileMenu.classList.toggle('active', mobileOpen);
         document.body.style.overflow = mobileOpen ? 'hidden' : '';
     });
-    mobileMenu.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
+    mobileMenu.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() {
             mobileMenu.classList.remove('active');
             document.body.style.overflow = '';
             mobileOpen = false;
         });
     });
-    
-    // Self-exclusion form
+
+    /* ------------------------------------------------------------
+       AUTH-AWARE UI + LOGIN GATE
+       ------------------------------------------------------------ */
+    var isLoggedIn = false;
+    var currentUser = null;
+
+    if (window.CephasGM && CephasGM.api) {
+        isLoggedIn = CephasGM.api.isLoggedIn();
+        currentUser = CephasGM.api.getUser();
+    }
+
+    var guestNav = document.getElementById('guestNav');
+    var userNav = document.getElementById('userNav');
+    var mobileWalletChip = document.getElementById('mobileWalletChip');
+    var mobileAuthSection = document.getElementById('mobileAuthSection');
+    var mobileAccountSection = document.getElementById('mobileAccountSection');
+    var accountSection = document.getElementById('accountSection');
+    var guestBlock = document.getElementById('guestBlock');
+    var formWrapper = document.getElementById('formWrapper');
+
+    if (isLoggedIn && currentUser) {
+        guestNav.classList.add('hidden');
+        userNav.classList.remove('hidden');
+        mobileWalletChip.classList.remove('hidden');
+        mobileAuthSection.classList.add('hidden');
+        mobileAccountSection.classList.remove('hidden');
+        accountSection.classList.remove('hidden');
+        guestBlock.classList.add('hidden');
+        formWrapper.classList.remove('hidden');
+
+        var name = currentUser.fullName || currentUser.username || 'Player';
+        var email = currentUser.email || currentUser.phone || '—';
+        document.getElementById('navAvatar').textContent = name.charAt(0).toUpperCase();
+        document.getElementById('navName').textContent = name.split(' ')[0];
+        document.getElementById('acAvatar').textContent = name.charAt(0).toUpperCase();
+        document.getElementById('acName').textContent = name;
+        document.getElementById('acEmail').textContent = email;
+
+        CephasGM.api.wallet().then(function(res) {
+            if (res.success && res.data) {
+                var bal = parseFloat(res.data.balance).toLocaleString('en-US', { maximumFractionDigits: 0 });
+                document.getElementById('navBalance').textContent = bal + ' ' + res.data.currency;
+                document.getElementById('mobileNavBalance').textContent = bal;
+            }
+        }).catch(function() {});
+
+        CephasGM.api.get('/notifications?limit=1&unreadOnly=true').then(function(res) {
+            if (res.success && typeof res.unreadCount === 'number' && res.unreadCount > 0) {
+                var badge = document.getElementById('notifBadge');
+                badge.textContent = res.unreadCount > 9 ? '9+' : res.unreadCount;
+                badge.style.display = 'flex';
+            }
+        }).catch(function() {});
+    } else {
+        guestNav.classList.remove('hidden');
+        userNav.classList.add('hidden');
+        mobileWalletChip.classList.add('hidden');
+        mobileAuthSection.classList.remove('hidden');
+        mobileAccountSection.classList.add('hidden');
+        accountSection.classList.add('hidden');
+        guestBlock.classList.remove('hidden');
+        formWrapper.classList.add('hidden');
+    }
+
+    function doSignOut() {
+        if (window.CephasGM && CephasGM.api) {
+            CephasGM.api.logout().catch(function() {}).then(function() {
+                CephasGM.api.clearTokens();
+                window.location.href = 'signin.html';
+            });
+        } else {
+            window.location.href = 'signin.html';
+        }
+    }
+
+    var navSignOut = document.getElementById('navSignOut');
+    if (navSignOut) navSignOut.addEventListener('click', function(e) {
+        e.preventDefault();
+        this.textContent = 'Signing out…';
+        doSignOut();
+    });
+    var mobileSignOut = document.getElementById('mobileSignOut');
+    if (mobileSignOut) mobileSignOut.addEventListener('click', function(e) {
+        e.preventDefault();
+        doSignOut();
+    });
+
+    /* ------------------------------------------------------------
+       SELF-EXCLUSION FORM
+       ------------------------------------------------------------ */
+    var selectedDuration = null;
+    var durationGrid = document.getElementById('durationGrid');
+    var reasonInput = document.getElementById('reasonInput');
+    var reasonCount = document.getElementById('reasonCount');
+    var confirmCheckbox = document.getElementById('confirmCheckbox');
+    var submitBtn = document.getElementById('submitBtn');
+    var errorBox = document.getElementById('errorBox');
+    var stepDot1 = document.getElementById('stepDot1');
+    var stepDot2 = document.getElementById('stepDot2');
+    var stepDot3 = document.getElementById('stepDot3');
+    var stepConn1 = document.getElementById('stepConn1');
+    var stepConn2 = document.getElementById('stepConn2');
+
+    /* Duration picker */
+    durationGrid.querySelectorAll('.duration-option').forEach(function(opt) {
+        opt.addEventListener('click', function() {
+            durationGrid.querySelectorAll('.duration-option').forEach(function(o) {
+                o.classList.remove('selected');
+            });
+            this.classList.add('selected');
+            selectedDuration = this.dataset.value;
+            validateForm();
+        });
+    });
+
+    /* Reason character count */
+    reasonInput.addEventListener('input', function() {
+        reasonCount.textContent = this.value.length;
+    });
+
+    /* Confirm checkbox */
+    confirmCheckbox.addEventListener('change', validateForm);
+
+    /* Validation */
+    function validateForm() {
+        var ready = !!selectedDuration && confirmCheckbox.checked;
+        submitBtn.disabled = !ready;
+
+        /* Update step indicators */
+        if (selectedDuration && confirmCheckbox.checked) {
+            stepDot1.className = 'step-dot done';
+            stepDot2.className = 'step-dot done';
+            stepDot3.className = 'step-dot active';
+            stepConn1.classList.add('done');
+            stepConn2.classList.add('done');
+        } else if (selectedDuration) {
+            stepDot1.className = 'step-dot done';
+            stepDot2.className = 'step-dot active';
+            stepDot3.className = 'step-dot';
+            stepConn1.classList.add('done');
+            stepConn2.classList.remove('done');
+        } else {
+            stepDot1.className = 'step-dot active';
+            stepDot2.className = 'step-dot';
+            stepDot3.className = 'step-dot';
+            stepConn1.classList.remove('done');
+            stepConn2.classList.remove('done');
+        }
+    }
+
+    /* Submit */
     document.getElementById('exclusionForm').addEventListener('submit', function(e) {
         e.preventDefault();
-        const duration = document.getElementById('duration').value;
-        const confirm = document.getElementById('confirm').checked;
-        
-        if (!duration) {
-            alert('Please select a duration.');
+        if (!isLoggedIn) return;
+
+        if (!selectedDuration) {
+            showError('Please select a duration');
             return;
         }
-        if (!confirm) {
-            alert('You must confirm that you understand the consequences.');
+        if (!confirmCheckbox.checked) {
+            showError('Please confirm you understand the consequences');
             return;
         }
-        
-        // Mock submission
-        console.log('Self-exclusion requested:', duration);
-        document.getElementById('exclusionForm').classList.add('hidden');
-        document.getElementById('successMsg').classList.remove('hidden');
+
+        var durationLabels = {
+            '6months': '6 Months',
+            '1year': '1 Year',
+            '2years': '2 Years',
+            'permanent': 'Permanent (indefinite)'
+        };
+        var durationLabel = durationLabels[selectedDuration] || selectedDuration;
+        var reason = reasonInput.value.trim();
+
+        var message = 'SELF-EXCLUSION REQUEST\n\n' +
+                      'Duration: ' + durationLabel + '\n' +
+                      'Requested: ' + new Date().toISOString() + '\n' +
+                      'User: ' + (currentUser.email || currentUser.phone || currentUser.id) + '\n' +
+                      (reason ? '\nReason: ' + reason : '');
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Submitting…';
+        hideError();
+
+        /* Submit as a high-priority support ticket */
+        CephasGM.api.post('/support', {
+            subject: 'Self-Exclusion Request — ' + durationLabel,
+            category: 'self-exclusion',
+            priority: 'URGENT',
+            message: message
+        })
+        .then(function(res) {
+            if (res.success) {
+                /* Show success, then force logout after a delay */
+                formWrapper.classList.add('hidden');
+                document.getElementById('successWrapper').classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+
+                /* Force sign-out after 4 seconds (account should be locked) */
+                setTimeout(function() {
+                    if (window.CephasGM && CephasGM.api) {
+                        CephasGM.api.logout().catch(function() {}).then(function() {
+                            CephasGM.api.clearTokens();
+                        });
+                    }
+                }, 4000);
+            } else {
+                throw { message: (res && res.message) || 'Could not submit request' };
+            }
+        })
+        .catch(function(err) {
+            var msg = (err && err.message) || 'Could not submit request. Please try again.';
+            showError(msg);
+            submitBtn.disabled = false;
+            submitBtn.textContent = '🛑 Activate Self-Exclusion';
+        });
     });
-    
-    // PWA
+
+    function showError(msg) {
+        errorBox.textContent = msg;
+        errorBox.classList.remove('hidden');
+    }
+    function hideError() {
+        errorBox.classList.add('hidden');
+    }
+
+    /* Initialize state */
+    validateForm();
+
+    /* ------------------------------------------------------------
+       SERVICE WORKER
+       ------------------------------------------------------------ */
     if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/sw.js')
-                .then(reg => console.log('SW registered'))
-                .catch(err => console.log('SW registration failed'));
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('sw.js').catch(function() {});
         });
     }
+
 })();
 </script>
 
