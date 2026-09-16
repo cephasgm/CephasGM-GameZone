@@ -2,27 +2,46 @@
 <html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#0a0a12">
+    <meta name="description" content="Create your CephasGM GameZone account – Join now and get a welcome bonus">
     <title>Sign Up | CephasGM GameZone</title>
 
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="js/api.js"></script>
-    <script src="js/auth-ui.js"></script>
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { height: 100%; }
 
         body {
             font-family: 'Inter', sans-serif;
-            background: #0a0a12;
             color: #ffffff;
+            min-height: 100vh;
             overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            background-color: #0a0a12;
+            background-image:
+                linear-gradient(180deg, rgba(10,10,18,0.90) 0%, rgba(10,10,18,0.82) 40%, rgba(10,10,18,0.90) 100%),
+                url('https://static.vecteezy.com/system/resources/thumbnails/070/574/368/small/assorted-sports-equipment-on-black-backdrop-symbolizing-athleticism-competition-and-diverse-sporting-activities-photo.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a12; }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #0055ff, #542bff);
+            border-radius: 10px;
         }
 
         .glass {
@@ -37,27 +56,39 @@
             color: white;
             padding: 12px 32px;
             border-radius: 50px;
-            font-weight: 600;
+            font-weight: 700;
             font-size: 14px;
             border: none;
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 4px 20px rgba(0, 85, 255, 0.25);
+            font-family: inherit;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            white-space: nowrap;
         }
         .btn-primary:hover:not(:disabled) {
             transform: translateY(-2px);
             box-shadow: 0 8px 30px rgba(0, 85, 255, 0.4);
         }
-        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
 
         .navbar {
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            z-index: 1000;
-            padding: 16px 0;
-            background: rgba(10, 10, 18, 0.92);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 14px 0;
+            background: rgba(10, 10, 18, 0.75);
             backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
         }
 
         .text-gradient {
@@ -80,42 +111,39 @@
         .mobile-menu.active { display: block; animation: fadeIn 0.3s ease; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .footer-link { color: rgba(255, 255, 255, 0.4); text-decoration: none; font-size: 14px; transition: 0.3s; }
+        .footer-link { color: rgba(255, 255, 255, 0.5); text-decoration: none; font-size: 13px; transition: 0.3s; }
         .footer-link:hover { color: #fff; }
 
-        .page-background {
-            min-height: 100vh;
-            background-image: url('https://static.vecteezy.com/system/resources/thumbnails/070/574/368/small/assorted-sports-equipment-on-black-backdrop-symbolizing-athleticism-competition-and-diverse-sporting-activities-photo.jpeg');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            position: relative;
+        .page-content { flex: 1; display: flex; flex-direction: column; }
+
+        .nav-link {
+            padding: 8px 14px;
+            font-size: 14px;
+            color: rgba(255,255,255,0.65);
+            border-radius: 10px;
+            transition: all 0.2s;
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
-        .page-background::before {
-            content: '';
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, rgba(10,10,18,0.9), rgba(10,10,18,0.7), rgba(10,10,18,0.9));
-            z-index: -1;
+        .nav-link:hover { background: rgba(255,255,255,0.06); color: #fff; }
+
+        .live-dot {
+            width: 7px; height: 7px; border-radius: 50%;
+            background: #ff0044;
+            box-shadow: 0 0 8px #ff0044;
+            animation: pulseDot 1.4s infinite;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+        @keyframes pulseDot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: .35; transform: scale(.7); }
         }
 
-        .dropdown { position: relative; display: inline-block; }
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            top: 100%; left: 0;
-            background: rgba(10, 10, 18, 0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 12px;
-            min-width: 200px;
-            padding: 8px 0;
-            z-index: 1001;
-        }
-        .dropdown:hover .dropdown-menu { display: block; }
-        .dropdown-menu a { display: block; padding: 8px 16px; color: rgba(255,255,255,0.6); font-size: 13px; transition: 0.2s; }
-        .dropdown-menu a:hover { background: rgba(255,255,255,0.05); color: white; }
-
+        /* ---------- FORMS ---------- */
         .input-field {
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -124,9 +152,15 @@
             color: white;
             width: 100%;
             font-size: 15px;
-            transition: border-color 0.3s;
+            font-family: inherit;
+            transition: border-color 0.3s, background 0.3s;
         }
-        .input-field:focus { outline: none; border-color: #0055ff; }
+        .input-field:focus {
+            outline: none;
+            border-color: #0055ff;
+            background: rgba(0, 85, 255, 0.06);
+        }
+        .input-field::placeholder { color: rgba(255,255,255,0.22); }
 
         .tab-btn {
             padding: 8px 20px;
@@ -138,6 +172,7 @@
             border: 1px solid rgba(255,255,255,0.1);
             background: transparent;
             color: rgba(255,255,255,0.6);
+            font-family: inherit;
         }
         .tab-btn.active {
             background: linear-gradient(135deg, #0055ff, #542bff);
@@ -153,6 +188,8 @@
             color: white;
             width: 100%;
             font-size: 15px;
+            font-family: inherit;
+            transition: border-color 0.3s;
             -webkit-appearance: none;
             appearance: none;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='white' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
@@ -161,19 +198,156 @@
         }
         .country-select option { background: #0a0a12; color: #fff; }
 
+        /* Split layout */
+        .auth-split {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            align-items: center;
+            padding: 30px 0;
+        }
+        @media (min-width: 1024px) {
+            .auth-split { grid-template-columns: 1fr 460px; gap: 60px; padding: 40px 0; }
+        }
+
+        .benefits-col { display: none; }
+        @media (min-width: 1024px) { .benefits-col { display: block; } }
+
+        .benefits-hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 12px;
+            border-radius: 999px;
+            background: rgba(0,224,122,0.15);
+            border: 1px solid rgba(0,224,122,0.3);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            color: #6bffb0;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+
+        .benefits-title {
+            font-size: 2.2rem;
+            font-weight: 900;
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+            margin-bottom: 12px;
+        }
+
+        .benefits-sub {
+            font-size: 15px;
+            color: rgba(255,255,255,0.55);
+            line-height: 1.6;
+            margin-bottom: 28px;
+            max-width: 480px;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+        .benefit-item .bi-icon {
+            width: 40px; height: 40px;
+            border-radius: 12px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            background: rgba(0,224,122,0.12);
+            border: 1px solid rgba(0,224,122,0.25);
+        }
+        .benefit-item .bi-title { font-size: 14px; font-weight: 800; margin-bottom: 2px; }
+        .benefit-item .bi-desc { font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.5; }
+
+        /* Welcome bonus highlight */
+        .bonus-highlight {
+            padding: 18px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, rgba(0,85,255,0.20), rgba(84,43,255,0.10));
+            border: 1px solid rgba(0,85,255,0.35);
+            margin-top: 26px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        .bonus-highlight::before {
+            content: '';
+            position: absolute;
+            top: -40%; right: -20%;
+            width: 200px; height: 200px;
+            background: radial-gradient(circle, rgba(0,85,255,0.3), transparent 65%);
+            pointer-events: none;
+        }
+        .bonus-highlight > * { position: relative; z-index: 1; }
+        .bonus-highlight .bh-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: rgba(255,255,255,0.55);
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+        .bonus-highlight .bh-amount {
+            font-size: 24px;
+            font-weight: 900;
+            line-height: 1.1;
+            letter-spacing: -0.01em;
+        }
+        .bonus-highlight .bh-desc {
+            font-size: 12px;
+            color: rgba(255,255,255,0.55);
+            margin-top: 4px;
+        }
+
+        .stats-inline {
+            display: flex;
+            gap: 26px;
+            margin-top: 4px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+        .stat-inline .si-value { font-size: 18px; font-weight: 900; }
+        .stat-inline .si-label { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+        /* Trust row below form */
+        .trust-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-top: 22px;
+            padding-top: 22px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+        .trust-item { text-align: center; }
+        .trust-item .ti-icon { font-size: 18px; margin-bottom: 4px; }
+        .trust-item .ti-label { font-size: 10px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; }
+
+        .site-footer {
+            flex-shrink: 0;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            background: rgba(10, 10, 18, 0.75);
+            backdrop-filter: blur(20px);
+        }
+
         /* Verification modal */
         .modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.85);
-            backdrop-filter: blur(10px);
+            background: rgba(0,0,0,0.88);
+            backdrop-filter: blur(12px);
             z-index: 2000;
             display: none;
             align-items: center;
             justify-content: center;
             padding: 16px;
         }
-        .modal-overlay.active { display: flex; }
+        .modal-overlay.active { display: flex; animation: fadeIn .25s ease; }
 
         .otp-input {
             width: 100%;
@@ -181,118 +355,249 @@
             font-size: 32px;
             letter-spacing: 0.5em;
             font-weight: 800;
-            font-family: 'SF Mono', monospace;
+            font-family: 'SF Mono', 'Monaco', monospace;
             padding: 20px;
             background: rgba(0,85,255,0.08);
             border: 1px solid rgba(0,85,255,0.28);
             border-radius: 16px;
             color: #6bffb0;
         }
-        .otp-input:focus { outline: none; border-color: #0055ff; }
+        .otp-input:focus { outline: none; border-color: #0055ff; background: rgba(0,85,255,0.12); }
+
+        @media (max-width: 640px) {
+            .auth-split { padding: 20px 0; }
+        }
     </style>
 </head>
-<body>
+<body data-guest-only>
 
-<nav class="navbar">
+<!-- ==========================================
+     NAVBAR (guest-only)
+     ========================================== -->
+<nav class="navbar" id="navbar">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between">
-            <a href="index.html" class="flex items-center space-x-2">
+        <div class="flex items-center justify-between gap-3">
+
+            <a href="index.html" class="flex items-center space-x-2 shrink-0" title="CephasGM GameZone — Home">
                 <span class="text-xl font-bold">
                     <span class="text-gradient">CephasGM</span>
                     <span class="text-white font-light">|</span>
                     <span class="text-white font-semibold">GameZone</span>
                 </span>
             </a>
-            <a href="signin.html" class="text-sm text-white/60 hover:text-white transition-colors">Already have an account? <span class="text-blue-400">Sign in</span></a>
+
+            <div class="hidden lg:flex items-center gap-0.5">
+                <a href="sports.html" class="nav-link">Sports</a>
+                <a href="live-betting.html" class="nav-link">
+                    <span class="live-dot"></span><span>Live</span>
+                </a>
+                <a href="casino.html" class="nav-link">Casino</a>
+                <a href="aviator.html" class="nav-link">Aviator</a>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <a href="signin.html" class="hidden sm:inline-flex text-sm text-white/60 hover:text-white transition-colors px-3 py-2">
+                    Have an account? <span class="text-blue-400 font-semibold ml-1">Sign In</span>
+                </a>
+                <button id="mobileToggle" class="lg:hidden p-2 text-white/60 hover:text-white transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
         </div>
     </div>
 </nav>
 
-<div class="page-background flex items-center justify-center pt-20 pb-12 px-4">
-    <div class="w-full max-w-md z-10">
-        <div class="glass rounded-3xl p-8 md:p-10 border border-white/10 shadow-2xl">
-            <div class="text-center mb-8">
-                <h1 class="text-3xl font-bold mb-2">Create Account</h1>
-                <p class="text-sm text-white/40">Join CephasGM GameZone in 30 seconds</p>
+<!-- Mobile Menu -->
+<div id="mobileMenu" class="mobile-menu">
+    <nav class="flex flex-col space-y-5">
+        <a href="index.html" class="text-lg text-white/80 hover:text-white">Home</a>
+        <a href="sports.html" class="text-lg text-white/80 hover:text-white">Sports</a>
+        <a href="live-betting.html" class="text-lg text-white/80 hover:text-white">Live Betting</a>
+        <a href="casino.html" class="text-lg text-white/80 hover:text-white">Casino</a>
+        <a href="aviator.html" class="text-lg text-white/80 hover:text-white">Aviator</a>
+        <div class="pt-4 border-t border-white/10">
+            <a href="signin.html" class="btn-primary w-full text-xs py-2.5" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:#fff;box-shadow:none;">Sign In</a>
+        </div>
+    </nav>
+</div>
+
+<!-- ==========================================
+     MAIN CONTENT
+     ========================================== -->
+<div class="page-content">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div class="auth-split">
+
+            <!-- ============ LEFT: BENEFITS ============ -->
+            <div class="benefits-col">
+                <div class="benefits-hero-tag">🎁 Welcome Bonus</div>
+                <h1 class="benefits-title">
+                    Join <span class="text-gradient">CephasGM GameZone</span><br>
+                    in 30 seconds
+                </h1>
+                <p class="benefits-sub">
+                    Create your free account, get your welcome bonus, and start winning on thousands of markets — sports, casino, aviator, and virtual games.
+                </p>
+
+                <div class="bonus-highlight">
+                    <div class="bh-label">Your Welcome Bonus</div>
+                    <div class="bh-amount">100% Match</div>
+                    <div class="bh-desc">Up to 50,000 TZS on your first deposit</div>
+                </div>
+
+                <div class="benefit-item">
+                    <div class="bi-icon">⚡</div>
+                    <div>
+                        <div class="bi-title">Instant Deposits</div>
+                        <div class="bi-desc">M-Pesa, Tigo Pesa, Airtel Money — fund your account in seconds.</div>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="bi-icon">🎯</div>
+                    <div>
+                        <div class="bi-title">Bet On Anything</div>
+                        <div class="bi-desc">Sports, live betting, Aviator, virtual games, and casino — all in one place.</div>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="bi-icon">💸</div>
+                    <div>
+                        <div class="bi-title">Fast Withdrawals</div>
+                        <div class="bi-desc">Cash out to mobile money in minutes, not days.</div>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="bi-icon">🛡️</div>
+                    <div>
+                        <div class="bi-title">Safe &amp; Licensed</div>
+                        <div class="bi-desc">SSL encryption, 2FA available, and 24/7 fraud monitoring.</div>
+                    </div>
+                </div>
+
+                <div class="stats-inline">
+                    <div>
+                        <div class="si-value text-gradient">50K+</div>
+                        <div class="si-label">Active Players</div>
+                    </div>
+                    <div>
+                        <div class="si-value text-gradient">$2M+</div>
+                        <div class="si-label">Daily Winnings</div>
+                    </div>
+                    <div>
+                        <div class="si-value text-gradient">98%</div>
+                        <div class="si-label">Payout Rate</div>
+                    </div>
+                </div>
             </div>
 
-            <!-- Tab Switcher -->
-            <div class="flex justify-center mb-6 space-x-2">
-                <button id="tabEmail" class="tab-btn active">Email</button>
-                <button id="tabPhone" class="tab-btn">Phone</button>
+            <!-- ============ RIGHT: SIGN UP CARD ============ -->
+            <div class="w-full">
+                <div class="glass rounded-3xl p-6 sm:p-8 border border-white/10 shadow-2xl">
+
+                    <div class="text-center mb-6">
+                        <h2 class="text-2xl sm:text-3xl font-bold mb-2">Create Account</h2>
+                        <p class="text-sm text-white/40">Join CephasGM GameZone in 30 seconds</p>
+                    </div>
+
+                    <!-- Tab Switcher -->
+                    <div class="flex justify-center mb-6 space-x-2">
+                        <button id="tabEmail" class="tab-btn active">Email</button>
+                        <button id="tabPhone" class="tab-btn">Phone</button>
+                    </div>
+
+                    <!-- EMAIL SIGNUP -->
+                    <form id="emailForm" class="space-y-3.5">
+                        <div>
+                            <label class="block text-xs text-white/40 mb-1.5 ml-1">Full Name</label>
+                            <input type="text" id="fullNameEmail" placeholder="John Doe" class="input-field" required>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-white/40 mb-1.5 ml-1">Email</label>
+                            <input type="email" id="email" placeholder="you@example.com" class="input-field" required autocomplete="email">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-white/40 mb-1.5 ml-1">Password</label>
+                            <input type="password" id="passwordEmail" placeholder="Min 8 chars, 1 letter + 1 number" class="input-field" required autocomplete="new-password">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-white/40 mb-1.5 ml-1">Confirm Password</label>
+                            <input type="password" id="confirmEmail" placeholder="Repeat password" class="input-field" required autocomplete="new-password">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-white/40 mb-1.5 ml-1">Referral Code (optional)</label>
+                            <input type="text" id="refEmail" placeholder="Enter code" class="input-field">
+                        </div>
+                        <label class="flex items-start space-x-2 text-xs text-white/50 cursor-pointer pt-1">
+                            <input type="checkbox" id="termsEmail" class="mt-0.5 rounded bg-white/10 border-white/20 text-blue-500" required>
+                            <span>I am 18+ and accept the <a href="terms.html" class="text-blue-400 hover:underline">Terms</a> and <a href="privacy.html" class="text-blue-400 hover:underline">Privacy Policy</a></span>
+                        </label>
+                        <button type="submit" class="btn-primary w-full py-3 text-base mt-1">Create Account</button>
+                    </form>
+
+                    <!-- PHONE SIGNUP -->
+                    <form id="phoneForm" class="space-y-3.5 hidden">
+                        <div>
+                            <label class="block text-xs text-white/40 mb-1.5 ml-1">Full Name</label>
+                            <input type="text" id="fullNamePhone" placeholder="John Doe" class="input-field" required>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-white/40 mb-1.5 ml-1">Country Code</label>
+                            <select id="countryCode" class="country-select" required>
+                                <option value="+255" selected>Tanzania (+255)</option>
+                                <option value="+254">Kenya (+254)</option>
+                                <option value="+256">Uganda (+256)</option>
+                                <option value="+250">Rwanda (+250)</option>
+                                <option value="+234">Nigeria (+234)</option>
+                                <option value="+27">South Africa (+27)</option>
+                                <option value="+44">United Kingdom (+44)</option>
+                                <option value="+1">United States (+1)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-white/40 mb-1.5 ml-1">Mobile Number</label>
+                            <input type="tel" id="mobileNumber" placeholder="712345678" class="input-field" required>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-white/40 mb-1.5 ml-1">Password</label>
+                            <input type="password" id="passwordPhone" placeholder="Min 8 chars, 1 letter + 1 number" class="input-field" required>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-white/40 mb-1.5 ml-1">Confirm Password</label>
+                            <input type="password" id="confirmPhone" placeholder="Repeat password" class="input-field" required>
+                        </div>
+                        <label class="flex items-start space-x-2 text-xs text-white/50 cursor-pointer pt-1">
+                            <input type="checkbox" id="termsPhone" class="mt-0.5 rounded bg-white/10 border-white/20 text-blue-500" required>
+                            <span>I am 18+ and accept the <a href="terms.html" class="text-blue-400 hover:underline">Terms</a> and <a href="privacy.html" class="text-blue-400 hover:underline">Privacy Policy</a></span>
+                        </label>
+                        <button type="submit" class="btn-primary w-full py-3 text-base mt-1">Create Account</button>
+                    </form>
+
+                    <p class="mt-5 text-center text-sm text-white/40">
+                        Already have an account?
+                        <a href="signin.html" class="text-blue-400 hover:text-blue-300 font-semibold">Sign in →</a>
+                    </p>
+
+                    <!-- Trust row -->
+                    <div class="trust-row">
+                        <div class="trust-item">
+                            <div class="ti-icon">🔒</div>
+                            <div class="ti-label">SSL Secured</div>
+                        </div>
+                        <div class="trust-item">
+                            <div class="ti-icon">🎁</div>
+                            <div class="ti-label">Welcome Bonus</div>
+                        </div>
+                        <div class="trust-item">
+                            <div class="ti-icon">⚡</div>
+                            <div class="ti-label">No Delay</div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
 
-            <!-- EMAIL SIGNUP -->
-            <form id="emailForm" class="space-y-4">
-                <div>
-                    <label class="block text-xs text-white/40 mb-1.5 ml-1">Full Name</label>
-                    <input type="text" id="fullNameEmail" placeholder="John Doe" class="input-field" required>
-                </div>
-                <div>
-                    <label class="block text-xs text-white/40 mb-1.5 ml-1">Email</label>
-                    <input type="email" id="email" placeholder="you@example.com" class="input-field" required autocomplete="email">
-                </div>
-                <div>
-                    <label class="block text-xs text-white/40 mb-1.5 ml-1">Password</label>
-                    <input type="password" id="passwordEmail" placeholder="Min 8 chars, 1 letter + 1 number" class="input-field" required autocomplete="new-password">
-                </div>
-                <div>
-                    <label class="block text-xs text-white/40 mb-1.5 ml-1">Confirm Password</label>
-                    <input type="password" id="confirmEmail" placeholder="Repeat password" class="input-field" required autocomplete="new-password">
-                </div>
-                <div>
-                    <label class="block text-xs text-white/40 mb-1.5 ml-1">Referral Code (optional)</label>
-                    <input type="text" id="refEmail" placeholder="Enter code" class="input-field">
-                </div>
-                <label class="flex items-start space-x-2 text-xs text-white/50">
-                    <input type="checkbox" id="termsEmail" class="mt-0.5 rounded bg-white/10 border-white/20 text-blue-500" required>
-                    <span>I am 18+ and accept the <a href="terms.html" class="text-blue-400 hover:underline">Terms</a> and <a href="privacy.html" class="text-blue-400 hover:underline">Privacy Policy</a></span>
-                </label>
-                <button type="submit" class="btn-primary w-full py-3 text-base">Create Account</button>
-            </form>
-
-            <!-- PHONE SIGNUP -->
-            <form id="phoneForm" class="space-y-4 hidden">
-                <div>
-                    <label class="block text-xs text-white/40 mb-1.5 ml-1">Full Name</label>
-                    <input type="text" id="fullNamePhone" placeholder="John Doe" class="input-field" required>
-                </div>
-                <div>
-                    <label class="block text-xs text-white/40 mb-1.5 ml-1">Country Code</label>
-                    <select id="countryCode" class="country-select" required>
-                        <option value="+255" selected>ðŸ‡¹ðŸ‡¿ Tanzania (+255)</option>
-                        <option value="+254">ðŸ‡°ðŸ‡ª Kenya (+254)</option>
-                        <option value="+256">ðŸ‡ºðŸ‡¬ Uganda (+256)</option>
-                        <option value="+250">ðŸ‡·ðŸ‡¼ Rwanda (+250)</option>
-                        <option value="+234">ðŸ‡³ðŸ‡¬ Nigeria (+234)</option>
-                        <option value="+27">ðŸ‡¿ðŸ‡¦ South Africa (+27)</option>
-                        <option value="+44">ðŸ‡¬ðŸ‡§ United Kingdom (+44)</option>
-                        <option value="+1">ðŸ‡ºðŸ‡¸ United States (+1)</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-xs text-white/40 mb-1.5 ml-1">Mobile Number</label>
-                    <input type="tel" id="mobileNumber" placeholder="712345678" class="input-field" required>
-                </div>
-                <div>
-                    <label class="block text-xs text-white/40 mb-1.5 ml-1">Password</label>
-                    <input type="password" id="passwordPhone" placeholder="Min 8 chars" class="input-field" required>
-                </div>
-                <div>
-                    <label class="block text-xs text-white/40 mb-1.5 ml-1">Confirm Password</label>
-                    <input type="password" id="confirmPhone" placeholder="Repeat password" class="input-field" required>
-                </div>
-                <label class="flex items-start space-x-2 text-xs text-white/50">
-                    <input type="checkbox" id="termsPhone" class="mt-0.5 rounded bg-white/10 border-white/20 text-blue-500" required>
-                    <span>I am 18+ and accept the <a href="terms.html" class="text-blue-400 hover:underline">Terms</a> and <a href="privacy.html" class="text-blue-400 hover:underline">Privacy Policy</a></span>
-                </label>
-                <button type="submit" class="btn-primary w-full py-3 text-base">Create Account</button>
-            </form>
-
-            <p class="mt-6 text-center text-sm text-white/40">
-                Already have an account?
-                <a href="signin.html" class="text-blue-400 hover:text-blue-300 font-medium">Sign in</a>
-            </p>
         </div>
     </div>
 </div>
@@ -303,7 +608,7 @@
 <div id="verifyModal" class="modal-overlay">
     <div class="glass rounded-3xl p-8 max-w-md w-full border border-white/10">
         <div class="text-center mb-6">
-            <div class="text-4xl mb-2">ðŸ“§</div>
+            <div class="text-4xl mb-2">📩</div>
             <h2 class="text-2xl font-bold mb-2">Verify Your Account</h2>
             <p class="text-sm text-white/50">We sent a 6-digit code to</p>
             <p id="verifyDestination" class="text-sm text-blue-400 font-semibold mt-1">...</p>
@@ -322,13 +627,70 @@
     </div>
 </div>
 
-<footer class="bg-[#0a0a12] border-t border-white/5 py-12 mt-12">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs text-white/20">
-        <p>Copyright Â© 2025 Cephas GM | Innovating for Tomorrow</p>
-        <p class="mt-2">18+ | Play Responsibly</p>
+<!-- ==========================================
+     FOOTER (shared)
+     ========================================== -->
+<footer class="site-footer mt-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div class="col-span-2 md:col-span-1">
+                <div class="text-lg font-bold mb-3">
+                    <span class="text-gradient">CephasGM</span>
+                    <span class="text-white font-light">|</span>
+                    <span class="text-white font-semibold">GameZone</span>
+                </div>
+                <p class="text-sm text-white/30 leading-relaxed mb-4">
+                    Premium online betting platform for sports, casino, and virtual games.
+                </p>
+                <div class="flex items-center gap-2 text-[10px] uppercase tracking-widest font-bold text-white/25">
+                    <span>18+</span>
+                    <span class="w-1 h-1 rounded-full bg-white/20"></span>
+                    <span>Play Responsibly</span>
+                </div>
+            </div>
+            <div>
+                <h4 class="text-sm font-semibold text-white/40 mb-3">Betting</h4>
+                <ul class="space-y-2">
+                    <li><a href="sports.html" class="footer-link">Sports</a></li>
+                    <li><a href="live-betting.html" class="footer-link">Live Betting</a></li>
+                    <li><a href="casino.html" class="footer-link">Casino</a></li>
+                    <li><a href="aviator.html" class="footer-link">Aviator</a></li>
+                    <li><a href="promotions.html" class="footer-link">Promotions</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-sm font-semibold text-white/40 mb-3">Support</h4>
+                <ul class="space-y-2">
+                    <li><a href="support.html" class="footer-link">Help Center</a></li>
+                    <li><a href="contact.html" class="footer-link">Contact</a></li>
+                    <li><a href="faq.html" class="footer-link">FAQ</a></li>
+                    <li><a href="responsible-gambling.html" class="footer-link">Responsible Gambling</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-sm font-semibold text-white/40 mb-3">Legal</h4>
+                <ul class="space-y-2">
+                    <li><a href="terms.html" class="footer-link">Terms</a></li>
+                    <li><a href="privacy.html" class="footer-link">Privacy</a></li>
+                    <li><a href="cookies.html" class="footer-link">Cookies</a></li>
+                    <li><a href="kyc.html" class="footer-link">KYC</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="mt-8 pt-6 border-t border-white/5 flex flex-col md:flex-row items-center justify-between text-xs text-white/25 gap-3">
+            <p>Copyright © 2025 Cephas GM | Innovating for Tomorrow</p>
+            <div class="flex items-center gap-4">
+                <span class="flex items-center gap-1">🔒 Secured by SSL</span>
+                <span class="w-1 h-1 rounded-full bg-white/20"></span>
+                <span>Licensed Operator</span>
+            </div>
+        </div>
     </div>
 </footer>
 
+<!-- ==========================================
+     JAVASCRIPT
+     ========================================== -->
 <script>
 (function() {
     'use strict';
@@ -336,25 +698,62 @@
     /* ------------------------------------------------------------
        Redirect if already logged in
        ------------------------------------------------------------ */
-    if (CephasGM && CephasGM.auth) {
-        CephasGM.auth.redirectIfLoggedIn('dashboard.html');
+    if (window.CephasGM && CephasGM.api && CephasGM.api.isLoggedIn()) {
+        window.location.href = 'dashboard.html';
+        return;
     }
 
     /* ------------------------------------------------------------
-       Tab switching
+       Preserve ?redirect= param through signup
        ------------------------------------------------------------ */
-    const tabEmail = document.getElementById('tabEmail');
-    const tabPhone = document.getElementById('tabPhone');
-    const emailForm = document.getElementById('emailForm');
-    const phoneForm = document.getElementById('phoneForm');
+    function getRedirectTarget() {
+        try {
+            var params = new URLSearchParams(window.location.search);
+            var target = params.get('redirect');
+            if (target && !target.startsWith('http') && !target.includes('signup') && !target.includes('signin')) {
+                return target;
+            }
+        } catch (e) {}
+        return 'signin.html';
+    }
 
-    tabEmail.addEventListener('click', () => {
+    /* ------------------------------------------------------------
+       MOBILE MENU
+       ------------------------------------------------------------ */
+    var mobileToggle = document.getElementById('mobileToggle');
+    var mobileMenu = document.getElementById('mobileMenu');
+    var mobileOpen = false;
+
+    if (mobileToggle) {
+        mobileToggle.addEventListener('click', function () {
+            mobileOpen = !mobileOpen;
+            mobileMenu.classList.toggle('active', mobileOpen);
+            document.body.style.overflow = mobileOpen ? 'hidden' : '';
+        });
+        mobileMenu.querySelectorAll('a').forEach(function (link) {
+            link.addEventListener('click', function () {
+                mobileMenu.classList.remove('active');
+                document.body.style.overflow = '';
+                mobileOpen = false;
+            });
+        });
+    }
+
+    /* ------------------------------------------------------------
+       TAB SWITCHING
+       ------------------------------------------------------------ */
+    var tabEmail = document.getElementById('tabEmail');
+    var tabPhone = document.getElementById('tabPhone');
+    var emailForm = document.getElementById('emailForm');
+    var phoneForm = document.getElementById('phoneForm');
+
+    tabEmail.addEventListener('click', function () {
         tabEmail.classList.add('active');
         tabPhone.classList.remove('active');
         emailForm.classList.remove('hidden');
         phoneForm.classList.add('hidden');
     });
-    tabPhone.addEventListener('click', () => {
+    tabPhone.addEventListener('click', function () {
         tabPhone.classList.add('active');
         tabEmail.classList.remove('active');
         phoneForm.classList.remove('hidden');
@@ -362,33 +761,33 @@
     });
 
     /* ------------------------------------------------------------
-       Toast helper
+       TOAST
        ------------------------------------------------------------ */
     function toast(msg, type) {
-        if (CephasGM && CephasGM.toast) CephasGM.toast(msg, type);
+        if (window.CephasGM && CephasGM.toast) CephasGM.toast(msg, type);
         else alert(msg);
     }
 
     /* ------------------------------------------------------------
-       State for verification
+       STATE
        ------------------------------------------------------------ */
-    let pendingEmail = null;
-    let pendingPhone = null;
+    var pendingEmail = null;
+    var pendingPhone = null;
 
     /* ------------------------------------------------------------
        EMAIL SIGNUP
        ------------------------------------------------------------ */
-    emailForm.addEventListener('submit', async function(e) {
+    emailForm.addEventListener('submit', async function (e) {
         e.preventDefault();
 
-        const submitBtn = this.querySelector('button[type="submit"]');
-        const originalText = submitBtn.textContent;
+        var submitBtn = this.querySelector('button[type="submit"]');
+        var originalText = submitBtn.textContent;
 
-        const fullName = document.getElementById('fullNameEmail').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const password = document.getElementById('passwordEmail').value;
-        const confirmPassword = document.getElementById('confirmEmail').value;
-        const referralCode = document.getElementById('refEmail').value.trim();
+        var fullName = document.getElementById('fullNameEmail').value.trim();
+        var email = document.getElementById('email').value.trim();
+        var password = document.getElementById('passwordEmail').value;
+        var confirmPassword = document.getElementById('confirmEmail').value;
+        var referralCode = document.getElementById('refEmail').value.trim();
 
         if (password !== confirmPassword) {
             toast('Passwords do not match', 'error');
@@ -404,14 +803,14 @@
         }
 
         submitBtn.disabled = true;
-        submitBtn.textContent = 'Creating accountâ€¦';
+        submitBtn.textContent = 'Creating account…';
 
         try {
-            const res = await CephasGM.api.post('/auth/register', {
-                fullName,
-                email,
-                password,
-                confirmPassword,
+            var res = await CephasGM.api.post('/auth/register', {
+                fullName: fullName,
+                email: email,
+                password: password,
+                confirmPassword: confirmPassword,
                 acceptsTerms: true,
                 referralCode: referralCode || undefined,
             });
@@ -422,13 +821,18 @@
                 document.getElementById('verifyDestination').textContent = email;
                 document.getElementById('verifyModal').classList.add('active');
                 toast('Account created! Check your email.', 'success');
+
+                /* In dev, response may include _devOtp */
+                if (res.data && res.data._devOtp) {
+                    document.getElementById('otpCode').value = res.data._devOtp;
+                }
             } else {
                 toast(res.message || 'Registration failed', 'error');
                 submitBtn.disabled = false;
                 submitBtn.textContent = originalText;
             }
         } catch (err) {
-            const msg = err.message || (err.json && err.json.message) || 'Registration failed';
+            var msg = err.message || (err.json && err.json.message) || 'Registration failed';
             toast(msg, 'error');
             submitBtn.disabled = false;
             submitBtn.textContent = originalText;
@@ -438,17 +842,17 @@
     /* ------------------------------------------------------------
        PHONE SIGNUP
        ------------------------------------------------------------ */
-    phoneForm.addEventListener('submit', async function(e) {
+    phoneForm.addEventListener('submit', async function (e) {
         e.preventDefault();
 
-        const submitBtn = this.querySelector('button[type="submit"]');
-        const originalText = submitBtn.textContent;
+        var submitBtn = this.querySelector('button[type="submit"]');
+        var originalText = submitBtn.textContent;
 
-        const fullName = document.getElementById('fullNamePhone').value.trim();
-        const countryCode = document.getElementById('countryCode').value;
-        const mobile = document.getElementById('mobileNumber').value.trim();
-        const password = document.getElementById('passwordPhone').value;
-        const confirmPassword = document.getElementById('confirmPhone').value;
+        var fullName = document.getElementById('fullNamePhone').value.trim();
+        var countryCode = document.getElementById('countryCode').value;
+        var mobile = document.getElementById('mobileNumber').value.trim();
+        var password = document.getElementById('passwordPhone').value;
+        var confirmPassword = document.getElementById('confirmPhone').value;
 
         if (password !== confirmPassword) {
             toast('Passwords do not match', 'error');
@@ -463,18 +867,18 @@
             return;
         }
 
-        const cleaned = mobile.replace(/^0+/, '').replace(/\D/g, '');
-        const phone = countryCode + cleaned;
+        var cleaned = mobile.replace(/^0+/, '').replace(/\D/g, '');
+        var phone = countryCode + cleaned;
 
         submitBtn.disabled = true;
-        submitBtn.textContent = 'Creating accountâ€¦';
+        submitBtn.textContent = 'Creating account…';
 
         try {
-            const res = await CephasGM.api.post('/auth/register', {
-                fullName,
-                phone,
-                password,
-                confirmPassword,
+            var res = await CephasGM.api.post('/auth/register', {
+                fullName: fullName,
+                phone: phone,
+                password: password,
+                confirmPassword: confirmPassword,
                 acceptsTerms: true,
             });
 
@@ -484,13 +888,17 @@
                 document.getElementById('verifyDestination').textContent = phone;
                 document.getElementById('verifyModal').classList.add('active');
                 toast('Account created! Check your phone.', 'success');
+
+                if (res.data && res.data._devOtp) {
+                    document.getElementById('otpCode').value = res.data._devOtp;
+                }
             } else {
                 toast(res.message || 'Registration failed', 'error');
                 submitBtn.disabled = false;
                 submitBtn.textContent = originalText;
             }
         } catch (err) {
-            const msg = err.message || (err.json && err.json.message) || 'Registration failed';
+            var msg = err.message || (err.json && err.json.message) || 'Registration failed';
             toast(msg, 'error');
             submitBtn.disabled = false;
             submitBtn.textContent = originalText;
@@ -500,34 +908,41 @@
     /* ------------------------------------------------------------
        VERIFY OTP
        ------------------------------------------------------------ */
-    document.getElementById('verifyForm').addEventListener('submit', async function(e) {
+    document.getElementById('verifyForm').addEventListener('submit', async function (e) {
         e.preventDefault();
 
-        const otp = document.getElementById('otpCode').value.trim();
+        var otp = document.getElementById('otpCode').value.trim();
 
         if (!otp || otp.length < 4) {
             toast('Enter the 6-digit code', 'error');
             return;
         }
 
-        const submitBtn = this.querySelector('button[type="submit"]');
-        const originalText = submitBtn.textContent;
+        var submitBtn = this.querySelector('button[type="submit"]');
+        var originalText = submitBtn.textContent;
         submitBtn.disabled = true;
-        submitBtn.textContent = 'Verifyingâ€¦';
+        submitBtn.textContent = 'Verifying…';
 
         try {
-            const body = pendingEmail
-                ? { email: pendingEmail, otp }
-                : { email: pendingEmail, otp }; // backend currently requires email
+            var body = pendingEmail
+                ? { email: pendingEmail, otp: otp }
+                : { email: pendingEmail, otp: otp };
 
-            // For phone verification, we'll try email field â€” backend can be extended later
-            const res = await CephasGM.api.post('/auth/verify-email', body);
+            var res = await CephasGM.api.post('/auth/verify-email', body);
 
             if (res.success) {
-                toast('âœ… Account verified! Redirectingâ€¦', 'success');
+                toast('✅ Account verified! Redirecting…', 'success');
                 document.getElementById('verifyModal').classList.remove('active');
-                setTimeout(() => {
-                    window.location.href = 'signin.html';
+
+                /* Auto-login: fetch tokens or redirect to sign-in with redirect param */
+                setTimeout(function () {
+                    var target = getRedirectTarget();
+                    /* If target is signin.html but user wants to land somewhere else, use it */
+                    if (target === 'signin.html') {
+                        window.location.href = 'signin.html';
+                    } else {
+                        window.location.href = 'signin.html?redirect=' + encodeURIComponent(target);
+                    }
                 }, 1200);
             } else {
                 toast(res.message || 'Verification failed', 'error');
@@ -535,7 +950,7 @@
                 submitBtn.textContent = originalText;
             }
         } catch (err) {
-            const msg = err.message || (err.json && err.json.message) || 'Invalid code';
+            var msg = err.message || (err.json && err.json.message) || 'Invalid code';
             toast(msg, 'error');
             submitBtn.disabled = false;
             submitBtn.textContent = originalText;
@@ -545,20 +960,19 @@
     /* ------------------------------------------------------------
        RESEND OTP
        ------------------------------------------------------------ */
-    document.getElementById('resendBtn').addEventListener('click', async function() {
+    document.getElementById('resendBtn').addEventListener('click', async function () {
         if (!pendingEmail) {
             toast('Resend only works for email signup right now', 'warning');
             return;
         }
 
         this.disabled = true;
-        this.textContent = 'Sendingâ€¦';
+        this.textContent = 'Sending…';
 
         try {
-            const res = await CephasGM.api.post('/auth/resend-verification', { email: pendingEmail });
+            var res = await CephasGM.api.post('/auth/resend-verification', { email: pendingEmail });
             if (res.success) {
                 toast('New code sent! Check your inbox.', 'success');
-                // In dev, response may contain _devOtp
                 if (res.data && res.data._devOtp) {
                     console.log('DEV OTP:', res.data._devOtp);
                     document.getElementById('otpCode').value = res.data._devOtp;
@@ -567,7 +981,7 @@
                 toast(res.message || 'Could not resend', 'error');
             }
         } catch (err) {
-            const msg = err.message || (err.json && err.json.message) || 'Could not resend';
+            var msg = err.message || (err.json && err.json.message) || 'Could not resend';
             toast(msg, 'error');
         }
 
@@ -578,16 +992,16 @@
     /* ------------------------------------------------------------
        CLOSE MODAL
        ------------------------------------------------------------ */
-    document.getElementById('closeModal').addEventListener('click', () => {
+    document.getElementById('closeModal').addEventListener('click', function () {
         document.getElementById('verifyModal').classList.remove('active');
     });
 
     /* ------------------------------------------------------------
-       Service Worker
+       SERVICE WORKER
        ------------------------------------------------------------ */
     if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('sw.js').catch(() => {});
+        window.addEventListener('load', function () {
+            navigator.serviceWorker.register('sw.js').catch(function () {});
         });
     }
 })();
