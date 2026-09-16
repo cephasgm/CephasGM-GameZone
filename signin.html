@@ -2,30 +2,39 @@
 <html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#0a0a12">
     <meta name="description" content="Sign in to CephasGM GameZone - Your premium sports betting account">
     <title>Sign In | CephasGM GameZone</title>
 
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="js/api.js"></script>
-    <script src="js/auth-ui.js"></script>
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { height: 100%; }
 
         body {
             font-family: 'Inter', sans-serif;
-            background: #0a0a12;
             color: #ffffff;
+            min-height: 100vh;
             overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            background-color: #0a0a12;
+            background-image:
+                linear-gradient(180deg, rgba(10,10,18,0.90) 0%, rgba(10,10,18,0.82) 40%, rgba(10,10,18,0.90) 100%),
+                url('https://static.vecteezy.com/system/resources/thumbnails/070/574/368/small/assorted-sports-equipment-on-black-backdrop-symbolizing-athleticism-competition-and-diverse-sporting-activities-photo.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
         }
 
         ::-webkit-scrollbar { width: 6px; }
@@ -41,25 +50,36 @@
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.06);
         }
+        .glass-light {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
 
         .btn-primary {
             background: linear-gradient(135deg, #0055ff, #542bff);
             color: white;
             padding: 12px 32px;
             border-radius: 50px;
-            font-weight: 600;
+            font-weight: 700;
             font-size: 14px;
             border: none;
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 4px 20px rgba(0, 85, 255, 0.25);
+            font-family: inherit;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            white-space: nowrap;
         }
-
         .btn-primary:hover:not(:disabled) {
             transform: translateY(-2px);
             box-shadow: 0 8px 30px rgba(0, 85, 255, 0.4);
         }
-
         .btn-primary:disabled {
             opacity: 0.6;
             cursor: not-allowed;
@@ -67,13 +87,14 @@
         }
 
         .navbar {
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            z-index: 1000;
-            padding: 16px 0;
-            background: rgba(10, 10, 18, 0.92);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 14px 0;
+            background: rgba(10, 10, 18, 0.75);
             backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
         }
 
         .text-gradient {
@@ -97,56 +118,44 @@
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         .footer-link {
-            color: rgba(255, 255, 255, 0.4);
+            color: rgba(255, 255, 255, 0.5);
             transition: all 0.3s ease;
             text-decoration: none;
-            font-size: 14px;
+            font-size: 13px;
         }
         .footer-link:hover { color: #ffffff; }
 
-        .page-background {
-            min-height: 100vh;
-            background-image: url('https://static.vecteezy.com/system/resources/thumbnails/070/574/368/small/assorted-sports-equipment-on-black-backdrop-symbolizing-athleticism-competition-and-diverse-sporting-activities-photo.jpeg');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            position: relative;
+        .page-content { flex: 1; display: flex; flex-direction: column; }
+
+        .nav-link {
+            padding: 8px 14px;
+            font-size: 14px;
+            color: rgba(255,255,255,0.65);
+            border-radius: 10px;
+            transition: all 0.2s;
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
-        .page-background::before {
-            content: '';
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: linear-gradient(135deg,
-                rgba(10, 10, 18, 0.9) 0%,
-                rgba(10, 10, 18, 0.7) 50%,
-                rgba(10, 10, 18, 0.9) 100%);
-            z-index: -1;
+        .nav-link:hover { background: rgba(255,255,255,0.06); color: #fff; }
+        .nav-link.active { background: rgba(0,85,255,0.15); color: #93c5fd; }
+
+        .live-dot {
+            width: 7px; height: 7px; border-radius: 50%;
+            background: #ff0044;
+            box-shadow: 0 0 8px #ff0044;
+            animation: pulseDot 1.4s infinite;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+        @keyframes pulseDot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: .35; transform: scale(.7); }
         }
 
-        .dropdown { position: relative; display: inline-block; }
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            top: 100%; left: 0;
-            background: rgba(10, 10, 18, 0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 12px;
-            min-width: 200px;
-            padding: 8px 0;
-            z-index: 1001;
-        }
-        .dropdown:hover .dropdown-menu { display: block; }
-        .dropdown-menu a {
-            display: block;
-            padding: 8px 16px;
-            color: rgba(255,255,255,0.6);
-            font-size: 13px;
-            transition: 0.2s;
-        }
-        .dropdown-menu a:hover { background: rgba(255,255,255,0.05); color: white; }
-
+        /* ---------- FORMS ---------- */
         .input-field {
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -155,9 +164,15 @@
             color: white;
             width: 100%;
             font-size: 15px;
-            transition: border-color 0.3s;
+            font-family: inherit;
+            transition: border-color 0.3s, background 0.3s;
         }
-        .input-field:focus { outline: none; border-color: #0055ff; }
+        .input-field:focus {
+            outline: none;
+            border-color: #0055ff;
+            background: rgba(0, 85, 255, 0.06);
+        }
+        .input-field::placeholder { color: rgba(255,255,255,0.22); }
 
         .tab-btn {
             padding: 8px 20px;
@@ -169,6 +184,7 @@
             border: 1px solid rgba(255,255,255,0.1);
             background: transparent;
             color: rgba(255,255,255,0.6);
+            font-family: inherit;
         }
         .tab-btn.active {
             background: linear-gradient(135deg, #0055ff, #542bff);
@@ -184,6 +200,7 @@
             color: white;
             width: 100%;
             font-size: 15px;
+            font-family: inherit;
             transition: border-color 0.3s;
             -webkit-appearance: none;
             appearance: none;
@@ -192,15 +209,122 @@
             background-position: right 1rem center;
         }
         .country-select option { background: #0a0a12; color: #ffffff; }
+
+        /* Split layout */
+        .auth-split {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            align-items: center;
+            padding: 30px 0;
+        }
+        @media (min-width: 1024px) {
+            .auth-split { grid-template-columns: 1fr 440px; gap: 60px; padding: 40px 0; }
+        }
+
+        /* Left benefits column */
+        .benefits-col { display: none; }
+        @media (min-width: 1024px) { .benefits-col { display: block; } }
+
+        .benefits-hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 12px;
+            border-radius: 999px;
+            background: rgba(0,85,255,0.15);
+            border: 1px solid rgba(0,85,255,0.3);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            color: #93c5fd;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+
+        .benefits-title {
+            font-size: 2.2rem;
+            font-weight: 900;
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+            margin-bottom: 12px;
+        }
+
+        .benefits-sub {
+            font-size: 15px;
+            color: rgba(255,255,255,0.55);
+            line-height: 1.6;
+            margin-bottom: 28px;
+            max-width: 480px;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+        .benefit-item .bi-icon {
+            width: 40px; height: 40px;
+            border-radius: 12px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            background: rgba(0,85,255,0.12);
+            border: 1px solid rgba(0,85,255,0.25);
+        }
+        .benefit-item .bi-title { font-size: 14px; font-weight: 800; margin-bottom: 2px; }
+        .benefit-item .bi-desc { font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.5; }
+
+        .stats-inline {
+            display: flex;
+            gap: 26px;
+            margin-top: 30px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+        .stat-inline .si-value { font-size: 18px; font-weight: 900; }
+        .stat-inline .si-label { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+        /* Trust row below form */
+        .trust-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+        .trust-item {
+            text-align: center;
+        }
+        .trust-item .ti-icon { font-size: 18px; margin-bottom: 4px; }
+        .trust-item .ti-label { font-size: 10px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; }
+
+        .site-footer {
+            flex-shrink: 0;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            background: rgba(10, 10, 18, 0.75);
+            backdrop-filter: blur(20px);
+        }
+
+        @media (max-width: 640px) {
+            .auth-split { padding: 20px 0; }
+        }
     </style>
 </head>
-<body>
+<body data-guest-only>
 
-<!-- NAVBAR -->
+<!-- ==========================================
+     NAVBAR (guest-only minimal)
+     ========================================== -->
 <nav class="navbar" id="navbar">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between">
-            <a href="index.html" class="flex items-center space-x-2" title="Go to Homepage">
+        <div class="flex items-center justify-between gap-3">
+
+            <a href="index.html" class="flex items-center space-x-2 shrink-0" title="CephasGM GameZone — Home">
                 <span class="text-xl font-bold">
                     <span class="text-gradient">CephasGM</span>
                     <span class="text-white font-light">|</span>
@@ -208,62 +332,19 @@
                 </span>
             </a>
 
-            <div class="hidden lg:flex items-center space-x-1">
-                <div class="dropdown">
-                    <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Info â–¾</span>
-                    <div class="dropdown-menu">
-                        <a href="about.html">About Us</a>
-                        <a href="vip.html">VIP Club</a>
-                        <a href="referrals.html">Referrals</a>
-                        <a href="privacy.html">Privacy Policy</a>
-                        <a href="terms.html">Terms &amp; Conditions</a>
-                        <a href="cookies.html">Cookie Policy</a>
-                    </div>
-                </div>
-                <div class="dropdown">
-                    <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Account â–¾</span>
-                    <div class="dropdown-menu">
-                        <a href="dashboard.html">Dashboard</a>
-                        <a href="profile.html">Profile</a>
-                        <a href="wallet.html">Wallet</a>
-                        <a href="deposit.html">Deposit</a>
-                        <a href="withdraw.html">Withdraw</a>
-                        <a href="transactions.html">Transactions</a>
-                        <a href="bet-history.html">Bet History</a>
-                        <a href="bonuses.html">Bonuses</a>
-                        <a href="kyc.html">KYC Verification</a>
-                        <a href="settings.html">Settings</a>
-                        <a href="signin.html">Sign In</a>
-                        <a href="signup.html">Sign Up</a>
-                    </div>
-                </div>
-                <a href="promotions.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Promotions</a>
-                <a href="sports.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Sports</a>
-                <a href="casino.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Casino</a>
-                <a href="live-betting.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Live</a>
-                <div class="dropdown">
-                    <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Virtual â–¾</span>
-                    <div class="dropdown-menu">
-                        <a href="virtual-football.html">Virtual Football</a>
-                        <a href="virtual-horse-racing.html">Virtual Horse Racing</a>
-                        <a href="virtual-car-racing.html">Virtual Car Racing</a>
-                        <a href="virtual-netball.html">Virtual Netball</a>
-                        <a href="aviator.html">Aviator</a>
-                    </div>
-                </div>
-                <div class="dropdown">
-                    <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Support â–¾</span>
-                    <div class="dropdown-menu">
-                        <a href="support.html">Help Center</a>
-                        <a href="faq.html">FAQ</a>
-                        <a href="contact.html">Contact Us</a>
-                        <a href="responsible-gambling.html">Responsible Gambling</a>
-                    </div>
-                </div>
+            <!-- Guest nav — auth pages don't show account dropdown -->
+            <div class="hidden lg:flex items-center gap-0.5">
+                <a href="sports.html" class="nav-link">Sports</a>
+                <a href="live-betting.html" class="nav-link">
+                    <span class="live-dot"></span><span>Live</span>
+                </a>
+                <a href="casino.html" class="nav-link">Casino</a>
+                <a href="aviator.html" class="nav-link">Aviator</a>
             </div>
 
-            <div class="flex items-center space-x-3">
-                <button id="mobileToggle" class="lg:hidden p-2 text-white/40 hover:text-white transition-colors">
+            <div class="flex items-center gap-2">
+                <a href="signup.html" class="hidden sm:inline-flex btn-primary text-xs py-2 px-5">Create Account →</a>
+                <button id="mobileToggle" class="lg:hidden p-2 text-white/60 hover:text-white transition-colors">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                     </svg>
@@ -275,95 +356,189 @@
 
 <!-- Mobile Menu -->
 <div id="mobileMenu" class="mobile-menu">
-    <nav class="flex flex-col space-y-6">
-        <a href="index.html" class="text-lg text-white/70 hover:text-white">Home</a>
-        <a href="sports.html" class="text-lg text-white/70 hover:text-white">Sports</a>
-        <a href="live-betting.html" class="text-lg text-white/70 hover:text-white">Live Betting</a>
-        <a href="casino.html" class="text-lg text-white/70 hover:text-white">Casino</a>
-        <a href="promotions.html" class="text-lg text-white/70 hover:text-white">Promotions</a>
-        <a href="aviator.html" class="text-lg text-white/70 hover:text-white">Aviator</a>
+    <nav class="flex flex-col space-y-5">
+        <a href="index.html" class="text-lg text-white/80 hover:text-white">Home</a>
+        <a href="sports.html" class="text-lg text-white/80 hover:text-white">Sports</a>
+        <a href="live-betting.html" class="text-lg text-white/80 hover:text-white">Live Betting</a>
+        <a href="casino.html" class="text-lg text-white/80 hover:text-white">Casino</a>
+        <a href="aviator.html" class="text-lg text-white/80 hover:text-white">Aviator</a>
+        <div class="pt-4 border-t border-white/10">
+            <div class="flex gap-2">
+                <a href="signup.html" class="btn-primary flex-1 text-xs py-2.5">Create Account</a>
+            </div>
+        </div>
     </nav>
 </div>
 
-<!-- MAIN CONTENT -->
-<div class="page-background flex items-center justify-center pt-20 pb-12 px-4">
-    <div class="w-full max-w-md z-10">
-        <div class="glass rounded-3xl p-8 md:p-10 border border-white/10 shadow-2xl">
-            <div class="text-center mb-8">
-                <h1 class="text-3xl font-bold text-white mb-2">Welcome Back</h1>
-                <p class="text-sm text-white/40">Sign in to your CephasGM GameZone account</p>
+<!-- ==========================================
+     MAIN CONTENT
+     ========================================== -->
+<div class="page-content">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div class="auth-split">
+
+            <!-- ============ LEFT: BENEFITS ============ -->
+            <div class="benefits-col">
+                <div class="benefits-hero-tag">🔒 Secure Sign In</div>
+                <h1 class="benefits-title">
+                    Welcome back to<br>
+                    <span class="text-gradient">CephasGM GameZone</span>
+                </h1>
+                <p class="benefits-sub">
+                    Sign in to access your wallet, place bets on live matches, play Aviator, and cash out your winnings — all in one place.
+                </p>
+
+                <div class="benefit-item">
+                    <div class="bi-icon">⚡</div>
+                    <div>
+                        <div class="bi-title">Instant Deposits &amp; Withdrawals</div>
+                        <div class="bi-desc">M-Pesa, Tigo Pesa, Airtel Money — money in and out in seconds.</div>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="bi-icon">🎯</div>
+                    <div>
+                        <div class="bi-title">Live Odds, Real-Time Updates</div>
+                        <div class="bi-desc">Bet on thousands of markets with live odds that refresh every second.</div>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="bi-icon">🎁</div>
+                    <div>
+                        <div class="bi-title">Welcome Bonus on First Deposit</div>
+                        <div class="bi-desc">Get up to 100% match on your first deposit — up to 50,000 TZS.</div>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="bi-icon">🛡️</div>
+                    <div>
+                        <div class="bi-title">Bank-Grade Security</div>
+                        <div class="bi-desc">SSL encryption, 2FA, and 24/7 fraud monitoring protect your account.</div>
+                    </div>
+                </div>
+
+                <div class="stats-inline">
+                    <div>
+                        <div class="si-value text-gradient">50K+</div>
+                        <div class="si-label">Active Players</div>
+                    </div>
+                    <div>
+                        <div class="si-value text-gradient">$2M+</div>
+                        <div class="si-label">Daily Winnings</div>
+                    </div>
+                    <div>
+                        <div class="si-value text-gradient">98%</div>
+                        <div class="si-label">Payout Rate</div>
+                    </div>
+                </div>
             </div>
 
-            <!-- Tab Switcher -->
-            <div class="flex justify-center mb-6 space-x-2">
-                <button id="tabEmail" class="tab-btn active">Email</button>
-                <button id="tabPhone" class="tab-btn">Phone</button>
+            <!-- ============ RIGHT: SIGN IN CARD ============ -->
+            <div class="w-full">
+                <div class="glass rounded-3xl p-6 sm:p-8 border border-white/10 shadow-2xl">
+
+                    <div class="text-center mb-7">
+                        <h2 class="text-2xl sm:text-3xl font-bold mb-2">Welcome Back</h2>
+                        <p class="text-sm text-white/40">Sign in to your CephasGM GameZone account</p>
+                    </div>
+
+                    <!-- Tab Switcher -->
+                    <div class="flex justify-center mb-6 space-x-2">
+                        <button id="tabEmail" class="tab-btn active">Email</button>
+                        <button id="tabPhone" class="tab-btn">Phone</button>
+                    </div>
+
+                    <!-- Email Login Form -->
+                    <form id="emailForm" class="space-y-4">
+                        <div>
+                            <label class="block text-xs text-white/40 mb-1.5 ml-1">Email</label>
+                            <input type="email" id="email" placeholder="you@example.com" class="input-field" required autocomplete="email">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-white/40 mb-1.5 ml-1">Password</label>
+                            <input type="password" id="passwordEmail" placeholder="••••••••" class="input-field" required autocomplete="current-password">
+                        </div>
+                        <div class="flex items-center justify-between text-sm">
+                            <label class="flex items-center space-x-2 text-white/50 cursor-pointer">
+                                <input type="checkbox" class="rounded bg-white/10 border-white/20 text-blue-500 focus:ring-0">
+                                <span>Remember me</span>
+                            </label>
+                            <a href="forgot-password.html" class="text-blue-400 hover:text-blue-300 transition-colors">Forgot password?</a>
+                        </div>
+                        <button type="submit" class="btn-primary w-full text-center py-3 text-base">Sign In</button>
+                    </form>
+
+                    <!-- Phone Login Form -->
+                    <form id="phoneForm" class="space-y-4 hidden">
+                        <div>
+                            <label class="block text-xs text-white/40 mb-1.5 ml-1">Country Code</label>
+                            <select id="countryCode" class="country-select" required>
+                                <option value="+255" selected>Tanzania (+255)</option>
+                                <option value="+254">Kenya (+254)</option>
+                                <option value="+256">Uganda (+256)</option>
+                                <option value="+250">Rwanda (+250)</option>
+                                <option value="+234">Nigeria (+234)</option>
+                                <option value="+27">South Africa (+27)</option>
+                                <option value="+44">United Kingdom (+44)</option>
+                                <option value="+1">United States (+1)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-white/40 mb-1.5 ml-1">Mobile Number</label>
+                            <input type="tel" id="mobileNumber" placeholder="712345678" class="input-field" required>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-white/40 mb-1.5 ml-1">Password</label>
+                            <input type="password" id="passwordPhone" placeholder="••••••••" class="input-field" required>
+                        </div>
+                        <div class="flex items-center justify-between text-sm">
+                            <label class="flex items-center space-x-2 text-white/50 cursor-pointer">
+                                <input type="checkbox" class="rounded bg-white/10 border-white/20 text-blue-500 focus:ring-0">
+                                <span>Remember me</span>
+                            </label>
+                            <a href="forgot-password.html" class="text-blue-400 hover:text-blue-300 transition-colors">Forgot password?</a>
+                        </div>
+                        <button type="submit" class="btn-primary w-full text-center py-3 text-base">Sign In</button>
+                    </form>
+
+                    <p class="mt-6 text-center text-sm text-white/40">
+                        Don't have an account?
+                        <a href="signup.html" class="text-blue-400 hover:text-blue-300 font-semibold transition-colors">Create one →</a>
+                    </p>
+
+                    <!-- Trust row -->
+                    <div class="trust-row">
+                        <div class="trust-item">
+                            <div class="ti-icon">🔒</div>
+                            <div class="ti-label">SSL Secured</div>
+                        </div>
+                        <div class="trust-item">
+                            <div class="ti-icon">⚡</div>
+                            <div class="ti-label">Instant Payouts</div>
+                        </div>
+                        <div class="trust-item">
+                            <div class="ti-icon">🎧</div>
+                            <div class="ti-label">24/7 Support</div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Support line below form -->
+                <div class="mt-5 text-center text-xs text-white/35">
+                    Having trouble signing in? <a href="support.html" class="text-blue-400 hover:text-blue-300 transition-colors">Contact support</a>
+                </div>
             </div>
 
-            <!-- Email Login Form -->
-            <form id="emailForm" class="space-y-5">
-                <div>
-                    <label class="block text-xs text-white/40 mb-1.5 ml-1">Email</label>
-                    <input type="email" id="email" placeholder="you@example.com" class="input-field" required autocomplete="email">
-                </div>
-                <div>
-                    <label class="block text-xs text-white/40 mb-1.5 ml-1">Password</label>
-                    <input type="password" id="passwordEmail" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" class="input-field" required autocomplete="current-password">
-                </div>
-                <div class="flex items-center justify-between text-sm">
-                    <label class="flex items-center space-x-2 text-white/40">
-                        <input type="checkbox" class="rounded bg-white/10 border-white/20 text-blue-500 focus:ring-0">
-                        <span>Remember me</span>
-                    </label>
-                    <a href="forgot-password.html" class="text-blue-400 hover:text-blue-300 transition-colors">Forgot password?</a>
-                </div>
-                <button type="submit" class="btn-primary w-full text-center py-3 text-base">Sign In</button>
-            </form>
-
-            <!-- Phone Login Form (hidden by default) -->
-            <form id="phoneForm" class="space-y-5 hidden">
-                <div>
-                    <label class="block text-xs text-white/40 mb-1.5 ml-1">Country Code</label>
-                    <select id="countryCode" class="country-select" required>
-                        <option value="+255" selected>ðŸ‡¹ðŸ‡¿ Tanzania (+255)</option>
-                        <option value="+254">ðŸ‡°ðŸ‡ª Kenya (+254)</option>
-                        <option value="+256">ðŸ‡ºðŸ‡¬ Uganda (+256)</option>
-                        <option value="+250">ðŸ‡·ðŸ‡¼ Rwanda (+250)</option>
-                        <option value="+234">ðŸ‡³ðŸ‡¬ Nigeria (+234)</option>
-                        <option value="+27">ðŸ‡¿ðŸ‡¦ South Africa (+27)</option>
-                        <option value="+44">ðŸ‡¬ðŸ‡§ United Kingdom (+44)</option>
-                        <option value="+1">ðŸ‡ºðŸ‡¸ United States (+1)</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-xs text-white/40 mb-1.5 ml-1">Mobile Number</label>
-                    <input type="tel" id="mobileNumber" placeholder="712345678" class="input-field" required>
-                </div>
-                <div>
-                    <label class="block text-xs text-white/40 mb-1.5 ml-1">Password</label>
-                    <input type="password" id="passwordPhone" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" class="input-field" required>
-                </div>
-                <div class="flex items-center justify-between text-sm">
-                    <label class="flex items-center space-x-2 text-white/40">
-                        <input type="checkbox" class="rounded bg-white/10 border-white/20 text-blue-500 focus:ring-0">
-                        <span>Remember me</span>
-                    </label>
-                    <a href="forgot-password.html" class="text-blue-400 hover:text-blue-300 transition-colors">Forgot password?</a>
-                </div>
-                <button type="submit" class="btn-primary w-full text-center py-3 text-base">Sign In</button>
-            </form>
-
-            <p class="mt-6 text-center text-sm text-white/40">
-                Don't have an account?
-                <a href="signup.html" class="text-blue-400 hover:text-blue-300 font-medium transition-colors">Create one</a>
-            </p>
         </div>
     </div>
 </div>
 
-<!-- FOOTER -->
-<footer class="bg-[#0a0a12] border-t border-white/5 py-12">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<!-- ==========================================
+     FOOTER (shared)
+     ========================================== -->
+<footer class="site-footer mt-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div class="col-span-2 md:col-span-1">
                 <div class="text-lg font-bold mb-3">
@@ -371,16 +546,22 @@
                     <span class="text-white font-light">|</span>
                     <span class="text-white font-semibold">GameZone</span>
                 </div>
-                <p class="text-sm text-white/30 leading-relaxed">
+                <p class="text-sm text-white/30 leading-relaxed mb-4">
                     Premium online betting platform for sports, casino, and virtual games.
                 </p>
+                <div class="flex items-center gap-2 text-[10px] uppercase tracking-widest font-bold text-white/25">
+                    <span>18+</span>
+                    <span class="w-1 h-1 rounded-full bg-white/20"></span>
+                    <span>Play Responsibly</span>
+                </div>
             </div>
             <div>
-                <h4 class="text-sm font-semibold text-white/40 mb-3">Quick Links</h4>
+                <h4 class="text-sm font-semibold text-white/40 mb-3">Betting</h4>
                 <ul class="space-y-2">
                     <li><a href="sports.html" class="footer-link">Sports</a></li>
                     <li><a href="live-betting.html" class="footer-link">Live Betting</a></li>
                     <li><a href="casino.html" class="footer-link">Casino</a></li>
+                    <li><a href="aviator.html" class="footer-link">Aviator</a></li>
                     <li><a href="promotions.html" class="footer-link">Promotions</a></li>
                 </ul>
             </div>
@@ -403,14 +584,20 @@
                 </ul>
             </div>
         </div>
-        <div class="mt-8 pt-6 border-t border-white/5 flex flex-col md:flex-row items-center justify-between text-xs text-white/20">
-            <p>Copyright Â© 2025 Cephas GM | Innovating for Tomorrow</p>
-            <p class="mt-2 md:mt-0">18+ | Play Responsibly</p>
+        <div class="mt-8 pt-6 border-t border-white/5 flex flex-col md:flex-row items-center justify-between text-xs text-white/25 gap-3">
+            <p>Copyright © 2025 Cephas GM | Innovating for Tomorrow</p>
+            <div class="flex items-center gap-4">
+                <span class="flex items-center gap-1">🔒 Secured by SSL</span>
+                <span class="w-1 h-1 rounded-full bg-white/20"></span>
+                <span>Licensed Operator</span>
+            </div>
         </div>
     </div>
 </footer>
 
-<!-- JAVASCRIPT -->
+<!-- ==========================================
+     JAVASCRIPT
+     ========================================== -->
 <script>
 (function() {
     'use strict';
@@ -418,25 +605,40 @@
     /* ------------------------------------------------------------
        Redirect if already logged in
        ------------------------------------------------------------ */
-    if (CephasGM && CephasGM.auth) {
-        CephasGM.auth.redirectIfLoggedIn('dashboard.html');
+    if (window.CephasGM && CephasGM.api && CephasGM.api.isLoggedIn()) {
+        window.location.href = 'dashboard.html';
+        return;
+    }
+
+    /* ------------------------------------------------------------
+       Preserve ?redirect= param through login
+       ------------------------------------------------------------ */
+    function getRedirectTarget() {
+        try {
+            var params = new URLSearchParams(window.location.search);
+            var target = params.get('redirect');
+            if (target && !target.startsWith('http') && !target.includes('signin')) {
+                return target;
+            }
+        } catch (e) {}
+        return 'dashboard.html';
     }
 
     /* ------------------------------------------------------------
        Mobile menu
        ------------------------------------------------------------ */
-    const mobileToggle = document.getElementById('mobileToggle');
-    const mobileMenu = document.getElementById('mobileMenu');
-    let mobileOpen = false;
+    var mobileToggle = document.getElementById('mobileToggle');
+    var mobileMenu = document.getElementById('mobileMenu');
+    var mobileOpen = false;
 
     if (mobileToggle) {
-        mobileToggle.addEventListener('click', () => {
+        mobileToggle.addEventListener('click', function () {
             mobileOpen = !mobileOpen;
             mobileMenu.classList.toggle('active', mobileOpen);
             document.body.style.overflow = mobileOpen ? 'hidden' : '';
         });
-        mobileMenu.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
+        mobileMenu.querySelectorAll('a').forEach(function (link) {
+            link.addEventListener('click', function () {
                 mobileMenu.classList.remove('active');
                 document.body.style.overflow = '';
                 mobileOpen = false;
@@ -447,19 +649,18 @@
     /* ------------------------------------------------------------
        Tab switching
        ------------------------------------------------------------ */
-    const tabEmail = document.getElementById('tabEmail');
-    const tabPhone = document.getElementById('tabPhone');
-    const emailForm = document.getElementById('emailForm');
-    const phoneForm = document.getElementById('phoneForm');
+    var tabEmail = document.getElementById('tabEmail');
+    var tabPhone = document.getElementById('tabPhone');
+    var emailForm = document.getElementById('emailForm');
+    var phoneForm = document.getElementById('phoneForm');
 
-    tabEmail.addEventListener('click', function() {
+    tabEmail.addEventListener('click', function () {
         tabEmail.classList.add('active');
         tabPhone.classList.remove('active');
         emailForm.classList.remove('hidden');
         phoneForm.classList.add('hidden');
     });
-
-    tabPhone.addEventListener('click', function() {
+    tabPhone.addEventListener('click', function () {
         tabPhone.classList.add('active');
         tabEmail.classList.remove('active');
         phoneForm.classList.remove('hidden');
@@ -467,10 +668,10 @@
     });
 
     /* ------------------------------------------------------------
-       Toast helper â€” uses CephasGM.toast from api.js
+       Toast helper
        ------------------------------------------------------------ */
     function toast(msg, type) {
-        if (CephasGM && CephasGM.toast) {
+        if (window.CephasGM && CephasGM.toast) {
             CephasGM.toast(msg, type);
         } else {
             alert(msg);
@@ -480,14 +681,12 @@
     /* ------------------------------------------------------------
        EMAIL SIGN IN
        ------------------------------------------------------------ */
-    emailForm.addEventListener('submit', async function(e) {
+    emailForm.addEventListener('submit', async function (e) {
         e.preventDefault();
-
-        const submitBtn = this.querySelector('button[type="submit"]');
-        const originalText = submitBtn.textContent;
-
-        const email = document.getElementById('email').value.trim();
-        const password = document.getElementById('passwordEmail').value;
+        var submitBtn = this.querySelector('button[type="submit"]');
+        var originalText = submitBtn.textContent;
+        var email = document.getElementById('email').value.trim();
+        var password = document.getElementById('passwordEmail').value;
 
         if (!email || !password) {
             toast('Please enter email and password', 'error');
@@ -495,15 +694,14 @@
         }
 
         submitBtn.disabled = true;
-        submitBtn.textContent = 'Signing inâ€¦';
+        submitBtn.textContent = 'Signing in…';
 
         try {
-            const res = await CephasGM.api.login(email, password);
-
+            var res = await CephasGM.api.login(email, password);
             if (res.success) {
                 toast('Welcome back!', 'success');
-                setTimeout(() => {
-                    window.location.href = 'dashboard.html';
+                setTimeout(function () {
+                    window.location.href = getRedirectTarget();
                 }, 600);
             } else {
                 toast(res.message || 'Login failed', 'error');
@@ -511,7 +709,7 @@
                 submitBtn.textContent = originalText;
             }
         } catch (err) {
-            const msg = err.message || (err.json && err.json.message) || 'Login failed. Check your credentials.';
+            var msg = err.message || (err.json && err.json.message) || 'Login failed. Check your credentials.';
             toast(msg, 'error');
             submitBtn.disabled = false;
             submitBtn.textContent = originalText;
@@ -521,37 +719,33 @@
     /* ------------------------------------------------------------
        PHONE SIGN IN
        ------------------------------------------------------------ */
-    phoneForm.addEventListener('submit', async function(e) {
+    phoneForm.addEventListener('submit', async function (e) {
         e.preventDefault();
-
-        const submitBtn = this.querySelector('button[type="submit"]');
-        const originalText = submitBtn.textContent;
-
-        const countryCode = document.getElementById('countryCode').value;
-        const mobile = document.getElementById('mobileNumber').value.trim();
-        const password = document.getElementById('passwordPhone').value;
+        var submitBtn = this.querySelector('button[type="submit"]');
+        var originalText = submitBtn.textContent;
+        var countryCode = document.getElementById('countryCode').value;
+        var mobile = document.getElementById('mobileNumber').value.trim();
+        var password = document.getElementById('passwordPhone').value;
 
         if (!countryCode || !mobile || !password) {
             toast('Please fill in all fields', 'error');
             return;
         }
 
-        // Build full phone: countryCode + number without leading zero
-        const cleaned = mobile.replace(/^0+/, '').replace(/\D/g, '');
-        const phone = countryCode + cleaned;
+        var cleaned = mobile.replace(/^0+/, '').replace(/\D/g, '');
+        var phone = countryCode + cleaned;
 
         submitBtn.disabled = true;
-        submitBtn.textContent = 'Signing inâ€¦';
+        submitBtn.textContent = 'Signing in…';
 
         try {
-            const res = await CephasGM.api.post('/auth/login', { phone: phone, password: password });
-
+            var res = await CephasGM.api.post('/auth/login', { phone: phone, password: password });
             if (res.success) {
                 CephasGM.api.setTokens(res.data.accessToken, res.data.refreshToken);
                 CephasGM.api.setUser(res.data.user);
                 toast('Welcome back!', 'success');
-                setTimeout(() => {
-                    window.location.href = 'dashboard.html';
+                setTimeout(function () {
+                    window.location.href = getRedirectTarget();
                 }, 600);
             } else {
                 toast(res.message || 'Login failed', 'error');
@@ -559,7 +753,7 @@
                 submitBtn.textContent = originalText;
             }
         } catch (err) {
-            const msg = err.message || (err.json && err.json.message) || 'Login failed. Check your credentials.';
+            var msg = err.message || (err.json && err.json.message) || 'Login failed. Check your credentials.';
             toast(msg, 'error');
             submitBtn.disabled = false;
             submitBtn.textContent = originalText;
@@ -570,10 +764,10 @@
        Service Worker
        ------------------------------------------------------------ */
     if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
+        window.addEventListener('load', function () {
             navigator.serviceWorker.register('sw.js')
-                .then(() => console.log('SW registered'))
-                .catch(() => console.log('SW registration failed'));
+                .then(function () { console.log('SW registered'); })
+                .catch(function () { console.log('SW registration failed'); });
         });
     }
 })();
