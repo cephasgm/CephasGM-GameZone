@@ -1,0 +1,58 @@
+<html>
+    <head>
+        <title>Blackjack</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+        <link rel="manifest" href="/assets/site.webmanifest">
+        <link rel="stylesheet" href="/index.css">
+        <script src="elements.cardmeister.full.js"></script>
+    </head>
+    <body>
+        <h1>Blackjack</h1>        
+
+        <h2>Dealer</h2>
+        <p id="message-el">Place your bet to start a round!</p>
+        <div id="dealer-hand-el" class="card-container"></div>
+        <p id="dealer-sum-el">Sum:</p>
+
+        <h2 id="player-el"></h2>
+        <div id="player-hand-el" class="card-container"></div>
+        <p id="player-sum-el">Sum:</p>
+        
+        <button id="hit-btn">Hit</button>
+        <button id="stand-btn">Stand</button>
+        <div>
+            <button class="bet-btn" id="increase-bet-50-btn">+ 50</button>
+            <button class="bet-btn" id="increase-bet-btn">+ 5</button>
+            <button class="bet-btn" id="decrease-bet-btn">- 5</button>
+            <button class="bet-btn" id="decrease-bet-50-btn">- 50</button>
+            
+            <div>
+                <span id="bet-el">Bet: $0</span>
+            </div>
+        </div>
+        <div>
+            <button id="start-game-btn">Start Game</button>
+        </div>
+
+        
+        <div id="name-modal-overlay" class="modal-overlay">
+            <div class="modal-content">
+                <h2>Welcome to Blackjack!</h2>
+                <p>Please enter your name:</p>
+                <input type="text" id="name-input" placeholder="Player Name" autofocus>
+                <button id="submit-name-btn" type="submit">Play</button>
+            </div>
+        </div>
+    <script src="index.js"></script>
+    </body>
+
+    <footer style="display: none;">
+        GitHub:
+        <a href="https://github.com/ronny-kb/blackjack-js">GitHub Repository</a>
+        Background texture:
+        <a href="https://www.vecteezy.com/photo/27250677-felt-blue-soft-rough-textile-material-background-texture-close-up-poker-table-tennis-ball-table-cloth-empty-navy-blue-fabric-denim-background">vecteezy</a>
+    </footer>
+</html>

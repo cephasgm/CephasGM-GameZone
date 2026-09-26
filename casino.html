@@ -651,6 +651,116 @@
             .category-tabs-wrap { top: 62px; }
             .featured-card { min-height: 160px; }
         }
+/* ---------- GAME LAUNCHER MODAL ---------- */
+.game-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+.game-modal.active { display: flex; animation: modalFade 0.3s ease; }
+@keyframes modalFade { from { opacity: 0; } to { opacity: 1; } }
+
+.game-modal-inner {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: #0a0a12;
+    position: relative;
+}
+
+.game-modal-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 16px;
+    background: rgba(0,0,0,0.6);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    flex-shrink: 0;
+}
+.game-modal-title {
+    font-size: 14px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.game-modal-provider {
+    font-size: 10px;
+    color: rgba(255,255,255,0.4);
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.06);
+}
+.game-modal-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.game-modal-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.7);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 14px;
+    text-decoration: none;
+}
+.game-modal-btn:hover { background: rgba(255,255,255,0.12); color: #fff; }
+.game-modal-btn.close { background: rgba(255,0,68,0.15); color: #ff8098; border-color: rgba(255,0,68,0.3); }
+.game-modal-btn.close:hover { background: rgba(255,0,68,0.3); color: #fff; }
+
+.game-modal-frame-wrap {
+    flex: 1;
+    position: relative;
+    background: #05050c;
+    overflow: hidden;
+}
+.game-modal-frame {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+    background: #05050c;
+}
+.game-modal-loading {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background: #0a0a12;
+    z-index: 2;
+}
+.game-modal-spinner {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    border: 3px solid rgba(255,255,255,0.1);
+    border-top-color: #0055ff;
+    animation: spin 0.9s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.game-modal-loading-text {
+    font-size: 12px;
+    color: rgba(255,255,255,0.45);
+    font-weight: 600;
+}
     </style>
 </head>
 <body>
@@ -987,6 +1097,38 @@
         </div>
     </div>
 </footer>
+<!-- ==========================================
+     GAME LAUNCHER MODAL
+     ========================================== -->
+<div id="gameModal" class="game-modal">
+    <div class="game-modal-inner">
+        <div class="game-modal-bar">
+            <div class="game-modal-title">
+                <span id="gameModalName">Game</span>
+                <span class="game-modal-provider" id="gameModalProvider">Provider</span>
+            </div>
+            <div class="game-modal-actions">
+                <button class="game-modal-btn" id="gameModalFullscreen" title="Fullscreen">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+                    </svg>
+                </button>
+                <button class="game-modal-btn close" id="gameModalClose" title="Close">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+                        <path d="M18 6 6 18M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div class="game-modal-frame-wrap">
+            <div class="game-modal-loading" id="gameModalLoading">
+                <div class="game-modal-spinner"></div>
+                <div class="game-modal-loading-text">Loading game…</div>
+            </div>
+            <iframe id="gameModalFrame" class="game-modal-frame" allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
 
 <!-- ==========================================
      JAVASCRIPT
@@ -1178,17 +1320,97 @@
         });
     }
 
-    function launchGame(name) {
-        if (!isLoggedIn) {
-            window.location.href = 'signin.html?redirect=' + encodeURIComponent('casino.html');
-            return;
-        }
-        if (CephasGM.toast) {
-            CephasGM.toast('🎮 ' + name + ' — coming soon!', 'warning');
-        } else {
-            alert(name + ' — launching soon');
-        }
+/* ------------------------------------------------------------
+   GAME LAUNCHER — maps game names to bundled HTML5 games
+   ------------------------------------------------------------ */
+var GAME_PATHS = {
+    'Starburst':            { path: 'games/slot/index.html',       provider: 'NetEnt Demo' },
+    "Gonzo's Quest":        { path: 'games/slot2/index.html',      provider: 'NetEnt Demo' },
+    'Book of Dead':         { path: 'games/slot/index.html',       provider: "Play'n GO Demo" },
+    'Mega Moolah':          { path: 'games/slot2/index.html',      provider: 'Microgaming Demo' },
+    'Divine Fortune':       { path: 'games/slot/index.html',       provider: 'NetEnt Demo' },
+    'European Roulette':    { path: 'games/roulette/index.html',   provider: 'Evolution Demo' },
+    'Blackjack Classic':    { path: 'games/blackjack/index.html',  provider: 'Evolution Demo' },
+    'Baccarat':             { path: 'games/blackjack/index.html',  provider: 'Evolution Demo' },
+    'Lightning Roulette':   { path: 'games/roulette/index.html',   provider: 'Evolution Demo' },
+    'Dream Catcher':        { path: 'games/roulette/index.html',   provider: 'Evolution Demo' },
+    'Buffalo Blitz':        { path: 'games/slot2/index.html',      provider: 'Playtech Demo' },
+    'Wild Wild West':       { path: 'games/slot/index.html',       provider: 'NetEnt Demo' },
+    'Jack Hammer':          { path: 'games/slot2/index.html',      provider: 'NetEnt Demo' },
+    'Caribbean Stud Poker': { path: 'games/blackjack/index.html',  provider: 'Playtech Demo' },
+    'Blackjack Party':      { path: 'games/blackjack/index.html',  provider: 'Evolution Demo' },
+    'Book of Ra':           { path: 'games/slot/index.html',       provider: 'Novomatic Demo' },
+    'Sizzling Hot':         { path: 'games/slot2/index.html',      provider: 'Novomatic Demo' }
+};
+
+function launchGame(name) {
+    if (!isLoggedIn) {
+        window.location.href = 'signin.html?redirect=' + encodeURIComponent('casino.html');
+        return;
     }
+
+    var config = GAME_PATHS[name];
+    if (!config) {
+        if (CephasGM.toast) CephasGM.toast('Game not available yet', 'warning');
+        return;
+    }
+
+    var modal = document.getElementById('gameModal');
+    var frame = document.getElementById('gameModalFrame');
+    var loading = document.getElementById('gameModalLoading');
+
+    /* Set modal content */
+    document.getElementById('gameModalName').textContent = name;
+    document.getElementById('gameModalProvider').textContent = config.provider;
+
+    /* Show loading spinner */
+    loading.style.display = 'flex';
+
+    /* Load the game */
+    frame.src = config.path;
+
+    /* Hide spinner when loaded */
+    frame.onload = function() {
+        loading.style.display = 'none';
+    };
+
+    /* Show modal */
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+/* ------------------------------------------------------------
+   MODAL CONTROLS
+   ------------------------------------------------------------ */
+document.addEventListener('DOMContentLoaded', function() {
+    var modal = document.getElementById('gameModal');
+    var frame = document.getElementById('gameModalFrame');
+    var closeBtn = document.getElementById('gameModalClose');
+    var fullscreenBtn = document.getElementById('gameModalFullscreen');
+
+    function closeModal() {
+        modal.classList.remove('active');
+        frame.src = '';
+        document.body.style.overflow = '';
+    }
+
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+
+    if (fullscreenBtn) {
+        fullscreenBtn.addEventListener('click', function() {
+            var wrap = frame.parentElement;
+            if (wrap.requestFullscreen) wrap.requestFullscreen();
+            else if (wrap.webkitRequestFullscreen) wrap.webkitRequestFullscreen();
+        });
+    }
+
+    /* ESC key closes modal */
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeModal();
+        }
+    });
+});
 
     /* ------------------------------------------------------------
        CATEGORY TAB SWITCHING
