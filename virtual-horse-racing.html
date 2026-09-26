@@ -2,31 +2,42 @@
 <html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#0a0a12">
     <meta name="description" content="Virtual Horse Racing – CephasGM GameZone">
     <title>Virtual Horse Racing | CephasGM GameZone</title>
 
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-status-bar-style" content="black-translucent">
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="js/api.js"></script>
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { height: 100%; }
 
         body {
             font-family: 'Inter', sans-serif;
-            background: #0a0a12;
             color: #ffffff;
+            min-height: 100vh;
             overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            background-color: #0a0a12;
+            background-image:
+                linear-gradient(180deg, rgba(10,10,18,0.90) 0%, rgba(10,10,18,0.82) 40%, rgba(10,10,18,0.90) 100%),
+                url('https://static.vecteezy.com/system/resources/thumbnails/070/574/368/small/assorted-sports-equipment-on-black-backdrop-symbolizing-athleticism-competition-and-diverse-sporting-activities-photo.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
         }
 
-        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: #0a0a12; }
         ::-webkit-scrollbar-thumb {
             background: linear-gradient(180deg, #0055ff, #542bff);
@@ -39,7 +50,6 @@
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.06);
         }
-
         .glass-light {
             background: rgba(255, 255, 255, 0.04);
             backdrop-filter: blur(10px);
@@ -52,33 +62,48 @@
             color: white;
             padding: 10px 24px;
             border-radius: 50px;
-            font-weight: 600;
+            font-weight: 700;
             font-size: 14px;
             border: none;
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 4px 20px rgba(0, 85, 255, 0.25);
+            font-family: inherit;
         }
-        .btn-primary:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(0, 85, 255, 0.4);
-        }
-        .btn-primary:disabled {
-            opacity: 0.55;
-            cursor: not-allowed;
-            transform: none;
-        }
+        .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0, 85, 255, 0.4); }
+        .btn-primary:disabled { opacity: 0.55; cursor: not-allowed; }
 
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.06);
+            color: white;
+            padding: 10px 22px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 13px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-family: inherit;
+            white-space: nowrap;
+        }
+        .btn-secondary:hover { background: rgba(255, 255, 255, 0.12); transform: translateY(-2px); }
+
+        /* ---------- Navbar ---------- */
         .navbar {
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            z-index: 1000;
-            padding: 16px 0;
-            background: rgba(10, 10, 18, 0.92);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 14px 0;
+            background: rgba(10, 10, 18, 0.75);
             backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
         }
-
         .text-gradient {
             background: linear-gradient(135deg, #0055ff, #542bff);
             -webkit-background-clip: text;
@@ -99,68 +124,156 @@
         .mobile-menu.active { display: block; animation: fadeIn 0.3s ease; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .footer-link {
-            color: rgba(255, 255, 255, 0.4);
-            transition: all 0.3s ease;
-            text-decoration: none;
-            font-size: 14px;
-        }
+        .footer-link { color: rgba(255, 255, 255, 0.5); transition: all 0.3s ease; text-decoration: none; font-size: 13px; }
         .footer-link:hover { color: #ffffff; }
 
-        .page-background {
-            min-height: 100vh;
-            background-image: url('https://static.vecteezy.com/system/resources/thumbnails/070/574/368/small/assorted-sports-equipment-on-black-backdrop-symbolizing-athleticism-competition-and-diverse-sporting-activities-photo.jpeg');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            position: relative;
-        }
-        .page-background::before {
-            content: '';
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: linear-gradient(135deg,
-                rgba(10, 10, 18, 0.94) 0%,
-                rgba(10, 10, 18, 0.78) 50%,
-                rgba(10, 10, 18, 0.94) 100%);
-            z-index: -1;
-        }
+        .page-content { flex: 1; display: flex; flex-direction: column; }
 
-        .dropdown { position: relative; display: inline-block; }
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            top: 100%; left: 0;
-            background: rgba(10, 10, 18, 0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 12px;
-            min-width: 200px;
-            padding: 8px 0;
-            z-index: 1001;
+        .nav-link {
+            padding: 8px 14px;
+            font-size: 14px;
+            color: rgba(255,255,255,0.65);
+            border-radius: 10px;
+            transition: all 0.2s;
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
-        .dropdown:hover .dropdown-menu { display: block; }
-        .dropdown-menu a {
-            display: block;
-            padding: 8px 16px;
-            color: rgba(255,255,255,0.6);
-            font-size: 13px;
-            transition: .2s;
-        }
-        .dropdown-menu a:hover { background: rgba(255,255,255,0.05); color: white; }
+        .nav-link:hover { background: rgba(255,255,255,0.06); color: #fff; }
+        .nav-link.active { background: rgba(0,85,255,0.15); color: #93c5fd; }
 
         .live-dot {
-            width: 6px; height: 6px; border-radius: 50%;
+            width: 7px; height: 7px; border-radius: 50%;
             background: #ff0044;
             box-shadow: 0 0 8px #ff0044;
             animation: pulseDot 1.4s infinite;
             display: inline-block;
+            flex-shrink: 0;
         }
         @keyframes pulseDot {
             0%, 100% { opacity: 1; transform: scale(1); }
             50% { opacity: .35; transform: scale(.7); }
         }
+
+        /* Wallet chip + icons */
+        .wallet-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 14px;
+            border-radius: 999px;
+            background: rgba(0,224,122,0.12);
+            border: 1px solid rgba(0,224,122,0.28);
+            color: #6bffb0;
+            font-size: 12px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.2s;
+            font-variant-numeric: tabular-nums;
+        }
+        .wallet-chip:hover { background: rgba(0,224,122,0.2); }
+
+        .icon-btn {
+            width: 36px; height: 36px;
+            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: rgba(255,255,255,0.7);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            position: relative;
+        }
+        .icon-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+        .icon-badge {
+            position: absolute;
+            top: -4px; right: -4px;
+            min-width: 16px; height: 16px;
+            padding: 0 4px;
+            border-radius: 999px;
+            background: #ff0044;
+            color: #fff;
+            font-size: 9px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #0a0a12;
+        }
+
+        .user-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 12px 4px 4px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .user-pill:hover { background: rgba(255,255,255,0.1); }
+        .user-pill .up-avatar {
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0055ff, #542bff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 11px;
+        }
+        .user-pill .up-name { font-size: 12px; font-weight: 600; }
+
+        .dropdown { position: relative; display: inline-block; }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            background: rgba(10, 10, 18, 0.98);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 12px;
+            min-width: 220px;
+            padding: 8px 0;
+            z-index: 1001;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+        }
+        .dropdown:hover .dropdown-menu { display: block; }
+        .dropdown-menu a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 16px;
+            color: rgba(255,255,255,0.7);
+            font-size: 13px;
+            transition: 0.2s;
+            text-decoration: none;
+        }
+        .dropdown-menu a:hover { background: rgba(255,255,255,0.05); color: white; }
+        .dropdown-menu .divider { height: 1px; background: rgba(255,255,255,0.06); margin: 6px 0; }
+
+        /* Guest notice */
+        .guest-notice {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, rgba(255,204,0,0.12), rgba(255,153,0,0.08));
+            border: 1px solid rgba(255,204,0,0.3);
+            margin-bottom: 20px;
+        }
+        .guest-notice .gn-icon { font-size: 24px; }
+        .guest-notice .gn-text { flex: 1; min-width: 0; }
+        .guest-notice .gn-title { font-size: 13px; font-weight: 800; color: #ffd93d; }
+        .guest-notice .gn-sub { font-size: 11px; color: rgba(255,255,255,0.55); margin-top: 2px; }
 
         /* ============================================
            ROUND BANNER
@@ -213,7 +326,6 @@
             border: 1px solid rgba(255,255,255,0.06);
         }
 
-        /* Crowd backdrop strip at top */
         .crowd-strip {
             height: 26px;
             background:
@@ -238,11 +350,9 @@
             color: rgba(255,255,255,0.14);
         }
 
-        /* Grass strip below crowd */
         .grass-strip {
             height: 14px;
-            background:
-                linear-gradient(180deg, #1b3a1f 0%, #0e2413 100%);
+            background: linear-gradient(180deg, #1b3a1f 0%, #0e2413 100%);
             border-bottom: 1px solid rgba(0,0,0,0.6);
             position: relative;
         }
@@ -256,19 +366,15 @@
             opacity: .5;
         }
 
-        /* The racing surface */
         .track-inner {
             position: relative;
             padding: 8px 0 0 0;
-            background:
-                linear-gradient(180deg, #14120c 0%, #1a170f 50%, #100e08 100%);
+            background: linear-gradient(180deg, #14120c 0%, #1a170f 50%, #100e08 100%);
         }
 
-        /* Bottom rail / fence */
         .rail-fence {
             height: 18px;
-            background:
-                linear-gradient(180deg, #d8d8dc 0%, #8a8a92 40%, #4a4a52 100%);
+            background: linear-gradient(180deg, #d8d8dc 0%, #8a8a92 40%, #4a4a52 100%);
             border-top: 1px solid rgba(255,255,255,0.35);
             border-bottom: 2px solid #1a1a20;
             position: relative;
@@ -285,7 +391,6 @@
         .rail-fence::before { top: 4px; }
         .rail-fence::after  { top: 10px; background: rgba(0,0,0,0.3); }
 
-        /* Lane rows */
         .race-lane {
             position: relative;
             height: 48px;
@@ -297,7 +402,6 @@
             background: linear-gradient(90deg, transparent 0%, rgba(0,255,136,0.05) 60%, rgba(0,255,136,0.10) 100%);
         }
 
-        /* Lane number plate */
         .lane-number {
             position: absolute;
             left: 6px;
@@ -317,7 +421,6 @@
             box-shadow: inset 0 0 6px rgba(0,0,0,0.35);
         }
 
-        /* Silks colour bar beside number */
         .silk-bar {
             position: absolute;
             left: 34px;
@@ -329,7 +432,6 @@
             opacity: .85;
         }
 
-        /* Lane name */
         .lane-name {
             position: absolute;
             left: 44px;
@@ -347,7 +449,6 @@
             max-width: 82px;
         }
 
-        /* Horse container */
         .horse {
             position: absolute;
             left: 0;
@@ -360,7 +461,6 @@
             pointer-events: none;
         }
 
-        /* Gallop bob */
         .horse.galloping {
             animation: gallop-bob 0.32s infinite ease-in-out;
         }
@@ -375,7 +475,6 @@
             filter: drop-shadow(0 3px 4px rgba(0,0,0,0.65));
         }
 
-        /* Dust particles */
         .dust {
             position: absolute;
             top: 60%;
@@ -393,7 +492,6 @@
             100% { transform: scale(2.6) translateX(-30px); opacity: 0; }
         }
 
-        /* Finish line */
         .finish-line {
             position: absolute;
             top: 30px;
@@ -412,7 +510,6 @@
             box-shadow: 0 0 14px rgba(255,255,255,0.55), inset 0 0 4px rgba(0,0,0,0.6);
         }
 
-        /* Finish post / flag */
         .finish-post {
             position: absolute;
             top: 6px;
@@ -427,7 +524,6 @@
             50%      { transform: rotate(4deg); }
         }
 
-        /* Winner overlay */
         .winner-flash {
             position: absolute;
             inset: 0;
@@ -442,10 +538,7 @@
             pointer-events: none;
             transition: opacity .3s ease;
         }
-        .winner-flash.show {
-            opacity: 1;
-            pointer-events: auto;
-        }
+        .winner-flash.show { opacity: 1; pointer-events: auto; }
         .winner-flash .inner {
             text-align: center;
             animation: popIn .45s cubic-bezier(.2,.9,.3,1.4);
@@ -547,7 +640,6 @@
             text-align: right;
         }
 
-        /* Bet slip */
         .bet-slip-item {
             display: flex;
             justify-content: space-between;
@@ -576,11 +668,9 @@
             font-weight: 600;
             font-variant-numeric: tabular-nums;
             transition: border-color .25s;
+            font-family: inherit;
         }
-        .input-field:focus {
-            outline: none;
-            border-color: #0055ff;
-        }
+        .input-field:focus { outline: none; border-color: #0055ff; }
 
         .quick-chip {
             padding: 5px 12px;
@@ -592,6 +682,7 @@
             color: rgba(255,255,255,0.65);
             cursor: pointer;
             transition: all .2s;
+            font-family: inherit;
         }
         .quick-chip:hover { background: rgba(255,255,255,0.12); color: white; }
 
@@ -608,7 +699,6 @@
         .position-badge.silver { background: rgba(200,200,210,0.13); color: #d0d0d8; }
         .position-badge.bronze { background: rgba(205,127,50,0.15);  color: #e79a52; }
 
-        /* Toasts */
         .toast {
             position: fixed;
             left: 50%;
@@ -632,7 +722,6 @@
         .toast-err { background: rgba(255,0,68,0.13); color: #ff97ab; box-shadow: 0 10px 36px rgba(255,0,68,0.18); }
         .toast-warn{ background: rgba(255,204,0,0.12); color: #ffe07d; box-shadow: 0 10px 36px rgba(255,204,0,0.16); }
 
-        /* Info chips */
         .info-chip {
             display: inline-flex;
             align-items: center;
@@ -660,14 +749,12 @@
 </head>
 <body>
 
-<!-- ==========================================
-     NAVBAR
-     ========================================== -->
+<!-- NAVBAR -->
 <nav class="navbar" id="navbar">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between">
+        <div class="flex items-center justify-between gap-3">
 
-            <a href="index.html" class="flex items-center space-x-2" title="Go to Homepage">
+            <a href="index.html" class="flex items-center space-x-2 shrink-0" title="CephasGM GameZone — Home">
                 <span class="text-xl font-bold">
                     <span class="text-gradient">CephasGM</span>
                     <span class="text-white font-light">|</span>
@@ -675,74 +762,63 @@
                 </span>
             </a>
 
-            <div class="hidden lg:flex items-center space-x-1">
-                <div class="dropdown">
-                    <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Info ▾</span>
-                    <div class="dropdown-menu">
-                        <a href="about.html">About Us</a>
-                        <a href="vip.html">VIP Club</a>
-                        <a href="referrals.html">Referrals</a>
-                        <a href="privacy.html">Privacy Policy</a>
-                        <a href="terms.html">Terms &amp; Conditions</a>
-                        <a href="cookies.html">Cookie Policy</a>
-                    </div>
-                </div>
-
-                <div class="dropdown">
-                    <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Account ▾</span>
-                    <div class="dropdown-menu">
-                        <a href="dashboard.html">Dashboard</a>
-                        <a href="profile.html">Profile</a>
-                        <a href="wallet.html">Wallet</a>
-                        <a href="deposit.html">Deposit</a>
-                        <a href="withdraw.html">Withdraw</a>
-                        <a href="transactions.html">Transactions</a>
-                        <a href="bet-history.html">Bet History</a>
-                        <a href="bonuses.html">Bonuses</a>
-                        <a href="kyc.html">KYC Verification</a>
-                        <a href="settings.html">Settings</a>
-                        <a href="signin.html">Sign In</a>
-                        <a href="signup.html">Sign Up</a>
-                        <a href="leaderboard.html">Leaders Board</a>
-                    </div>
-                </div>
-
-                <a href="promotions.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Promotions</a>
-                <a href="sports.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Sports</a>
-                <a href="casino.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5">Casino</a>
-
-                <a href="live-betting.html" class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 flex items-center space-x-1">
+            <!-- Guest nav -->
+            <div id="guestNav" class="hidden lg:flex items-center gap-0.5">
+                <a href="sports.html" class="nav-link">Sports</a>
+                <a href="live-betting.html" class="nav-link">
                     <span class="live-dot"></span><span>Live</span>
                 </a>
+                <a href="casino.html" class="nav-link">Casino</a>
+                <a href="aviator.html" class="nav-link">Aviator</a>
+            </div>
 
-                <div class="dropdown">
-                    <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Virtual ▾</span>
-                    <div class="dropdown-menu">
-                        <a href="virtual-football.html">Virtual Football</a>
-                        <a href="virtual-horse-racing.html">Virtual Horse Racing</a>
-                        <a href="virtual-car-racing.html">Virtual Car Racing</a>
-                        <a href="virtual-netball.html">Virtual Netball</a>
-                        <a href="adventure-games.html">Adventure Games</a>
-                        <a href="aviator.html">Aviator</a>
+            <!-- User nav -->
+            <div id="userNav" class="hidden lg:flex items-center gap-0.5">
+                <a href="bet-history.html" class="nav-link">My Bets</a>
+                <a href="bonuses.html" class="nav-link">Bonuses</a>
+                <a href="wallet.html" class="wallet-chip ml-2">
+                    <span>💰</span>
+                    <span id="navBalance">—</span>
+                </a>
+                <a href="notifications.html" class="icon-btn ml-1" title="Notifications">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
+                        <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
+                    </svg>
+                    <span id="notifBadge" class="icon-badge" style="display:none">0</span>
+                </a>
+                <div class="dropdown ml-1">
+                    <div class="user-pill">
+                        <span class="up-avatar" id="navAvatar">U</span>
+                        <span class="up-name hidden xl:inline" id="navName">Account</span>
+                        <span class="text-white/40 text-xs">▾</span>
                     </div>
-                </div>
-
-                <div class="dropdown">
-                    <span class="px-3 py-2 text-sm text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/5 cursor-pointer">Support ▾</span>
                     <div class="dropdown-menu">
-                        <a href="support.html">Help Center</a>
-                        <a href="messages.html">Messages</a>
-                        <a href="notifications.html">Notifications</a>
-                        <a href="faq.html">FAQ</a>
-                        <a href="contact.html">Contact Us</a>
-                        <a href="responsible-gambling.html">Responsible Gambling</a>
-                        <a href="self-exclusion.html">Self-Exclusion</a>
+                        <a href="dashboard.html">📊 Dashboard</a>
+                        <a href="profile.html">👤 Profile</a>
+                        <a href="wallet.html">💰 Wallet</a>
+                        <a href="deposit.html">➕ Deposit</a>
+                        <a href="withdraw.html">➖ Withdraw</a>
+                        <a href="transactions.html">📋 Transactions</a>
+                        <a href="bet-history.html">🎯 Bet History</a>
+                        <a href="bonuses.html">🎁 Bonuses</a>
+                        <a href="referrals.html">👥 Referrals</a>
+                        <a href="kyc.html">🪪 KYC Verification</a>
+                        <div class="divider"></div>
+                        <a href="settings.html">⚙️ Settings</a>
+                        <a href="support.html">🆘 Help Center</a>
+                        <div class="divider"></div>
+                        <a href="#" id="navSignOut" style="color:#ff8098">🚪 Sign Out</a>
                     </div>
                 </div>
             </div>
 
-            <div class="flex items-center space-x-3">
-                <button id="mobileToggle" class="lg:hidden p-2 text-white/40 hover:text-white transition-colors">
+            <div class="flex items-center space-x-2 lg:hidden">
+                <a href="wallet.html" id="mobileWalletChip" class="hidden wallet-chip" style="padding:5px 10px;font-size:11px">
+                    <span>💰</span>
+                    <span id="mobileNavBalance">—</span>
+                </a>
+                <button id="mobileToggle" class="p-2 text-white/60 hover:text-white transition-colors">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                     </svg>
@@ -754,72 +830,53 @@
 
 <!-- Mobile Menu -->
 <div id="mobileMenu" class="mobile-menu">
-    <nav class="flex flex-col space-y-6">
-        <a href="index.html" class="text-lg text-white/70 hover:text-white">Home</a>
-        <a href="sports.html" class="text-lg text-white/70 hover:text-white">Sports</a>
-        <a href="live-betting.html" class="text-lg text-white/70 hover:text-white">Live Betting</a>
-        <a href="casino.html" class="text-lg text-white/70 hover:text-white">Casino</a>
-        <a href="promotions.html" class="text-lg text-white/70 hover:text-white">Promotions</a>
-        <a href="bonuses.html" class="text-lg text-white/70 hover:text-white">Bonuses</a>
-        <a href="leaderboard.html" class="text-lg text-white/70 hover:text-white">Leaderboard</a>
-        <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Account</span>
-            <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="dashboard.html" class="text-sm text-white/50 hover:text-white">Dashboard</a>
-                <a href="profile.html" class="text-sm text-white/50 hover:text-white">Profile</a>
-                <a href="wallet.html" class="text-sm text-white/50 hover:text-white">Wallet</a>
-                <a href="deposit.html" class="text-sm text-white/50 hover:text-white">Deposit</a>
-                <a href="withdraw.html" class="text-sm text-white/50 hover:text-white">Withdraw</a>
-                <a href="transactions.html" class="text-sm text-white/50 hover:text-white">Transactions</a>
-                <a href="bet-history.html" class="text-sm text-white/50 hover:text-white">Bet History</a>
-                <a href="kyc.html" class="text-sm text-white/50 hover:text-white">KYC</a>
-                <a href="settings.html" class="text-sm text-white/50 hover:text-white">Settings</a>
-                <a href="signin.html" class="text-sm text-white/50 hover:text-white">Sign In</a>
-                <a href="signup.html" class="text-sm text-white/50 hover:text-white">Sign Up</a>
+    <nav class="flex flex-col space-y-5">
+        <div>
+            <span class="text-xs font-semibold text-white/30 uppercase tracking-widest">Betting</span>
+            <div class="mt-2 space-y-1">
+                <a href="sports.html" class="block text-base text-white/80 hover:text-white py-2">Sports</a>
+                <a href="live-betting.html" class="block text-base text-white/80 hover:text-white py-2">Live Betting</a>
+                <a href="casino.html" class="block text-base text-white/80 hover:text-white py-2">Casino</a>
+                <a href="aviator.html" class="block text-base text-white/80 hover:text-white py-2">Aviator</a>
             </div>
         </div>
         <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Virtual Games</span>
+            <span class="text-xs font-semibold text-white/30 uppercase tracking-widest">Virtual Games</span>
             <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="virtual-football.html" class="text-sm text-white/50 hover:text-white">Virtual Football</a>
-                <a href="virtual-horse-racing.html" class="text-sm text-white/50 hover:text-white">Horse Racing</a>
-                <a href="virtual-car-racing.html" class="text-sm text-white/50 hover:text-white">Car Racing</a>
-                <a href="virtual-netball.html" class="text-sm text-white/50 hover:text-white">Netball</a>
-                <a href="adventure-games.html" class="text-sm text-white/50 hover:text-white">Adventure</a>
-                <a href="aviator.html" class="text-sm text-white/50 hover:text-white">Aviator</a>
+                <a href="virtual-football.html" class="text-sm text-white/60 hover:text-white">Virtual Football</a>
+                <a href="virtual-horse-racing.html" class="text-sm text-white/60 hover:text-white">Horse Racing</a>
+                <a href="virtual-car-racing.html" class="text-sm text-white/60 hover:text-white">Car Racing</a>
+                <a href="virtual-netball.html" class="text-sm text-white/60 hover:text-white">Netball</a>
+                <a href="adventure-games.html" class="text-sm text-white/60 hover:text-white">Adventure</a>
             </div>
         </div>
-        <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Support</span>
+        <div id="mobileAccountSection" class="border-t border-white/10 pt-4 hidden">
+            <span class="text-xs font-semibold text-white/30 uppercase tracking-widest">My Account</span>
             <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="support.html" class="text-sm text-white/50 hover:text-white">Help Center</a>
-                <a href="messages.html" class="text-sm text-white/50 hover:text-white">Messages</a>
-                <a href="notifications.html" class="text-sm text-white/50 hover:text-white">Notifications</a>
-                <a href="faq.html" class="text-sm text-white/50 hover:text-white">FAQ</a>
-                <a href="contact.html" class="text-sm text-white/50 hover:text-white">Contact</a>
-                <a href="responsible-gambling.html" class="text-sm text-white/50 hover:text-white">Responsible</a>
-                <a href="self-exclusion.html" class="text-sm text-white/50 hover:text-white">Self-Exclusion</a>
+                <a href="dashboard.html" class="text-sm text-white/60 hover:text-white">Dashboard</a>
+                <a href="wallet.html" class="text-sm text-white/60 hover:text-white">Wallet</a>
+                <a href="deposit.html" class="text-sm text-white/60 hover:text-white">Deposit</a>
+                <a href="withdraw.html" class="text-sm text-white/60 hover:text-white">Withdraw</a>
+                <a href="bet-history.html" class="text-sm text-white/60 hover:text-white">Bet History</a>
+                <a href="bonuses.html" class="text-sm text-white/60 hover:text-white">Bonuses</a>
+                <a href="profile.html" class="text-sm text-white/60 hover:text-white">Profile</a>
+                <a href="kyc.html" class="text-sm text-white/60 hover:text-white">KYC</a>
+                <a href="settings.html" class="text-sm text-white/60 hover:text-white">Settings</a>
+                <a href="#" id="mobileSignOut" class="text-sm text-red-400 hover:text-red-300">Sign Out</a>
             </div>
         </div>
-        <div class="border-t border-white/10 pt-4">
-            <span class="text-sm font-semibold text-white/30 uppercase tracking-wider">Information</span>
-            <div class="grid grid-cols-2 gap-2 mt-2">
-                <a href="about.html" class="text-sm text-white/50 hover:text-white">About</a>
-                <a href="vip.html" class="text-sm text-white/50 hover:text-white">VIP</a>
-                <a href="referrals.html" class="text-sm text-white/50 hover:text-white">Referrals</a>
-                <a href="privacy.html" class="text-sm text-white/50 hover:text-white">Privacy</a>
-                <a href="terms.html" class="text-sm text-white/50 hover:text-white">Terms</a>
-                <a href="cookies.html" class="text-sm text-white/50 hover:text-white">Cookies</a>
+        <div id="mobileAuthSection" class="border-t border-white/10 pt-4">
+            <div class="flex gap-2">
+                <a href="signin.html" class="btn-secondary flex-1 text-xs py-2.5">Sign In</a>
+                <a href="signup.html" class="btn-primary flex-1 text-xs py-2.5">Sign Up</a>
             </div>
         </div>
     </nav>
 </div>
 
-<!-- ==========================================
-     MAIN CONTENT
-     ========================================== -->
-<div class="page-background pt-20 sm:pt-24 pb-12 px-3 sm:px-4">
-    <div class="max-w-7xl mx-auto relative z-10">
+<!-- MAIN CONTENT -->
+<div class="page-content pt-6 sm:pt-8 pb-12 px-3 sm:px-4">
+    <div class="max-w-7xl mx-auto w-full">
 
         <div class="text-center mb-6 sm:mb-8">
             <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-3">
@@ -828,6 +885,16 @@
             <p class="text-sm sm:text-lg text-white/50 max-w-xl mx-auto">
                 Eight gallopers, one finishing post. Pick your winner before the gates open.
             </p>
+        </div>
+
+        <!-- Guest notice -->
+        <div id="guestNotice" class="guest-notice" style="display:none">
+            <div class="gn-icon">🔒</div>
+            <div class="gn-text">
+                <div class="gn-title">Sign in to place bets</div>
+                <div class="gn-sub">Watch the races as a guest — sign in to bet on horses and win real money.</div>
+            </div>
+            <a href="signin.html?redirect=virtual-horse-racing.html" class="btn-primary text-xs py-2 px-4" style="flex-shrink:0;text-decoration:none;">Sign In →</a>
         </div>
 
         <!-- Round Banner -->
@@ -841,13 +908,13 @@
                 </span>
                 <span class="info-chip">🏁 <strong id="trackName">Ascot Downs</strong></span>
                 <span class="info-chip hidden sm:inline-flex">📏 <strong>1200m</strong></span>
-                <span class="info-chip hidden md:inline-flex">🏆 <strong>Purse $5,000</strong></span>
+                <span class="info-chip hidden md:inline-flex">🏆 <strong>Purse 5,000 TZS</strong></span>
             </div>
 
             <div class="flex items-center gap-4">
                 <div class="text-right">
                     <div class="text-[10px] uppercase tracking-wider text-white/35 font-semibold">Betting closes in</div>
-                    <div id="roundTimer" class="round-timer text-2xl text-gradient">00:60</div>
+                    <div id="roundTimer" class="round-timer text-2xl text-gradient">00:55</div>
                 </div>
             </div>
 
@@ -858,10 +925,9 @@
 
         <div class="grid lg:grid-cols-3 gap-5">
 
-            <!-- ============ STADIUM + RUNNERS ============ -->
+            <!-- STADIUM + RUNNERS -->
             <div class="lg:col-span-2 space-y-5">
 
-                <!-- Live Track -->
                 <div class="glass rounded-3xl p-3 sm:p-4">
                     <div class="flex justify-between items-center mb-3 px-1">
                         <h2 class="text-sm font-bold tracking-wide flex items-center gap-2">
@@ -875,16 +941,13 @@
                         <div class="crowd-strip"></div>
                         <div class="grass-strip"></div>
 
-                        <div class="track-inner" id="trackContainer">
-                            <!-- lanes injected by JS -->
-                        </div>
+                        <div class="track-inner" id="trackContainer"></div>
 
                         <div class="rail-fence"></div>
 
                         <div class="finish-line"></div>
                         <div class="finish-post">🏁</div>
 
-                        <!-- Winner overlay -->
                         <div id="winnerFlash" class="winner-flash">
                             <div class="inner">
                                 <div id="winnerHorseSlot"></div>
@@ -895,7 +958,6 @@
                     </div>
                 </div>
 
-                <!-- Runner Table -->
                 <div class="glass rounded-3xl overflow-hidden">
                     <div class="flex items-center justify-between px-4 py-3 border-b border-white/5 bg-white/[0.02]">
                         <div class="flex items-center gap-2">
@@ -910,7 +972,7 @@
 
             </div>
 
-            <!-- ============ BET SLIP ============ -->
+            <!-- BET SLIP -->
             <div>
                 <div class="glass rounded-3xl p-5 lg:sticky lg:top-24">
                     <div class="flex items-center justify-between mb-4">
@@ -919,6 +981,11 @@
                             Bet Slip
                         </h2>
                         <span id="slipCount" class="text-xs text-white/40">0 selections</span>
+                    </div>
+
+                    <div class="flex items-center justify-between mb-3 text-xs">
+                        <span class="text-white/40">Balance</span>
+                        <span class="text-white/70 font-semibold" id="balanceLabel">—</span>
                     </div>
 
                     <div id="emptySlip" class="text-center py-10 text-white/30">
@@ -936,23 +1003,24 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="text-[10px] uppercase tracking-wider text-white/40 font-semibold ml-1">Stake ($)</label>
-                            <input type="number" id="stakeInput" class="input-field mt-1.5" value="10.00" min="0.10" step="0.10">
+                            <label class="text-[10px] uppercase tracking-wider text-white/40 font-semibold ml-1">Stake (TZS)</label>
+                            <input type="number" id="stakeInput" class="input-field mt-1.5" value="1000" min="500" step="100">
                             <div class="flex gap-2 mt-2.5">
-                                <button type="button" class="quick-chip" data-add="5">+5</button>
-                                <button type="button" class="quick-chip" data-add="10">+10</button>
-                                <button type="button" class="quick-chip" data-add="25">+25</button>
+                                <button type="button" class="quick-chip" data-add="500">+500</button>
+                                <button type="button" class="quick-chip" data-add="1000">+1K</button>
+                                <button type="button" class="quick-chip" data-add="5000">+5K</button>
                                 <button type="button" class="quick-chip" data-reset="1">Reset</button>
                             </div>
                         </div>
 
                         <div class="flex items-center justify-between mb-3 text-sm">
                             <span class="text-white/50">Potential win</span>
-                            <strong id="potentialWin" class="text-green-400 font-extrabold text-lg">$10.00</strong>
+                            <strong id="potentialWin" class="text-green-400 font-extrabold text-lg">1,000 TZS</strong>
                         </div>
 
                         <button id="placeBetBtn" class="btn-primary w-full py-3">Place Bet</button>
                         <button id="clearSlipBtn" class="w-full mt-2 text-xs text-white/40 hover:text-white/70 transition-colors py-1.5">Clear</button>
+                        <div id="slipError" class="text-[11px] text-red-400 text-center mt-2 hidden"></div>
                     </div>
                 </div>
             </div>
@@ -973,9 +1041,7 @@
     </div>
 </div>
 
-<!-- ==========================================
-     FOOTER
-     ========================================== -->
+<!-- FOOTER -->
 <footer class="bg-[#0a0a12] border-t border-white/5 py-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
@@ -985,16 +1051,22 @@
                     <span class="text-white font-light">|</span>
                     <span class="text-white font-semibold">GameZone</span>
                 </div>
-                <p class="text-sm text-white/30 leading-relaxed">
+                <p class="text-sm text-white/30 leading-relaxed mb-4">
                     Premium online betting platform for sports, casino, and virtual games.
                 </p>
+                <div class="flex items-center gap-2 text-[10px] uppercase tracking-widest font-bold text-white/25">
+                    <span>18+</span>
+                    <span class="w-1 h-1 rounded-full bg-white/20"></span>
+                    <span>Play Responsibly</span>
+                </div>
             </div>
             <div>
-                <h4 class="text-sm font-semibold text-white/40 mb-3">Quick Links</h4>
+                <h4 class="text-sm font-semibold text-white/40 mb-3">Betting</h4>
                 <ul class="space-y-2">
                     <li><a href="sports.html" class="footer-link">Sports</a></li>
                     <li><a href="live-betting.html" class="footer-link">Live Betting</a></li>
                     <li><a href="casino.html" class="footer-link">Casino</a></li>
+                    <li><a href="aviator.html" class="footer-link">Aviator</a></li>
                     <li><a href="promotions.html" class="footer-link">Promotions</a></li>
                 </ul>
             </div>
@@ -1017,9 +1089,13 @@
                 </ul>
             </div>
         </div>
-        <div class="mt-8 pt-6 border-t border-white/5 flex flex-col md:flex-row items-center justify-between text-xs text-white/20">
+        <div class="mt-8 pt-6 border-t border-white/5 flex flex-col md:flex-row items-center justify-between text-xs text-white/25 gap-3">
             <p>Copyright © 2025 Cephas GM | Innovating for Tomorrow</p>
-            <p class="mt-2 md:mt-0">18+ | Play Responsibly</p>
+            <div class="flex items-center gap-4">
+                <span class="flex items-center gap-1">🔒 Secured by SSL</span>
+                <span class="w-1 h-1 rounded-full bg-white/20"></span>
+                <span>Licensed Operator</span>
+            </div>
         </div>
     </div>
 </footer>
@@ -1031,9 +1107,9 @@
 (function () {
     'use strict';
 
-    /* ============================================================
+    /* ------------------------------------------------------------
        MOBILE MENU
-       ============================================================ */
+       ------------------------------------------------------------ */
     const mobileToggle = document.getElementById('mobileToggle');
     const mobileMenu   = document.getElementById('mobileMenu');
     let mobileOpen = false;
@@ -1049,9 +1125,93 @@
         mobileOpen = false;
     }));
 
-    /* ============================================================
+    /* ------------------------------------------------------------
+       AUTH-AWARE UI
+       ------------------------------------------------------------ */
+    let isLoggedIn = false;
+    let currentUser = null;
+    let currency = 'TZS';
+    let realBalance = 0;
+
+    if (window.CephasGM && CephasGM.api) {
+        isLoggedIn = CephasGM.api.isLoggedIn();
+        currentUser = CephasGM.api.getUser();
+    }
+
+    const guestNav = document.getElementById('guestNav');
+    const userNav = document.getElementById('userNav');
+    const mobileWalletChip = document.getElementById('mobileWalletChip');
+    const mobileAuthSection = document.getElementById('mobileAuthSection');
+    const mobileAccountSection = document.getElementById('mobileAccountSection');
+    const guestNotice = document.getElementById('guestNotice');
+    const balanceLabel = document.getElementById('balanceLabel');
+
+    if (isLoggedIn && currentUser) {
+        guestNav.classList.add('hidden');
+        userNav.classList.remove('hidden');
+        mobileWalletChip.classList.remove('hidden');
+        mobileAuthSection.classList.add('hidden');
+        mobileAccountSection.classList.remove('hidden');
+        if (guestNotice) guestNotice.style.display = 'none';
+
+        const name = currentUser.fullName || currentUser.username || 'Player';
+        document.getElementById('navAvatar').textContent = name.charAt(0).toUpperCase();
+        document.getElementById('navName').textContent = name.split(' ')[0];
+
+        CephasGM.api.wallet().then(function(res) {
+            if (res.success && res.data) {
+                currency = res.data.currency;
+                realBalance = parseFloat(res.data.balance || 0);
+                const bal = realBalance.toLocaleString('en-US', { maximumFractionDigits: 0 });
+                document.getElementById('navBalance').textContent = bal + ' ' + res.data.currency;
+                document.getElementById('mobileNavBalance').textContent = bal;
+                balanceLabel.textContent = bal + ' ' + res.data.currency;
+                updatePotentialWin();
+            }
+        }).catch(function() {});
+
+        CephasGM.api.get('/notifications?limit=1&unreadOnly=true').then(function(res) {
+            if (res.success && typeof res.unreadCount === 'number' && res.unreadCount > 0) {
+                const badge = document.getElementById('notifBadge');
+                badge.textContent = res.unreadCount > 9 ? '9+' : res.unreadCount;
+                badge.style.display = 'flex';
+            }
+        }).catch(function() {});
+    } else {
+        guestNav.classList.remove('hidden');
+        userNav.classList.add('hidden');
+        mobileWalletChip.classList.add('hidden');
+        mobileAuthSection.classList.remove('hidden');
+        mobileAccountSection.classList.add('hidden');
+        if (guestNotice) guestNotice.style.display = 'flex';
+        balanceLabel.textContent = 'Sign in to bet';
+    }
+
+    function doSignOut() {
+        if (window.CephasGM && CephasGM.api) {
+            CephasGM.api.logout().catch(function() {}).then(function() {
+                CephasGM.api.clearTokens();
+                window.location.href = 'signin.html';
+            });
+        } else {
+            window.location.href = 'signin.html';
+        }
+    }
+    const navSignOut = document.getElementById('navSignOut');
+    if (navSignOut) navSignOut.addEventListener('click', function(e) {
+        e.preventDefault();
+        this.textContent = 'Signing out…';
+        doSignOut();
+    });
+    const mobileSignOut = document.getElementById('mobileSignOut');
+    if (mobileSignOut) mobileSignOut.addEventListener('click', function(e) {
+        e.preventDefault();
+        doSignOut();
+    });
+
+    /* ------------------------------------------------------------
        DOM
-       ============================================================ */
+       ------------------------------------------------------------ */
     const trackContainer   = document.getElementById('trackContainer');
     const runnersContainer = document.getElementById('runnersContainer');
     const raceNumEl        = document.getElementById('raceNum');
@@ -1075,80 +1235,43 @@
     const potentialWin     = document.getElementById('potentialWin');
     const placeBetBtn      = document.getElementById('placeBetBtn');
     const clearSlipBtn     = document.getElementById('clearSlipBtn');
+    const slipError        = document.getElementById('slipError');
 
-    /* ============================================================
-       HORSE SVG FACTORY — detailed galloping silhouette
-       ============================================================ */
+    /* ------------------------------------------------------------
+       HORSE SVG
+       ------------------------------------------------------------ */
     function horseSVG(mainColor, darkColor) {
         return `
         <svg viewBox="0 0 100 60" preserveAspectRatio="xMidYMid meet">
-            <!-- Tail -->
-            <path d="M 8 22 Q 0 16 2 26 Q 4 34 10 36 Q 6 30 8 24 Z"
-                  fill="${mainColor}" opacity="0.85"/>
-            <path d="M 6 24 Q 2 20 3 26 Q 4 30 8 32"
-                  stroke="${darkColor}" stroke-width="1" fill="none" opacity="0.5"/>
-
-            <!-- Back far leg (dimmed) -->
-            <path d="M 26 32 L 22 46 L 18 52 L 21 52 L 25 46 L 29 36 Z"
-                  fill="${darkColor}" opacity="0.75"/>
+            <path d="M 8 22 Q 0 16 2 26 Q 4 34 10 36 Q 6 30 8 24 Z" fill="${mainColor}" opacity="0.85"/>
+            <path d="M 6 24 Q 2 20 3 26 Q 4 30 8 32" stroke="${darkColor}" stroke-width="1" fill="none" opacity="0.5"/>
+            <path d="M 26 32 L 22 46 L 18 52 L 21 52 L 25 46 L 29 36 Z" fill="${darkColor}" opacity="0.75"/>
             <path d="M 18 52 L 22 52 L 21 54 L 17 54 Z" fill="#0d0d15"/>
-
-            <!-- Body -->
             <ellipse cx="42" cy="27" rx="21" ry="10.5" fill="${mainColor}"/>
-            <!-- Rump -->
             <ellipse cx="28" cy="25" rx="11" ry="9" fill="${mainColor}"/>
-            <!-- Belly shadow -->
             <ellipse cx="42" cy="33" rx="17" ry="4" fill="${darkColor}" opacity="0.4"/>
-
-            <!-- Front far leg (dimmed) -->
-            <path d="M 50 32 L 47 46 L 45 52 L 48 52 L 51 46 L 55 35 Z"
-                  fill="${darkColor}" opacity="0.75"/>
+            <path d="M 50 32 L 47 46 L 45 52 L 48 52 L 51 46 L 55 35 Z" fill="${darkColor}" opacity="0.75"/>
             <path d="M 45 52 L 49 52 L 48 54 L 44 54 Z" fill="#0d0d15"/>
-
-            <!-- Neck -->
-            <path d="M 52 22 Q 58 12 68 10 L 72 16 Q 64 18 56 26 Z"
-                  fill="${mainColor}"/>
-            <!-- Neck highlight -->
-            <path d="M 56 22 Q 60 15 66 12 L 68 15 Q 62 17 58 24 Z"
-                  fill="#ffffff" opacity="0.12"/>
-
-            <!-- Head -->
-            <path d="M 66 10 Q 74 6 80 12 L 82 16 Q 77 19 72 19 Q 67 17 64 14 Z"
-                  fill="${mainColor}"/>
-            <!-- Muzzle -->
-            <path d="M 79 12 Q 83 12 83 15 Q 82 17 79 16 Z"
-                  fill="${darkColor}"/>
-
-            <!-- Ears -->
+            <path d="M 52 22 Q 58 12 68 10 L 72 16 Q 64 18 56 26 Z" fill="${mainColor}"/>
+            <path d="M 56 22 Q 60 15 66 12 L 68 15 Q 62 17 58 24 Z" fill="#ffffff" opacity="0.12"/>
+            <path d="M 66 10 Q 74 6 80 12 L 82 16 Q 77 19 72 19 Q 67 17 64 14 Z" fill="${mainColor}"/>
+            <path d="M 79 12 Q 83 12 83 15 Q 82 17 79 16 Z" fill="${darkColor}"/>
             <path d="M 68 9 L 66 3 L 70 8 Z" fill="${mainColor}"/>
             <path d="M 72 9 L 73 3 L 74 8 Z" fill="${mainColor}"/>
-
-            <!-- Mane -->
-            <path d="M 54 22 Q 60 13 68 10 L 66 13 Q 60 16 57 25 Z"
-                  fill="${darkColor}" opacity="0.85"/>
-
-            <!-- Eye -->
+            <path d="M 54 22 Q 60 13 68 10 L 66 13 Q 60 16 57 25 Z" fill="${darkColor}" opacity="0.85"/>
             <circle cx="75" cy="13" r="1.2" fill="#0a0a0f"/>
             <circle cx="75.4" cy="12.7" r="0.4" fill="#ffffff"/>
-
-            <!-- Front near leg (extended forward — foreground) -->
-            <path d="M 54 32 Q 62 38 70 45 L 73 42 Q 65 36 57 30 Z"
-                  fill="${mainColor}"/>
+            <path d="M 54 32 Q 62 38 70 45 L 73 42 Q 65 36 57 30 Z" fill="${mainColor}"/>
             <path d="M 70 44 L 74 45 L 73 48 L 69 47 Z" fill="#0d0d15"/>
-
-            <!-- Back near leg (extended back — foreground) -->
-            <path d="M 28 32 Q 18 38 10 44 L 7 41 Q 16 34 26 27 Z"
-                  fill="${mainColor}"/>
+            <path d="M 28 32 Q 18 38 10 44 L 7 41 Q 16 34 26 27 Z" fill="${mainColor}"/>
             <path d="M 9 42 L 5 44 L 6 47 L 10 45 Z" fill="#0d0d15"/>
-
-            <!-- Body highlight -->
             <ellipse cx="42" cy="23" rx="14" ry="4" fill="#ffffff" opacity="0.10"/>
         </svg>`;
     }
 
-    /* ============================================================
+    /* ------------------------------------------------------------
        DATA POOLS
-       ============================================================ */
+       ------------------------------------------------------------ */
     const HORSE_NAMES = [
         'Thunder Bolt', 'Silver Arrow', 'Midnight Star', 'Golden Hoof',
         'Desert Wind', 'Royal Flush', 'Lucky Streak', 'Iron Duke',
@@ -1156,12 +1279,10 @@
         'Shadow Dancer', 'Northern Light', 'Rapid Fire', 'Emerald King',
         'Phantom Run', 'Starlight', 'Black Beauty', 'Comet'
     ];
-
     const JOCKEYS = [
         'R. Moore', 'F. Dettori', 'W. Buick', 'O. Murphy', 'T. Marquand',
         'H. Doyle', 'J. Doyle', 'R. Kingscote', 'T. Greatrex', 'S. Kelly'
     ];
-
     const SILKS = [
         { color: '#ef4444', dark: '#7a1010', bg: 'rgba(239,68,68,.20)' },
         { color: '#3b82f6', dark: '#0f2f80', bg: 'rgba(59,130,246,.20)' },
@@ -1174,7 +1295,6 @@
         { color: '#e5e7eb', dark: '#6a6d75', bg: 'rgba(229,231,235,.18)' },
         { color: '#f43f5e', dark: '#7a1025', bg: 'rgba(244,63,94,.20)' }
     ];
-
     const TRACKS = ['Ascot Downs', 'Epsom Park', 'Cheltenham', 'Newmarket', 'Doncaster', 'York Raceway'];
 
     const NUM_RUNNERS = 8;
@@ -1183,9 +1303,9 @@
     const RACE_MS     = 30000;
     const RESULT_HOLD = 4000;
 
-    /* ============================================================
+    /* ------------------------------------------------------------
        STATE
-       ============================================================ */
+       ------------------------------------------------------------ */
     let raceNumber   = 0;
     let runners      = [];
     let raceStartAt  = 0;
@@ -1198,9 +1318,9 @@
     let finishOrder  = [];
     let lastDustAt   = 0;
 
-    /* ============================================================
+    /* ------------------------------------------------------------
        HELPERS
-       ============================================================ */
+       ------------------------------------------------------------ */
     function rand(min, max) { return Math.random() * (max - min) + min; }
     function randInt(min, max) { return Math.floor(rand(min, max + 1)); }
     function pick(arr) { return arr[randInt(0, arr.length - 1)]; }
@@ -1212,22 +1332,34 @@
         }
         return a;
     }
+    function fmt(n) {
+        return parseFloat(n || 0).toLocaleString('en-US', {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 2,
+        });
+    }
+    function escapeHtml(s) {
+        return String(s || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
 
-    /* ============================================================
+    /* ------------------------------------------------------------
        BUILD RUNNERS
-       ============================================================ */
+       ------------------------------------------------------------ */
     function buildRunners() {
         const names   = shuffle(HORSE_NAMES).slice(0, NUM_RUNNERS);
         const jockeys = shuffle(JOCKEYS).slice(0, NUM_RUNNERS);
         const silks   = shuffle(SILKS).slice(0, NUM_RUNNERS);
 
         const list = [];
-
         for (let i = 0; i < NUM_RUNNERS; i++) {
             const strength = rand(0.15, 0.95);
             const prob     = 0.04 + strength * 0.20;
             const form     = Array.from({ length: 5 }, () => randInt(1, 8)).join('-');
-
             list.push({
                 id: 'r' + i + '_' + Date.now(),
                 number: i + 1,
@@ -1251,13 +1383,12 @@
             const p = r.prob / totalProb;
             r.odds = Math.max(1.15, +(margin / p).toFixed(2));
         });
-
         return list;
     }
 
-    /* ============================================================
-       RENDER TRACK LANES
-       ============================================================ */
+    /* ------------------------------------------------------------
+       RENDER TRACK
+       ------------------------------------------------------------ */
     function renderTrack() {
         trackContainer.innerHTML = '';
         laneElements = {};
@@ -1273,7 +1404,7 @@
                     ${r.number}
                 </div>
                 <div class="silk-bar" style="background:${r.silk.color}"></div>
-                <div class="lane-name">${r.name.toUpperCase()}</div>
+                <div class="lane-name">${escapeHtml(r.name.toUpperCase())}</div>
                 <div class="horse" id="horse-${r.id}">
                     ${horseSVG(r.silk.color, r.silk.dark)}
                 </div>
@@ -1287,23 +1418,18 @@
             };
         });
 
-        positionHorses(0);
+        positionHorses();
     }
 
-    /* Move all horses according to their progress (0..1) */
     function positionHorses() {
         runners.forEach(r => {
             const el = laneElements[r.id];
             if (!el) return;
-
             const laneRect = el.lane.getBoundingClientRect();
-            // usable width: from left of number plate to just before finish line
             const usableWidth = Math.max(60, laneRect.width - 90);
-
             const leftPx = 34 + Math.max(0, Math.min(1, r.progress)) * usableWidth;
             el.horse.style.left = leftPx + 'px';
 
-            // Trigger galloping class during race
             const shouldGallop = r.progress > 0.001 && !r.finished;
             if (shouldGallop && !el.isGalloping) {
                 el.horse.classList.add('galloping');
@@ -1315,7 +1441,6 @@
         });
     }
 
-    /* Dust puff behind a specific horse */
     function spawnDust(r) {
         const el = laneElements[r.id];
         if (!el) return;
@@ -1327,12 +1452,11 @@
         setTimeout(() => dust.remove(), 950);
     }
 
-    /* ============================================================
+    /* ------------------------------------------------------------
        RENDER RUNNERS TABLE
-       ============================================================ */
+       ------------------------------------------------------------ */
     function renderRunnersTable() {
         runnersContainer.innerHTML = '';
-
         const sorted = [...runners].sort((a, b) => a.odds - b.odds);
 
         sorted.forEach((r, idx) => {
@@ -1353,12 +1477,12 @@
                     </div>
                     <div class="runner-meta">
                         <div class="runner-name flex items-center gap-2">
-                            <span>${r.name}</span>
+                            <span>${escapeHtml(r.name)}</span>
                             ${posBadge}
                         </div>
-                        <div class="runner-sub">J: ${r.jockey}</div>
+                        <div class="runner-sub">J: ${escapeHtml(r.jockey)}</div>
                     </div>
-                    <div class="runner-form">${r.form}</div>
+                    <div class="runner-form">${escapeHtml(r.form)}</div>
                 </div>
                 <div class="runner-odds">${r.odds.toFixed(2)}</div>
             `;
@@ -1368,10 +1492,15 @@
         });
     }
 
-    /* ============================================================
+    /* ------------------------------------------------------------
        BET SLIP
-       ============================================================ */
+       ------------------------------------------------------------ */
     function toggleSelection(rid) {
+        // Require auth
+        if (!isLoggedIn) {
+            window.location.href = 'signin.html?redirect=' + encodeURIComponent('virtual-horse-racing.html');
+            return;
+        }
         if (inResultHold) { toast('Wait for the next race', 'warn'); return; }
 
         const raceRunning = runners.some(r => r.progress > 0);
@@ -1422,7 +1551,7 @@
                         ${sel.number}
                     </div>
                     <div class="min-w-0 flex-1">
-                        <div class="font-semibold text-sm truncate">${sel.name}</div>
+                        <div class="font-semibold text-sm truncate">${escapeHtml(sel.name)}</div>
                         <div class="text-[10px] text-white/35">To Win</div>
                     </div>
                 </div>
@@ -1450,7 +1579,7 @@
     function updatePotentialWin() {
         const stake = parseFloat(stakeInput.value) || 0;
         const odds  = selections[0] ? selections[0].odds : 1;
-        potentialWin.textContent = '$' + (stake * odds).toFixed(2);
+        potentialWin.textContent = fmt(stake * odds) + ' ' + currency;
     }
 
     function applySelectedClass() {
@@ -1465,13 +1594,13 @@
     document.querySelectorAll('.quick-chip').forEach(chip => {
         chip.addEventListener('click', () => {
             if (chip.dataset.reset) {
-                stakeInput.value = '10.00';
+                stakeInput.value = '1000';
                 updatePotentialWin();
                 return;
             }
             const add = parseFloat(chip.dataset.add) || 0;
             const cur = parseFloat(stakeInput.value) || 0;
-            stakeInput.value = (cur + add).toFixed(2);
+            stakeInput.value = cur + add;
             updatePotentialWin();
         });
     });
@@ -1485,35 +1614,87 @@
     });
 
     placeBetBtn.addEventListener('click', () => {
+        // Require auth
+        if (!isLoggedIn) {
+            window.location.href = 'signin.html?redirect=' + encodeURIComponent('virtual-horse-racing.html');
+            return;
+        }
         if (selections.length === 0) {
-            toast('Pick a runner first', 'err');
+            slipError.textContent = 'Pick a runner first';
+            slipError.classList.remove('hidden');
             return;
         }
         const stake = parseFloat(stakeInput.value);
-        if (!stake || stake <= 0) {
-            toast('Enter a valid stake', 'err');
+        if (!stake || stake < 500) {
+            slipError.textContent = 'Minimum stake is 500';
+            slipError.classList.remove('hidden');
+            return;
+        }
+        if (stake > realBalance) {
+            slipError.textContent = 'Insufficient balance';
+            slipError.classList.remove('hidden');
             return;
         }
         if (inResultHold) {
-            toast('Wait for the next race', 'warn');
+            slipError.textContent = 'Wait for the next race';
+            slipError.classList.remove('hidden');
             return;
         }
+        slipError.classList.add('hidden');
 
         placeBetBtn.disabled = true;
         placeBetBtn.textContent = 'Placing…';
 
-        setTimeout(() => {
-            const sel = selections[0];
-            const win = (stake * sel.odds).toFixed(2);
-            toast(`✅ Bet placed • ${sel.name} @ ${sel.odds.toFixed(2)} — Potential $${win}`, 'ok');
+        const sel = selections[0];
+        const runner = runners.find(r => r.id === sel.rid);
+
+        CephasGM.api.post('/bets', {
+            type: 'SINGLE',
+            stake: stake,
+            currency: currency,
+            gameType: 'VIRTUAL_HORSE_RACING',
+            selections: [{
+                eventId: sel.rid,
+                eventName: sel.name + ' (Race #' + raceNumber + ')',
+                market: 'WIN',
+                selection: sel.name,
+                odds: sel.odds,
+            }],
+        })
+        .then(function(res) {
+            if (res.success && res.data) {
+                const win = (stake * sel.odds).toFixed(2);
+                toast('✅ Bet placed • ' + sel.name + ' @ ' + sel.odds.toFixed(2) + ' — Potential ' + fmt(win) + ' ' + currency, 'ok');
+                selections = [];
+                updateSlipUI();
+                applySelectedClass();
+
+                return CephasGM.api.wallet().then(function(w) {
+                    if (w.success && w.data) {
+                        realBalance = parseFloat(w.data.balance || 0);
+                        const bal = realBalance.toLocaleString('en-US', { maximumFractionDigits: 0 });
+                        document.getElementById('navBalance').textContent = bal + ' ' + w.data.currency;
+                        document.getElementById('mobileNavBalance').textContent = bal;
+                        balanceLabel.textContent = bal + ' ' + w.data.currency;
+                    }
+                });
+            } else {
+                throw { message: (res && res.message) || 'Bet failed' };
+            }
+        })
+        .catch(function(err) {
+            slipError.textContent = (err && err.message) || 'Could not place bet';
+            slipError.classList.remove('hidden');
+        })
+        .then(function() {
             placeBetBtn.disabled = false;
             placeBetBtn.textContent = 'Place Bet';
-        }, 600);
+        });
     });
 
-    /* ============================================================
+    /* ------------------------------------------------------------
        RACE LOOP
-       ============================================================ */
+       ------------------------------------------------------------ */
     function startNewRace() {
         raceNumber++;
         raceNumEl.textContent = '#' + String(raceNumber).padStart(4, '0');
@@ -1578,9 +1759,6 @@
         }
     }
 
-    /* ============================================================
-       SIMULATE RACE
-       ============================================================ */
     function simulateRace(raceElapsed, now) {
         const t = Math.min(1, raceElapsed / RACE_MS);
 
@@ -1612,7 +1790,6 @@
             }
         });
 
-        // Dust puffs behind leading pack — throttled
         if (now - lastDustAt > 90) {
             lastDustAt = now;
             runners.slice(0, 8).forEach(r => {
@@ -1623,9 +1800,6 @@
         }
     }
 
-    /* ============================================================
-       FINISH RACE
-       ============================================================ */
     function finishRace() {
         inResultHold = true;
         raceStatus.textContent = 'Finished';
@@ -1652,22 +1826,20 @@
         if (raceHistory.length > 6) raceHistory.pop();
         renderHistory();
 
-        // Winner overlay with horse SVG
         winnerHorseSlot.innerHTML = '<div class="winner-horse-svg">' +
             horseSVG(winner.silk.color, winner.silk.dark) + '</div>';
         winnerTitle.textContent = winner.name + ' wins!';
         winnerSub.textContent   = `${currentTrack} • Race #${String(raceNumber).padStart(4,'0')} • Odds ${winner.odds.toFixed(2)}`;
         winnerFlash.classList.add('show');
 
-        // Payout
         if (selections.length > 0) {
             const sel = selections[0];
             if (sel.rid === winner.id) {
                 const stake = parseFloat(stakeInput.value) || 0;
                 const win = (stake * sel.odds).toFixed(2);
-                toast(`🎉 Winner! ${winner.name} paid $${win}`, 'ok');
+                toast('🎉 Winner! ' + winner.name + ' paid ' + fmt(win) + ' ' + currency, 'ok');
             } else {
-                toast(`❌ ${sel.name} didn't win — ${winner.name} took it`, 'err');
+                toast('❌ ' + sel.name + ' didn\'t win — ' + winner.name + ' took it', 'err');
             }
             selections = [];
             updateSlipUI();
@@ -1680,9 +1852,9 @@
         }, RESULT_HOLD);
     }
 
-    /* ============================================================
+    /* ------------------------------------------------------------
        HISTORY
-       ============================================================ */
+       ------------------------------------------------------------ */
     function renderHistory() {
         if (raceHistory.length === 0) {
             historyContainer.innerHTML = '<span class="text-xs text-white/25">No races completed yet…</span>';
@@ -1698,7 +1870,7 @@
                     ${r.winner.number}
                 </div>
                 <div class="min-w-0">
-                    <div class="text-[11px] font-bold truncate max-w-[120px]">${r.winner.name}</div>
+                    <div class="text-[11px] font-bold truncate max-w-[120px]">${escapeHtml(r.winner.name)}</div>
                     <div class="text-[9px] text-white/35 uppercase tracking-wider">#${String(r.race).padStart(4,'0')} • ${r.winner.odds.toFixed(2)}</div>
                 </div>
             `;
@@ -1706,9 +1878,9 @@
         });
     }
 
-    /* ============================================================
+    /* ------------------------------------------------------------
        TOAST
-       ============================================================ */
+       ------------------------------------------------------------ */
     function toast(message, type) {
         const el = document.createElement('div');
         el.className = 'toast ' +
@@ -1722,23 +1894,23 @@
         }, 2400);
     }
 
-    /* ============================================================
+    /* ------------------------------------------------------------
        RESIZE
-       ============================================================ */
+       ------------------------------------------------------------ */
     let resizeTimer = null;
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(() => positionHorses(), 120);
     });
 
-    /* ============================================================
+    /* ------------------------------------------------------------
        BOOT
-       ============================================================ */
+       ------------------------------------------------------------ */
     startNewRace();
 
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/sw.js')
+            navigator.serviceWorker.register('sw.js')
                 .then(() => console.log('SW registered'))
                 .catch(() => console.log('SW registration failed'));
         });
